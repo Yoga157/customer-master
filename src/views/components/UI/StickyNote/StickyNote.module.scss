@@ -1,0 +1,32 @@
+.HeaderText {
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0.4em 1em 1em 0.4em !important;
+}
+.MaxHeight {
+    max-height: 150px !important;
+    overflow-y: auto !important;
+}
+.Sticky {
+    position: sticky !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    z-index: 99 !important;
+    background-color: #fffa8c !important;
+    margin: 20px !important;
+    padding: 10px 0px !important;
+    float: right !important;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.5) !important;
+    border-radius: 7px !important;
+    width: 460px !important;    
+   
+}
+
+.btnX {
+    float: right !important;
+    font-weight: bold;
+    font-size: larger;
+    color: black;
+}
+
+

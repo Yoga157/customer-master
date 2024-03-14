@@ -1,0 +1,173 @@
+.k-listview > .k-state-focused.k-state-selected,
+.k-state-focused.k-state-selected {
+  box-shadow: none !important;
+  background-color: #7178ca !important;
+}
+.trv-parameters-area .trv-parameters-area-footer {
+  height: 3.8em !important;
+}
+.trv-parameters-area.preview .trv-parameters-area-content {
+  bottom: 4em !important;
+}
+.k-draghandle.k-state-selected:hover,
+.k-state-selected {
+  background-image: none;
+}
+.k-menu .k-state-selected > .k-link {
+  color: #fff;
+  background-color: #989de0;
+  border-color: transparent;
+  background-image: none;
+}
+.k-primary.k-state-focused,
+.k-primary:focus {
+  border-color: transparent;
+  -webkit-box-shadow: 0 0 3px 0 #6d72b3;
+  box-shadow: 0 0 3px 0 #6d72b3;
+}
+.k-primary.k-state-active,
+.k-primary:active {
+  color: #fff;
+  border-color: transparent;
+  background-color: #7178ca;
+  background-image: none;
+}
+.k-primary.k-state-hover,
+.k-primary:hover {
+  color: #fff;
+  border-color: transparent;
+  background-color: #7178ca;
+  background-image: none;
+}
+.k-primary {
+  color: #fff;
+  border-color: transparent;
+  background-color: #8c92dd;
+  background-image: none;
+  border-radius: 30px !important;
+  padding: 5px 20px;
+}
+.k-grid-header .k-header > .k-link,
+.k-header,
+.k-treemap-title {
+  color: #677488;
+}
+.trv-listviewitem.k-state-selected {
+  color: #fff;
+  background-color: #8c92dd;
+  border-color: transparent;
+  padding: 7px 5px;
+}
+.trv-listviewitem {
+  margin: 7px 5px !important;
+  color: #677488;
+  cursor: pointer;
+}
+.trv-listviewitem:hover {
+  margin: 7px 5px !important;
+  color: #222446;
+  cursor: pointer;
+  transition: color 0.5s;
+}
+
+//16032021
+.shape3,
+.shape5,
+.shape8,
+.shape10,
+.panel1,
+.shape17,
+.shape11,
+.shape19,
+.shape12,
+.shape13,
+.shape14,
+.shape15,
+.shape21,
+.shape22,
+.shape23,
+.textBox174,
+.textBox188,
+.textBox189,
+.textBox190,
+.textBox187,
+.textBox186
+ {
+  border-radius: 30px !important;
+}
+.textBox192,
+.textBox193 {
+  border-radius: 50px !important;
+}
+//03022021
+.graph1,
+.graph2,
+.graph4,
+.graph3,
+.graph8,
+.shape6,
+.shape7,
+.graph5,
+.graph11,
+.graph13,
+.graph14,
+.shape9,
+.shape16,
+.shape18,
+.shape20,
+.shape24,
+.shape25,
+.shape26,
+.shape27,
+.shape28 {
+  border-radius: 20px !important;
+}
+//26012021
+.k-header {
+  background-image: none;
+  background-color: #eaeded;
+}
+
+.k-content,
+.k-widget {
+  border-color: transparent;
+  background-color: #eaeded;
+}
+
+.trv-pages-area.interactive .trv-page-container .trv-page-wrapper .trv-report-page {
+  background-color: #eaeded !important;
+}
+
+.shape1 img,
+.shape4 img {
+  background-color: #8c92dd;
+  border-radius: 20px;
+}
+
+.shape2 {
+  border-radius: 20px;
+}
+
+.pageFooterSection1,
+.detailSection1 {
+  background-color: transparent !important;
+}
+
+//start at 15012021
+
+.containerReportView {
+  #reportViewer1 {
+    position: absolute;
+    top: 117px;
+    bottom: -48px;
+    left: 75px;
+    right: 10px;
+    overflow: hidden;
+    clear: both;
+  }
+}
+
+.DqTabSt01.tabDashboard {
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,136 @@
+//19012022
+.MyOwnQuota {
+  color: white;
+  .ui.basic.button,
+  .ui.basic.buttons .button {
+    padding: 0 0 0 1rem;
+    box-shadow: none;
+    color: #fff !important;
+  }
+  .ui.basic.button:hover,
+  .ui.basic.buttons .button:hover {
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  h2 {
+    margin: 0;
+  }
+  .ui.styled.accordion {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: #9d9aef;
+    border-radius: 10px;
+    margin-bottom: 1.655rem;
+    .title {
+      background-color: #9d9aef;
+      color: #fff;
+      border-radius: 10px;
+    }
+    span {
+      font-size: smaller;
+      font-weight: normal;
+    }
+  }
+}
+
+.ViewForm {
+  .LabelNameLabel {
+    background-color: #ceccf7;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    // .ui.disabled.input {
+    input[type='text']:disabled {
+      font-size: 28px;
+      padding: 1px 0;
+      color: #616e87;
+      opacity: 1;
+      background-color: transparent;
+      border: 1px solid #ceccf7 !important;
+      text-align: left !important;
+    }
+    // }
+  }
+}
+
+.card-quota-brand,
+.card-quota-service {
+  border-radius: 4px;
+  padding: 0.5rem 1rem 1rem;
+  background-color: #b2b6e8;
+  .header {
+    color: #55637a;
+    font-weight: 800;
+    padding: 0.5rem 0;
+    margin-bottom: 0.2rem !important;
+  }
+
+  .col-hardware,
+  .col-software {
+    border-radius: 4px;
+    padding: 0.5rem 1rem 1.5rem;
+    background-color: #c9ccef;
+    .text-danger {
+      color: #db312e;
+    }
+  }
+
+  .item-quota-service,
+  .item-hardware {
+    margin-top: 0 !important;
+    .content {
+      padding: 0.5em 0em 0.5em !important;
+      color: #55637a90;
+      font-weight: 700;
+      h3 {
+        color: #55637a !important;
+        font-size: 24px !important;
+        font-weight: 500 !important;
+      }
+    }
+
+    .item-toggle {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: end !important;
+
+      span {
+        color: #55637a;
+        font-weight: bold !important;
+      }
+      span:nth-child(2) {
+        margin-right: 4px;
+        margin-left: 4px;
+
+        .ui.toggle.checkbox label:before {
+          top: 4px;
+          height: 1rem;
+        }
+      }
+    }
+  }
+}
+
+.header-hardware,
+.header-software,
+.header-quota-service {
+  .content {
+    padding: 0 !important;
+  }
+}
+
+::placeholder {
+  color: #9aa2c0 !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #9aa2c0 !important;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #9aa2c0 !important;
+}

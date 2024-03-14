@@ -1,0 +1,64 @@
+.tabs-component [role="tablist"] {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  justify-content: center;
+}
+
+.tabs-component [role="tablist"] button {
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  display: block;
+  padding: 0.5rem;
+  cursor: pointer;
+  margin: 0 1px;
+  outline: none;
+  transition: border 0.2s ease-in-out 0s;
+  font-size: 1rem;
+  background-color: #eaeded;
+}
+
+.tabs-component [role="tablist"] button.active,
+.tabs-component [role="tablist"] button:focus,
+.tabs-component [role="tablist"] button:hover {
+  border-width: 1px;
+  border-color: #e9ecef #e9ecef #0074cc;
+}
+
+.tabs-component [role="tablist"] button.active {
+  color: #495057;
+}
+
+.tabs-component [role="tabpanel"] {
+  text-align: left;
+  padding: 1rem;
+}
+
+.tabs-component.vertical {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.tabs-component.vertical [role="tablist"] {
+  flex-direction: column;
+}
+
+.tabs-component.vertical [role="tabpanel"] {
+  flex: 1;
+}
+
+.tabs-component [role="tablist"] button {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin: 0;
+}
+
+.tabs-component.vertical [role="tablist"] button.active,
+.tabs-component.vertical [role="tablist"] button:focus,
+.tabs-component.vertical [role="tablist"] button:hover {
+  border-color: #e9ecef transparent #e9ecef #0074cc;
+}

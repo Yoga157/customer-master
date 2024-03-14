@@ -1,0 +1,11 @@
+.CostServiceTable {
+    background-color: #3F3F3F !important;
+}
+
+.CostServiceTable th:first-child {
+    border-radius: .28571429rem 0 0 0 !important;
+}
+.nodata {
+    color: white;
+    text-align: center;
+}

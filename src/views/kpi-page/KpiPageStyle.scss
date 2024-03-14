@@ -1,0 +1,16 @@
+//30062021
+.DqTabSt01.KpiPage {
+    .ui.secondary.menu {
+      position: absolute;
+      left: 36.322%;
+      top: -119px;
+    }
+  }
+  //========
+  @media only screen and (max-width: 767px){
+    .DqTabSt01.KpiPage {
+        .ui.secondary.menu {
+          left: 6.322%;
+        }
+      }
+  }

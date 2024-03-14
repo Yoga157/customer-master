@@ -1,0 +1,81 @@
+.TotalCreditCBV {
+    .WrapperColumn .content {
+        color: #fff !important;
+    }
+    
+    .WrapperColumn .sub.header {
+        color: rgba(255,255,255,0.5) !important;
+    }
+    
+    .WrapperColumn .two.column.row .column:first-child {
+        border-right: 1px solid rgba(255,255,255,0.2) !important;
+    }
+    
+    .WrapperColumn {
+        // background-color: #656DD1 !important;
+        padding: 0.75rem 2rem !important;
+        .SeparateIcon{
+            color: #55637A;
+            position: absolute;
+            background-color: white;
+            padding: 0.9123rem 2.3rem 2.4rem 1rem;
+            font-size: 1.512rem;
+            border-radius: 50%;
+            left: -23px;
+            top: 12px;
+          }
+    }
+    .WrapperColumn:nth-child(1){
+        background-color: #656DD1;
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+    }
+    .WrapperColumn:nth-child(2){
+        background-color: #4F58C1;
+    }
+    .WrapperColumn:nth-child(3){
+        background-color: #FFD500;
+        .sub.header{
+            color: #A99B3D !important;
+        }
+        span {
+            color: #55637A !important;
+        }
+    }
+    .WrapperColumn:nth-child(4){
+        background-color: #F97452;
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+    }
+    .WrapperColumn:nth-child(4)::before{
+        content: '=';
+        color: #55637A;
+        position: absolute;
+        font-weight: 900;
+        font-size: 2.5rem;
+        background-color: white;
+        border-radius: 50px;
+        padding: 0rem 1rem;
+        left: -24px;
+        top: 10px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .WrapperColumn:nth-child(2){
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+        .icon.SeparateIcon {
+            display: none;
+        }
+    }
+    .WrapperColumn:nth-child(3){
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+        .icon.SeparateIcon {
+            display: none;
+        }
+    }
+    .WrapperColumn:nth-child(4)::before{
+        display: none;
+    }
+}

@@ -1,0 +1,91 @@
+
+.gantt_modal_box{
+  top: 130px;
+  left: 559px;
+}
+
+.gantt-excel-form {
+  width: 800px;
+}
+
+.gantt-excel-form .dhtmlx_popup_text {
+  max-height: 600px;
+  overflow: auto;
+}
+
+.gantt_popup_text {
+  margin: 15px 15px 5px;
+  font-size: 14px;
+  color: #000;
+  min-height: 30px;
+  border-radius: 6px;
+}
+
+.gantt_cal_ltext.gantt_cal_template{
+  height: 0 !important;
+  margin-right: 200px;
+  min-height: 100px;
+  width: 100%;
+  overflow: auto;             
+}
+
+.dhx_sample-container{
+  background-color: red !important;
+}
+
+.task-history{
+  background: #FFFB9A;
+  color: #727272;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 0 5px 3px;
+  border-bottom: 1px solid #2b2b2b2e;
+  position: relative;
+}
+
+.info-text-history{
+  font-weight: 800;
+}
+.info-date-history{
+  font-weight: lighter;
+}
+.info-created-history{
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: lighter;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.content-history {
+  position: relative;
+  width: 100%;
+  background: #FFFB9A;
+  padding: 7px;
+  height: 100%;
+}
+
+.task-history::before, .content-history::before{
+      content: "";
+        position: absolute;
+        top: 0;
+        left: -8px;
+        width: 12px;
+        height: 100%;
+        background-color: #FFFB9A;
+}
+.task-history::after, .content-history::after{
+      content: "";
+        position: absolute;
+        top: 0;
+        right: -8px;
+        width: 12px;
+        height: 100%;
+        background-color: #FFFB9A;
+}
+
+.content-history ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

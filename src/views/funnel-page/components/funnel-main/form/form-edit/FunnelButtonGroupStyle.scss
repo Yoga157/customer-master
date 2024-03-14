@@ -1,0 +1,20 @@
+.ui.buttons i.icon {
+    font-size: 2rem !important;
+    margin: 1rem 0 0.2rem 0 !important;
+}
+
+.ui.buttons > button.ui.button {
+    border-radius: 0 !important;
+}
+
+.ui.buttons > button.ui.button:first-child {
+    border-radius: 0.785714rem 0 0 0.785714rem !important;
+}
+
+.ui.buttons > button.ui.button:last-child {
+    border-radius: 0 0.785714rem 0.785714rem 0 !important;
+}
+
+.ui.buttons > button.ui.button:nth-child(odd) {
+    opacity: 0.8 !important;
+}

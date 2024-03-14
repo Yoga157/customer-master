@@ -1,0 +1,15 @@
+.PMO-Status>button {
+  padding: 8px !important;
+  width: 100% !important;
+  text-align: center !important;
+  pointer-events: none !important;
+}
+
+.PMOStatus{
+    padding: 5px 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border-radius: 36px;
+    box-shadow: 0 0 4px #00000030;
+}

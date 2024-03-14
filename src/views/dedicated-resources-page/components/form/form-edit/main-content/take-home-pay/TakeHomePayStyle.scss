@@ -1,0 +1,46 @@
+
+.TakeHomePay {
+  p {
+    font-weight: 700 !important;
+    margin-bottom: 0 !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    text-transform: uppercase !important;
+    font-size: 1rem !important; 
+    text-align: center;
+  }
+  .wrapperPayment p.Payment{
+    color: #fff !important;
+    text-transform: none !important;
+    font-size: 1.9123rem !important;
+    margin-top: 4px;
+    span {
+      font-size: 1.3123rem !important;
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+    
+  }
+
+  
+  .Payment {
+    font-size: 25px;
+    font-weight: bold;
+    color: black
+  }
+
+  .Payment2 {
+    font-size: 15px !important;
+    font-weight: 400 !important;
+  }
+
+  .wrapperMonthPayment {
+    margin: auto;
+    width: 10%;
+
+  }
+
+  .PaymentMonth {
+    font-size: 20px !important;
+    font-weight: bold;
+    color: black
+  }

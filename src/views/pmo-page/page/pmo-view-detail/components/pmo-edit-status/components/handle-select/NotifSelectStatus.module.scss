@@ -1,0 +1,13 @@
+.sectionYellow{
+  position: relative;
+}
+
+.sectionYellow::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -7px;
+  bottom: 0;
+  width: 102.6%;
+  background-color: #FFFB9A;
+} 

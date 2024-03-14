@@ -1,0 +1,38 @@
+.LabelUserSrc {
+    display: none;
+    .item {
+        margin-left: 0.3rem !important;
+    }
+    button {
+        margin: 0 0 0 0.3em !important;
+    }
+}
+
+.column.ViewLabel.SoftwareLabel {
+    margin-top: -1rem !important;
+    // div.field > div > label {
+    //     display: none !important;
+    // }
+    .field .ContainerMax100 button.ui.grey.disabled {
+        background-color: #656dd1 !important;
+        padding: 0.8em 2.8em !important;
+        color: white !important;
+        font-size: 1.1em;
+                display: none !important;
+
+    }
+    .field .ContainerMax100 button.ui.grey {
+        background-color: #F97452 !important;
+        padding: 0.8em 2.8em !important;
+        color: white !important;
+        font-size: 1.1em;
+    }
+    .field .ContainerMax100 button.ui.grey.disabled > i.close.icon {
+        display: none !important;
+    }
+}
+@media only screen and (max-width: 767px){
+    .column.ViewLabel.SoftwareLabel {
+      margin-top: 1rem !important;
+    }
+}

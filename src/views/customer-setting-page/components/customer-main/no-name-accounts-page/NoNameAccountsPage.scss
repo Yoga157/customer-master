@@ -1,0 +1,102 @@
+//Start-Tab Menu Accounts
+.tab-menu {
+  display: flex;
+  justify-content: center;
+}
+
+.tab-menu a {
+  text-decoration: none;
+  padding: 6px 8px;
+  margin: 0px;
+  color: #55637a;
+  position: relative;
+}
+
+.tab-menu a h2 {
+  font-size: 1rem;
+  font-weight: bold;
+  font-style: Bold;
+}
+
+.tab-menu a::after {
+  content: "";
+  display: block;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: transparent; /* Warna awal garis bawah */
+  transition: background-color 0.3s ease; /* Efek transisi untuk perubahan warna garis bawah */
+}
+
+//Filter and Search
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+
+//Fitur Container
+.fitur-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.center-fitur-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+//H2
+.h2-container {
+  font-style: Bold;
+  color: #55637a;
+  margin-top: 0;
+  font-size: 1.7rem;
+  font-weight: bold;
+}
+
+.p-account {
+  color: red;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+// Fitur Container
+.posision-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  justify-content: center;
+}
+
+// export excel
+.posision-container-right {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  justify-content: center;
+  margin-left: auto;
+}
+
+.posision-container-auto {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  justify-content: center;
+}
+
+//Button-Claim
+.btn-claim {
+  height: fit-content !important;
+  margin-left: 1rem !important;
+  color: #656dd1 !important;
+  background: white !important;
+  font-size: 0.8rem !important;
+  align-items: center !important;
+}

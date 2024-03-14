@@ -1,0 +1,7 @@
+.hideEmptySearch{
+  :global{
+    .results.transition.visible {
+        display: none !important;
+    }
+  }
+}

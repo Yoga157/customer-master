@@ -1,0 +1,10 @@
+.FunnelTable {
+    background-color: #9d9aef !important;
+    color: white !important;
+}
+.StickyHeader th {
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    top: 55px !important;
+    z-index: 1;
+}

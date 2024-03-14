@@ -1,0 +1,64 @@
+.ViewLabel .BlueLabel > .ui.dropdown.label {
+  border-radius: 0 5px 5px 0 !important;
+}
+
+.ViewLabel > .field > .ui.labeled.input > .ui.dropdown.label {
+  margin-left: -75px !important;
+  min-width: 5.6em;
+}
+
+.ViewLabel .ui.disabled.labeled .ui.dropdown.label {
+  margin-left: -90px !important;
+  background-color: #dcdbdb !important;
+  color: #989898 !important;
+}
+
+.projectAliass {
+  .field.LabelNameLabel {
+    .ui.disabled.icon.input.BlueLabel {
+      display: none;
+    }
+  }
+}
+
+.row-manday-exist > .column > .field > input:disabled {
+  text-align: left !important;
+  font-size: 2.1rem;
+  background-color: transparent;
+  border: 0 !important;
+  color: white;
+  font-size: 1.7em;
+  font-weight: 400;
+  font-style: normal;
+  padding: 0.01em;
+  opacity: 1 !important;
+}
+.row-manday-exist > .column > .field > input {
+  text-align: left !important;
+}
+
+
+.ui.disabled.dropdown.label.dropdown-disabled{
+  padding: 6px !important;
+  height: 31px;
+  min-width: 90px !important;
+  font-size: 18px;
+}
+//29062022
+.ComplexityBtn {
+  position: absolute !important;
+  top: 0;
+  left: 170px;
+  opacity: 1 !important;
+}
+i.icon.save.ComplexityBtn::before {
+  background-color: #5c62ad  !important;
+  padding: 6px 7px;
+  font-size: 0.8123rem;
+  border-radius: 50%;
+  transition: background-color 0.5s;
+}
+.BlueLabel i.inverted.circular.blue.icon {
+  background-color: #5c62ad !important;
+}
+//--end 29062022

@@ -1,0 +1,61 @@
+.ui.form  {
+    .ProfileDisablelabel {
+        border-right: 1px solid rgba(255, 255, 255, 0.25123) !important;
+        .field.LabelNameLabel {
+            label {
+                color: white !important;
+                opacity: 0.5 !important;
+            } 
+            .ui.disabled.input {
+                opacity: 1 !important;
+            }
+            .ui.input {
+                font-size: 1.123rem !important;
+            }
+            input[type="text"] {
+                opacity: 1 !important;
+                font-size: 1.123rem !important;
+                padding: 0 !important;
+                border: 0 !important;
+                background-color: transparent !important;
+                color: white !important;
+                font-weight: bolder !important;
+            }
+        }
+        
+    }
+    .ProfileDisablelabel:last-child {
+        border-right: 0px !important
+    }
+    
+}
+.inputProFilePic {
+    height: 41px !important;
+    width: 41px !important;
+    position: absolute !important;
+    top: 64px;
+    left: 47.8123%;
+    border-radius: 50%;
+    opacity: 0 !important;
+    cursor: pointer;
+}
+.ValImageProfile {
+    justify-content: space-between;
+    position: absolute;
+    top: 124px;
+    height: 14px !important;
+    left: 39%;
+    padding: 2px;
+}
+@media only screen and (max-width: 767px){
+    .ui.form .ProfileDisablelabel {
+        border-right: 0px !important;
+        margin-bottom: 0.9123rem !important;
+    }
+    .ui.segment.LightGreyNotif.p-1r {
+        padding: 1.123rem !important;
+    }
+    .inputProFilePic {
+        left: 43.123%;
+    }
+}

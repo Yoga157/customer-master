@@ -1,0 +1,7 @@
+.StickyHeader th {
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    top: 55px !important;
+    z-index: 1;
+    background-color: #9d9aef !important;
+}

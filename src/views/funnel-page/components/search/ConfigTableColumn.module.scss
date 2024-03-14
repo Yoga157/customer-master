@@ -1,0 +1,36 @@
+.itemFields {
+  :global {
+    padding: 0 30px !important;
+    margin-top: 0 !important;
+    .content {
+      padding: 0.5em 0em 0.5em !important;
+      color: #55637a90;
+      font-weight: 700;
+      h3 {
+        color: #55637a !important;
+        font-size: 24px !important;
+        font-weight: 500 !important;
+      }
+    }
+
+    .item-toggle {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: end !important;
+
+      span {
+        color: #55637a;
+        font-weight: bold !important;
+      }
+      span:nth-child(2) {
+        margin-right: 4px;
+        margin-left: 4px;
+
+        .ui.toggle.checkbox label:before {
+          top: 4px;
+          height: 1rem;
+        }
+      }
+    }
+  }
+}

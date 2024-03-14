@@ -1,0 +1,42 @@
+.colSymthom {
+  :global {
+  }
+}
+
+.searchInputList {
+  :global {
+    .ui.grey.button,
+    .ui.grey.buttons .button,
+    .button.compact.icon.right {
+      background-color: #767676 !important;
+      color: #fff !important;
+      text-shadow: none;
+      background-image: none;
+    }
+
+    .ui.grey.button:hover,
+    .ui.grey.buttons .button:hover,
+    .button.compact.icon.right:hover {
+      background-color: #838383 !important;
+      color: #fff;
+      text-shadow: none;
+    }
+  }
+}
+
+.MaxHSearch {
+  :global {
+    .results.transition.visible {
+      max-height: 400px !important;
+      overflow: auto;
+    }
+  }
+}
+
+.hideInputSearch {
+  :global {
+    .ui.search {
+      display: none;
+    }
+  }
+}

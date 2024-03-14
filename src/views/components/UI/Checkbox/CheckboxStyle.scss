@@ -1,0 +1,3 @@
+.ui.checkbox input:checked ~ .box::after, .ui.checkbox input:checked ~ label::after {
+    color: #55637A !important;
+}

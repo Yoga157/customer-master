@@ -1,0 +1,72 @@
+.jumbotron {
+    border-radius: 2.5rem;
+    width: 100%;
+    justify-content: center;
+    color: rgba(255,255,255,0.6557) !important;
+    i.big.icon, i.big.icons {
+        font-size: 2.388em;
+    }
+    .column
+         {
+        h5 {
+            line-height: 2.112rem !important;
+            i {
+                margin-right: 0.622rem !important;
+            }
+        }
+        h2 {
+            float: right !important;
+        }
+    }
+    .equal.row {
+        padding-left: 0.988rem ;
+        padding-right: 0.988rem;
+    }
+}
+
+.ui .statistic > .value {
+    color: white !important;
+}
+.ui .statistic > .label {
+    color: white !important;
+}
+
+@media only screen and (max-width: 1200px){
+    .jumbotron {
+        border-radius: 0.766rem;
+        justify-content: center;
+        color: rgba(255,255,255,0.6557) !important;
+        i.big.icon, i.big.icons {
+            font-size: 2.388em;
+        }
+        .column
+             {
+            h5 {
+                text-align: center;
+                margin-left: -1.144rem;
+                i {
+                    margin-right: 0.622rem !important;
+                }
+            }
+            h2 {
+                text-align: center;
+                float: none !important;
+                font-size: 7.224vh;
+            }
+        }
+        .equal.row {
+            padding-left: 0.988rem ;
+            padding-right: 0.988rem;
+        }
+    }
+}
+@media only screen and (max-width: 767px){
+    .ui.grid.jumbotron {
+        margin-left: -0.4rem;
+    }
+}
+
+.test{
+  line-height: 5px;
+  font-style: italic;
+}

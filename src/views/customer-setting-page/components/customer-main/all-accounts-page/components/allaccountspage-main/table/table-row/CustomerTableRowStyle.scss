@@ -1,0 +1,139 @@
+.table-container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.no-name-label {
+  background-color: #949aa1;
+  color: white;
+  border-radius: 1rem;
+  width: 10rem;
+  margin: auto;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.named-label {
+  background-color: #656dd1;
+  color: white;
+  border-radius: 1rem;
+  width: 10rem;
+  margin: auto;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shareable-label {
+  background-color: #28d4a5;
+  color: white;
+  border-radius: 1rem;
+  width: 10rem;
+  margin: auto;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label-text {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.head-text {
+  font-size: 1rem;
+  color: #46494c;
+}
+
+.name-container {
+  color: white;
+  border-radius: 1rem;
+  max-width: 20rem;
+  width: 15rem;
+  margin: auto;
+  display: flex;
+}
+
+.address-container {
+  border-radius: 1rem;
+  width: 40rem;
+  margin: auto;
+  display: flex;
+}
+
+.project-container {
+  color: white;
+  border-radius: 1rem;
+  max-width: 25rem;
+  width: 20rem;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.sales-container {
+  color: white;
+  border-radius: 1rem;
+  max-width: 15rem;
+  width: 10rem;
+  margin: auto;
+  display: flex;
+}
+
+.related-customer-container {
+  color: white;
+  border-radius: 1rem;
+  max-width: 20rem;
+  width: 15rem;
+  margin: auto;
+  display: flex;
+}
+
+.blacklist-yes {
+  background-color: #fb7757;
+  color: white;
+  border-radius: 1rem;
+  width: 80%;
+  margin: auto;
+}
+
+.blacklist-no {
+  background-color: #27d4a5;
+  color: white;
+  border-radius: 1rem;
+  width: 80%;
+  margin: auto;
+}
+
+.holdshipment-yes {
+  background-color: #f6a52c;
+  color: white;
+  border-radius: 1rem;
+  width: 55%;
+  margin: auto;
+}
+
+.holdshipment-no {
+  background-color: #656dd1;
+  color: white;
+  border-radius: 1rem;
+  width: 55%;
+  margin: auto;
+}
+
+.created-container {
+  color: white;
+  border-radius: 1rem;
+  max-width: 15rem;
+  width: 10rem;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}

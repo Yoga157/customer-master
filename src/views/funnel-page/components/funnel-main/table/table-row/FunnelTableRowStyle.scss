@@ -1,0 +1,10 @@
+.FunnelStatusBtn > button {
+    padding: 8px !important;
+    width: 100% !important;
+    text-align: center !important;
+    pointer-events: none !important;
+}
+
+.rejected { background-color: #FFD2D2   !important; }
+.completed { background-color: #D2FDA7    !important; }
+.approval { background-color: #FDFBC8    !important; }

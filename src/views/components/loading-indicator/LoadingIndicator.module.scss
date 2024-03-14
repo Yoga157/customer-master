@@ -1,0 +1,27 @@
+.wrapper {
+  height: 100%;
+  position: relative;
+  pointer-events: none;
+}
+
+.loaderContainer {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  bottom: 0;
+  content: '';
+  cursor: wait;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.test-2 {
+  color: red !important;
+  background-color: blue !important;
+}

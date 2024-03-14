@@ -1,0 +1,29 @@
+.CreditBillingServiceTable {
+    background-color: #9d9aef !important;
+}
+.StickyHeader th {
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    top: 55px !important;
+    z-index: 1;
+    text-align: left !important;
+}
+.wrapper-table thead th {
+    position: sticky;
+    top: 0px;
+    text-align: left !important;
+    z-index: 1;
+  }
+.nodata {
+    color: grey;
+    text-align: center;
+}
+.unmapping {
+    background-color: #ffaeae !important;
+}
+.unsettle {
+    background-color: #ffd64f !important ;
+}
+.settle {
+    background-color: #27d4a5;
+}

@@ -1,0 +1,32 @@
+.Card{
+    width: 60% !important;
+}
+
+.CardEdit{
+    width: 90% !important;
+}
+
+.DisNone{
+    background: transparent;
+}
+
+.NoteGenerateSOTransfer{
+    color: #647185;
+    font-weight: bolder;
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-top: -20px !important;
+}
+
+
+@media only screen and (max-width: 1200px){
+    .Card{
+        width: 90% !important;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .Card{
+        width: 100% !important;
+    }
+}

@@ -1,0 +1,57 @@
+import React, { useEffect } from 'react';
+import { Grid, Header, Divider } from 'semantic-ui-react';
+import ActivityList from './list/ActivityList';
+import UserList from './list/UserList';
+import { useSelector, useDispatch } from 'react-redux';
+import IStore from 'models/IStore';
+import { selectRequesting } from 'selectors/requesting/RequestingSelector';
+import * as FunnelActivityActions from 'stores/funnel-activity/FunnelActivityActions';
+import { Dispatch } from 'redux';
+import ActivityForm from './form/ActivityForm';
+import LoadingIndicator from 'views/components/loading-indicator/LoadingIndicator';
+
+interface IProps {
+  salesID: number;
+}
+
+const CustomerCreditServiceActivity: React.FC<IProps> = (props: React.PropsWithChildren<IProps>) => {
+  const dispatch: Dispatch = useDispatch();
+  const { salesID } = props;
+
+  // useEffect(() => {
+  //   dispatch(FunnelActivityActions.requestFunnelActivities(+funnelGenID));
+  // }, [dispatch, funnelGenID]);
+
+  const isRequesting: boolean = useSelector((state: IStore) =>
+    selectRequesting(state, [FunnelActivityActions.REQUEST_POST_FUNNEL_NOTES, FunnelActivityActions.REQUEST_FUNNEL_ACTIVITIES])
+  );
+
+  return (
+    <LoadingIndicator isActive={isRequesting}>
+      <Grid padded>
+        <Grid.Row className="pb-0">
+          <Grid.Column>
+            <Divider />
+            <Header className="ml-m-1r" as="h4">
+              <Header.Content>Activity</Header.Content>
+            </Header>
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row className="pt-0 pb-0">
+          <Grid.Column className="activityPos pb-0">
+            <ActivityForm salesID={salesID} fromForm={'FormActivities'} />
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row>
+          <Grid.Column className="pt-0">
+            <UserList salesID={salesID}  />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </LoadingIndicator>
+  );
+};
+
+export default CustomerCreditServiceActivity;

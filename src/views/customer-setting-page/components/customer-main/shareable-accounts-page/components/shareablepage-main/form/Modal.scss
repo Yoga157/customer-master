@@ -1,0 +1,55 @@
+.ui.modal > .content {
+  padding-bottom: 1.5rem !important;
+}
+
+.container-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.p-customerName {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.release-container {
+  background-color: #f97452;
+  text-align: center;
+  border-radius: 5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.release-text {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #ffff;
+}
+
+.release-button-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.cancel-button {
+  margin-right: 10px;
+  padding: 12px 20px;
+  font-size: 15px;
+}
+
+.submit-button {
+  padding: 12px 20px;
+  font-size: 15px;
+}

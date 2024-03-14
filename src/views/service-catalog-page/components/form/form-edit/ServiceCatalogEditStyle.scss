@@ -1,0 +1,44 @@
+.ServOwner .field {
+    margin-left: 1rem !important;
+}
+.ServOwner .ui.disabled.selection.dropdown {
+    font-size: 1.3rem !important;
+}
+.BlueBg .ui.grid h4,
+.BlueBg .ui.disabled.selection.dropdown {
+    color: white !important;
+}
+.BlueBg {
+    background-color: #5C62AD !important;
+}
+.BlueBg .ui.basic.inverted.button {
+    box-shadow: none !important;
+}
+//05112020
+.ui.form > .segment > h4 {
+    color: #55637A !important;
+    font-weight: bolder !important;
+    font-size: 18px !important;
+    padding-top: 0.3rem !important;
+}
+//07062021=====
+@media only screen and (max-width: 1200px){
+    .ServOwner .field {
+        margin-left: 0rem !important;
+        margin-bottom: 0.499em !important;
+    }
+}
+.button-absolute{
+    position: absolute;
+    right: 0;
+}
+.ViewLabelWhite .rw-state-disabled > .rw-widget-picker.rw-widget-container > input {
+    padding: 0 !important;
+    color: white !important;
+    opacity: 1 !important;
+  }
+.rw-widget-input > input{
+    &.rw-input{
+        color: white;
+    }
+}

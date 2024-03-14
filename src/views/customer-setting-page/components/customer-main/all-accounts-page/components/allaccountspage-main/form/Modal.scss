@@ -1,0 +1,27 @@
+.ui.modal > .content {
+  padding-bottom: 1.5rem !important;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.p-customerName {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.container-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+}

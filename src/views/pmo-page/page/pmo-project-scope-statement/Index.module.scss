@@ -1,0 +1,52 @@
+.Card{
+    width: 60% !important;
+}
+
+.CardEdit{
+    width: 90% !important;
+}
+
+.DisNone{
+    background: transparent;
+}
+
+.LabelHistory{
+  display: flex;
+  flex-direction: row;
+  font-size: 12px !important;
+  font-style: italic !important;
+}
+
+.StikyCard{
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 74px;
+    background-color: #ffffff00 !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+.StikyCard>button{
+  display: block !important;
+}
+
+.ErrorSection{
+  :global{
+    .tox-tinymce {
+      border: 2px solid #DB282896 !important
+    }
+  }
+}
+
+
+//05102021
+@media only screen and (max-width: 1200px){
+    .Card{
+        width: 90% !important;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .Card{
+        width: 100% !important;
+    }
+}

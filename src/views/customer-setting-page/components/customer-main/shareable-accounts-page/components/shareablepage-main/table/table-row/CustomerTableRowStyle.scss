@@ -1,0 +1,150 @@
+.FunnelStatusBtn > button {
+  padding: 8px !important;
+  width: 100% !important;
+  text-align: center !important;
+  pointer-events: none !important;
+}
+
+.check-container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.check-label {
+  margin: 0.8rem;
+  vertical-align: middle;
+}
+
+.shareable-label-background {
+  background-color: #28d4a5;
+  color: white;
+  border-radius: 1rem;
+  width: 10rem;
+  margin: auto;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shareable-label-text {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.rowdata-customerName {
+  color: white;
+  border-radius: 1rem;
+  max-width: 20rem;
+  width: 15rem;
+  margin: auto;
+  display: flex;
+}
+
+.p-customername {
+  font-size: 1rem;
+  color: #46494c;
+}
+
+.rowdata-customerAddres {
+  border-radius: 1rem;
+  width: 40rem;
+  margin: auto;
+  display: flex;
+}
+
+.rowdata-lastprojectname {
+  color: "white";
+  border-radius: 1rem;
+  max-width: 20rem;
+  width: 15rem;
+  margin: auto;
+  height: auto;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+}
+
+.p-lastprojectname {
+  font-size: 1rem;
+  color: #46494c;
+}
+
+.rowdata-salesname {
+  color: white;
+  border-radius: 1rem;
+  max-width: 15rem;
+  width: 10rem;
+  margin: auto;
+  height: auto;
+  display: flex;
+}
+
+.p-salesname {
+  font-size: 1rem;
+  color: #46494c;
+}
+
+.rowdata-relatedcustomer {
+  color: white;
+  border-radius: 1rem;
+  max-width: 20rem;
+  width: 15rem;
+  margin: auto;
+  height: auto;
+  display: flex;
+}
+
+.p-relatedcustomer {
+  font-size: 1rem;
+  color: #46494c;
+}
+
+.rowdata-blacklist-yes {
+  background-color: #fb7757;
+  color: white;
+  border-radius: 1rem;
+  width: 80%;
+  margin: auto;
+}
+
+.rowdata-blacklist-no {
+  background-color: #27d4a5;
+  color: white;
+  border-radius: 1rem;
+  width: 80%;
+  margin: auto;
+}
+
+.rowdata-holdshipment-yes {
+  background-color: #f6a52c;
+  color: white;
+  border-radius: 1rem;
+  width: 55%;
+  margin: auto;
+}
+
+.rowdata-holdshipment-no {
+  background-color: #656dd1;
+  color: white;
+  border-radius: 1rem;
+  width: 55%;
+  margin: auto;
+}
+
+.rowdata-created {
+  color: white;
+  border-radius: 1rem;
+  max-width: 15rem;
+  width: 10rem;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.p-createBy {
+  font-size: 1rem;
+  color: #46494c;
+}

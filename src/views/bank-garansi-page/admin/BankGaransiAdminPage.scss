@@ -1,0 +1,10 @@
+.wrapper-table.mb-1r {
+  overflow: auto;
+}
+
+.wrapper-table thead th {
+  position: sticky;
+  top: 0px;
+  text-align: center !important;
+  z-index: 1;
+}

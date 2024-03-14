@@ -1,0 +1,23 @@
+.Card{
+    width: 60% !important;
+}
+
+.CardEdit{
+    width: 90% !important;
+}
+
+.DisNone{
+    background: transparent;
+}
+
+@media only screen and (max-width: 1200px){
+    .Card{
+        width: 90% !important;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .Card{
+        width: 100% !important;
+    }
+}

@@ -1,0 +1,22 @@
+.ui.menu.pagination {
+    background: #E1E1E1 !important;
+    border: 0 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border-radius: .6rem !important;
+}
+
+.ui.pagination.menu .active.item {
+    background-color:#656DD1 !important;
+    color:white !important;
+    border-radius: 0.6rem !important;
+}
+
+.ui.menu.pagination .item:before {
+    width: 0 !important;
+}
+
+.ui.menu.pagination .item {
+    color: #55637A !important;
+    font-weight: bold !important;
+}

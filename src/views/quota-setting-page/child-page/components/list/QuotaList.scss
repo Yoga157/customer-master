@@ -1,0 +1,48 @@
+body {
+  font-family: Verdana, Arial;
+  margin: 5px;
+}
+
+.containerReportQuota {
+  height: 100vh;
+  margin-top: -64px;
+  position: relative;
+  .ui.segment {
+    margin-top: 0px;
+  }
+
+  #reportViewer1 {
+    position: absolute;
+    top: 26px;
+    /* bottom: -48px; */
+    left: -7px;
+    /* right: 10px; */
+    overflow: hidden;
+    clear: both;
+  }
+
+  a {
+    h5 {
+      font-size: 16px !important;
+      color: #55637a !important;
+      font-weight: bolder !important;
+    }
+  }
+}
+
+.DqTabSt01.tabListQuota {
+  .ui.secondary.menu {
+    top: -55px !important;
+  }
+  .ui.segment.tab {
+    a {
+      h5 {
+        font-size: 16px !important;
+        color: #55637a !important;
+        font-weight: bolder !important;
+      }
+    }
+  }
+  position: relative;
+  z-index: 1;
+}

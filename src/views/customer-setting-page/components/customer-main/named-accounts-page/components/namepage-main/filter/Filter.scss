@@ -1,0 +1,39 @@
+.container-filter-position {
+  top: 0;
+  right: 0;
+  position: fixed;
+  z-index: 999;
+}
+
+.container-filter-relative {
+  border-radius: 2rem 0 0 0;
+  width: 25rem;
+  height: 100vh;
+  background-color: #ffffff;
+  padding: 25px;
+  position: relative;
+}
+
+.checkbox-filter {
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  margin-top: 1rem;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.position-btn {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: calc(100% - 50px);
+  padding-bottom: 1rem;
+}

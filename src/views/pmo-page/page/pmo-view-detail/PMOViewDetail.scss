@@ -1,0 +1,406 @@
+.container-funnel-form-edit {
+  margin-top: 380px !important;
+  transition: 0.5s;
+}
+
+.ui.form .field label {
+  color: #a0a8b3 !important;
+  margin-right: 0.5rem;
+}
+
+.ui.form .WhiteNote .field label {
+  color: #cecdf7 !important;
+  margin-right: 0.5rem;
+}
+
+//04122020
+.darkerBorder>input {
+  border: 1px solid #8d8c8c !important;
+}
+
+.FloatRight {
+  float: right !important;
+}
+
+//01122020
+.ui.segments.StickyBtn:not(.horizontal)>.segment:first-child {
+  border-radius: 1.8rem 1.8rem 0 0 !important;
+}
+
+.ui.segments.StickyBtn:not(.horizontal)>.segment:last-child {
+  border-radius: 0 0 1.8rem 1.8rem !important;
+}
+
+.ui.segments.StickyBtn {
+  box-shadow: none !important;
+  border: 0 !important;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+}
+
+.ui.segments.StickyBtn.top235 {
+  top: 235px !important;
+}
+
+.ui.segments.StickyBtn.top146 {
+  top: 146px !important;
+}
+
+.ui.segments.StickyBtn.top68 {
+  top: 68px !important;
+}
+
+.ui.StickyBtn>.ui.inverted.yellow.segment {
+  background-color: #ffd64f !important;
+  padding: 1.21rem !important;
+  max-width: 50px;
+  display: inline-flex;
+}
+
+.btnApproveSubmit {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 52px !important;
+}
+
+.btn-sticky-end-contract {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  color: white;
+}
+
+.btn-sticky-end-contract.top444 {
+  top: 444px !important;
+}
+
+.btn-sticky-end-contract.top360 {
+  top: 360px !important;
+}
+
+.btn-sticky-end-contract.top280 {
+  top: 280px !important;
+}
+
+.end-contract {
+  width: 50px;
+  overflow: hidden !important;
+  background-color: #1b1c1d;
+  margin: 0 !important;
+  border-radius: 0px !important;
+
+  .ui.clearing.inverted.segment {
+    padding: 4px;
+    text-align: center;
+
+    h4.ui.header {
+      margin-top: 0px;
+      padding: 0 !important;
+      font-size: 10px !important;
+    }
+
+    h3.ui.header {
+      margin-bottom: 0px;
+      padding: 0 !important;
+      font-size: 1.6rem !important;
+    }
+
+    i {
+      margin: 0px;
+      color: #ffc300 !important;
+      background-color: unset !important;
+      font-size: 28px;
+    }
+  }
+}
+
+.end-contract:first-child {
+  border-top-left-radius: 25px !important;
+  border-top-right-radius: 25px !important;
+
+  .ui.clearing.inverted.segment {
+    padding-top: 10px;
+  }
+}
+
+.end-contract:last-child {
+  border-bottom-left-radius: 25px !important;
+  border-bottom-right-radius: 25px !important;
+
+  .ui.clearing.inverted.segment {
+    padding-bottom: 10px;
+  }
+}
+
+.ui.StickyBtnCheck,
+.ui.StickyBtnSubmit {
+  box-shadow: unset !important;
+  position: relative;
+  border: unset !important;
+  z-index: 99;
+  cursor: pointer;
+}
+
+.ui.StickyBtnCheck>.ui.inverted.blue.segment,
+.ui.StickyBtnSubmit>.ui.inverted.green.segment {
+  padding: 1.21rem !important;
+  max-width: 49px;
+  max-height: 49px;
+  display: inline-flex;
+  flex-direction: column;
+  border-radius: 50%;
+  margin-bottom: 20px;
+
+  h4 {
+    position: absolute;
+    bottom: -23px;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+  }
+}
+
+.ui.StickyBtnCheck>.ui.inverted.blue.segment {
+  background-color: #5c62ad !important;
+  transition: 0.3s;
+
+  h4 {
+    left: 0px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: #4f21ab !important;
+  }
+}
+
+.ui.StickyBtnSubmit>.ui.inverted.green.segment {
+  background-color: #36e2d6 !important;
+  transition: 0.3s;
+
+  h4 {
+    left: 3px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: #1da0b5 !important;
+  }
+}
+
+.ui.StickyBtn>.ui.segment>a,
+.ui.StickyBtnCheck>.ui.segment>a,
+.ui.StickyBtnSubmit>.ui.segment>a {
+  color: white !important;
+}
+
+//23102020
+::-webkit-input-placeholder {
+  /* Edge */
+  font-size: 1.2rem !important;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  font-size: 1.2rem !important;
+}
+
+::placeholder {
+  font-size: 1.2rem !important;
+}
+
+//20102020
+.PoLabel>.equal.grid>.column>.LabelNameLabel>h3 {
+  color: white !important;
+}
+
+.mt-2px {
+  margin-top: 2px !important;
+}
+
+.activityPos {
+  padding-left: 0 !important;
+  margin-top: -45px !important;
+}
+
+//19102020 add new style
+.RoundedTopHeader .button.compact.inverted.icon {
+  border: 0;
+  box-shadow: none !important;
+  float: right;
+  margin: -5px -5px -5px 0px;
+}
+
+.RoundedTopHeader .button.compact.icon.right:hover {
+  box-shadow: none;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.button.compact.icon {
+  color: #55637a !important;
+  box-shadow: none;
+  // background-color: transparent !important;
+  transition: background-color 0.4s;
+  padding: 0.4rem !important;
+  margin: 0 0px 0 20px;
+}
+
+//-----01122020-------
+.button.compact.icon.right:first-child {
+  margin: 0 0 0 0;
+}
+
+.button.compact.icon:nth-child(2) {
+  margin: 0 0 0 0;
+}
+
+//--01122020---
+
+.button.compact.icon:hover {
+  box-shadow: none;
+  background-color: #dbdbdb !important;
+}
+
+.button.circular.compact.icon.right {
+  color: #55637a !important;
+  box-shadow: none;
+  background-color: transparent !important;
+  transition: background-color 0.4s;
+  margin: -4px 5px 0px 0px !important;
+  position: absolute;
+  right: 0px !important;
+  padding: 0.4rem;
+}
+
+.button.circular.compact.icon.right:hover {
+  box-shadow: none;
+  background-color: #dbdbdb !important;
+}
+
+.font-1rem {
+  font-size: 1rem !important;
+}
+
+//30092020 Add New style for funnel form edit
+.header .content,
+h4>.content {
+  color: #55637a !important;
+  font-weight: bolder !important;
+  font-size: 18px !important;
+}
+
+h6.ui.header {
+  color: #55637a !important;
+  font-weight: bolder !important;
+}
+
+//15120202------
+.GrandTotalNote .content {
+  color: #fff !important;
+}
+
+//end 15122020
+
+.ui.top.attached.header {
+  margin-bottom: 0;
+  border-radius: 0.78571429rem 0.78571429rem 0 0;
+}
+
+.FunnelEditCustomer_NoTopPad__1ycFu>.form>.segment {
+  border-radius: 0 0 0.785714rem 0.78571429rem !important;
+  border: 0 !important;
+}
+
+.ui.segment {
+  background: #fafafa;
+  box-shadow: none;
+  border-radius: 0.785714rem;
+  border: 0px;
+}
+
+.ui.grid>.blue.column,
+.ui.grid>.blue.row,
+.ui.grid>.row>.blue.column {
+  color: rgb(255, 255, 255);
+  background-color: #5c62ad !important;
+}
+
+h5.ui.header.mt-px-4.text-gray {
+  margin-bottom: -21px;
+}
+
+//@media screen - responsive css
+
+@media only screen and (max-width: 1200px) {
+  .ui.segments.StickyBtn:not(.horizontal)>.segment:first-child {
+    border-radius: 1.8rem 0 0 1.8rem !important;
+  }
+
+  .ui.segments.StickyBtn:not(.horizontal)>.segment:last-child {
+    border-radius: 0 1.8rem 1.8rem 0 !important;
+  }
+
+  .ui.StickyBtnCheck>.ui.inverted.blue.segment,
+  .ui.StickyBtnSubmit>.ui.inverted.green.segment {
+    h4 {
+      bottom: -43.123px;
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+
+  //22062021
+  .button.circular.compact.icon.right {
+    margin-right: 1rem !important;
+  }
+
+  .ui.StickyBtn>.ui.inverted.yellow.segment {
+    display: inline-block;
+  }
+
+  .ui.segments.StickyBtn:not(.horizontal)>.segment:first-child {
+    border-radius: 1.8rem 0 0 1.8rem !important;
+  }
+
+  .ui.segments.StickyBtn:not(.horizontal)>.segment:last-child {
+    border-radius: 0 1.8rem 1.8rem 0 !important;
+  }
+
+  .btnApproveSubmit {
+    float: left;
+    position: relative !important;
+    top: 7px !important;
+
+    .column {
+      display: flex !important;
+
+      .ui.segments.StickyBtnCheck,
+      .ui.segments.StickyBtnSubmit {
+        margin: 0 10px;
+
+        .ui.blue.clearing.inverted.segment,
+        .ui.green.clearing.inverted.segment {
+          position: relative;
+          top: 14px;
+        }
+
+        .ui.green.clearing.inverted.segment {
+          margin-right: 12px;
+        }
+      }
+    }
+  }
+
+  .btn-sticky-end-contract {
+    position: absolute !important;
+    right: 0;
+    top: 25px !important;
+    z-index: 1;
+  }
+}
+
+.bar-gradien{
+  .bar{
+    background-color: unset !important;
+    background-image: linear-gradient(to right, #589bda, #6765ce) !important;
+  }
+}

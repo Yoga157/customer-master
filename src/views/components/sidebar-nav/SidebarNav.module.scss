@@ -1,0 +1,36 @@
+.SidebarMenu {
+    text-align: left !important ;
+    margin-left: 3.5em;
+}
+
+.SideBarTransparent{
+    background: rgb(88,157,219) !important;
+    background: linear-gradient(180deg, rgba(88,157,219,1) 0%, rgba(114,59,197,0.908000700280112) 100%) !important;
+    width: 360px !important;
+}
+
+.SideBar {
+    background: rgb(88,157,219) !important;
+    background: linear-gradient(180deg, rgba(88,157,219,1) 0%, rgba(114,59,197,1) 100%) !important;
+    box-shadow: blue($color: #e9e2e2);
+    border-top-right-radius: 30px !important;
+  }
+  
+.SidebarMenu2 {
+    padding-bottom: 20px !important;
+    padding-top: 20px !important;
+    text-align: left !important ;
+    margin-left: 3.5em;
+}
+
+.SidebarMenu2::before {
+    background: transparent !important;
+}
+
+.SidebarMenu::before {
+    background: transparent !important;
+}
+
+.NoBorderMenu::before {
+    background: transparent !important;
+}

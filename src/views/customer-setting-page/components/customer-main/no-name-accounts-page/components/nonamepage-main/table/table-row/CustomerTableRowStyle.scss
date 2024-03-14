@@ -1,0 +1,80 @@
+.FunnelStatusBtn > button {
+  padding: 8px !important;
+  width: 100% !important;
+  text-align: center !important;
+  pointer-events: none !important;
+}
+
+.container-center {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.status-noNameAccount {
+  background-color: #949aa1;
+  color: white;
+  border-radius: 1rem;
+  width: 10rem;
+  margin: auto;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row-customerName {
+  border-radius: 1rem;
+  width: 15rem;
+  margin: auto;
+  display: flex;
+}
+
+.row-customerAddres {
+  border-radius: 1rem;
+  width: 40rem;
+  margin: auto;
+  display: flex;
+}
+
+.row-blacklist-yes {
+  background-color: #fb7757;
+  color: white;
+  border-radius: 1rem;
+  width: 70%;
+  margin: auto;
+}
+
+.row-blacklist-no {
+  background-color: #27d4a5;
+  color: white;
+  border-radius: 1rem;
+  width: 70%;
+  margin: auto;
+}
+
+.row-holdshipment-yes {
+  background-color: #f6a52c;
+  color: white;
+  border-radius: 1rem;
+  width: 50%;
+  margin: auto;
+}
+.row-holdshipment-no {
+  background-color: #656dd1;
+  color: white;
+  border-radius: 1rem;
+  width: 50%;
+  margin: auto;
+}
+
+.row-created {
+  color: white;
+  border-radius: 1rem;
+  max-width: 15rem;
+  width: 10rem;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}

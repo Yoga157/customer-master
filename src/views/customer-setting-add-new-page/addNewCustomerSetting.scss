@@ -1,0 +1,129 @@
+.link {
+  font-size: 1.25rem !important;
+  color: #373b74 !important;
+  font-weight: 700 !important;
+}
+
+.form-container {
+  display: flex !important;
+  flex-direction: column !important;
+  background-color: white !important;
+  margin: 1.5rem 8rem !important;
+  border-radius: 1rem !important;
+}
+
+.page-title {
+  text-align: left !important;
+  margin: 0 !important;
+  color: #373b74 !important;
+  font-size: 1.3rem;
+  font-weight: bold !important;
+  padding: 14px 2rem 0 2rem !important;
+}
+
+.page-title-customer {
+  text-align: left !important;
+  margin: 0 !important;
+  color: #373b74 !important;
+  font-size: 1.3rem;
+  font-weight: bold !important;
+  padding: 0 2rem !important;
+}
+
+.LightYellowContainer {
+  background-color: rgba(255, 248, 54, 0.5) !important;
+  padding: 0rem 2rem !important;
+  border: 0px !important;
+  box-shadow: none !important;
+}
+
+.LightGreyContainer {
+  background-color: #dfdfdf !important;
+  border-radius: 1.5rem !important;
+  padding: 0rem 2rem !important;
+  border: 0px !important;
+  box-shadow: none !important;
+}
+
+.FullContainer {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+.container-recheck {
+  padding: 2rem 2rem 0 2rem !important;
+}
+
+.info-recheck {
+  background-color: #e2efff;
+  border-radius: 5rem;
+  height: 3.5rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.padding-horizontal {
+  padding: 1rem 2rem !important;
+}
+
+.container-recheck-submit {
+  background-color: #ffece8;
+  border-radius: 5rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-recheck-submit-disable {
+  background-color: #fff5f3;
+  border-radius: 5rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recheck-submit-pad {
+  padding: 0 14rem;
+}
+
+.container-flex-customer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.address-padd {
+  padding: 0 2rem;
+}
+
+.container-address {
+  width: 65%;
+  margin: 0 1rem;
+}
+
+.container-upload {
+  margin: 0 1rem;
+}
+
+.grey-padding {
+  padding: 0 4rem 1rem 4rem !important;
+}
+
+.button-container {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin: 1rem !important;
+}
+
+.button-inner-container {
+  display: flex !important;
+  flex-direction: row !important;
+  width: fit-content !important;
+}

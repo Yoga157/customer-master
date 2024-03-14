@@ -1,0 +1,64 @@
+import React, { useState } from "react";
+import styles from "./SearchMainARGrouping.module.scss";
+import { Dispatch } from "redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Grid, Input } from "semantic-ui-react";
+import IStore from "models/IStore";
+import { selectRequesting } from "selectors/requesting/RequestingSelector";
+
+interface IProps {
+  searchText: string;
+  setSearchText: (text: string) => void;
+  setActivePage: (page: number) => void;
+}
+export const SearchMainARGrouping: React.FC<IProps> = (
+  props: React.PropsWithChildren<IProps>
+) => {
+  const dispatch: Dispatch = useDispatch();
+  const { searchText, setSearchText, setActivePage } = props;
+  const [btnCancel, setBtnCancel] = useState(false);
+  const onChangeSearch = (event: any, data: any) => {
+    setBtnCancel(false);
+    setSearchText(data.value);
+  };
+  const isRequesting: boolean = useSelector((state: IStore) =>
+    selectRequesting(state, [])
+  );
+  const onSearch = () => {
+    if (btnCancel || searchText.length === 0) {
+      // dispatch(SoftwareActions.requestSoftwares(1, 15));
+      setActivePage(1);
+      setSearchText("");
+      setBtnCancel(false);
+    } else {
+      if (searchText.length > 1) {
+        // dispatch(SoftwareActions.requestSoftwareSearch(searchText, 1, 15));
+        setActivePage(1);
+        setBtnCancel(!btnCancel);
+      }
+    }
+  };
+  return (
+    <Grid.Column className="SearchFormDQ">
+      <Input
+        className={styles.Rounded + " roundedSearchInput "}
+        placeholder="Search..."
+        onChange={onChangeSearch}
+        onKeyPress={(event) => {
+          if (event.charCode == 13) {
+            onSearch();
+          }
+        }}
+        value={searchText}
+      />
+      <Button
+        className="Rounded SearchBtn"
+        size="small"
+        color="blue"
+        icon={btnCancel ? "close" : "search"}
+        onClick={onSearch}
+        loading={isRequesting}
+      />
+    </Grid.Column>
+  );
+};

@@ -1,0 +1,61 @@
+.gridStatus {
+  :global{
+    .card-status{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 10px 20px;
+      border-radius: 38px;
+      min-width: 152px;
+
+      .item-card-status{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .text-status{
+          display: flex;
+          flex-direction: column;
+          margin: 0 10px;
+          h1{
+            margin-bottom: 0;
+            font-size: 12.5px;
+          }
+          p{
+            margin-bottom: 0;
+            font-size: 1.6rem;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+}
+
+.flex-star{
+  align-items: flex-start;
+}
+
+
+.bg-purple2{
+  background-color: #9D9AEF;
+}
+.bg-yellow{
+  background-color: #FFD64F;
+}
+.bg-green{
+  background-color: #27D4A5;
+}
+.bg-purple1{
+  background-color: #D389DA;
+}
+.bg-brown{
+  background-color: #6C6C6C;
+}
+.bg-blue{
+  background-color: #656DD1;
+}
+.bg-red{
+  background-color: #F97452;
+}

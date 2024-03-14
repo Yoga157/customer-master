@@ -1,0 +1,7 @@
+.ui[class*="center aligned"].grid>.column {
+    text-align: left;
+}
+
+.ui.center .column .field label {
+    color: rgba(0, 0, 0, 0.4) !important;
+}

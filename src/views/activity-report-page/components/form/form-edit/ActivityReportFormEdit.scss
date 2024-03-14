@@ -1,0 +1,48 @@
+.FloatRight {
+  float: right !important;
+}
+
+.button.compact.icon {
+  color: #55637a !important;
+  box-shadow: none;
+  background-color: transparent !important;
+  transition: background-color 0.4s;
+  padding: 0.4rem !important;
+  margin: 0 0px 0 20px;
+}
+
+//-----01122020-------
+.button.compact.icon.right:first-child {
+  margin: 0 0 0 0;
+}
+.button.compact.icon:nth-child(2) {
+  margin: 0 0 0 0;
+}
+//--01122020---
+
+.button.compact.icon:hover {
+  box-shadow: none;
+  background-color: #dbdbdb !important;
+}
+.button.circular.compact.icon.right {
+  color: #55637a !important;
+  box-shadow: none;
+  background-color: transparent !important;
+  transition: background-color 0.4s;
+  margin: -4px 5px 0px 0px !important;
+  position: absolute;
+  right: 0px !important;
+  padding: 0.4rem;
+}
+
+.button.circular.compact.icon.right:hover {
+  box-shadow: none;
+  background-color: #dbdbdb !important;
+}
+
+.header .content,
+h4 > .content {
+  color: #55637a !important;
+  font-weight: bolder !important;
+  font-size: 18px !important;
+}

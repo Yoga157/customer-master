@@ -1,0 +1,112 @@
+.ViewLabel.ReadOnly .ui[class*='center aligned'].grid > .column {
+  text-align: center !important;
+}
+//13012021
+.ViewLabel.ReadOnly > .field > input {
+  border: 0 !important;
+  cursor: default !important;
+  color: #55637a !important;
+  background-color: transparent !important;
+  padding: 0.2em !important;
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+}
+//23102020
+.ContentInputStyle .column {
+  padding-bottom: 0 !important;
+}
+.ContentInputStyle > p {
+  font-weight: bold !important;
+  margin-bottom: 0 !important;
+  color: #647185 !important;
+  text-transform: uppercase !important;
+}
+.ContentInputStyle .field input:disabled {
+  text-align: center !important;
+  border: 0 !important;
+  background-color: transparent !important;
+  padding: 0.2em !important;
+  font-size: 1.3rem !important;
+  font-weight: bold !important;
+  color: #171a34 !important;
+}
+//30092020 Add asset for rounded top header
+.RoundedTopHeader {
+  border-radius: 0.78571429rem 0.78571429rem 0 0 !important;
+}
+
+.RoundedTopHeader > .column > .field > input:disabled,
+.CardTwoTotalSelling > .column > .field > input:disabled {
+  text-align: center;
+  font-size: 2.1rem;
+  background-color: transparent;
+  border: 0 !important;
+  color: white;
+  font-weight: bold;
+  padding: 0.01em;
+  opacity: 1 !important;
+}
+
+.CardTwoTotalSelling {
+  padding-top: 0.1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+.button.compact.icon.right {
+  color: #55637a !important;
+  box-shadow: none;
+  // margin: -11px -11px 0 0;
+  background-color: transparent !important;
+  transition: background-color 0.4s;
+}
+
+.button.compact.icon.right:hover {
+  box-shadow: none;
+  background-color: #dbdbdb !important;
+}
+
+.ui.form .RoundedTopHeader .field > label {
+  color: #abaed5 !important;
+}
+
+.CurrencyExchange {
+  color: #aeb1db;
+  padding: 2px;
+}
+.CurrencyIDR {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  padding: 2px 10px;
+  border-radius: 10px;
+  background-color: #aeb1db;
+  color: #5d61ae;
+  i {
+    color: #aeb1db !important;
+    background-color: #5d61ae !important;
+    margin: 0 0 0 4px !important;
+    line-height: 16px !important;
+  }
+}
+
+.gpm-sa-act {
+  color: #818181 !important;
+  font-weight: 200 !important;
+  margin-top: 10px !important;
+  .sub.header {
+    color: #55637a !important;
+    font-size: 1.3rem !important;
+    font-weight: bold !important;
+    margin-top: 10px !important;
+  }
+}
+
+//02062021 ======
+@media only screen and (max-width: 1200px) {
+  .ViewLabel.ReadOnly > .field > input {
+    font-size: 1.133rem !important;
+  }
+  .ContentInputStyle .field input:disabled {
+    font-size: 1.133rem !important;
+  }
+}

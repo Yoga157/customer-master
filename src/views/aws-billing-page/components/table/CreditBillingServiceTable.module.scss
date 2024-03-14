@@ -1,0 +1,38 @@
+.CreditBillingServiceTable {
+    background-color: #9d9aef !important;
+}
+.StickyHeader th {
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    top: 55px !important;
+    z-index: 1;
+    text-align: left !important;
+}
+.wrapper-table thead th {
+    position: sticky;
+    top: 0px;
+    text-align: left !important;
+    z-index: 1;
+  }
+.nodata {
+    color: grey;
+    text-align: center;
+}
+.unmapping {
+    background-color: #FFC7C7 !important;
+}
+.unmapping:nth-child(odd) {
+    background-color: #FFD2D2 !important;
+}
+.unsettle {
+    background-color: #F6F4AA !important ;
+}
+.unsettle:nth-child(odd) {
+    background-color: #FDFBC8 !important ;
+}
+.settle {
+    background-color: #C3F293 !important;
+}
+.settle:nth-child(odd) {
+    background-color: #D2FDA7 !important;
+}

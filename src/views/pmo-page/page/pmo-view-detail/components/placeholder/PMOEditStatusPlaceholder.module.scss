@@ -1,0 +1,22 @@
+.containerPlaceHolder{
+  :global{
+    .cards{
+      display: flex;
+      justify-content: center;
+
+      .card{
+        padding: 4px 5px;
+      }
+    }
+  }
+}
+
+.header{
+  :global{
+    .cards{
+      .card{
+        padding: 4px 5px;
+      }
+    }
+  }
+}

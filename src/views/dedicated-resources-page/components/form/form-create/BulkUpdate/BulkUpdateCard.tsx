@@ -1,0 +1,36 @@
+import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Card } from 'semantic-ui-react';
+import { History } from 'history';
+import classes from './BulkUpdateCard.module.scss';
+import BulkUpdateForm from './BulkUpdateForm';
+// import FunnelForm from './FunnelForm';
+
+interface RouteParams {
+  id: string;
+}
+
+interface IProps extends RouteComponentProps<RouteParams> {
+  history: History;
+  location: any;
+}
+
+const BulkUpdateCard: React.FC<IProps> = (props: React.PropsWithChildren<IProps>) => {
+  const typePage = props.location?.state?.typePage;
+
+  return (
+    <Card centered raised className={props.match.params.id ? classes.CardEdit : classes.Card}>
+      <Card.Content>
+        <Card.Header>
+          Bulk Update Renewal Contract
+        </Card.Header>
+      </Card.Content>
+      <Card.Content>
+        <BulkUpdateForm />
+        {/* <FunnelForm history={props.history} /> */}
+      </Card.Content>
+    </Card>
+  );
+};
+
+export default withRouter(BulkUpdateCard);

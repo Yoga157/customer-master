@@ -1,0 +1,31 @@
+// 24022021
+.header.UnupdateHeader > button.floated.right {
+	margin-top: 0px !important;
+}
+
+.Unupdate .card .content {
+    padding-bottom: 6px !important;
+}
+
+.UnupdateText .tox.tox-tinymce{
+	height: 120px !important;
+}
+
+.Unupdate h3 {
+	color: #55637A !important;
+}
+
+.BgBlackCover {
+	background-color: rgba(0,0,0,0.7);
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 999;
+}
+
+.Unupdate .card {
+	z-index: 9999;
+}
+

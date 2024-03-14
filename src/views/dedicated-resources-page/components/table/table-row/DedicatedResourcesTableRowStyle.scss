@@ -1,0 +1,24 @@
+.DedicatedStatusBtn>button {
+    padding: 8px !important;
+    width: 100% !important;
+    text-align: center !important;
+    pointer-events: none !important;
+}
+
+.rejected {
+    background-color: #F97452 !important;
+    color: #fff !important;
+}
+
+.my-waiting-approval {
+    background-color: #FFD500 !important;
+}
+
+.approval {
+    background-color: #8BCF35 !important;
+    color: #fff !important;
+}
+
+.button.none {
+    background-color: #C1C1C1 !important;
+}

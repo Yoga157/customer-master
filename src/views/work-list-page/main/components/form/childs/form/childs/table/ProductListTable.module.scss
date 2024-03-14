@@ -1,0 +1,53 @@
+.icCircle{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  padding: 13px;
+
+  :global{
+    i{
+      margin: unset !important;
+    }
+  }
+}
+
+.cellAction {
+      display: flex   !important;
+      align-items: center   !important;
+    }
+
+.projectPORow{
+  :global{
+    .rw-widget-picker.rw-widget-container,
+     input[type="text"] {
+        height: 30px;
+    }
+
+    .rw-datetime-picker.rw-widget {
+      margin-bottom: 0 !important;
+    }
+
+    .ui.input.BlueLabel {
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.datePicker{
+    :global{
+      .rw-calendar-head {
+        .rw-calendar-row{
+          th:hover{
+            background-color: unset !important;
+          }
+        }
+      }
+      .rw-calendar-body tr:nth-child(2n), .rw-calendar-body tr:nth-child(2n) {
+          background-color: unset !important;
+      }
+    }
+}

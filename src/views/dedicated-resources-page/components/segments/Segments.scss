@@ -1,0 +1,100 @@
+// eps. 28012022
+.legendGrid .ui.grid > .row > .six.wide,
+.legendGrid .ui.grid > .row > .five.wide {
+    display: inline-flex !important;
+}
+.label.yellow.circular.legendSA.MyWaitApprove {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color: #F8ECAF !important;
+    border: 1px solid #C5C5C5 !important;
+}
+.label.circular.legendSA.WaitApprove {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color: #C1C1C1 !important;
+    border: 1px solid #8a8a8a !important;
+}
+.label.green.circular.legendSA.RenCom {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color: #C9FFF0 !important;
+    border: 1px solid #C5C5C5 !important;
+}
+.label.red.circular.legendSA.Reject {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color: #FFCEC2 !important;
+    border: 1px solid #C5C5C5 !important;
+}
+.label.red.circular.legendSA {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color: #D43656 !important;
+    border: 1px solid #C5C5C5 !important;
+}
+.label.brown.circular.legendSA.ReadyToSent {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color: #E3FAFF !important;
+    border: 1px solid #C5C5C5 !important;
+}
+.label.grey.circular.legendSA.Terminated {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color: #E1E1E1 !important;
+    border: 1px solid #C5C5C5 !important;
+}
+.label.green.circular.legendSA.FullApprove {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color: #F5FFD8 !important;
+    border: 1px solid #C5C5C5 !important;
+}
+.label.orange.circular.legendSA {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color: #C1DEFF !important;
+    border: 1px solid #C5C5C5 !important;
+}
+.label.white.circular.legendSA {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color: #fff !important;
+    border: 1px solid #C5C5C5 !important;
+}
+.label.purple.circular.legendSA.ProcByComben {
+    width: 2rem;
+    margin-right: 0.9rem;
+    margin-top: 0.2rem;
+    background-color:#C7CBFF!important;
+    border: 1px solid #C5C5C5 !important;
+}
+.legendGrid { 
+    p, h5 {
+    color: #55637A !important;
+    }
+    .ui.segment {
+        padding: 1.5rem 2rem !important;
+        box-shadow: none;
+        border: 0;
+        border-radius: 20px;
+    }
+
+}
+
+i.icon.ml-px-5.hover-pointer.ic-my-approval {
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: unset !important;
+}

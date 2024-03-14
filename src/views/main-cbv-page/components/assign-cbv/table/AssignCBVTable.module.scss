@@ -1,0 +1,27 @@
+.AssignCBV {
+    background-color: #3F3F3F !important;
+}
+.nodata {
+    color: grey;
+    text-align: center;
+}
+//26092022
+.ProductServiceTable {
+    background-color: #3f3f3f !important;
+  }
+.tableDropdown {
+    background-color: #E1E1E1 !important;
+    color: #55637A !important;
+}
+.tableDropdown:nth-child(even) {
+    background-color: #F5F5F5 !important;
+    color: #55637A !important;
+}
+.headTabDropdown {
+    small {
+        color: #CDCDCD;
+    }
+    strong {
+        text-transform: uppercase;
+    }
+}

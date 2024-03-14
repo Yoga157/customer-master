@@ -1,0 +1,98 @@
+.CreditBillingServiceTable {
+    background-color: #9d9aef !important;
+}
+.StickyHeader th {
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    top: 55px !important;
+    z-index: 1;
+    text-align: left !important;
+}
+.wrapper-table thead th {
+    position: sticky;
+    top: 0px;
+    text-align: left !important;
+    z-index: 1;
+  }
+.nodata {
+    color: grey;
+    text-align: center;
+}
+// .ContractWillBeEnd {
+//     background-color: rgb(233, 218, 218)!important;
+// }
+// .ContractWillBeEnd:nth-child(odd) {
+//     background-color: #f1eded !important;
+// }
+// .Terminated {
+//     background-color: #afafaf !important ;
+// }
+// .Terminated:nth-child(odd) {
+//     background-color: #c0bebe !important ;
+// }
+// .WaitingApproval {
+//     background-color: #FFFDF1 !important ;
+// }
+// .WaitingApproval:nth-child(odd) {
+//     background-color: #fffed7 !important ;
+// }
+// .Rejected {
+//     background-color: #FFF4F1 !important;
+// }
+// .Rejected:nth-child(odd) {
+//     background-color: #d64965 !important;
+// }
+// .FullApproved {
+//     background-color: #FBFFF1 !important;
+// }
+// .FullApproved:nth-child(odd) {
+//     background-color: #4eb9d1 !important;
+// }
+// .ProcessByComben {
+//     background-color: #723BC5 !important;
+// }
+// .ProcessByComben:nth-child(odd) {
+//     background-color: #8355c7 !important;
+// }
+// .ReadyToSent {
+//     background-color: #D97BC3 !important;
+// }
+// .ReadyToSent:nth-child(odd) {
+//     background-color: #da94c9 !important;
+// }
+// .SentToEmployee {
+//     background-color: #FF7C04 !important;
+// }
+// .SentToEmployee:nth-child(odd) {
+//     background-color: #fd932f !important;
+// }
+// .RenewalCompleted {
+//     background-color: #D2FDA7 !important;
+// }
+// .RenewalCompleted:nth-child(odd) {
+//     background-color: #dffdc0 !important;
+// }
+.None {
+    background-color: white !important;
+}
+
+.FullApproved {
+    background-color: #FBFFF1 !important;
+}
+.FullApproved:nth-child(odd) {
+    background-color: #FAFFEC !important;
+}
+
+.MyWaitingApproval {
+    background-color: #FFFDF1 !important;
+}
+.MyWaitingApproval:nth-child(odd) {
+    background-color: #FFFBE7 !important;
+}
+
+.Rejected {
+    background-color: #FFF4F1 !important;
+}
+.Rejected:nth-child(odd) {
+    background-color: #FFEEEA !important;
+}

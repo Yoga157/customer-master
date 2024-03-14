@@ -1,0 +1,40 @@
+.BlackListCustHead {
+    display: inline-flex !important;
+    color: #F97452 !important;
+    font-weight: bold !important;
+    font-style: italic !important;
+}
+.BlackListCustBody {
+    text-align: center;
+    color: white;
+    font-style: italic;
+    font-size: 1.122rem
+}
+.BlackListCustBody  {
+    text-align: center;
+    color: white;
+    font-style: italic;
+    font-size: 1.122rem;
+    p:first-child {
+        font-weight: bold !important;
+    }
+}
+.BlackListCustFooter {
+    display: flex !important;
+    justify-content: space-evenly !important;
+    .ui.button {
+        font-style: italic !important;
+    }
+}
+.BlackListNote {
+    color: #F15959 !important;
+    display: flex;
+    justify-content: space-between;
+}
+.BlackListText {
+    color: #F15959;
+    font-weight: bolder;
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-top: -0.988rem !important;
+}

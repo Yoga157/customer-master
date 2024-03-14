@@ -1,0 +1,49 @@
+//25112021
+.kpiJumbotron {
+    background-color: #656dd1;
+    color: white;
+    padding: 0.7rem 2rem !important;
+    border-radius: 10rem;
+    margin: 1.344rem !important;
+
+    h5 {
+        margin-bottom: 0;
+        font-weight: bold;
+        color: rgba(255,255,255,0.6);
+    }
+
+    span {
+        font-size: 0.877rem !important;
+        color: rgba(255,255,255,0.6);
+    }
+
+    h1 {
+        float: right !important;
+    }
+}
+
+//26112021
+.lightGreyKpi {
+    margin-left: -21px !important;
+    margin-right: -21px !important;
+    margin-top: 1.233rem !important;
+    margin-bottom: 1.233rem !important;
+
+    .lightGreyKpiColumn {
+        background-color: #e6e6e6 !important;
+        color: #55637A !important;
+        padding: 2.1222rem !important;
+    }
+}
+
+.ui.modal  .content  .header {
+    margin: -5px 20px 17px 0px !important;
+    color: #55637A !important;
+    font-size: 1.2em !important;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.ui.modal .content .divider {
+    margin: 1rem -1.6rem 1rem -1.6rem !important;
+}

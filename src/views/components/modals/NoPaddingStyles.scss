@@ -1,0 +1,52 @@
+.no-padding{
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.LightYellowNotif .item {
+  color: #55637A !important;
+
+}
+
+//13112020
+.ui.modals .content>.ui.form>.LightGreyNotif>.divider {
+  margin: 1rem -2.12rem 1rem -2.12rem !important;
+}
+
+.ui.modal .content>.ui.form>.LightGreyNotif>.header {
+  margin: -5px 20px 17px 0px !important;
+  color: #55637A !important;
+  font-size: 1.2em !important;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+//12112020
+.ui.modals .content>.ui.form>.divider {
+  margin: 1rem -1.6rem 1rem -1.6rem !important;
+}
+
+.ui.modals .content>.ui.form>.header {
+  margin: -5px 20px 17px 0px !important;
+  color: #55637A !important;
+  font-size: 1.2em !important;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+//10112020
+.ui.modal>.content>.header {
+  margin: -5px 20px 17px 0px !important;
+  color: #55637A !important;
+  font-size: 1.2em !important;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.ui.modal>.content>.divider {
+  margin: 1rem -1.6rem 1rem -1.6rem !important;
+}
+
+.ui.modal>.content.no-padding {
+  padding-bottom: 1rem !important;
+}

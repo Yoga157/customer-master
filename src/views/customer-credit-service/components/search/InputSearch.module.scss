@@ -1,0 +1,45 @@
+.AboveFunLabel {
+    background-color: grey !important;
+    border-radius: 20px !important;
+    padding: 5px !important;
+    color: white !important;
+}
+.PadBtnFilter {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    padding-bottom: 10px !important;
+}
+
+.Rounded {
+    width: 50%;
+    border-radius:50% !important;
+}
+
+.FilterTitle {
+    color: #55637A !important;
+    text-transform: uppercase;
+    font-size: 16px !important;
+    font-weight: bold !important;
+}
+
+.divider {
+    border-bottom: 1px solid #e2e2e2;
+    margin: 20px 0px 20px 0px !important;
+    width: 100% !important; 
+}
+
+.Mar5 {
+    margin: 5px !important;
+}
+
+.FilterSubtitle {
+    font-weight: normal;
+    color: #080D24;
+    margin-bottom: 10px !important;
+}
+//======19052021==start==
+@media only screen and (max-width: 767px){
+    .Rounded {
+        width: 80.123% !important;
+    }
+}

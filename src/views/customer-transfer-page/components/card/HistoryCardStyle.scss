@@ -1,0 +1,47 @@
+.HistoryCard {
+    color:#55637A;
+
+    .HeaderHistory {
+        font-size: 1.1rem !important;
+        .column {
+            border-right: 1px solid rgba(85,107,136,0.3);
+        }
+        .column:first-child {
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .column:last-child {
+            border-right: 0px !important;
+        }
+    }
+    .NoteHistory {
+        opacity: 0.6;
+    }
+    i.icon:before {
+        background-color: #9d9aef !important;
+        color: #f2f2f2;
+        padding: 1rem;
+        font-size: 2rem;
+        border-radius: 50%;
+    }
+    i.icon {
+        margin: 20px 0 0 -5px;
+    }
+}
+@media only screen and (max-width: 1200px){
+    .HistoryCard {
+        i.icon:before {
+            display: none !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .HistoryCard {
+        .HeaderHistory {
+            .column {
+                border-right: 0px !important;
+            }
+        }
+    }
+}

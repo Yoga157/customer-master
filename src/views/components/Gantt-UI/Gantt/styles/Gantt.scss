@@ -1,0 +1,100 @@
+
+.gantt-container {
+  height: calc(100vh - 50px - 200px);
+  // height: calc(100vh);
+}
+.full-screen {
+  // height: calc(100vh - 50px - 200px);
+  height: calc(100vh - 40px);
+}
+
+.gantt_grid_scale {
+  background-color: #9D9AEF;
+}
+
+.gantt_grid_scale .gantt_grid_head_cell{
+  color: #FFFFFF;
+}
+
+.gantt_add,
+.gantt_grid_head_add {
+  background-image: url("/ic-add.png");
+}
+.gantt_tree_icon.gantt_file {
+  background-image: url("/ic-file.png");
+}
+.gantt_tree_icon.gantt_folder_open {
+  background-image: url("/ic-folder-minus.png");
+}
+.gantt_tree_icon.gantt_folder_closed {
+  background-image: url("/ic-folder-plus.png");
+}
+
+.gantt_grid_data .gantt_row.odd:hover,
+.gantt_grid_data .gantt_row:hover {
+  background-color: #9D9AEF;
+}
+.gantt_grid_data .gantt_row.gantt_selected,
+.gantt_grid_data .gantt_row.odd.gantt_selected,
+.gantt_task_row.gantt_selected {
+  // background-color: #9D9AEF;
+  background-color: #9D9AEF50;
+}
+.gantt_task_line {
+  border-radius: 18px;
+}
+
+
+.gantt_grid_scale,
+.gantt_task_scale {
+  color: #FFFFFF;
+}
+
+.gantt_task .gantt_task_scale .gantt_scale_cell {
+  color: #FFFFFF;
+}
+
+.gantt_task .gantt_task_scale .gantt_scale_cell.weekend {
+  color: #a6a6a6 !important;
+}
+
+.gantt_task_scale,
+.gantt_task_vscroll {
+  background-color: #9D9AEF;
+}
+
+.gantt_grid {
+  background-color: #9D9AEF70;
+}
+
+.gantt_grid_data .gantt_row{
+  background-color: #9D9AEF70;
+}
+.gantt_grid_data .gantt_cell {
+  color: #FFFFFF;
+}
+
+.weekend {
+  background: #f4f7f4;
+}
+div#myCover {
+  z-index: 102 !important;
+}
+
+.owner-label {
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  display: inline-block;
+  border: 1px solid #9D9AEF;
+  border-radius: 25px;
+  background: #656DD1;
+  color: #fff;
+  margin: 0 3px;
+  font-weight: bold;
+}
+
+.chosen-container.chosen-container-multi{
+ width: 100% !important;
+}

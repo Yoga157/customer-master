@@ -1,0 +1,12 @@
+.projectAlias{
+  :global{
+    .LabelNameLabel{
+      margin: unset !important;
+    }
+    button {
+      text-align: center !important;
+      pointer-events: none !important;
+      background-color: #fff !important;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+.container-print-bg {
+    height: 100vh - 20vh !important;
+    #reportViewer1 {
+      position: absolute;
+      // top: 117px;
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      overflow: hidden;
+      clear: both;
+      border-radius: 5px;
+    }
+  }
+  

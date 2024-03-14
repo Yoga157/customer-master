@@ -1,0 +1,28 @@
+.container-bar {
+  background: #9D9AEF;
+  height: 40px;
+  margin: 0 !important;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 11px;
+  border-right: 1px solid #cecece;
+  border-top: 1px solid #cecece;
+  border-left: 1px solid #cecece
+}
+.tool-bar {
+  border-right: 1px solid #ebebeb;
+  border-left: 1px solid #ebebeb;
+  border-top: 1px solid #ebebeb;
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+
+.right.aligned.tool-bar-right.column.row {
+  display: flex;
+  justify-content: end;
+}
+
+
+.middle.aligned.two.wide.column.active.hover-pointer {
+  // background: #8582d2 !important;
+}

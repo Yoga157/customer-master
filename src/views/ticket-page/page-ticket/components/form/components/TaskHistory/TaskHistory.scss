@@ -1,0 +1,78 @@
+
+.task-history{
+  background: #FFFB9A;
+  color: #727272;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 0 5px 3px;
+  border-bottom: 1px solid #2b2b2b2e;
+  position: relative;
+}
+
+.info-text-history{
+  font-weight: 800;
+}
+.info-date-history{
+  font-weight: lighter;
+}
+.info-created-history{
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: lighter;
+  font-style: italic;
+}
+
+.info-remarks-hisrotory{
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  b {
+    font-weight: bold;
+  }
+}
+
+.content-history{
+  position: relative;
+  width: 100%;
+  margin-top: -10px;
+  height: 100%;
+  ul {
+    li {
+      padding: 5px 0px;
+    }
+    li.space-left {
+      padding-left: 20px
+    }
+    li.remarks-hisrotory {
+      padding-bottom: 0;
+      padding-left: 20px;
+      color: #f97452
+    }
+  }
+}
+
+.task-history::before, .content-history::before, .content-history-ticket::before
+.task-history::after, .content-history::after, .content-history-ticket::after
+{
+        content: "";
+        position: absolute;
+        top: 0;
+        right: -8px;
+        width: 12px;
+        height: 100%;
+}
+
+.content-history-ticket{
+  background: #ebebeb !important
+}
+
+
+.content-history ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+

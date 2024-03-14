@@ -1,0 +1,17 @@
+thead.header-black > tr > th {
+    background-color: #3F3F3F !important;
+}
+
+table.ui.green.inverted.striped.table.table-gpm-history {
+    background-color: #6ED4A5 !important;
+    color: #566A7C !important;
+}
+
+table.ui.green.inverted.striped.table.table-gpm-history tbody tr:nth-child(2n), table.ui.green.inverted.striped.table.table-gpm-history>tr:nth-child(2n) {
+    background-color: #6BE7AD;
+}
+
+.nodata {
+    color: white;
+    text-align: center;
+}

@@ -1,0 +1,27 @@
+.ProductServiceTable {
+  background-color: #3f3f3f !important;
+}
+
+.BgProduct {
+  background-color: #5c62ad !important;
+  color: white !important;
+  // position: relative;
+}
+
+.BgService {
+  background-color: #646ab1 !important;
+  color: white !important;
+  // position: relative;
+}
+
+.disableBtn {
+  background-color: rgba(172, 172, 172, 0.205) !important;
+}
+
+.ProductServiceTable th:first-child {
+  border-radius: 0.28571429rem 0 0 0 !important;
+}
+.nodata {
+  color: white;
+  text-align: center;
+}

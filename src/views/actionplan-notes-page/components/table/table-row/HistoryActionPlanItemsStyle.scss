@@ -1,0 +1,26 @@
+// 24022021
+.UnupdateAvatar {
+    color: red;
+}
+
+.UnupdateAvatar .ui.tiny.image {
+	width: 60px !important;
+	height: auto;
+	font-size: .85714286rem;
+}
+
+.ui.items > .UnupdateAvatar.item > .content > a.header {
+	color: rgb(103, 116, 136);
+}
+
+.ui.items > .item.UnupdateAvatar .meta {
+	color: rgba(103, 116, 136,.6);
+}
+
+.ui.items > .UnupdateAvatar.item > .content > .header {
+	font-weight: normal !important;
+}
+
+.ui.items > .UnupdateAvatar.item > .content > .description {
+	color: rgb(103, 116, 136);
+}

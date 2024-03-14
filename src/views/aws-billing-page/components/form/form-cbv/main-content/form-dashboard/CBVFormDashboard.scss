@@ -1,0 +1,112 @@
+.ViewLabel.ReadOnly > .field > input {
+  border: 0 !important;
+  cursor: default !important;
+  color: #55637A !important;
+  background-color: transparent !important;
+  padding: 0.2em !important;
+  font-size: 1.75rem !important;
+  font-weight: normal !important;
+}
+
+
+.WrapperAfterDiscount {
+  background-color: #F9D866!important;
+  width: "100%";
+  height: "100%";
+  padding: 10px !important;
+
+  h5{
+    color:"#55637A";
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0.5;
+  }
+
+  p{
+    color: "#55637A";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 0.5;
+
+    span {
+      color: "#55637A";
+      font-size: 14px;
+      font-weight: 700 !important;
+      line-height: 0.5;
+    }
+  }
+}
+.ModalHeader {
+  margin: -5px 20px 17px 0px !important;
+  color: #55637A !important;
+  font-size: 1.2em !important;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.DividerHeader {
+  margin-left: -16px !important;
+  margin-right: -16px !important;
+}
+.LightYellowNotif .WrapperAfterDiscount p {
+  line-height: 1.2123;
+}
+.LightYellowNotif.PadPmoNotif {
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 2rem !important;
+  border-radius: 0 !important;
+  margin-top: -16px !important;
+}
+.mb-0 .LabelNameLabel {
+  margin-bottom: 0 !important;
+}
+.ui.tag.label::before, .ui.tag.labels .label::before {
+	position: absolute;
+	-webkit-transform: translateY(-50%) translateX(50%) rotate(-45deg);
+	transform: translateY(-50%) translateX(50%) rotate(-45deg);
+	top: 50%;
+	right: 100%;
+	content: '';
+	background-color: inherit;
+	background-image: none;
+	width: 6.321em;
+	height: 6.321em;
+	-webkit-transition: none;
+	transition: none;
+	border-radius: 10px;
+	z-index: 0;
+}
+.ui.tag.label::after, .ui.tag.labels .label::after {
+	position: absolute;
+	content: '';
+	top: 50%;
+	left: -.25em;
+	margin-top: -.25em;
+	background-color: transparent !important;
+	width: .5em;
+	height: .5em;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	border-radius: 500rem;
+}
+.WrapperAfterDiscount {
+  .ui.tag.label, .ui.tag.labels .label {
+    margin-left: 1em;
+    position: relative;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    border-radius: 0 1.286rem 1.286rem 0;
+    -webkit-transition: none;
+    transition: none;
+  }
+  h5, p {
+    position: relative;
+    z-index: 2 !important;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .ui.tag.label::before, .ui.tag.labels .label::before {
+    width: 8.321em;
+    height: 8.321em;
+}
+}

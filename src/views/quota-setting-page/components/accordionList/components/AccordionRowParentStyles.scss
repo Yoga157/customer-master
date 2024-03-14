@@ -1,0 +1,198 @@
+//19012022
+.TeamQuotaParent {
+  color: #55637a;
+  background-color: #e1e1e1;
+  margin-bottom: 0.5rem !important;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .ui.basic.button,
+  .ui.basic.buttons .button {
+    padding: 0 0 0 1rem;
+    box-shadow: none;
+    color: #55637a !important;
+  }
+  .ui.basic.button:hover,
+  .ui.basic.buttons .button:hover {
+    background: transparent !important;
+    color: #55637a99 !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  h2 {
+    margin: 0;
+  }
+  .ui.styled.accordion {
+    box-shadow: none;
+    background: #ffffff;
+    margin-bottom: 0rem;
+    position: relative;
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    .title {
+      background-color: #ffffff;
+      color: #55637a;
+      border-radius: 10px;
+    }
+    span {
+      font-size: smaller;
+      font-weight: normal;
+    }
+  }
+
+  .ViewForm:nth-child(2) {
+    background-color: #adddf9;
+    color: #a0a8b3;
+    .LabelNameLabel {
+      background-color: #adddf9;
+      input[type='text']:disabled {
+        color: #616e87;
+        border: 1px solid #adddf9 !important;
+      }
+    }
+  }
+
+  .ViewForm:nth-child(3) {
+    background-color: #9d9aef;
+    color: #ebebebd7;
+    margin-right: 13px;
+    .LabelNameLabel {
+      background-color: #9d9aef;
+      input[type='text']:disabled {
+        color: #fbfbfe;
+        border: 1px solid #9d9aef !important;
+      }
+      label {
+        color: #ebebebd7 !important;
+      }
+    }
+  }
+
+  .ViewForm > span {
+    padding: 0rem 1rem;
+  }
+
+  .ViewForm.p-0 {
+    padding-bottom: 14px !important;
+  }
+
+  .ViewForm {
+    .row {
+      .middle.aligned.four.wide.column {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 30px;
+        padding-right: 30px;
+        padding-left: 30px;
+        span {
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .LabelNameLabel {
+      border-radius: 0px;
+      margin-bottom: 0;
+      .column {
+        padding: 0;
+      }
+      input[type='text']:disabled {
+        font-size: 28px;
+        padding: 1px 0;
+        opacity: 1;
+        background-color: transparent;
+        text-align: left !important;
+      }
+    }
+  }
+
+  .card-quota-brand,
+  .card-quota-service {
+    border-radius: 4px;
+    padding: 0.5rem 1rem 1rem;
+    .header {
+      color: #55637a;
+      font-weight: 800;
+      padding: 0.5rem 0;
+      margin-bottom: 0.2rem !important;
+    }
+
+    .col-hardware,
+    .col-software {
+      border-radius: 4px;
+      padding: 0.5rem 1rem 1.5rem;
+      background-color: #98efc6;
+      .text-danger {
+        color: #db312e;
+      }
+    }
+
+    .item-quota-service,
+    .item-hardware {
+      margin-top: 0 !important;
+      .content {
+        padding: 0.5em 0em 0.5em !important;
+        color: #55637a90;
+        font-weight: 700;
+        h3 {
+          color: #55637a !important;
+          font-size: 24px !important;
+          font-weight: 500 !important;
+        }
+      }
+
+      .item-toggle {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: end !important;
+
+        span {
+          color: #55637a;
+          font-weight: bold !important;
+        }
+        span:nth-child(2) {
+          margin-right: 4px;
+          margin-left: 4px;
+
+          .ui.toggle.checkbox label:before {
+            top: 4px;
+            height: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .card-quota-brand {
+    background-color: #6be7ad;
+  }
+
+  .card-quota-service {
+    background-color: #fad2c3;
+  }
+
+  .header-hardware,
+  .header-software,
+  .header-quota-service {
+    .content {
+      padding: 0 !important;
+    }
+  }
+}
+
+::placeholder {
+  color: #9aa2c0 !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #9aa2c0 !important;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #9aa2c0 !important;
+}

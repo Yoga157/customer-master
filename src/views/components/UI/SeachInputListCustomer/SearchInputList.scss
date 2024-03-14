@@ -1,0 +1,57 @@
+.LabelUserSrc {
+    display: none;
+    .item {
+        margin-left: 0.3rem !important;
+    }
+    button {
+        margin: 0 0 0 0.3em !important;
+    }
+}
+
+.column.ViewLabel.SoftwareLabel {
+    .button.compact.red {
+        color: #fff !important;
+        box-shadow: none;
+        background-color: #FA8484 !important;
+        transition: background-color 0.4s;
+        padding: 1em 4em 1em 1em !important;
+        margin: .5em;
+    }
+    .button.compact.blue {
+        color: #fff !important;
+        box-shadow: none;
+        background-color: #9D9AEF !important;
+        transition: background-color 0.4s;
+        padding: 1em !important;
+        margin: .5em;
+    }
+    ol li {
+        color: #55637A !important;
+    }
+    //23042021
+    margin-top: -1rem !important;
+    // div.field > div > label {
+    //     display: none !important;
+    // }
+    .field .ContainerMax100 button.ui.grey.disabled {
+        background-color: #656dd1 !important;
+        padding: 0.8em 2.8em !important;
+        color: white !important;
+        font-size: 1.1em;
+                display: none !important;
+
+    }
+    .field .ContainerMax100 button.ui.grey {
+        background-color: #F97452 !important;
+        padding: 0.8em 2.8em !important;
+        color: white !important;
+        font-size: 1.1em;
+    }
+    .field .ContainerMax100 button.ui.grey.disabled > i.close.icon {
+        display: none !important;
+    }
+}
+
+.pad-1rem {
+    padding: 1rem !important;
+}

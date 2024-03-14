@@ -1,0 +1,71 @@
+.gundamForm {
+  :global{
+  }
+}
+.Rounded {
+  width: 100%;
+  :global{
+
+  }
+}
+
+.searchInputList {
+  :global {
+    .ui.grey.button,
+    .ui.grey.buttons .button,
+    .button.compact.icon.right {
+      background-color: #767676 !important;
+      color: #fff !important;
+      text-shadow: none;
+      background-image: none;
+    }
+
+    .ui.grey.button:hover,
+    .ui.grey.buttons .button:hover,
+    .button.compact.icon.right:hover {
+      background-color: #838383 !important;
+      color: #fff;
+      text-shadow: none;
+    }
+  }
+}
+
+.ColSearch {
+  :global {
+    .results.transition.visible {
+      max-height: 400px !important;
+      overflow: auto;
+    }
+  }
+}
+
+.greySection{
+  :global{
+    background-color: #EBEBEB;
+    border-radius: 10px;
+    padding: 9px !important;
+    margin: 10px 0;
+  }
+}
+
+ .itemToggle {
+   :global {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: end !important;
+  
+      span {
+        color: #55637a;
+        font-weight: bold !important;
+      }
+      span:nth-child(2) {
+        margin-right: 4px;
+        margin-left: 4px;
+  
+        .ui.toggle.checkbox label:before {
+          top: 4px;
+          height: 1rem;
+        }
+      }
+    }
+  }
