@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-// import "./ViewCustomerSetting.scss";
+import "./ModalApprovedData.scss";
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
@@ -22,8 +22,15 @@ import ModalNewWebsiteMedia from "./components/modal/approved-page/ModalNewWebsi
 import ModalNewPIC from "./components/modal/approved-page/ModalNewPIC";
 import ModalNewRelatedCustomer from "./components/modal/approved-page/ModalNewRelatedCustomer";
 
-const ViewApprovedData: React.FC = () => {
+interface IProps {
+  isView?;
+}
+
+const ViewApprovedData: React.FC<IProps> = (
+  props: React.PropsWithChildren<IProps>
+) => {
   const dispatch: Dispatch = useDispatch();
+  const { isView } = props;
 
   const customer = {
     customerID: 12345,
@@ -235,18 +242,22 @@ const ViewApprovedData: React.FC = () => {
 
   return (
     <Fragment>
-      <Link to={"/customer-setting"} className="link">
-        {"< Back to Customer Setting List"}
-      </Link>
+      {!isView && (
+        <Link to={"/customer-setting"} className="link">
+          {"< Back to Customer Setting List"}
+        </Link>
+      )}
 
-      <div className="form-container">
+      <div className={!isView && "form-container"}>
         <p className="page-title grey">CUSTOMER DETAILS</p>
 
         <Divider style={{ marginBottom: 0 }}></Divider>
 
         <LoadingIndicator isActive={false}>
           <div
-            className="padding-horizontal space-between-container"
+            className={
+              `space-between-container` + (isView ? ` padding-horizontal` : ``)
+            }
             style={{
               backgroundColor: "#FFFB9A",
             }}
@@ -367,7 +378,10 @@ const ViewApprovedData: React.FC = () => {
             </div>
           </div>
 
-          <div className="padding-horizontal" style={{ margin: "2.5rem 0" }}>
+          <div
+            className={isView && `padding-horizontal`}
+            style={{ margin: "2.5rem 0" }}
+          >
             <div className="grey get-data-container">
               <div className="accordion-container">
                 <div style={{ display: "flex", flexDirection: "row" }}>

@@ -77,6 +77,7 @@ import TableCollectionHistory from "../table/table-collection-history/TableColle
 import ClaimReleaseButton from "../button/ClaimReleaseButton";
 import CustomerSettingPutModel from "stores/customer-setting/models/CustomerSettingPutModel";
 import ModalShowRejectReason from "../modal/modal-show-reject-reason/ModalShowRejectReason";
+import ViewApprovedData from "views/view-customer-setting/marketing/ViewApprovedData";
 
 interface IProps {
   customer: {
@@ -138,6 +139,35 @@ const ViewEditCustomer: React.FC<IProps> = (
   const onChangeCustomerCategory = (data: any) => {
     setCustomerCategory(data);
   };
+
+  // industry classification
+  const [industryClass, setIndustryClass] = useState("");
+  const industryClassOptions = [
+    {
+      text: "Manufacturing",
+      value: "Manufacturing",
+    },
+    {
+      text: "Industry",
+      value: "Industry",
+    },
+  ];
+
+  const onSubmitIndustryClass = async (e) => {};
+
+  const onChangeIndustryClass = (data: any) => {
+    setIndustryClass(data);
+  };
+
+  // view more details
+  const openMoreDetails = useCallback((): void => {
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ViewApprovedData isView />,
+        ModalSizeEnum.Large
+      )
+    );
+  }, [dispatch]);
 
   /** Handle dropdown data yang di-get */
   const [openPicList, setOpenPicList] = useState(false);
@@ -755,6 +785,26 @@ const ViewEditCustomer: React.FC<IProps> = (
               </div>
 
               <div className="customer-data-container">
+                <label className="customer-data-label">CustomerID</label>
+                <p
+                  style={{ fontSize: "24px", fontWeight: "bold" }}
+                  className="grey"
+                >
+                  {customer.customerID}
+                </p>
+              </div>
+
+              <div className="customer-data-container">
+                <label className="customer-data-label">JDE Cust. ID</label>
+                <p
+                  style={{ fontSize: "24px", fontWeight: "bold" }}
+                  className="grey"
+                >
+                  JDE Cust. ID
+                </p>
+              </div>
+
+              <div className="customer-data-container">
                 {role.toUpperCase() == "SALES" ? (
                   <>
                     <label className="customer-data-label">
@@ -764,38 +814,28 @@ const ViewEditCustomer: React.FC<IProps> = (
                       style={{ fontSize: "24px", fontWeight: "bold" }}
                       className="grey"
                     >
-                      {customer.customerCategory}
+                      {customer.customerCategory || "No Data"}
                     </p>
                   </>
                 ) : (
                   <FinalForm
-                    onSubmit={(values: any) => onSubmitCustCategory(values)}
+                    onSubmit={(values: any) => onSubmitIndustryClass(values)}
                     render={({ handleSubmit, pristine, invalid }) => (
                       <Form onSubmit={handleSubmit}>
                         <Field
                           labelName="Industry Classification"
-                          name="customerCategoryName"
+                          name="industryClassification"
                           component={DropdownClearInput}
-                          placeholder="Choose category"
-                          options={customerCategoryOptions}
-                          onChanged={onChangeCustomerCategory}
-                          values={customerCategory}
+                          placeholder="Choose classification"
+                          options={industryClassOptions}
+                          onChanged={onChangeIndustryClass}
+                          values={industryClass}
                           mandatory={true}
                         />
                       </Form>
                     )}
                   />
                 )}
-              </div>
-
-              <div className="customer-data-container">
-                <label className="customer-data-label">CustomerID</label>
-                <p
-                  style={{ fontSize: "24px", fontWeight: "bold" }}
-                  className="grey"
-                >
-                  {customer.customerID}
-                </p>
               </div>
 
               <div className="customer-data-container">
@@ -826,26 +866,88 @@ const ViewEditCustomer: React.FC<IProps> = (
               </div>
             </div>
 
-            <div style={{ margin: "14px 0" }} className="padding-horizontal">
-              <label
-                className="address-font-label"
-                style={{ textAlign: "left" }}
-              >
-                Customer Name
-              </label>
-              <p
-                style={{ fontSize: "20px", fontWeight: "bold" }}
-                className="grey"
-              >
-                {customer.customerName}
-              </p>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+              className="padding-horizontal"
+            >
+              <div className="customer-data-container">
+                {role.toUpperCase() == "SALES" ? (
+                  <>
+                    <label className="customer-data-label">
+                      Customer Category
+                    </label>
+                    <p
+                      style={{ fontSize: "20px", fontWeight: "bold" }}
+                      className="grey"
+                    >
+                      {customer.customerCategory || "No Data"}
+                    </p>
+                  </>
+                ) : (
+                  <FinalForm
+                    onSubmit={(values: any) => onSubmitCustCategory(values)}
+                    render={({ handleSubmit, pristine, invalid }) => (
+                      <Form onSubmit={handleSubmit}>
+                        <Field
+                          labelName="Customer Category"
+                          name="customerCategoryName"
+                          component={DropdownClearInput}
+                          placeholder="Choose category"
+                          options={customerCategoryOptions}
+                          onChanged={onChangeCustomerCategory}
+                          values={customerCategory}
+                          mandatory={true}
+                        />
+                      </Form>
+                    )}
+                  />
+                )}
+              </div>
+
+              <div>
+                <label
+                  className="address-font-label"
+                  style={{ textAlign: "left" }}
+                >
+                  Customer Name
+                </label>
+                <p
+                  style={{ fontSize: "20px", fontWeight: "bold" }}
+                  className="grey"
+                >
+                  {customer.customerName}
+                </p>
+              </div>
             </div>
 
-            <div style={{ margin: "14px 0" }} className="padding-horizontal">
+            <div className="padding-horizontal">
               <label className="address-font-label">Address</label>
               <p style={{ fontSize: "20px" }} className="grey">
                 {customer.customerAddress}
               </p>
+            </div>
+
+            <div
+              className="padding-horizontal"
+              style={{
+                margin: "14px 0",
+                display: "flex",
+                width: "100%",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button
+                color="blue"
+                size="small"
+                type="button"
+                onClick={() => openMoreDetails()}
+              >
+                <Icon name="eye" />
+                View More Details
+              </Button>
             </div>
 
             <Divider></Divider>
