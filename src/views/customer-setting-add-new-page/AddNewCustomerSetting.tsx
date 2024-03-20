@@ -108,8 +108,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
 
   const onSubmitHandler = async (data: any) => {
     const userId: any = localStorage.getItem("userLogin");
-    const date = format(new Date(), "yyyy-MM-dd");
-    const isSuccess = true;
 
     const RequestNewCustomer = new CustomerMasterPostModel(data);
     RequestNewCustomer.titleCustomer = searchedTitleCust;
@@ -130,10 +128,11 @@ const AddNewCustomerSetting: React.FC<IProps> = (
       CustomerMasterActions.postNewCustomerMaster(RequestNewCustomer)
     ).then(() => {
       dispatch(CustomerMasterActions.setActiveTabs(4));
-      // props.history.push({
-      //   pathname: RouteEnum.CustomerSetting,
-      //   state: { isSuccess },
-      // });
+      dispatch(CustomerMasterActions.setSuccessModal(true));
+      props.history.push({
+        pathname: RouteEnum.CustomerSetting,
+        // state: { isSuccess },
+      });
     });
     dispatch(CustomerMasterActions.clearResult());
   };

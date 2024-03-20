@@ -56,6 +56,12 @@ export const setActiveTabs = (activeTabs: number): IAction<number> => {
   return ActionUtility.createAction(SET_TABS, activeTabs);
 };
 
+export const SET_SUCCESS_MODAL: string =
+  "CustomerMasterActions.SET_SUCCESS_MODAL";
+export const setSuccessModal = (isSuccess: boolean): IAction<boolean> => {
+  return ActionUtility.createAction(SET_SUCCESS_MODAL, isSuccess);
+};
+
 export const CLEAR_RESULT_CM: string = "CustomerMasterActions.CLEAR_RESULT_CM";
 export const clearResult = (): IAction<CustomerMasterModel> => {
   return ActionUtility.createAction(CLEAR_RESULT_CM);

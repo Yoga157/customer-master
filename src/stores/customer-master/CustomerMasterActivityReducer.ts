@@ -12,7 +12,8 @@ export const initialState: ICustomerMasterState = {
   refreshPage: false,
   resultActions: new ResultActions({}),
   activePage: 1,
-  activeTabs: 0,
+  activeTabs: 1,
+  isSuccess: false,
 };
 
 const customerMasterReducer: Reducer = baseReducer(initialState, {
@@ -69,6 +70,16 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
     return {
       ...state,
       activeTabs: action.payload!,
+    };
+  },
+
+  [CustomerMasterActions.SET_SUCCESS_MODAL](
+    state: ICustomerMasterState,
+    action: IAction<boolean>
+  ): ICustomerMasterState {
+    return {
+      ...state,
+      isSuccess: action.payload!,
     };
   },
 });

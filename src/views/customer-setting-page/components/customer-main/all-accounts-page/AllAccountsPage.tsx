@@ -23,6 +23,7 @@ import { format } from "date-fns";
 import RouteEnum from "constants/RouteEnum";
 import Tabs from "../Tabs/Tabs";
 import { useLocation } from "react-router-dom";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 
 interface IProps {
   history: any;
@@ -215,18 +216,24 @@ const AllAccountsPage: React.FC<IProps> = (
     }
   };
 
-  // const openModal = useCallback(() => {
-  //   if (isSuccess) {
-  //     dispatch(
-  //       ModalFirstLevelActions.OPEN(<ModCloseNewRequest />, ModalSizeEnum.Small)
-  //     );
-  //   }
-  // }, [dispatch, isSuccess]);
+  const isSuccess = useSelector(
+    (state: IStore) => state.customerMaster.isSuccess
+  );
+  const openModal = useCallback(() => {
+    if (isSuccess) {
+      dispatch(
+        ModalFirstLevelActions.OPEN(<ModCloseNewRequest />, ModalSizeEnum.Small)
+      );
+    }
+  }, [dispatch, isSuccess]);
 
   // console.log("Nilai Allacount", isSuccess);
-  // useEffect(() => {
-  //   openModal();
-  // }, [openModal]);
+  useEffect(() => {
+    if (isSuccess) {
+      openModal();
+      dispatch(CustomerMasterActions.setSuccessModal(false));
+    }
+  }, [isSuccess]);
 
   const OnrequestNewCustomer = () => {
     history.push({
