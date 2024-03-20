@@ -6,18 +6,25 @@ import { Dispatch } from "redux";
 import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
 import { Divider, Form, Input, Label } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
-import {
-  DropdownClearInput,
-  Button,
-  FileUpload,
-  RichTextEditor,
-  SearchInput,
-  TextAreaInput,
-  TextInput,
-} from "views/components/UI";
+import { Button, TextAreaInput, TextInput } from "views/components/UI";
 
-const ModalNewPIC: React.FC = (props) => {
+interface IData {
+  name: string;
+  jabatan: string;
+  email: string;
+  address: string;
+  phoneNumber: string;
+}
+
+interface IProps {
+  data?: IData;
+}
+
+const ModalNewPIC: React.FC<IProps> = (
+  props: React.PropsWithChildren<IProps>
+) => {
   const dispatch: Dispatch = useDispatch();
+  const { data } = props;
 
   const onSubmitNewAddress = async (values) => {
     console.log(values);
@@ -44,6 +51,7 @@ const ModalNewPIC: React.FC = (props) => {
                   labelName="Name"
                   placeholder="Type pic name here.."
                   mandatory={true}
+                  defaultValue={data?.name || null}
                 />
               </div>
 
@@ -53,6 +61,7 @@ const ModalNewPIC: React.FC = (props) => {
                 labelName="Jabatan"
                 placeholder="Type jabatan here.."
                 mandatory={true}
+                defaultValue={data?.jabatan || null}
               />
             </div>
 
@@ -64,6 +73,7 @@ const ModalNewPIC: React.FC = (props) => {
                   labelName="Email"
                   placeholder="Type email here.."
                   mandatory={true}
+                  defaultValue={data?.email || null}
                 />
               </div>
               <Field
@@ -72,6 +82,7 @@ const ModalNewPIC: React.FC = (props) => {
                 labelName="Phone Number"
                 placeholder="Type phone number here.."
                 mandatory={true}
+                defaultValue={data?.phoneNumber || null}
               />
             </div>
 
@@ -82,6 +93,7 @@ const ModalNewPIC: React.FC = (props) => {
                 placeholder="Type office address here.."
                 labelName="Office Address"
                 mandatory={true}
+                defaultValue={data?.address || null}
               />
             </div>
 

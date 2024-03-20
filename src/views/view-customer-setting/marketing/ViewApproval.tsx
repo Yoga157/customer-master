@@ -12,10 +12,12 @@ import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLeve
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import { Link, useParams } from "react-router-dom";
 import IStore from "models/IStore";
-import { Divider, Icon, Button, Table } from "semantic-ui-react";
+import { Divider, Icon, Button, Table, Form } from "semantic-ui-react";
+import { Form as FinalForm, Field } from "react-final-form";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import ModalRejectApproval from "./components/modal/approval-page/ModalRejectApproval";
 import ModalSuggestionList from "./components/modal/approval-page/ModalSuggestionList";
+import { TextInput } from "views/components/UI";
 
 interface routeParams {
   id: string;
@@ -24,6 +26,10 @@ interface routeParams {
 const ViewApproval: React.FC = (props) => {
   const dispatch: Dispatch = useDispatch();
   const { id } = useParams<routeParams>();
+
+  const onSearch = async (data) => {
+    console.log(data);
+  };
 
   const customer = {
     customerTitle: "PT",
@@ -141,12 +147,12 @@ const ViewApproval: React.FC = (props) => {
           }}
         >
           <p className="page-title grey">NEW CUSTOMER REQUEST</p>
-          <div className="pmo-toggle">
+          {/* <div className="pmo-toggle">
             <div className="business-card">
               <Icon name="address card" />
               <p>View Business Card</p>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <Divider></Divider>
@@ -289,7 +295,7 @@ const ViewApproval: React.FC = (props) => {
               SUGGESTION LIST
             </p>
 
-            <Button
+            {/* <Button
               style={{ backgroundColor: "#656DD1", color: "white" }}
               size="small"
               type="button"
@@ -297,12 +303,87 @@ const ViewApproval: React.FC = (props) => {
             >
               <Icon name="search" />
               Search Customer
-            </Button>
+            </Button> */}
           </div>
 
-          <Divider></Divider>
+          <Divider className="margin-bottom-0"></Divider>
 
-          <div className="padding-horizontal" style={{ marginBottom: "14px" }}>
+          <div
+            className="padding-horizontal"
+            style={{
+              backgroundColor: "#FFFB9A",
+              display: "flex",
+              flexDirection: "column",
+              padding: "1rem 0",
+              width: "100%",
+            }}
+          >
+            <FinalForm
+              onSubmit={(values: any) => onSearch(values)}
+              render={({ handleSubmit, pristine, invalid }) => (
+                <Form onSubmit={handleSubmit}>
+                  <div
+                    style={{
+                      backgroundColor: "#FFFB9A",
+                      display: "flex",
+                      flexDirection: "column",
+                      padding: "1rem 0",
+                      width: "100%",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                      }}
+                    >
+                      <div style={{ marginRight: "1rem", width: "20%" }}>
+                        <Field
+                          name="titleCustomer"
+                          component={TextInput}
+                          placeholder="e.g.PT .."
+                          labelName="Title Customer"
+                          mandatory={false}
+                        />
+                      </div>
+                      <div style={{ marginRight: "1rem", width: "40%" }}>
+                        <Field
+                          name="customerName"
+                          component={TextInput}
+                          placeholder="e.g. Berca Hardaya .."
+                          labelName="Customer Name"
+                          mandatory={false}
+                        />
+                      </div>
+                      <div style={{ width: "40%" }}>
+                        <Field
+                          name="picName"
+                          component={TextInput}
+                          placeholder="e.g.Jhon Doe .."
+                          labelName="PIC Name"
+                          mandatory={false}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ alignSelf: "flex-end", marginTop: "1rem" }}>
+                      <Button
+                        type="submit"
+                        color="blue"
+                        disabled={false}
+                        floated="right"
+                        size="small"
+                        content="Search"
+                      />
+                    </div>
+                  </div>
+                </Form>
+              )}
+            />
+          </div>
+
+          <div className="padding-horizontal" style={{ margin: "14px 0" }}>
             <p className="warning-text" style={{ backgroundColor: "#ffe0d9" }}>
               Best five suggestion customer for the word{" "}
               <b>{customer.customerName}</b>. Please recheck again before you{" "}
@@ -375,7 +456,7 @@ const ViewApproval: React.FC = (props) => {
                 style={{ marginRight: "1rem" }}
                 type="button"
               >
-                Cancel
+                Approve
               </Button>
               <Button color="yellow" onClick={() => rejectApproval()}>
                 Reject

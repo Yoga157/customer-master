@@ -34,6 +34,10 @@
   margin: 0px !important;
 }
 
+.margin-bottom-0 {
+  margin-bottom: 0px !important;
+}
+
 .avgar-font {
   font-size: 24px !important;
   font-weight: bold !important;
@@ -87,6 +91,17 @@
   flex-direction: column !important;
   margin-right: 4rem !important;
   margin-bottom: 1rem !important;
+}
+
+.customer-data-container-end {
+  display: flex !important;
+  flex-direction: column !important;
+  margin-right: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.save-button-approved-page {
+  background-color: #fbaa6f !important;
 }
 
 .customer-data-label {

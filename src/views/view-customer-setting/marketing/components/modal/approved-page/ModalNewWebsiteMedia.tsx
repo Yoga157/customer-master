@@ -6,18 +6,22 @@ import { Dispatch } from "redux";
 import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
 import { Divider, Form, Input, Label } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
-import {
-  DropdownClearInput,
-  Button,
-  FileUpload,
-  RichTextEditor,
-  SearchInput,
-  TextAreaInput,
-  TextInput,
-} from "views/components/UI";
+import { DropdownClearInput, Button, TextInput } from "views/components/UI";
 
-const ModalNewWebsiteMedia: React.FC = (props) => {
+interface IData {
+  type: string;
+  name: string;
+}
+
+interface IProps {
+  data?: IData;
+}
+
+const ModalNewWebsiteMedia: React.FC<IProps> = (
+  props: React.PropsWithChildren<IProps>
+) => {
   const dispatch: Dispatch = useDispatch();
+  const { data } = props;
 
   const onSubmitNewAddress = async (values) => {
     console.log(values);
@@ -69,6 +73,7 @@ const ModalNewWebsiteMedia: React.FC = (props) => {
                   values={type}
                   onChanged={onChangeType}
                   mandatory={true}
+                  defaultValue={data?.type || null}
                 />
               </div>
               <div style={{ width: "100%" }}>
@@ -78,6 +83,7 @@ const ModalNewWebsiteMedia: React.FC = (props) => {
                   labelName="Name"
                   placeholder="Type name of the website or the social media here.."
                   mandatory={true}
+                  defaultValue={data?.name || null}
                 />
               </div>
             </div>

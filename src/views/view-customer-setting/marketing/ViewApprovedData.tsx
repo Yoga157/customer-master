@@ -8,7 +8,7 @@ import React, {
 // import "./ViewCustomerSetting.scss";
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { Icon, Divider, Form, Button } from "semantic-ui-react";
 import IStore from "models/IStore";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
@@ -33,6 +33,9 @@ const ViewApprovedData: React.FC = () => {
     createDate: "02 January 2024",
     industryClass: "Manufacturing",
   };
+
+  // edit view
+  const [editView, setEditView] = useState(false);
 
   // industry classification
   const onSubmitIndustryClassification = async (e) => {};
@@ -110,18 +113,37 @@ const ViewApprovedData: React.FC = () => {
     },
   ];
 
-  let addressOffice = [
+  let addressOfficeResponse = [
     {
       id: 1,
       address: "Jl. Jenderal Sudirman No. 55",
-      officeNumber: "0123456789, 0987689556, 678990",
+      phoneNumber: "0123456789",
+      alternateNumber: "0987689556",
+      faxNumber: " 678990",
     },
     {
       id: 2,
       address: "Jl. Hang Tuah No. 72",
-      officeNumber: "0123456789",
+      phoneNumber: "0123456789",
+      alternateNumber: "0987689556",
+      faxNumber: " 678990",
     },
   ];
+
+  let addressOffice = addressOfficeResponse.map((data) => {
+    return {
+      id: data.id,
+      address: data.address,
+      officeNumber: [
+        data.phoneNumber,
+        data.alternateNumber,
+        data.faxNumber,
+      ].join(", "),
+      phoneNumber: data.phoneNumber,
+      alternateNumber: data.alternateNumber,
+      faxNumber: data.faxNumber,
+    };
+  });
 
   let websiteMediaHeader = [
     {
@@ -213,7 +235,7 @@ const ViewApprovedData: React.FC = () => {
 
   return (
     <Fragment>
-      <Link to="/customer-setting" className="link">
+      <Link to={"/customer-setting"} className="link">
         {"< Back to Customer Setting List"}
       </Link>
 
@@ -280,7 +302,7 @@ const ViewApprovedData: React.FC = () => {
 
             <div style={{ display: "flex", flexDirection: "row" }}>
               <div className="data-container-column">
-                <div className="customer-data-container-left">
+                <div className="customer-data-container-end">
                   <label className="customer-data-label">Create Date</label>
                   <p
                     style={{ fontSize: "20px", fontWeight: "bold" }}
@@ -290,31 +312,57 @@ const ViewApprovedData: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="customer-data-container-left">
-                  <FinalForm
-                    onSubmit={(values: any) =>
-                      onSubmitIndustryClassification(values)
-                    }
-                    render={({ handleSubmit, pristine, invalid }) => (
-                      <Form onSubmit={handleSubmit}>
-                        <Field
-                          labelName="Industry Classification"
-                          name="industryClassification"
-                          component={DropdownClearInput}
-                          placeholder="Choose class..."
-                          options={industryClassificationOptions}
-                          onChanged={onChangeIndustryClassification}
-                          values={industryClassification}
-                          mandatory={true}
-                        />
-                      </Form>
-                    )}
-                  />
+                <div className="customer-data-container-end">
+                  {editView ? (
+                    <FinalForm
+                      onSubmit={(values: any) =>
+                        onSubmitIndustryClassification(values)
+                      }
+                      render={({ handleSubmit, pristine, invalid }) => (
+                        <Form onSubmit={handleSubmit}>
+                          <Field
+                            labelName="Industry Classification"
+                            name="industryClassification"
+                            component={DropdownClearInput}
+                            placeholder="Choose class..."
+                            options={industryClassificationOptions}
+                            onChanged={onChangeIndustryClassification}
+                            values={industryClassification}
+                            mandatory={true}
+                          />
+                        </Form>
+                      )}
+                    />
+                  ) : (
+                    <>
+                      <label className="customer-data-label">
+                        Industry Classification
+                      </label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.industryClass}
+                      </p>
+                    </>
+                  )}
                 </div>
               </div>
 
-              <div>
-                <Icon name="edit" />
+              <div
+                style={{ paddingTop: "14px" }}
+                onClick={() => setEditView(!editView)}
+              >
+                {!editView ? (
+                  <Icon name="edit" />
+                ) : (
+                  <Icon
+                    name="save"
+                    fitted
+                    circular
+                    className="save-button-approved-page"
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -353,6 +401,7 @@ const ViewApprovedData: React.FC = () => {
                       data={addressOffice}
                       header={addressOfficeHeader}
                       sequenceNum={true}
+                      Modal={ModalNewCustomerAddress}
                     />
                   </div>
                   <Divider className="margin-0"></Divider>
@@ -391,6 +440,7 @@ const ViewApprovedData: React.FC = () => {
                       data={websiteMedia}
                       header={websiteMediaHeader}
                       sequenceNum={true}
+                      Modal={ModalNewWebsiteMedia}
                     />
                   </div>
                   <Divider className="margin-0"></Divider>
@@ -429,6 +479,7 @@ const ViewApprovedData: React.FC = () => {
                       data={pic}
                       header={picHeader}
                       sequenceNum={true}
+                      Modal={ModalNewPIC}
                     />
                   </div>
                   <Divider className="margin-0"></Divider>
@@ -466,6 +517,8 @@ const ViewApprovedData: React.FC = () => {
                       data={relatedAccount}
                       header={relatedAccountHeader}
                       sequenceNum={true}
+                      Modal={ModalNewRelatedCustomer}
+                      relatedCustomer
                     />
                   </div>
                 </>
@@ -474,7 +527,7 @@ const ViewApprovedData: React.FC = () => {
           </div>
         </LoadingIndicator>
 
-        <Divider className="margin-0"></Divider>
+        {/* <Divider className="margin-0"></Divider>
 
         <div className="button-container">
           <div className="button-inner-container">
@@ -485,7 +538,7 @@ const ViewApprovedData: React.FC = () => {
               Save Change
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
     </Fragment>
   );
