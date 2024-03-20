@@ -6,14 +6,30 @@ interface IProps {
   header: any[];
   data: any[];
   sequenceNum: any;
+  customerName: string;
+  picName: string;
+  activePage?: number;
+  totalData?: number;
 }
 
 const TableRequestNewCustomer: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
-  const { header, data, sequenceNum } = props;
+  const {
+    header,
+    data,
+    sequenceNum,
+    customerName,
+    picName,
+    activePage,
+    totalData,
+  } = props;
   const highlightWords = (input: string): string => {
-    const wordsArray = ["Biffco".toLowerCase(), "Savannah N".toLowerCase()];
+    const wordsArray = [
+      customerName ? customerName.toLowerCase() : "",
+      picName ? picName.toLowerCase() : "",
+    ];
+
     const wordsToHighlight = wordsArray.join(" ");
     const words = input.split(" ");
 
@@ -45,13 +61,16 @@ const TableRequestNewCustomer: React.FC<IProps> = (
           {data.length == 0 ? (
             <Table.Row>
               <Table.Cell colSpan={16} textAlign="center">
-                No data
+                No-data
               </Table.Cell>
             </Table.Row>
           ) : (
             data.map((data, index) => (
               <Table.Row key={index}>
-                <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                {/* <Table.Cell textAlign="center">{index + 1}</Table.Cell> */}
+                <Table.Cell textAlign="center">
+                  {(activePage - 1) * totalData + index + 1}
+                </Table.Cell>
                 <Table.Cell>
                   <p
                     dangerouslySetInnerHTML={{

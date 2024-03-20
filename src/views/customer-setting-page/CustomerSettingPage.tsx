@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Tabs from "./components/customer-main/Tabs/Tabs";
 import NoNameAccountsPage from "./components/customer-main/no-name-accounts-page/NoNameAccountsPage";
 import NamedAccountsPage from "./components/customer-main/named-accounts-page/NamedAccountsPage";
 import ShareableAccountsPage from "./components/customer-main/shareable-accounts-page/ShareableAccountsPage";
 import AllAccountsPage from "./components/customer-main/all-accounts-page/AllAccountsPage";
+import { useLocation } from "react-router-dom";
 
 interface IProps {
   history: any;
@@ -14,6 +15,11 @@ interface TabType {
   label: string;
   index: number;
   Component: React.FC<IProps>;
+}
+
+interface ILocation {
+  isSuccess: boolean;
+  selectedTab: number;
 }
 
 const tabs: TabType[] = [

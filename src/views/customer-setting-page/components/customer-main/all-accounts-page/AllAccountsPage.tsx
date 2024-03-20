@@ -15,11 +15,14 @@ import LoadingIndicator from "views/components/loading-indicator/LoadingIndicato
 import { Pagination, Tooltips, Button } from "views/components/UI";
 import { selectUserResult } from "selectors/user/UserSelector";
 import IUserResult from "selectors/user/models/IUserResult";
+import ModCloseNewRequest from "./components/allaccountspage-main/form/form-closerequestnew/FormRequestNew";
 import TableToExcel from "@linways/table-to-excel";
 import { selectAllAccount } from "selectors/customer-setting/CustomerSettingSelector";
 import FilterCustomer from "./components/allaccountspage-main/filter/FilterCustomer";
 import { format } from "date-fns";
 import RouteEnum from "constants/RouteEnum";
+import Tabs from "../Tabs/Tabs";
+import { useLocation } from "react-router-dom";
 
 interface IProps {
   history: any;
@@ -211,6 +214,19 @@ const AllAccountsPage: React.FC<IProps> = (
         });
     }
   };
+
+  // const openModal = useCallback(() => {
+  //   if (isSuccess) {
+  //     dispatch(
+  //       ModalFirstLevelActions.OPEN(<ModCloseNewRequest />, ModalSizeEnum.Small)
+  //     );
+  //   }
+  // }, [dispatch, isSuccess]);
+
+  // console.log("Nilai Allacount", isSuccess);
+  // useEffect(() => {
+  //   openModal();
+  // }, [openModal]);
 
   const OnrequestNewCustomer = () => {
     history.push({

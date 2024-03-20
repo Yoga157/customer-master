@@ -30,11 +30,15 @@ import {
   composeValidators,
   createValidator,
 } from "revalidate";
+import { format } from "date-fns";
 import { selectReqCustomerNewAccount } from "selectors/customer-master/CustomerMasterSelector";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import { selectUserResult } from "selectors/user/UserSelector";
 import "./addNewCustomerSetting.scss";
+import * as CustomerName from "stores/customer-name/CustomerNameActivityActions";
+import CustomerMasterPostModel from "stores/customer-master/models/CustomerMasterPostModel";
+import RouteEnum from "constants/RouteEnum";
 
 interface IProps {
   history: any;
@@ -48,41 +52,47 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   const tableData = useSelector((state: IStore) =>
     selectReqCustomerNewAccount(state)
   );
-  const [allCustomerData, setAllCustomerData] = useState(tableData.rows);
-  const [reqCustomerPageSize, setReqCustomerPageSize] = useState(10);
-  const [reqCustomerActivePage, setReqCustomerActivePage] = useState(1);
-  const [reqCustomerData, setReqCustomerData] = useState(
-    allCustomerData.slice(0, reqCustomerPageSize)
-  );
+  // console.log("Hasil Tabel", tableData);
+
   const history = useHistory();
-  const [pageSize, setPage] = useState(10);
-  const activePage = useSelector(
-    (state: IStore) => state.customerSetting.activePage
-  );
-  const [titleCustomer, setTitleCustomer] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [picName, setPicName] = useState("");
-
-  // fungsi mengatur perubahan halaman Request New Customer
-  const reqCustomerChangePage = (e, page) => {
-    const startIndex = (page.activePage - 1) * reqCustomerPageSize;
-    const endIndex = startIndex + reqCustomerPageSize;
-    const paginatedData = allCustomerData.slice(startIndex, endIndex);
-
-    setReqCustomerData(paginatedData);
-    setReqCustomerActivePage(page.activePage);
-  };
-
+  const [searchedCustomerName, setSearchedCustomerName] = useState("");
+  const [searchedPicName, setSearcedhPicName] = useState("");
+  const [searchedTitleCust, setSearchedTitleCust] = useState("");
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+  const activePage = useSelector(
+    (state: IStore) => state.customerMaster.activePage
+  );
+  const [pageSize, setPage] = useState(10);
 
   const [address, setAddress] = useState({ address: "" });
   const [uploadFile, setUploadFile] = useState("");
 
+  const handlePaginationChange = (e: any, data: any) => {
+    dispatch(CustomerMasterActions.setActivePage(data.activePage));
+
+    // if (window.location.pathname === "/customer-setting/add") {
+    dispatch(
+      CustomerMasterActions.requestSearchCustomerMaster(
+        data.activePage,
+        pageSize,
+        "CustomerID",
+        "ascending",
+        searchedTitleCust,
+        searchedCustomerName,
+        searchedPicName
+      )
+    );
+  };
+
+  const isRequesting: boolean = useSelector((state: IStore) =>
+    selectRequesting(state, [CustomerMasterActions.CLEAR_RESULT_CM])
+  );
+
   const onSubmitSearch = async (data) => {
     dispatch(
       CustomerMasterActions.requestSearchCustomerMaster(
-        1,
-        10,
+        activePage,
+        pageSize,
         "CustomerID",
         "ascending",
         data.titleCustomer,
@@ -90,11 +100,52 @@ const AddNewCustomerSetting: React.FC<IProps> = (
         data.picName
       )
     );
+    dispatch(CustomerMasterActions.setActivePage(1));
+    setSearchedCustomerName(data.customerName);
+    setSearcedhPicName(data.picName);
+    setSearchedTitleCust(data.titleCustomer);
+  };
+
+  const onSubmitHandler = async (data: any) => {
+    const userId: any = localStorage.getItem("userLogin");
+    const date = format(new Date(), "yyyy-MM-dd");
+    const isSuccess = true;
+
+    const RequestNewCustomer = new CustomerMasterPostModel(data);
+    RequestNewCustomer.titleCustomer = searchedTitleCust;
+    RequestNewCustomer.customerName = searchedCustomerName;
+    RequestNewCustomer.picName = searchedPicName;
+    RequestNewCustomer.customerAddress = data.customerAddress;
+    RequestNewCustomer.phoneNumber = data.phoneNumber;
+    RequestNewCustomer.industryClass = data.industryClass;
+    RequestNewCustomer.website = data.website;
+    RequestNewCustomer.socialMedia = data.socialMedia;
+    RequestNewCustomer.picPhoneNumber = data.picPhoneNumber;
+    RequestNewCustomer.picJobTitle = data.picJobTitle;
+    RequestNewCustomer.picEmail = data.picEmail;
+    RequestNewCustomer.createdUserID = JSON.parse(userId).employeeID;
+    RequestNewCustomer.modifyUserID = JSON.parse(userId).employeeID;
+
+    dispatch(
+      CustomerMasterActions.postNewCustomerMaster(RequestNewCustomer)
+    ).then(() => {
+      dispatch(CustomerMasterActions.setActiveTabs(4));
+      // props.history.push({
+      //   pathname: RouteEnum.CustomerSetting,
+      //   state: { isSuccess },
+      // });
+    });
+    dispatch(CustomerMasterActions.clearResult());
   };
 
   const cancelClick = () => {
+    setSearchedCustomerName("");
     history.push("/customer-setting");
   };
+
+  useEffect(() => {
+    dispatch(CustomerMasterActions.clearResult());
+  }, []);
 
   return (
     <Fragment>
@@ -166,28 +217,33 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                 )}
               />
 
-              <div className="container-recheck">
-                {tableData.rows.length === 0 ? (
-                  <div className="info-recheck">
-                    <p className="p-recheck">No data</p>
-                  </div>
-                ) : (
-                  <div className="info-recheck">
-                    <p className="p-recheck">
-                      There are{" "}
-                      <span style={{ fontWeight: "bold" }}>
-                        {tableData.rows.length}
-                      </span>{" "}
-                      result from the customer search{" "}
-                      <span style={{ fontWeight: "bold" }}>
-                        {tableData.rows.customerName}.{" "}
-                      </span>
-                      Please recheck again before you make new customers
-                      request.
-                    </p>
-                  </div>
-                )}
-              </div>
+              <LoadingIndicator isActive={isRequesting}>
+                <div className="container-recheck">
+                  {tableData.rows.length === 0 ? (
+                    <div className="info-recheck">
+                      <p className="p-recheck">No-data</p>
+                    </div>
+                  ) : (
+                    <div className="info-recheck">
+                      <p className="p-recheck">
+                        There are{" "}
+                        <span style={{ fontWeight: "bold" }}>
+                          {tableData.totalRow}
+                        </span>{" "}
+                        result from the customer search{" "}
+                        <span style={{ fontWeight: "bold" }}>
+                          {searchedCustomerName
+                            ? searchedCustomerName.charAt(0).toUpperCase() +
+                              searchedCustomerName.slice(1)
+                            : ""}
+                        </span>{" "}
+                        Please recheck again before you make new customers
+                        request.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </LoadingIndicator>
             </div>
 
             <div className="padding-horizontal">
@@ -195,18 +251,22 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                 data={tableData.rows}
                 header={data.reqNewCustomerHeader}
                 sequenceNum={true}
+                customerName={searchedCustomerName}
+                picName={searchedPicName}
+                activePage={activePage}
+                totalData={tableData.rows.length}
               />
               <div style={{ marginTop: "1rem" }}>
                 <Pagination
-                  activePage={reqCustomerActivePage}
-                  onPageChange={(e, data) => reqCustomerChangePage(e, data)}
-                  totalPage={allCustomerData.length}
-                  pageSize={reqCustomerPageSize}
+                  activePage={activePage}
+                  onPageChange={(e, data) => handlePaginationChange(e, data)}
+                  totalPage={tableData.totalRow}
+                  pageSize={pageSize}
                 />
               </div>
             </div>
             {tableData.rows.length === 0 ? (
-              <div className="recheck-submit-pad" style={{ opacity: 0.7 }}>
+              <div className="recheck-submit-pad" style={{ opacity: 0.5 }}>
                 <div className="container-recheck-submit-disable">
                   <input
                     type="checkbox"
@@ -247,7 +307,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
             <Divider></Divider>
             {showAdditionalInfo && (
               <FinalForm
-                onSubmit={(values: any) => onSubmitSearch(values)}
+                onSubmit={(values: any) => onSubmitHandler(values)}
                 render={({ handleSubmit, pristine, invalid }) => (
                   <Form onSubmit={handleSubmit}>
                     <div>
@@ -259,15 +319,13 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                         <div className="container-flex-customer">
                           <div className="container-address">
                             <Field
-                              name="address"
+                              name="customerAddress"
                               component={RichTextEditor}
                               placeholder="2118 Thornridge Cir. Syracuse"
                               labelName="Customer Address"
-                              // value={address}
-                              // defaultValue={address}
                             />
                           </div>
-                          <div className="container-upload">
+                          {/* <div className="container-upload">
                             <Field
                               name="uploadBusinessCard"
                               component={FileUpload}
@@ -276,9 +334,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               onChanged={(e) =>
                                 setUploadFile(e.target.files[0])
                               }
-                              // mandatory={true}
                             />
-                          </div>
+                          </div> */}
                         </div>
 
                         <Grid style={{ margin: "0" }}>
@@ -288,7 +345,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               className="FullGrid767 LabelNameLabel"
                             >
                               <Field
-                                name="OfficeNumber"
+                                name="phoneNumber"
                                 component={TextInput}
                                 labelName="Office Number"
                               />
@@ -297,14 +354,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               <Field
                                 name="industryClassification"
                                 component={SelectInput}
-                                // onChanged={onChangeCustomerPIC}
-                                // placeholder="e.g.Jhon Doe.."
                                 labelName="Industry Classification"
                                 allowAdditions={true}
-                                // onAddItems={onAddCustomerPIC}
-                                // mandatory={false}
-                                // options={customerPICStore}
-                                // values={customerPICID}
                               />
                             </Grid.Column>
                             <Grid.Column width={5} className="FullGrid767">
@@ -317,7 +368,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
 
                             <Grid.Column width={4} className="FullGrid767">
                               <Field
-                                name="sosialMedia"
+                                name="socialMedia"
                                 component={TextInput}
                                 // placeholder="e.g.Jhon Doe .."
                                 labelName="Social Media"
@@ -335,21 +386,21 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 className="FullGrid767 LabelNameLabel"
                               >
                                 <Field
-                                  name="picMobilePhone"
+                                  name="picPhoneNumber"
                                   component={TextInput}
                                   labelName="PIC Mobile Phone"
                                 />
                               </Grid.Column>
                               <Grid.Column width={6} className="FullGrid767">
                                 <Field
-                                  name="jobTitle"
+                                  name="picJobTitle"
                                   component={TextInput}
                                   labelName="Job Title"
                                 />
                               </Grid.Column>
                               <Grid.Column width={6} className="FullGrid767">
                                 <Field
-                                  name="email"
+                                  name="picEmail"
                                   component={TextInput}
                                   labelName="Email"
                                 />
@@ -359,23 +410,23 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                         </Segment>
                       </div>
                       <Divider></Divider>
-                      <div className="button-container">
-                        <div className="button-inner-container">
-                          <Button
-                            style={{ marginRight: "1rem" }}
-                            type="button"
-                            onClick={cancelClick}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            color="blue"
-                            style={{ marginRight: "1rem" }}
-                            type="submit"
-                          >
-                            Submit
-                          </Button>
-                        </div>
+                    </div>
+                    <div className="button-container">
+                      <div className="button-inner-container">
+                        <Button
+                          style={{ marginRight: "1rem" }}
+                          type="button"
+                          onClick={cancelClick}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          color="blue"
+                          style={{ marginRight: "1rem" }}
+                          type="submit"
+                        >
+                          Submit
+                        </Button>
                       </div>
                     </div>
                   </Form>
