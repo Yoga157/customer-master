@@ -49,7 +49,7 @@ const NewRequestCustomerClose: React.FC<IProps> = (
 
         <Divider></Divider>
         <div style={{ textAlign: "center" }}>
-          <Button type="button" onClick={cancelClick}>
+          <Button type="button" color="blue" onClick={cancelClick}>
             Cancel
           </Button>
         </div>

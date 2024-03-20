@@ -1,16 +1,9 @@
-import React, {
-  useEffect,
-  Fragment,
-  useState,
-  useCallback,
-  useRef,
-} from "react";
+import React, { useEffect, Fragment, useState, useRef } from "react";
 import * as data from "./data";
 import {
   Button,
   Pagination,
   RichTextEditor,
-  FileUpload,
   TextInput,
   SelectInput,
 } from "views/components/UI";
@@ -19,24 +12,20 @@ import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import IStore from "models/IStore";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import TableRequestNewCustomer from "./components/table/table-request-new-customer/TableRequestNewCustomer";
 import { reqNewCustomerData } from "./data";
 import { Form, Grid, Divider, Segment } from "semantic-ui-react";
-import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
 import {
   combineValidators,
   isRequired,
   composeValidators,
   createValidator,
 } from "revalidate";
-import { format } from "date-fns";
 import { selectReqCustomerNewAccount } from "selectors/customer-master/CustomerMasterSelector";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
-import { selectUserResult } from "selectors/user/UserSelector";
 import "./addNewCustomerSetting.scss";
-import * as CustomerName from "stores/customer-name/CustomerNameActivityActions";
 import CustomerMasterPostModel from "stores/customer-master/models/CustomerMasterPostModel";
 import RouteEnum from "constants/RouteEnum";
 
@@ -52,8 +41,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   const tableData = useSelector((state: IStore) =>
     selectReqCustomerNewAccount(state)
   );
-  // console.log("Hasil Tabel", tableData);
-
   const history = useHistory();
   const [searchedCustomerName, setSearchedCustomerName] = useState("");
   const [searchedPicName, setSearcedhPicName] = useState("");
@@ -63,8 +50,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
     (state: IStore) => state.customerMaster.activePage
   );
   const [pageSize, setPage] = useState(10);
-
-  const [address, setAddress] = useState({ address: "" });
   const [uploadFile, setUploadFile] = useState("");
 
   const handlePaginationChange = (e: any, data: any) => {
@@ -131,7 +116,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
       dispatch(CustomerMasterActions.setSuccessModal(true));
       props.history.push({
         pathname: RouteEnum.CustomerSetting,
-        // state: { isSuccess },
       });
     });
     dispatch(CustomerMasterActions.clearResult());
@@ -139,7 +123,10 @@ const AddNewCustomerSetting: React.FC<IProps> = (
 
   const cancelClick = () => {
     setSearchedCustomerName("");
-    history.push("/customer-setting");
+    dispatch(CustomerMasterActions.setActiveTabs(4));
+    props.history.push({
+      pathname: RouteEnum.CustomerSetting,
+    });
   };
 
   useEffect(() => {
@@ -148,10 +135,10 @@ const AddNewCustomerSetting: React.FC<IProps> = (
 
   return (
     <Fragment>
-      <div ref={linkRef}>
-        <Link to="/customer-setting" className="link">
-          {"< Back to Customer List"}
-        </Link>
+      <div>
+        <div onClick={cancelClick} style={{ cursor: "pointer" }}>
+          <p className="link">{"< Back to Customer List"}</p>
+        </div>
         <LoadingIndicator>
           <div className="form-container">
             <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -162,14 +149,16 @@ const AddNewCustomerSetting: React.FC<IProps> = (
             <div className="FullContainer">
               <FinalForm
                 onSubmit={(values: any) => onSubmitSearch(values)}
-                render={({ handleSubmit, pristine, invalid }) => (
+                render={({ handleSubmit, pristine, invalid, values }) => (
                   <Form onSubmit={handleSubmit}>
                     <Segment className="LightYellowContainer">
                       <Grid>
-                        <Grid.Row columns="equal">
+                        <Grid.Row>
                           <Grid.Column
-                            width={3}
-                            className="FullGrid767 LabelNameLabel"
+                            width={16}
+                            mobile={16}
+                            tablet={16}
+                            computer={3}
                           >
                             <Field
                               name="titleCustomer"
@@ -179,7 +168,12 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               mandatory={false}
                             />
                           </Grid.Column>
-                          <Grid.Column width={7} className="FullGrid767">
+                          <Grid.Column
+                            width={16}
+                            mobile={16}
+                            tablet={16}
+                            computer={7}
+                          >
                             <Field
                               name="customerName"
                               component={TextInput}
@@ -188,7 +182,12 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               mandatory={false}
                             />
                           </Grid.Column>
-                          <Grid.Column width={6} className="FullGrid767">
+                          <Grid.Column
+                            width={16}
+                            mobile={16}
+                            tablet={16}
+                            computer={6}
+                          >
                             <Field
                               name="picName"
                               component={TextInput}
@@ -199,14 +198,25 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                           </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns="equal">
-                          <Grid.Column>
+                          <Grid.Column
+                            width={16}
+                            mobile={16}
+                            tablet={16}
+                            computer={16}
+                          >
                             <Button
                               type="submit"
                               color="blue"
-                              disabled={false}
+                              disabled={
+                                pristine ||
+                                invalid ||
+                                !values.titleCustomer ||
+                                !values.customerName ||
+                                !values.picName
+                              }
                               floated="right"
                               size="small"
-                              content="Check Customer Avability"
+                              content="Check Customer Availability"
                             />
                           </Grid.Column>
                         </Grid.Row>
@@ -216,7 +226,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                 )}
               />
 
-              <LoadingIndicator isActive={isRequesting}>
+              <LoadingIndicator>
                 <div className="container-recheck">
                   {tableData.rows.length === 0 ? (
                     <div className="info-recheck">
@@ -226,16 +236,14 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                     <div className="info-recheck">
                       <p className="p-recheck">
                         There are{" "}
-                        <span style={{ fontWeight: "bold" }}>
-                          {tableData.totalRow}
-                        </span>{" "}
+                        <b style={{ color: "black" }}>{tableData.totalRow}</b>{" "}
                         result from the customer search{" "}
-                        <span style={{ fontWeight: "bold" }}>
+                        <b style={{ color: "black" }}>
                           {searchedCustomerName
                             ? searchedCustomerName.charAt(0).toUpperCase() +
                               searchedCustomerName.slice(1)
                             : ""}
-                        </span>{" "}
+                        </b>{" "}
                         Please recheck again before you make new customers
                         request.
                       </p>
@@ -307,7 +315,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
             {showAdditionalInfo && (
               <FinalForm
                 onSubmit={(values: any) => onSubmitHandler(values)}
-                render={({ handleSubmit, pristine, invalid }) => (
+                render={({ handleSubmit, pristine, invalid, values }) => (
                   <Form onSubmit={handleSubmit}>
                     <div>
                       <h1 className="page-title-customer grey">
@@ -324,52 +332,65 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               labelName="Customer Address"
                             />
                           </div>
-                          {/* <div className="container-upload">
-                            <Field
-                              name="uploadBusinessCard"
-                              component={FileUpload}
-                              labelName="Upload Business Card"
-                              placeholder="Pick your bussines card image.."
-                              onChanged={(e) =>
-                                setUploadFile(e.target.files[0])
-                              }
-                            />
-                          </div> */}
                         </div>
 
                         <Grid style={{ margin: "0" }}>
                           <Grid.Row columns="equal">
                             <Grid.Column
-                              width={3}
-                              className="FullGrid767 LabelNameLabel"
+                              width={16}
+                              mobile={16}
+                              tablet={16}
+                              computer={3}
+                              className="FullGrid767"
                             >
                               <Field
                                 name="phoneNumber"
                                 component={TextInput}
                                 labelName="Office Number"
+                                placeholder="e.g.021345 .."
                               />
                             </Grid.Column>
-                            <Grid.Column width={4} className="FullGrid767">
+                            <Grid.Column
+                              width={16}
+                              mobile={16}
+                              tablet={16}
+                              computer={4}
+                              className="FullGrid767"
+                            >
                               <Field
                                 name="industryClassification"
                                 component={SelectInput}
                                 labelName="Industry Classification"
                                 allowAdditions={true}
+                                placeholder="e.g.Manufacturing .."
                               />
                             </Grid.Column>
-                            <Grid.Column width={5} className="FullGrid767">
+                            <Grid.Column
+                              width={16}
+                              mobile={16}
+                              tablet={16}
+                              computer={5}
+                              className="FullGrid767"
+                            >
                               <Field
                                 name="website"
                                 component={TextInput}
                                 labelName="Website"
+                                placeholder="e.g.www.google.com .."
                               />
                             </Grid.Column>
 
-                            <Grid.Column width={4} className="FullGrid767">
+                            <Grid.Column
+                              width={16}
+                              mobile={16}
+                              tablet={16}
+                              computer={4}
+                              className="FullGrid767"
+                            >
                               <Field
                                 name="socialMedia"
                                 component={TextInput}
-                                // placeholder="e.g.Jhon Doe .."
+                                placeholder="e.g.social media .."
                                 labelName="Social Media"
                               />
                             </Grid.Column>
@@ -381,27 +402,45 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                           <Grid>
                             <Grid.Row columns="equal">
                               <Grid.Column
-                                width={4}
-                                className="FullGrid767 LabelNameLabel"
+                                width={16}
+                                mobile={16}
+                                tablet={16}
+                                computer={4}
+                                className="FullGrid767 "
                               >
                                 <Field
                                   name="picPhoneNumber"
                                   component={TextInput}
                                   labelName="PIC Mobile Phone"
+                                  placeholder="e.g.0812345.."
                                 />
                               </Grid.Column>
-                              <Grid.Column width={6} className="FullGrid767">
+                              <Grid.Column
+                                width={16}
+                                mobile={16}
+                                tablet={16}
+                                computer={6}
+                                className="FullGrid767"
+                              >
                                 <Field
                                   name="picJobTitle"
                                   component={TextInput}
                                   labelName="Job Title"
+                                  placeholder="e.g.Manager .."
                                 />
                               </Grid.Column>
-                              <Grid.Column width={6} className="FullGrid767">
+                              <Grid.Column
+                                width={16}
+                                mobile={16}
+                                tablet={16}
+                                computer={6}
+                                className="FullGrid767"
+                              >
                                 <Field
                                   name="picEmail"
                                   component={TextInput}
                                   labelName="Email"
+                                  placeholder="e.g.email@gmail.com.."
                                 />
                               </Grid.Column>
                             </Grid.Row>
@@ -423,6 +462,18 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                           color="blue"
                           style={{ marginRight: "1rem" }}
                           type="submit"
+                          disabled={
+                            pristine ||
+                            invalid ||
+                            !values.customerAddress ||
+                            !values.phoneNumber ||
+                            !values.industryClassification ||
+                            !values.website ||
+                            !values.socialMedia ||
+                            !values.picPhoneNumber ||
+                            !values.picJobTitle ||
+                            !values.picEmail
+                          }
                         >
                           Submit
                         </Button>

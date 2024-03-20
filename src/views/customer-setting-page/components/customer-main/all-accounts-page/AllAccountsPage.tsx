@@ -21,8 +21,6 @@ import { selectAllAccount } from "selectors/customer-setting/CustomerSettingSele
 import FilterCustomer from "./components/allaccountspage-main/filter/FilterCustomer";
 import { format } from "date-fns";
 import RouteEnum from "constants/RouteEnum";
-import Tabs from "../Tabs/Tabs";
-import { useLocation } from "react-router-dom";
 import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 
 interface IProps {
@@ -222,7 +220,7 @@ const AllAccountsPage: React.FC<IProps> = (
   const openModal = useCallback(() => {
     if (isSuccess) {
       dispatch(
-        ModalFirstLevelActions.OPEN(<ModCloseNewRequest />, ModalSizeEnum.Small)
+        ModalFirstLevelActions.OPEN(<ModCloseNewRequest />, ModalSizeEnum.Tiny)
       );
     }
   }, [dispatch, isSuccess]);
