@@ -4,6 +4,7 @@ import * as ActionUtility from "../../utilities/ActionUtility";
 import { ReduxDispatch } from "../../models/ReduxProps";
 import CustomerMasterModel from "./models/CustomerMasterModel";
 import CustomerMasterRow from "./models/CustomerMasterRow";
+import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 import ResultActions from "models/ResultActions";
 import IAction from "models/IAction";
 
@@ -48,4 +49,36 @@ export const requestSearchCustomerMaster = (
 export const SET_PAGE: string = "CustomerMasterActions.SET_PAGE";
 export const setActivePage = (activePage: number): IAction<number> => {
   return ActionUtility.createAction(SET_PAGE, activePage);
+};
+
+export const SET_TABS: string = "CustomerMasterActions.SET_TABS";
+export const setActiveTabs = (activeTabs: number): IAction<number> => {
+  return ActionUtility.createAction(SET_TABS, activeTabs);
+};
+
+export const SET_SUCCESS_MODAL: string =
+  "CustomerMasterActions.SET_SUCCESS_MODAL";
+export const setSuccessModal = (isSuccess: boolean): IAction<boolean> => {
+  return ActionUtility.createAction(SET_SUCCESS_MODAL, isSuccess);
+};
+
+export const CLEAR_RESULT_CM: string = "CustomerMasterActions.CLEAR_RESULT_CM";
+export const clearResult = (): IAction<CustomerMasterModel> => {
+  return ActionUtility.createAction(CLEAR_RESULT_CM);
+};
+
+export const POST_REQUEST_NEW_CUSTOMERS: string =
+  "CustomerMasterActions.POST_REQUEST_NEW_CUSTOMERS";
+export const POST_REQUEST_NEW_CUSTOMERS_FINISHED: string =
+  "CustomerMasterActions.POST_REQUEST_NEW_CUSTOMERS_FINISHED";
+
+export const postNewCustomerMaster = (data: CustomerMasterPostModel): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      POST_REQUEST_NEW_CUSTOMERS,
+      CustomerMasterEffect.postNewCustomerMaster,
+      data
+    );
+  };
 };

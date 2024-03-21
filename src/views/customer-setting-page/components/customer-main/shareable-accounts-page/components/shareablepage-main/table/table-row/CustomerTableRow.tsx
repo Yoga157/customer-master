@@ -231,7 +231,7 @@ const CustomerTableRow: React.FC<IProps> = (
         <Table.Cell>
           {" "}
           <div className="rowdata-created">
-            <p className="p-createB"> {rowData.modifiedBy}</p>{" "}
+            <p className="p-createBy"> {rowData.modifiedBy}</p>{" "}
           </div>{" "}
         </Table.Cell>
         <Table.Cell>

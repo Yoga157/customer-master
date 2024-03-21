@@ -4,6 +4,7 @@ import * as EffectUtility from "../../utilities/EffectUtility";
 import CustomerMasterModel from "./models/CustomerMasterModel";
 import CustomerMasterRow from "./models/CustomerMasterRow";
 import ResultActions from "models/ResultActions";
+import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 import { NumberFormatState } from "react-number-format";
 import { data } from "jquery";
 
@@ -30,5 +31,25 @@ export const requestSearchCustomerMaster = async (
   return EffectUtility.getToModel<CustomerMasterModel>(
     CustomerMasterModel,
     endpoint
+  );
+};
+
+export const clearResult = async (): Promise<any> => {
+  const clear = new CustomerMasterModel({});
+  return clear;
+};
+
+export const postNewCustomerMaster = async (
+  data: CustomerMasterPostModel
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = "CustomerSetting/InsertRequestNewCustomer";
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.postToModel<ResultActions>(
+    ResultActions,
+    endpoint,
+    data
   );
 };

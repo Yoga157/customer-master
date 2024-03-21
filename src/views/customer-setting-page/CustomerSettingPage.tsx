@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import Tabs from "./components/customer-main/Tabs/Tabs";
 import NoNameAccountsPage from "./components/customer-main/no-name-accounts-page/NoNameAccountsPage";
 import NamedAccountsPage from "./components/customer-main/named-accounts-page/NamedAccountsPage";
 import ShareableAccountsPage from "./components/customer-main/shareable-accounts-page/ShareableAccountsPage";
 import AllAccountsPage from "./components/customer-main/all-accounts-page/AllAccountsPage";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import IStore from "models/IStore";
 
 interface IProps {
   history: any;
@@ -14,6 +19,11 @@ interface TabType {
   label: string;
   index: number;
   Component: React.FC<IProps>;
+}
+
+interface ILocation {
+  isSuccess: boolean;
+  selectedTab: number;
 }
 
 const tabs: TabType[] = [
@@ -40,7 +50,13 @@ const tabs: TabType[] = [
 ];
 
 export default function CustomerSettingPage() {
-  const [selectedTab, setSelectedTab] = useState<number>(tabs[0].index);
+  const dispatch: Dispatch = useDispatch();
+  const activeTab = useSelector(
+    (state: IStore) => state.customerMaster.activeTabs
+  );
+
+  const [selectedTab, setSelectedTab] = useState<number>(activeTab);
+  dispatch(CustomerMasterActions.setActiveTabs(1));
 
   return (
     <div className="App">
