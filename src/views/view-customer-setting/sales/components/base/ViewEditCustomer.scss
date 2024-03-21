@@ -34,6 +34,10 @@
   margin: 0px !important;
 }
 
+.margin-bottom-0 {
+  margin-bottom: 0px !important;
+}
+
 .avgar-font {
   font-size: 24px !important;
   font-weight: bold !important;
@@ -80,6 +84,25 @@
   flex-direction: column !important;
   text-align: center !important;
   margin-right: 4rem !important;
+  margin-bottom: 14px !important;
+}
+
+.customer-data-container-left {
+  display: flex !important;
+  flex-direction: column !important;
+  margin-right: 4rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.customer-data-container-end {
+  display: flex !important;
+  flex-direction: column !important;
+  margin-right: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.save-button-approved-page {
+  background-color: #fbaa6f !important;
 }
 
 .customer-data-label {
@@ -360,6 +383,42 @@ s .line {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.business-card {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  background-color: #656dd1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 2rem;
+  color: white;
+  font-size: small;
+  cursor: pointer;
+}
+
+.match-button {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  background-color: #ffd500;
+  padding: 0.1rem 0.6rem;
+  width: fit-content;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+.warning-text {
+  padding: 1rem;
+  text-align: center;
+  border-radius: 2rem;
+}
+
+.data-container-column {
+  display: flex;
+  flex-direction: column;
+  padding-top: 14px;
 }
 
 @media only screen and (max-width: 767px) {
