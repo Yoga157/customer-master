@@ -165,6 +165,9 @@ const _createTableAllRows = (models: any[]): any[] => {
 const _mappingObjectTableAllRow = (model: any): any => {
   return {
     customerID: model.customerID === null ? null : model.customerID,
+    jdeCustomerID: model.jdeCustomerID === null ? null : model.jdeCustomerID,
+    customerGenID: model.customerGenID === null ? null : model.customerGenID,
+    industryClass: model.industryClass === null ? null : model.industryClass,
     customerCategory:
       model.customerCategory === "" ? "" : model.customerCategory,
     customerName: model.customerName === "" ? "" : model.customerName,
@@ -184,6 +187,8 @@ const _mappingObjectTableAllRow = (model: any): any => {
     modifiedBy: model.modifiedBy === "" ? "" : model.modifiedBy,
     modifiedDate: model.modifiedDate === "" ? null : model.modifiedDate,
     status: model.status === null ? null : model.status,
+    isNew: model.isNew === null ? null : model.isNew,
+    approvalStatus: model.approvalStatus === null ? null : model.approvalStatus,
   };
 };
 

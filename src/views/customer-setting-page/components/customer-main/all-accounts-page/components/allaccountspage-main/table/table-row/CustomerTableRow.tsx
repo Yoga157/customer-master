@@ -87,6 +87,8 @@ const CustomerTableRow: React.FC<IProps> = (
     });
   };
 
+  console.log(rowData);
+
   return (
     <Fragment>
       <Table.Row
@@ -176,11 +178,13 @@ const CustomerTableRow: React.FC<IProps> = (
           </div>
         </Table.Cell>
         <Table.Cell>
-          {rowData.named === false && rowData.shareable === false && (
-            <div className="no-name-label">
-              <p className="label-text">No Name Accounts</p>
-            </div>
-          )}
+          {rowData.named === false &&
+            rowData.shareable === false &&
+            rowData.isNew === false && (
+              <div className="no-name-label">
+                <p className="label-text">No Name Accounts</p>
+              </div>
+            )}
 
           {rowData.named === true && (
             <div className="named-label">
@@ -191,6 +195,12 @@ const CustomerTableRow: React.FC<IProps> = (
           {rowData.shareable === true && rowData.named === false && (
             <div className="shareable-label">
               <p className="label-text">Shareable Accounts</p>
+            </div>
+          )}
+
+          {rowData.isNew === true && (
+            <div className="new-account-label">
+              <p className="label-text">New Account</p>
             </div>
           )}
         </Table.Cell>
