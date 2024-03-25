@@ -163,7 +163,7 @@ const ViewEditCustomer: React.FC<IProps> = (
   const openMoreDetails = useCallback((): void => {
     dispatch(
       ModalFirstLevelActions.OPEN(
-        <ViewApprovedData isView />,
+        <ViewApprovedData isView={true} />,
         ModalSizeEnum.Large
       )
     );

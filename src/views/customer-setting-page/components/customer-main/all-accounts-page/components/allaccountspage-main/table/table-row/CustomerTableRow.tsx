@@ -87,7 +87,7 @@ const CustomerTableRow: React.FC<IProps> = (
     });
   };
 
-  console.log(rowData);
+  // console.log(rowData);
 
   return (
     <Fragment>
@@ -100,7 +100,7 @@ const CustomerTableRow: React.FC<IProps> = (
               ? "#ffe0d9"
               : rowData.status?.toUpperCase() === "PENDING"
               ? "#fffb9a"
-              : rowData.status?.toUpperCase() === "NEWACCOUNTS"
+              : rowData.isNew === true && role === "Marketing"
               ? "#FFF7CB"
               : "",
         }}

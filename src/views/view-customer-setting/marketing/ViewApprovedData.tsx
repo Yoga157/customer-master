@@ -23,7 +23,7 @@ import ModalNewPIC from "./components/modal/approved-page/ModalNewPIC";
 import ModalNewRelatedCustomer from "./components/modal/approved-page/ModalNewRelatedCustomer";
 
 interface IProps {
-  isView?;
+  isView?: boolean;
 }
 
 const ViewApprovedData: React.FC<IProps> = (
@@ -255,9 +255,7 @@ const ViewApprovedData: React.FC<IProps> = (
 
         <LoadingIndicator isActive={false}>
           <div
-            className={
-              `space-between-container` + (isView ? ` padding-horizontal` : ``)
-            }
+            className={`space-between-container padding-horizontal`}
             style={{
               backgroundColor: "#FFFB9A",
             }}
@@ -378,10 +376,7 @@ const ViewApprovedData: React.FC<IProps> = (
             </div>
           </div>
 
-          <div
-            className={isView && `padding-horizontal`}
-            style={{ margin: "2.5rem 0" }}
-          >
+          <div className={`padding-horizontal`} style={{ margin: "2.5rem 0" }}>
             <div className="grey get-data-container">
               <div className="accordion-container">
                 <div style={{ display: "flex", flexDirection: "row" }}>

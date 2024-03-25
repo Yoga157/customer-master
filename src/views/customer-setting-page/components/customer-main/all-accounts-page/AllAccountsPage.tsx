@@ -429,49 +429,16 @@ const AllAccountsPage: React.FC<IProps> = (
       </LoadingIndicator>
 
       {role === "Sales" && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "0.5rem",
-            right: 0,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            padding: "1rem",
-            zIndex: 999,
-            width: "auto",
-          }}
-        >
+        <div className="container-new-request-customer">
           <Button
             color="yellow"
             size="tiny"
-            style={{
-              width: "11.5rem",
-              height: "2rem",
-              fontSize: "0.7rem",
-              marginRight: "3.2rem",
-              position: "absolute",
-              zIndex: 1,
-            }}
+            className="btn-p-new-request"
             onClick={OnrequestNewCustomer}
           >
             REQUEST NEW CUSTOMER
           </Button>
-          <div
-            style={{
-              backgroundColor: "rgb(255, 214, 79)",
-              borderRadius: "50%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "3.3rem",
-              width: "3.3rem",
-              marginRight: "1rem",
-              position: "absolute",
-              zIndex: 1,
-            }}
-          >
+          <div className="btn-new-request" onClick={OnrequestNewCustomer}>
             <Icon
               name="user plus"
               style={{ fontSize: "1.4rem" }}

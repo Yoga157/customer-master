@@ -21,12 +21,12 @@ const ViewEditMarketing: React.FC = (props) => {
   const dispatch: Dispatch = useDispatch();
   const { id } = useParams<routeParams>();
 
-  let status = "REJECT";
+  let status = "APPROVE";
 
   return (
     <Fragment>
       {status == "APPROVE" ? (
-        <ViewApprovedData></ViewApprovedData>
+        <ViewApprovedData isView={false}></ViewApprovedData>
       ) : (
         <ViewApproval></ViewApproval>
       )}
