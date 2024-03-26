@@ -112,7 +112,11 @@ const CustomerTableRow: React.FC<IProps> = (
                 <Dropdown.Item
                   text="View/Edit"
                   icon="edit outline"
-                  onClick={() => onEdit(rowData.customerID)}
+                  onClick={() =>
+                    onEdit(
+                      rowData.isNew ? rowData.customerGenID : rowData.customerID
+                    )
+                  }
                 />
 
                 {rowData.named === false &&

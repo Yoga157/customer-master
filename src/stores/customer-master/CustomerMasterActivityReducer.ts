@@ -5,9 +5,11 @@ import baseReducer from "../../utilities/BaseReducer";
 import { Reducer } from "redux";
 import CustomerMasterModel from "./models/CustomerMasterModel";
 import ResultActions from "models/ResultActions";
+import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 
 export const initialState: ICustomerMasterState = {
   data: new CustomerMasterModel({}),
+  customerNewByGenId: new ResultActions({}),
   error: false,
   refreshPage: false,
   resultActions: new ResultActions({}),
@@ -80,6 +82,16 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
     return {
       ...state,
       isSuccess: action.payload!,
+    };
+  },
+
+  [CustomerMasterActions.REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    return {
+      ...state,
+      customerNewByGenId: action.payload!,
     };
   },
 });

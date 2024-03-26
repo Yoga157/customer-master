@@ -53,3 +53,14 @@ export const postNewCustomerMaster = async (
     data
   );
 };
+
+export const requestNewCustomerDetailByGenId = async (
+  genId: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `CustomerSetting/GetRequestNewCustomerByGenID?customerGenID=${genId}`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
+};

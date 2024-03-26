@@ -6,6 +6,7 @@ import React, {
   useRef,
 } from "react";
 // import "./ViewCustomerSetting.scss";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
@@ -21,12 +22,14 @@ const ViewEditMarketing: React.FC = (props) => {
   const dispatch: Dispatch = useDispatch();
   const { id } = useParams<routeParams>();
 
-  let status = "REJECT";
+  dispatch(CustomerMasterActions.setActiveTabs(4));
+
+  let status = "APPROVE";
 
   return (
     <Fragment>
       {status == "APPROVE" ? (
-        <ViewApprovedData></ViewApprovedData>
+        <ViewApprovedData isView={false}></ViewApprovedData>
       ) : (
         <ViewApproval></ViewApproval>
       )}
