@@ -24,7 +24,7 @@ const ViewEditMarketing: React.FC = (props) => {
 
   dispatch(CustomerMasterActions.setActiveTabs(4));
 
-  let status = "APPROVE";
+  let status = "PENDING";
 
   return (
     <Fragment>
