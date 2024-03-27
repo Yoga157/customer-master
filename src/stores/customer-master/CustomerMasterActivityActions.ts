@@ -13,6 +13,7 @@ type ActionUnion =
   | HttpErrorResponseModel
   | CustomerMasterModel
   | CustomerMasterRow
+  | CustomerMasterPostModel
   | boolean
   | ResultActions;
 
@@ -79,6 +80,22 @@ export const postNewCustomerMaster = (data: CustomerMasterPostModel): any => {
       POST_REQUEST_NEW_CUSTOMERS,
       CustomerMasterEffect.postNewCustomerMaster,
       data
+    );
+  };
+};
+
+export const REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID: string =
+  "CustomerMasterActions.REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID";
+export const REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID_FINISHED: string =
+  "CustomerMasterActions.REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID_FINISHED";
+
+export const requestNewCustomerDetailByGenId = (genId: number): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID,
+      CustomerMasterEffect.requestNewCustomerDetailByGenId,
+      genId
     );
   };
 };

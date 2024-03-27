@@ -103,9 +103,9 @@ const AddNewCustomerSetting: React.FC<IProps> = (
     RequestNewCustomer.industryClass = data.industryClass;
     RequestNewCustomer.website = data.website;
     RequestNewCustomer.socialMedia = data.socialMedia;
-    RequestNewCustomer.picPhoneNumber = data.picPhoneNumber;
+    RequestNewCustomer.picMobilePhone = data.picPhoneNumber;
     RequestNewCustomer.picJobTitle = data.picJobTitle;
-    RequestNewCustomer.picEmail = data.picEmail;
+    RequestNewCustomer.picEmailAddr = data.picEmail;
     RequestNewCustomer.createdUserID = JSON.parse(userId).employeeID;
     RequestNewCustomer.modifyUserID = JSON.parse(userId).employeeID;
 

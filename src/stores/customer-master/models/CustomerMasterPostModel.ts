@@ -13,10 +13,11 @@ export default class CustomerMasterPostModel extends BaseModel {
   industryClass?: string = "";
   website?: string = "";
   socialMedia?: string = "";
-  picPhoneNumber?: string = "";
+  picMobilePhone?: string = "";
   picJobTitle?: string = "";
-  picEmail?: string = "";
+  picEmailAddr?: string = "";
   createdUserID?: number = 0;
+  requestor?: string = "";
   modifyUserID?: number = 0;
 
   constructor(data: Partial<CustomerMasterPostModel>) {
@@ -33,9 +34,9 @@ export default class CustomerMasterPostModel extends BaseModel {
       industryClass: ConversionTypeEnum.String,
       website: ConversionTypeEnum.String,
       socialMedia: ConversionTypeEnum.String,
-      picPhoneNumber: ConversionTypeEnum.String,
+      picMobilePhone: ConversionTypeEnum.String,
       picJobTitle: ConversionTypeEnum.String,
-      picEmail: ConversionTypeEnum.String,
+      picEmailAddr: ConversionTypeEnum.String,
       createdUserID: ConversionTypeEnum.Number,
       modifyUserID: ConversionTypeEnum.Number,
     };
