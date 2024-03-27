@@ -87,7 +87,7 @@ const CustomerTableRow: React.FC<IProps> = (
     });
   };
 
-  console.log(rowData);
+  // console.log(rowData);
 
   return (
     <Fragment>
@@ -95,12 +95,12 @@ const CustomerTableRow: React.FC<IProps> = (
         key={rowData.CustomerID}
         style={{
           backgroundColor:
-            rowData.requestedBy === userId.fullName &&
+            rowData.requestedBy === userId?.fullName &&
             rowData.status?.toUpperCase() === "REJECTED"
               ? "#ffe0d9"
               : rowData.status?.toUpperCase() === "PENDING"
               ? "#fffb9a"
-              : rowData.status?.toUpperCase() === "NEWACCOUNTS"
+              : rowData.isNew === true && role === "Marketing"
               ? "#FFF7CB"
               : "",
         }}
@@ -121,6 +121,7 @@ const CustomerTableRow: React.FC<IProps> = (
 
                 {rowData.named === false &&
                   rowData.shareable === false &&
+                  rowData.isNew === false &&
                   role === "Sales" && (
                     <Dropdown.Item
                       text="Claim Account"
@@ -174,9 +175,9 @@ const CustomerTableRow: React.FC<IProps> = (
                   </>
                 )}
 
-                {rowData.status != "CANCEL" && rowData.customerID == "" && (
+                {/* {rowData.status != "CANCEL" && rowData.customerID == "" && (
                   <Dropdown.Item text="Cancel" icon="remove circle" />
-                )}
+                )} */}
               </Dropdown.Menu>
             </Dropdown>
           </div>
