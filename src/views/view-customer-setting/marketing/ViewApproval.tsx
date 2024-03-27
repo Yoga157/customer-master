@@ -101,7 +101,7 @@ const ViewApproval: React.FC = (props) => {
         ModalSizeEnum.Small
       )
     );
-  }, [dispatch]);
+  }, [dispatch, customer]);
 
   const openMatch = useCallback(
     (matchCustomer): void => {
@@ -116,7 +116,7 @@ const ViewApproval: React.FC = (props) => {
         )
       );
     },
-    [dispatch]
+    [dispatch, customer]
   );
 
   const isRequesting: boolean = useSelector((state: IStore) =>

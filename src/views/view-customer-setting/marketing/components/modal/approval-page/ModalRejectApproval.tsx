@@ -14,24 +14,26 @@ import {
 } from "views/components/UI";
 
 interface ICustomer {
-  customerTitle: string;
-  customerName: string;
-  industryClassification: string;
-  customerAddress: string;
-  officeNumber: string;
-  website: string;
-  socialMedia: string;
-  picName: string;
-  jobTitle: string;
-  picMobilePhone: string;
-  email: string;
+  titleCustomer: any;
+  customerName: any;
+  industryClass: any;
+  customerAddress: any;
+  phoneNumber: any;
+  website: any;
+  socialMedia: any;
+  picName: any;
+  picJobTitle: any;
+  picMobilePhone: any;
+  picEmailAddr: any;
+  requestor: any;
+  modifyUserID: any;
 }
 
 interface IMatchCustomer {
-  customerTitle: string;
+  titleCustomer: string;
   customerName: string;
   picName: string;
-  custID: any;
+  customerID: any;
 }
 
 interface IProps {
@@ -45,6 +47,7 @@ const ModalRejectApproval: React.FC<IProps> = (
 ) => {
   const dispatch: Dispatch = useDispatch();
   const { customer, matchCustomer, jenis } = props;
+  console.log(customer);
 
   const [remark, setRemark] = useState("");
 
@@ -82,7 +85,7 @@ const ModalRejectApproval: React.FC<IProps> = (
         <div className="customer-data-container-left">
           <label className="customer-data-label">Title Customer</label>
           <p style={{ fontSize: "20px", fontWeight: "bold" }} className="grey">
-            {customer.customerTitle}
+            {customer.titleCustomer}
           </p>
         </div>
         <div className="customer-data-container-left">
@@ -119,7 +122,7 @@ const ModalRejectApproval: React.FC<IProps> = (
                 style={{ fontSize: "20px", fontWeight: "bold" }}
                 className="grey"
               >
-                {matchCustomer.customerTitle}
+                {matchCustomer.titleCustomer.toUpperCase()}
               </p>
             </div>
             <div className="customer-data-container-left">
@@ -140,7 +143,7 @@ const ModalRejectApproval: React.FC<IProps> = (
                 style={{ fontSize: "20px", fontWeight: "bold" }}
                 className="grey"
               >
-                {matchCustomer.custID}
+                {matchCustomer.customerID}
               </p>
             </div>
             <div className="customer-data-container-left">
