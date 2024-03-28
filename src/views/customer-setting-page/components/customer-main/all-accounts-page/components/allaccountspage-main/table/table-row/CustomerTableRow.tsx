@@ -205,14 +205,22 @@ const CustomerTableRow: React.FC<IProps> = (
 
           {rowData.isNew === true && (
             <div className="new-account-label">
-              <p className="label-text">New Account</p>
+              <p className="label-text">New Accounts</p>
             </div>
           )}
         </Table.Cell>
-        <Table.Cell textAlign="center">{rowData.JDECustId}</Table.Cell>
-        <Table.Cell textAlign="center">{rowData.customerID}</Table.Cell>
-        <Table.Cell textAlign="center">{rowData.IndustryClass}</Table.Cell>
-        <Table.Cell>{rowData.customerCategory}</Table.Cell>
+        <Table.Cell textAlign="center">
+          {rowData.JDECustId ? rowData.JDECustId : "-"}
+        </Table.Cell>
+        <Table.Cell textAlign="center">
+          {rowData.customerID == 0 ? "-" : rowData.customerID}
+        </Table.Cell>
+        <Table.Cell textAlign="center">
+          {rowData.IndustryClass == null ? "-" : rowData.IndustryClass}
+        </Table.Cell>
+        <Table.Cell textAlign="center">
+          {rowData.customerCategory == null ? "-" : rowData.customerCategory}
+        </Table.Cell>
         <Table.Cell>
           <div className="name-container">
             <p className="head-text"> {rowData.customerName}</p>{" "}
@@ -221,22 +229,33 @@ const CustomerTableRow: React.FC<IProps> = (
         <Table.Cell>
           {" "}
           <div className="address-container">
-            <p style={{ fontSize: "1rem" }}> {rowData.customerAddress}</p>{" "}
+            <p
+              style={{ fontSize: "1rem" }}
+              dangerouslySetInnerHTML={{ __html: rowData.customerAddress }}
+            ></p>
           </div>
         </Table.Cell>
         <Table.Cell>
           <div className="project-container">
-            <p className="head-text"> {rowData.lastProjectName}</p>{" "}
+            <p className="head-text">
+              {" "}
+              {rowData.lastProjectName == null ? "-" : rowData.lastProjectName}
+            </p>{" "}
           </div>
         </Table.Cell>
         <Table.Cell>
           {" "}
           <div className="sales-container">
-            <p className="head-text"> {rowData.salesName} </p>{" "}
+            <p className="head-text">
+              {" "}
+              {rowData.salesName == null ? "-" : rowData.salesName}{" "}
+            </p>{" "}
           </div>
         </Table.Cell>
         <Table.Cell textAlign="center">
-          {rowData.pmoCustomer === true ? (
+          {rowData.isNew === true ? (
+            "-"
+          ) : rowData.pmoCustomer === true ? (
             <div style={{ textAlign: "center" }}>
               <span>Yes</span>
             </div>
@@ -249,7 +268,9 @@ const CustomerTableRow: React.FC<IProps> = (
         <Table.Cell>
           {" "}
           <div className="related-customer-container">
-            <p className="head-text"> {rowData.relatedCustomer}</p>{" "}
+            <p className="head-text">
+              {rowData.relatedCustomer == null ? "-" : rowData.relatedCustomer}
+            </p>
           </div>
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">
