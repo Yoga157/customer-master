@@ -63,6 +63,7 @@ const ModalSuggestionList: React.FC<IProps> = (
         ModalFirstLevelActions.OPEN(
           <ModalRejectApproval
             customer={customer}
+            customerGenId={"1"}
             matchCustomer={matchCustomer}
             jenis="match"
           />,

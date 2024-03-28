@@ -4,6 +4,7 @@ import React, { Fragment, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import { Divider, Form, Input, Label } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import {
@@ -12,6 +13,8 @@ import {
   FileUpload,
   RichTextEditor,
 } from "views/components/UI";
+import PostStatusNewCustomerModel from "stores/customer-master/models/PostStatusNewCustomerModel";
+import { useHistory, useLocation } from "react-router-dom";
 
 interface ICustomer {
   titleCustomer: any;
@@ -37,6 +40,7 @@ interface IMatchCustomer {
 }
 
 interface IProps {
+  customerGenId: string;
   customer: ICustomer;
   matchCustomer?: IMatchCustomer;
   jenis: string;
@@ -45,15 +49,26 @@ interface IProps {
 const ModalRejectApproval: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
+  const history = useHistory();
   const dispatch: Dispatch = useDispatch();
-  const { customer, matchCustomer, jenis } = props;
-  console.log(customer);
+  const { customer, customerGenId, matchCustomer, jenis } = props;
 
   const [remark, setRemark] = useState("");
 
   const onReject = async (data) => {
-    console.log(data);
-    // dispatch(ModalAction.CLOSE());
+    const rejectCustomerData = new PostStatusNewCustomerModel({});
+    rejectCustomerData.customerGenID = customerGenId;
+    rejectCustomerData.approvalStatus = "REJECT";
+    rejectCustomerData.remark = data.remark;
+
+    await dispatch(
+      CustomerMasterActions.updateStatusNewCustomer(rejectCustomerData)
+    );
+    dispatch(ModalAction.CLOSE());
+
+    history.push({
+      pathname: "customer-setting/",
+    });
   };
 
   const cancelClick = () => {
@@ -164,7 +179,7 @@ const ModalRejectApproval: React.FC<IProps> = (
         render={({ handleSubmit, pristine, invalid }) => (
           <Form onSubmit={handleSubmit}>
             <Field
-              name="story"
+              name="remark"
               initialValue={remark}
               component={RichTextEditor}
               placeholder="Reason to reject the request data"

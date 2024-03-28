@@ -18,21 +18,27 @@ interface routeParams {
   id: string;
 }
 
-const ViewEditMarketing: React.FC = (props) => {
+interface IProps {
+  status: string;
+}
+
+const ViewEditMarketing: React.FC<IProps> = (
+  props: React.PropsWithChildren<IProps>
+) => {
   const dispatch: Dispatch = useDispatch();
+  const { status } = props;
   const { id } = useParams<routeParams>();
 
   dispatch(CustomerMasterActions.setActiveTabs(4));
 
-  let status = "PENDING";
+  // let status = "PENDING";
 
   return (
     <Fragment>
-      {status == "APPROVE" ? (
+      {(status == "APPROVE" || status == "NOT_NEW") && (
         <ViewApprovedData isView={false}></ViewApprovedData>
-      ) : (
-        <ViewApproval></ViewApproval>
       )}
+      {status == "PENDING" && <ViewApproval></ViewApproval>}
     </Fragment>
   );
 };

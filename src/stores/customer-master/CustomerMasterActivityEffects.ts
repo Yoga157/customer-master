@@ -76,3 +76,14 @@ export const updateStatusNewCustomer = async (
   );
   return EffectUtility.putToModel<ResultActions>(ResultActions, endpoint, data);
 };
+
+export const requestApprovedCustomerByGenId = async (
+  genId: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `CustomerSetting/GetCustomerDetailsByGenID?customerGenID=${genId}`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
+};
