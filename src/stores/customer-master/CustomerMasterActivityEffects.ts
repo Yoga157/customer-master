@@ -7,6 +7,7 @@ import ResultActions from "models/ResultActions";
 import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 import { NumberFormatState } from "react-number-format";
 import { data } from "jquery";
+import PostStatusNewCustomerModel from "./models/PostStatusNewCustomerModel";
 
 export const requestSearchCustomerMaster = async (
   page: number,
@@ -58,6 +59,28 @@ export const requestNewCustomerDetailByGenId = async (
   genId: number
 ): Promise<ResultActions | HttpErrorResponseModel> => {
   const controllerName = `CustomerSetting/GetRequestNewCustomerByGenID?customerGenID=${genId}`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
+};
+
+export const updateStatusNewCustomer = async (
+  data: PostStatusNewCustomerModel
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = "CustomerSetting/UpdateApprovalStatusNewCustomer";
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.putToModel<ResultActions>(ResultActions, endpoint, data);
+};
+
+export const requestApprovedCustomerByGenId = async (
+  genId: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `CustomerSetting/GetCustomerDetailsByGenID?customerGenID=${genId}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName

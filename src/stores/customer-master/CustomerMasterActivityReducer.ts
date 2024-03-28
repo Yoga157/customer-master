@@ -10,6 +10,7 @@ import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 export const initialState: ICustomerMasterState = {
   data: new CustomerMasterModel({}),
   customerNewByGenId: new ResultActions({}),
+  approvedCustomerByGenId: new ResultActions({}),
   error: false,
   refreshPage: false,
   resultActions: new ResultActions({}),
@@ -92,6 +93,16 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
     return {
       ...state,
       customerNewByGenId: action.payload!,
+    };
+  },
+
+  [CustomerMasterActions.PUT_STATUS_NEW_CUSTOMER_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    return {
+      ...state,
+      resultActions: action.payload!,
     };
   },
 });

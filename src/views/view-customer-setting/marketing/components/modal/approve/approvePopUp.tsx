@@ -6,42 +6,44 @@ import IStore from "models/IStore";
 import { Form as FinalForm } from "react-final-form";
 import { Form, Grid, Divider } from "semantic-ui-react";
 import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import "../Modal.scss";
+import PostStatusNewCustomerModel from "stores/customer-master/models/PostStatusNewCustomerModel";
 
 interface IProps {
-  deleteFunc: (data: any) => any;
-  refreshFunc: (data: any) => any;
-  id: number;
-  customerID: number;
-  content: string;
+  customerGenID: string;
+  setIsApprove: (status: boolean) => void;
 }
 
 const ApprovePopUp: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
+  const { customerGenID, setIsApprove } = props;
 
   const cancelClick = () => {
     dispatch(ModalAction.CLOSE());
   };
 
-  const isRequesting: boolean = useSelector((state: IStore) =>
-    selectRequesting(state, [])
-  );
+  const approveClick = async () => {
+    const approveCustomerData = new PostStatusNewCustomerModel({});
+    approveCustomerData.customerGenID = customerGenID;
+    approveCustomerData.approvalStatus = "APPROVE";
+    approveCustomerData.remark = null;
 
-  const deleteClick = async () => {
-    props.deleteFunc(props.id);
-    props.refreshFunc(props.customerID);
-    // await dispatch(props.deleteFunc(props.id));
-    // await dispatch(props.refreshFunc(props.customerSettingID));
+    await dispatch(
+      CustomerMasterActions.updateStatusNewCustomer(approveCustomerData)
+    );
+    setIsApprove(true);
+
     await dispatch(ModalAction.CLOSE());
   };
 
   return (
     <Fragment>
       <FinalForm
-        onSubmit={deleteClick}
+        onSubmit={approveClick}
         render={({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
             <Grid.Row>
@@ -57,7 +59,7 @@ const ApprovePopUp: React.FC<IProps> = (
             </Grid.Row>
             <Grid.Row centered className="text-align-center">
               <span style={{ padding: "10px" }}>
-                Are you sure you want to DELETE this {props.content}?
+                Are you sure you want to APPROVE this customer data?
               </span>
             </Grid.Row>
             <Divider></Divider>

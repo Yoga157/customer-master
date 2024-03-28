@@ -25,6 +25,8 @@ import {
   selectReqCustomerNewAccount,
 } from "selectors/customer-master/CustomerMasterSelector";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
+import { ApprovePopUp } from "./components/modal/approve";
+import BaseViewApprovedData from "./components/view/BaseViewApprovedData";
 
 interface routeParams {
   id: string;
@@ -97,11 +99,15 @@ const ViewApproval: React.FC = (props) => {
   const rejectApproval = useCallback((): void => {
     dispatch(
       ModalFirstLevelActions.OPEN(
-        <ModalRejectApproval customer={customer} jenis="reject" />,
+        <ModalRejectApproval
+          customer={customer}
+          customerGenId={id}
+          jenis="reject"
+        />,
         ModalSizeEnum.Small
       )
     );
-  }, [dispatch]);
+  }, [dispatch, customer]);
 
   const openMatch = useCallback(
     (matchCustomer): void => {
@@ -109,6 +115,7 @@ const ViewApproval: React.FC = (props) => {
         ModalFirstLevelActions.OPEN(
           <ModalRejectApproval
             customer={customer}
+            customerGenId={id}
             matchCustomer={matchCustomer}
             jenis="match"
           />,
@@ -116,8 +123,19 @@ const ViewApproval: React.FC = (props) => {
         )
       );
     },
-    [dispatch]
+    [dispatch, customer]
   );
+
+  const [isApprove, setIsApprove] = useState(false);
+
+  const onApprove = useCallback((): void => {
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ApprovePopUp customerGenID={id} setIsApprove={setIsApprove} />,
+        ModalSizeEnum.Small
+      )
+    );
+  }, [dispatch, customer]);
 
   const isRequesting: boolean = useSelector((state: IStore) =>
     selectRequesting(state, [
@@ -153,166 +171,180 @@ const ViewApproval: React.FC = (props) => {
       </Link>
 
       <div className="form-container">
-        <div
-          className="space-between-container"
-          style={{
-            alignItems: "center",
-          }}
-        >
-          <p className="page-title grey">NEW CUSTOMER REQUEST</p>
-          {/* <div className="pmo-toggle">
+        {!isApprove ? (
+          <>
+            <div
+              className="space-between-container"
+              style={{
+                alignItems: "center",
+              }}
+            >
+              <p className="page-title grey">NEW CUSTOMER REQUEST</p>
+              {/* <div className="pmo-toggle">
             <div className="business-card">
               <Icon name="address card" />
               <p>View Business Card</p>
             </div>
           </div> */}
-        </div>
+            </div>
 
-        <Divider></Divider>
+            <Divider></Divider>
 
-        <LoadingIndicator isActive={isRequesting}>
-          {!Array.isArray(customer) && (
-            <>
-              <div className="padding-horizontal space-between-container">
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div className="customer-data-container-left">
-                    <label className="customer-data-label">
-                      Title Customer
-                    </label>
-                    <p
-                      style={{ fontSize: "20px", fontWeight: "bold" }}
-                      className="grey"
-                    >
-                      {customer.titleCustomer}
-                    </p>
-                  </div>
-                  <div className="customer-data-container-left">
-                    <label className="customer-data-label">Customer Name</label>
-                    <p
-                      style={{ fontSize: "20px", fontWeight: "bold" }}
-                      className="grey"
-                    >
-                      {customer.customerName}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="customer-data-container-left">
-                  <label className="customer-data-label">
-                    Industry Classification
-                  </label>
-                  <p
-                    style={{ fontSize: "20px", fontWeight: "bold" }}
-                    className="grey"
-                  >
-                    {customer.industryClass}
-                  </p>
-                </div>
-              </div>
-
-              <div className="padding-horizontal customer-data-container-left">
-                <label className="customer-data-label">Customer Address</label>
-                <p style={{ fontSize: "20px" }} className="grey">
-                  {customer.customerAddress}
-                </p>
-              </div>
-
-              <div className="padding-horizontal space-between-container">
-                <div className="customer-data-container-left">
-                  <label className="customer-data-label">Office Number</label>
-                  <p
-                    style={{ fontSize: "20px", fontWeight: "bold" }}
-                    className="grey"
-                  >
-                    {customer.phoneNumber}
-                  </p>
-                </div>
-
-                <div className="customer-data-container-left">
-                  <label className="customer-data-label">Website</label>
-                  <p
-                    style={{ fontSize: "20px", fontWeight: "bold" }}
-                    className="grey"
-                  >
-                    {customer.website}
-                  </p>
-                </div>
-
-                <div className="customer-data-container-left">
-                  <label className="customer-data-label">Social Media</label>
-                  <p
-                    style={{ fontSize: "20px", fontWeight: "bold" }}
-                    className="grey"
-                  >
-                    {customer.socialMedia}
-                  </p>
-                </div>
-              </div>
-
-              <div className="padding-horizontal">
-                <div
-                  style={{
-                    borderRadius: "1rem",
-                    backgroundColor: "#E1E1E1",
-                    padding: "1rem",
-                    margin: "1rem 0",
-                  }}
-                >
-                  <div className="space-between-container">
-                    <div className="customer-data-container-left">
-                      <label className="customer-data-label">PIC Name</label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.picName}
-                      </p>
+            <LoadingIndicator isActive={isRequesting}>
+              {!Array.isArray(customer) && (
+                <>
+                  <div className="padding-horizontal space-between-container">
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <div className="customer-data-container-left">
+                        <label className="customer-data-label">
+                          Title Customer
+                        </label>
+                        <p
+                          style={{ fontSize: "20px", fontWeight: "bold" }}
+                          className="grey"
+                        >
+                          {customer.titleCustomer}
+                        </p>
+                      </div>
+                      <div className="customer-data-container-left">
+                        <label className="customer-data-label">
+                          Customer Name
+                        </label>
+                        <p
+                          style={{ fontSize: "20px", fontWeight: "bold" }}
+                          className="grey"
+                        >
+                          {customer.customerName}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="customer-data-container-left">
-                      <label className="customer-data-label">Job Title</label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.picJobTitle}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div style={{ display: "flex", flexDirection: "row" }}>
                     <div className="customer-data-container-left">
                       <label className="customer-data-label">
-                        PIC Mobile Phone
+                        Industry Classification
                       </label>
                       <p
                         style={{ fontSize: "20px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        {customer.picMobilePhone}
+                        {customer.industryClass}
                       </p>
                     </div>
+                  </div>
+
+                  <div className="padding-horizontal customer-data-container-left">
+                    <label className="customer-data-label">
+                      Customer Address
+                    </label>
+                    <p style={{ fontSize: "20px" }} className="grey">
+                      {customer.customerAddress}
+                    </p>
+                  </div>
+
+                  <div className="padding-horizontal space-between-container">
                     <div className="customer-data-container-left">
-                      <label className="customer-data-label">Email</label>
+                      <label className="customer-data-label">
+                        Office Number
+                      </label>
                       <p
                         style={{ fontSize: "20px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        {customer.picEmailAddr}
+                        {customer.phoneNumber}
+                      </p>
+                    </div>
+
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">Website</label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.website}
+                      </p>
+                    </div>
+
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">
+                        Social Media
+                      </label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.socialMedia}
                       </p>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <Divider></Divider>
+                  <div className="padding-horizontal">
+                    <div
+                      style={{
+                        borderRadius: "1rem",
+                        backgroundColor: "#E1E1E1",
+                        padding: "1rem",
+                        margin: "1rem 0",
+                      }}
+                    >
+                      <div className="space-between-container">
+                        <div className="customer-data-container-left">
+                          <label className="customer-data-label">
+                            PIC Name
+                          </label>
+                          <p
+                            style={{ fontSize: "20px", fontWeight: "bold" }}
+                            className="grey"
+                          >
+                            {customer.picName}
+                          </p>
+                        </div>
 
-              <div className="padding-horizontal title-button-row">
-                <p className="grey margin-0 bold text-align-left">
-                  SUGGESTION LIST
-                </p>
+                        <div className="customer-data-container-left">
+                          <label className="customer-data-label">
+                            Job Title
+                          </label>
+                          <p
+                            style={{ fontSize: "20px", fontWeight: "bold" }}
+                            className="grey"
+                          >
+                            {customer.picJobTitle}
+                          </p>
+                        </div>
+                      </div>
 
-                {/* <Button
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <div className="customer-data-container-left">
+                          <label className="customer-data-label">
+                            PIC Mobile Phone
+                          </label>
+                          <p
+                            style={{ fontSize: "20px", fontWeight: "bold" }}
+                            className="grey"
+                          >
+                            {customer.picMobilePhone}
+                          </p>
+                        </div>
+                        <div className="customer-data-container-left">
+                          <label className="customer-data-label">Email</label>
+                          <p
+                            style={{ fontSize: "20px", fontWeight: "bold" }}
+                            className="grey"
+                          >
+                            {customer.picEmailAddr}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Divider></Divider>
+
+                  <div className="padding-horizontal title-button-row">
+                    <p className="grey margin-0 bold text-align-left">
+                      SUGGESTION LIST
+                    </p>
+
+                    {/* <Button
               style={{ backgroundColor: "#656DD1", color: "white" }}
               size="small"
               type="button"
@@ -321,183 +353,198 @@ const ViewApproval: React.FC = (props) => {
               <Icon name="search" />
               Search Customer
             </Button> */}
-              </div>
+                  </div>
 
-              <Divider className="margin-bottom-0"></Divider>
+                  <Divider className="margin-bottom-0"></Divider>
 
-              <div
-                className="padding-horizontal"
-                style={{
-                  backgroundColor: "#FFFB9A",
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: "1rem 0",
-                  width: "100%",
-                }}
-              >
-                <FinalForm
-                  onSubmit={(values: any) => onSearch(values)}
-                  render={({ handleSubmit, pristine, invalid }) => (
-                    <Form onSubmit={handleSubmit}>
-                      <div
-                        style={{
-                          backgroundColor: "#FFFB9A",
-                          display: "flex",
-                          flexDirection: "column",
-                          padding: "1rem 0",
-                          width: "100%",
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            width: "100%",
-                          }}
-                        >
-                          <div style={{ marginRight: "1rem", width: "20%" }}>
-                            <Field
-                              name="titleCustomer"
-                              component={TextInput}
-                              placeholder="e.g.PT .."
-                              labelName="Title Customer"
-                              mandatory={false}
-                              defaultValue={customer?.titleCustomer}
-                            />
-                          </div>
-                          <div style={{ marginRight: "1rem", width: "40%" }}>
-                            <Field
-                              name="customerName"
-                              component={TextInput}
-                              placeholder="e.g. Berca Hardaya .."
-                              labelName="Customer Name"
-                              mandatory={false}
-                              defaultValue={getCustomerName(
-                                customer?.customerName
-                              )}
-                            />
-                          </div>
-                          <div style={{ width: "40%" }}>
-                            <Field
-                              name="picName"
-                              component={TextInput}
-                              placeholder="e.g.Jhon Doe .."
-                              labelName="PIC Name"
-                              mandatory={false}
-                              defaultValue={customer?.picName}
-                            />
-                          </div>
-                        </div>
-
-                        <div
-                          style={{ alignSelf: "flex-end", marginTop: "1rem" }}
-                        >
-                          <Button
-                            type="submit"
-                            color="blue"
-                            disabled={false}
-                            floated="right"
-                            size="small"
-                            content="Search"
-                          />
-                        </div>
-                      </div>
-                    </Form>
-                  )}
-                />
-              </div>
-
-              <div className="padding-horizontal" style={{ margin: "14px 0" }}>
-                <p
-                  className="warning-text"
-                  style={{ backgroundColor: "#ffe0d9" }}
-                >
-                  Best five suggestion customer for the word{" "}
-                  <b>{customer.customerName}</b>. Please recheck again before
-                  you <b>APPROVE or REJECT</b>.
-                </p>
-
-                <Table striped>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>No</Table.HeaderCell>
-                      <Table.HeaderCell>Customer Name</Table.HeaderCell>
-                      <Table.HeaderCell>PIC Name</Table.HeaderCell>
-                      <Table.HeaderCell>Cust. ID</Table.HeaderCell>
-                      <Table.HeaderCell textAlign="center">
-                        Action
-                      </Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-
-                  <Table.Body>
-                    {suggestionList.rows.length == 0 ? (
-                      <Table.Row>
-                        <Table.Cell colSpan={16} textAlign="center">
-                          No data
-                        </Table.Cell>
-                      </Table.Row>
-                    ) : (
-                      suggestionList.rows.map((data, index) => (
-                        <Table.Row key={index}>
-                          <Table.Cell>{index + 1}</Table.Cell>
-                          <Table.Cell>
-                            <p
-                              dangerouslySetInnerHTML={{
-                                __html: highlightWords(data.customerName),
-                              }}
-                            ></p>
-                          </Table.Cell>
-                          <Table.Cell>
-                            <p
-                              dangerouslySetInnerHTML={{
-                                __html: highlightWords(data.picName),
-                              }}
-                            ></p>
-                          </Table.Cell>
-                          <Table.Cell>{data.customerID}</Table.Cell>
-                          <Table.Cell
+                  <div
+                    className="padding-horizontal"
+                    style={{
+                      backgroundColor: "#FFFB9A",
+                      display: "flex",
+                      flexDirection: "column",
+                      padding: "1rem 0",
+                      width: "100%",
+                    }}
+                  >
+                    <FinalForm
+                      onSubmit={(values: any) => onSearch(values)}
+                      render={({ handleSubmit, pristine, invalid }) => (
+                        <Form onSubmit={handleSubmit}>
+                          <div
                             style={{
+                              backgroundColor: "#FFFB9A",
                               display: "flex",
-                              justifyContent: "center",
+                              flexDirection: "column",
+                              padding: "1rem 0",
+                              width: "100%",
                             }}
                           >
                             <div
-                              className="match-button"
-                              onClick={() => openMatch(data)}
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                width: "100%",
+                              }}
                             >
-                              <Icon name="check" />
-                              <p>Match</p>
+                              <div
+                                style={{ marginRight: "1rem", width: "20%" }}
+                              >
+                                <Field
+                                  name="titleCustomer"
+                                  component={TextInput}
+                                  placeholder="e.g.PT .."
+                                  labelName="Title Customer"
+                                  mandatory={false}
+                                  defaultValue={customer?.titleCustomer}
+                                />
+                              </div>
+                              <div
+                                style={{ marginRight: "1rem", width: "40%" }}
+                              >
+                                <Field
+                                  name="customerName"
+                                  component={TextInput}
+                                  placeholder="e.g. Berca Hardaya .."
+                                  labelName="Customer Name"
+                                  mandatory={false}
+                                  defaultValue={getCustomerName(
+                                    customer?.customerName
+                                  )}
+                                />
+                              </div>
+                              <div style={{ width: "40%" }}>
+                                <Field
+                                  name="picName"
+                                  component={TextInput}
+                                  placeholder="e.g.Jhon Doe .."
+                                  labelName="PIC Name"
+                                  mandatory={false}
+                                  defaultValue={customer?.picName}
+                                />
+                              </div>
                             </div>
-                          </Table.Cell>
-                        </Table.Row>
-                      ))
-                    )}
-                  </Table.Body>
-                </Table>
-              </div>
-              <Divider style={{ marginBottom: "0px" }}></Divider>
 
-              <div className="button-container">
-                <div className="button-inner-container">
-                  <Button style={{ marginRight: "1rem" }} type="button">
-                    Close
-                  </Button>
-                  <Button
-                    color="blue"
-                    style={{ marginRight: "1rem" }}
-                    type="button"
+                            <div
+                              style={{
+                                alignSelf: "flex-end",
+                                marginTop: "1rem",
+                              }}
+                            >
+                              <Button
+                                type="submit"
+                                color="blue"
+                                disabled={false}
+                                floated="right"
+                                size="small"
+                                content="Search"
+                              />
+                            </div>
+                          </div>
+                        </Form>
+                      )}
+                    />
+                  </div>
+
+                  <div
+                    className="padding-horizontal"
+                    style={{ margin: "14px 0" }}
                   >
-                    Approve
-                  </Button>
-                  <Button color="yellow" onClick={() => rejectApproval()}>
-                    Reject
-                  </Button>
-                </div>
-              </div>
-            </>
-          )}
-        </LoadingIndicator>
+                    <p
+                      className="warning-text"
+                      style={{ backgroundColor: "#ffe0d9" }}
+                    >
+                      Best five suggestion customer for the word{" "}
+                      <b>{customer.customerName}</b>. Please recheck again
+                      before you <b>APPROVE or REJECT</b>.
+                    </p>
+
+                    <Table striped>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell>No</Table.HeaderCell>
+                          <Table.HeaderCell>Customer Name</Table.HeaderCell>
+                          <Table.HeaderCell>PIC Name</Table.HeaderCell>
+                          <Table.HeaderCell>Cust. ID</Table.HeaderCell>
+                          <Table.HeaderCell textAlign="center">
+                            Action
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+
+                      <Table.Body>
+                        {suggestionList.rows.length == 0 ? (
+                          <Table.Row>
+                            <Table.Cell colSpan={16} textAlign="center">
+                              No data
+                            </Table.Cell>
+                          </Table.Row>
+                        ) : (
+                          suggestionList.rows.map((data, index) => (
+                            <Table.Row key={index}>
+                              <Table.Cell>{index + 1}</Table.Cell>
+                              <Table.Cell>
+                                <p
+                                  dangerouslySetInnerHTML={{
+                                    __html: highlightWords(data.customerName),
+                                  }}
+                                ></p>
+                              </Table.Cell>
+                              <Table.Cell>
+                                <p
+                                  dangerouslySetInnerHTML={{
+                                    __html: highlightWords(data.picName),
+                                  }}
+                                ></p>
+                              </Table.Cell>
+                              <Table.Cell>{data.customerID}</Table.Cell>
+                              <Table.Cell
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <div
+                                  className="match-button"
+                                  onClick={() => openMatch(data)}
+                                >
+                                  <Icon name="check" />
+                                  <p>Match</p>
+                                </div>
+                              </Table.Cell>
+                            </Table.Row>
+                          ))
+                        )}
+                      </Table.Body>
+                    </Table>
+                  </div>
+                  <Divider style={{ marginBottom: "0px" }}></Divider>
+
+                  <div className="button-container">
+                    <div className="button-inner-container">
+                      <Button style={{ marginRight: "1rem" }} type="button">
+                        Close
+                      </Button>
+                      <Button
+                        color="blue"
+                        style={{ marginRight: "1rem" }}
+                        type="button"
+                        onClick={() => onApprove()}
+                      >
+                        Approve
+                      </Button>
+                      <Button color="yellow" onClick={() => rejectApproval()}>
+                        Reject
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </LoadingIndicator>
+          </>
+        ) : (
+          <BaseViewApprovedData isView={false} />
+        )}
       </div>
     </Fragment>
   );

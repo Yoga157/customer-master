@@ -11,17 +11,19 @@ import { Button, TextInput } from "views/components/UI";
 import ModalRejectApproval from "./ModalRejectApproval";
 
 interface ICustomer {
-  customerTitle: string;
-  customerName: string;
-  industryClassification: string;
-  customerAddress: string;
-  officeNumber: string;
-  website: string;
-  socialMedia: string;
-  picName: string;
-  jobTitle: string;
-  picMobilePhone: string;
-  email: string;
+  titleCustomer: any;
+  customerName: any;
+  industryClass: any;
+  customerAddress: any;
+  phoneNumber: any;
+  website: any;
+  socialMedia: any;
+  picName: any;
+  picJobTitle: any;
+  picMobilePhone: any;
+  picEmailAddr: any;
+  requestor: any;
+  modifyUserID: any;
 }
 
 interface IProps {
@@ -61,6 +63,7 @@ const ModalSuggestionList: React.FC<IProps> = (
         ModalFirstLevelActions.OPEN(
           <ModalRejectApproval
             customer={customer}
+            customerGenId={"1"}
             matchCustomer={matchCustomer}
             jenis="match"
           />,

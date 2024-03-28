@@ -7,6 +7,7 @@ import CustomerMasterRow from "./models/CustomerMasterRow";
 import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 import ResultActions from "models/ResultActions";
 import IAction from "models/IAction";
+import PostStatusNewCustomerModel from "./models/PostStatusNewCustomerModel";
 
 type ActionUnion =
   | undefined
@@ -95,6 +96,39 @@ export const requestNewCustomerDetailByGenId = (genId: number): any => {
       dispatch,
       REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID,
       CustomerMasterEffect.requestNewCustomerDetailByGenId,
+      genId
+    );
+  };
+};
+
+export const PUT_STATUS_NEW_CUSTOMER: string =
+  "CustomerActions.PUT_STATUS_NEW_CUSTOMER";
+export const PUT_STATUS_NEW_CUSTOMER_FINISHED =
+  "CustomerActions.PUT_STATUS_NEW_CUSTOMER_FINISHED";
+export const updateStatusNewCustomer = (
+  data: PostStatusNewCustomerModel
+): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      PUT_STATUS_NEW_CUSTOMER,
+      CustomerMasterEffect.updateStatusNewCustomer,
+      data
+    );
+  };
+};
+
+export const REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID: string =
+  "CustomerMasterActions.REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID";
+export const REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID_FINISHED: string =
+  "CustomerMasterActions.REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID_FINISHED";
+
+export const requestApprovedCustomerByGenId = (genId: number): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID,
+      CustomerMasterEffect.requestApprovedCustomerByGenId,
       genId
     );
   };
