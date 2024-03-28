@@ -105,6 +105,16 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
       resultActions: action.payload!,
     };
   },
+
+  [CustomerMasterActions.REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    return {
+      ...state,
+      approvedCustomerByGenId: action.payload!,
+    };
+  },
 });
 
 export default customerMasterReducer;

@@ -37,8 +37,6 @@ const ViewApproval: React.FC = (props) => {
   const { id } = useParams<routeParams>();
 
   const onSearch = async (data) => {
-    console.log(data);
-
     dispatch(
       CustomerMaster.requestSearchCustomerMaster(
         1,

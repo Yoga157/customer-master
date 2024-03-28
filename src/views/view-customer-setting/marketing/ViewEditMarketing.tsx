@@ -28,8 +28,17 @@ const ViewEditMarketing: React.FC<IProps> = (
   const dispatch: Dispatch = useDispatch();
   const { status } = props;
   const { id } = useParams<routeParams>();
+  // const [realStatus, setRealStatus] = useState(status);
 
   dispatch(CustomerMasterActions.setActiveTabs(4));
+  console.log(status);
+  useEffect(() => {
+    if (status == "NOT_NEW") {
+      dispatch(
+        CustomerMasterActions.requestNewCustomerDetailByGenId(Number(id))
+      );
+    }
+  }, [id]);
 
   // let status = "PENDING";
 
