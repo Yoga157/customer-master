@@ -12,16 +12,10 @@ import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import IStore from "models/IStore";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import TableRequestNewCustomer from "./components/table/table-request-new-customer/TableRequestNewCustomer";
 import { reqNewCustomerData } from "./data";
 import { Form, Grid, Divider, Segment } from "semantic-ui-react";
-import {
-  combineValidators,
-  isRequired,
-  composeValidators,
-  createValidator,
-} from "revalidate";
 import { selectReqCustomerNewAccount } from "selectors/customer-master/CustomerMasterSelector";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
@@ -211,8 +205,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 pristine ||
                                 invalid ||
                                 !values.titleCustomer ||
-                                !values.customerName ||
-                                !values.picName
+                                !values.customerName
                               }
                               floated="right"
                               size="small"
@@ -468,8 +461,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                             !values.customerAddress ||
                             !values.phoneNumber ||
                             !values.industryClassification ||
-                            !values.website ||
-                            !values.socialMedia ||
                             !values.picPhoneNumber ||
                             !values.picJobTitle ||
                             !values.picEmail

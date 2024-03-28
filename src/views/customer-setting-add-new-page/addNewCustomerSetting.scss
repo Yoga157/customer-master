@@ -57,6 +57,8 @@
 }
 
 .info-recheck {
+  display: flex;
+  justify-content: center;
   background-color: #e2efff;
   border-radius: 5rem;
   text-align: center;
@@ -82,7 +84,7 @@
 }
 
 .recheck-submit-pad {
-  padding: 0 14rem;
+  padding: 0 16rem;
 }
 
 .container-flex-customer {
@@ -118,4 +120,16 @@
   display: flex !important;
   flex-direction: row !important;
   width: fit-content !important;
+}
+
+@media only screen and (max-width: 1110px) {
+  .recheck-submit-pad {
+    padding: 0 8rem;
+  }
+}
+
+@media only screen and (max-width: 925px) {
+  .recheck-submit-pad {
+    padding: 0 6rem;
+  }
 }
