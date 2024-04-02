@@ -56,7 +56,7 @@ const _selectNewCustomerDetailPending = (models: ResultActions): any => {
       picEmailAddr: models.resultObj[0].picEmailAddr,
       requestor: models.resultObj[0].requestor,
       modifyUserID: models.resultObj[0].modifyUserID,
-      approvalStatus: models.resultObj[0].approvalStatus,
+      // approvalStatus: models.resultObj[0].approvalStatus,
     };
   } else {
     return [];
