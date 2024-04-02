@@ -103,6 +103,12 @@ const AddNewCustomerSetting: React.FC<IProps> = (
     RequestNewCustomer.createdUserID = JSON.parse(userId).employeeID;
     RequestNewCustomer.modifyUserID = JSON.parse(userId).employeeID;
 
+    if (userId === "Marketing") {
+      RequestNewCustomer.approvalStatus = "Approve";
+    } else {
+      RequestNewCustomer.approvalStatus = "";
+    }
+
     dispatch(
       CustomerMasterActions.postNewCustomerMaster(RequestNewCustomer)
     ).then(() => {

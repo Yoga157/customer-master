@@ -19,6 +19,7 @@ export default class CustomerMasterPostModel extends BaseModel {
   createdUserID?: number = 0;
   requestor?: string = "";
   modifyUserID?: number = 0;
+  approvalStatus?: string = "";
 
   constructor(data: Partial<CustomerMasterPostModel>) {
     super();
@@ -39,6 +40,7 @@ export default class CustomerMasterPostModel extends BaseModel {
       picEmailAddr: ConversionTypeEnum.String,
       createdUserID: ConversionTypeEnum.Number,
       modifyUserID: ConversionTypeEnum.Number,
+      approvalStatus: ConversionTypeEnum.String,
     };
     super.update(data, conversionOptions);
   }
