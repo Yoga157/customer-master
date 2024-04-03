@@ -428,7 +428,7 @@ const AllAccountsPage: React.FC<IProps> = (
         </Grid>
       </LoadingIndicator>
 
-      {role === "Sales" && (
+      {(role === "Marketing" || role === "Sales") && (
         <div className="container-new-request-customer">
           <Button
             color="yellow"

@@ -12,16 +12,10 @@ import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import IStore from "models/IStore";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import TableRequestNewCustomer from "./components/table/table-request-new-customer/TableRequestNewCustomer";
 import { reqNewCustomerData } from "./data";
 import { Form, Grid, Divider, Segment } from "semantic-ui-react";
-import {
-  combineValidators,
-  isRequired,
-  composeValidators,
-  createValidator,
-} from "revalidate";
 import { selectReqCustomerNewAccount } from "selectors/customer-master/CustomerMasterSelector";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
@@ -51,6 +45,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   );
   const [pageSize, setPage] = useState(10);
   const [uploadFile, setUploadFile] = useState("");
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const handlePaginationChange = (e: any, data: any) => {
     dispatch(CustomerMasterActions.setActivePage(data.activePage));
@@ -93,8 +88,13 @@ const AddNewCustomerSetting: React.FC<IProps> = (
 
   const onSubmitHandler = async (data: any) => {
     const userId: any = localStorage.getItem("userLogin");
-
+    // console.log("role", userId);
     const RequestNewCustomer = new CustomerMasterPostModel(data);
+    if (JSON.parse(userId).role != "Sales") {
+      RequestNewCustomer.approvalStatus = "Approve";
+    } else {
+      RequestNewCustomer.approvalStatus = "";
+    }
     RequestNewCustomer.titleCustomer = searchedTitleCust;
     RequestNewCustomer.customerName = searchedCustomerName;
     RequestNewCustomer.picName = searchedPicName;
@@ -109,6 +109,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
     RequestNewCustomer.createdUserID = JSON.parse(userId).employeeID;
     RequestNewCustomer.modifyUserID = JSON.parse(userId).employeeID;
 
+    // console.log(RequestNewCustomer);
     dispatch(
       CustomerMasterActions.postNewCustomerMaster(RequestNewCustomer)
     ).then(() => {
@@ -127,6 +128,10 @@ const AddNewCustomerSetting: React.FC<IProps> = (
     props.history.push({
       pathname: RouteEnum.CustomerSetting,
     });
+  };
+
+  const handleButtonClick = () => {
+    setIsButtonClicked(true);
   };
 
   useEffect(() => {
@@ -211,12 +216,12 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 pristine ||
                                 invalid ||
                                 !values.titleCustomer ||
-                                !values.customerName ||
-                                !values.picName
+                                !values.customerName
                               }
                               floated="right"
                               size="small"
                               content="Check Customer Availability"
+                              onClick={handleButtonClick}
                             />
                           </Grid.Column>
                         </Grid.Row>
@@ -272,7 +277,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                 />
               </div>
             </div>
-            {tableData.rows.length === 0 ? (
+            {isButtonClicked != true ? (
               <div className="recheck-submit-pad" style={{ opacity: 0.5 }}>
                 <div className="container-recheck-submit-disable">
                   <input
@@ -468,8 +473,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                             !values.customerAddress ||
                             !values.phoneNumber ||
                             !values.industryClassification ||
-                            !values.website ||
-                            !values.socialMedia ||
                             !values.picPhoneNumber ||
                             !values.picJobTitle ||
                             !values.picEmail

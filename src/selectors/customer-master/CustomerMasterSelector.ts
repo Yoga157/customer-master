@@ -43,7 +43,7 @@ export const selectReqCustomerNewAccount: Selector<
 const _selectNewCustomerDetailPending = (models: ResultActions): any => {
   if (Array.isArray(models.resultObj) && models.resultObj.length != 0) {
     return {
-      customerGenID: models.resultObj[0].customerGenID,
+       customerGenID: models.resultObj[0].customerGenID,
       customerID: models.resultObj[0].customerID,
       titleCustomer: models.resultObj[0].titleCustomer,
       customerName: models.resultObj[0].customerName,

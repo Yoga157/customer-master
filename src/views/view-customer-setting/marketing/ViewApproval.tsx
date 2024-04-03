@@ -9,7 +9,7 @@ import React, {
 import { Dispatch } from "redux";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Icon, Button, Table, Form } from "semantic-ui-react";
+import { Divider, Icon, Button, Table, Form, Grid } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
@@ -382,66 +382,77 @@ const ViewApproval: React.FC = (props) => {
                               width: "100%",
                             }}
                           >
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                width: "100%",
-                              }}
-                            >
-                              <div
-                                style={{ marginRight: "1rem", width: "20%" }}
-                              >
-                                <Field
-                                  name="titleCustomer"
-                                  component={TextInput}
-                                  placeholder="e.g.PT .."
-                                  labelName="Title Customer"
-                                  mandatory={false}
-                                  defaultValue={customer?.titleCustomer}
-                                />
-                              </div>
-                              <div
-                                style={{ marginRight: "1rem", width: "40%" }}
-                              >
-                                <Field
-                                  name="customerName"
-                                  component={TextInput}
-                                  placeholder="e.g. Berca Hardaya .."
-                                  labelName="Customer Name"
-                                  mandatory={false}
-                                  defaultValue={getCustomerName(
-                                    customer?.customerName
-                                  )}
-                                />
-                              </div>
-                              <div style={{ width: "40%" }}>
-                                <Field
-                                  name="picName"
-                                  component={TextInput}
-                                  placeholder="e.g.Jhon Doe .."
-                                  labelName="PIC Name"
-                                  mandatory={false}
-                                  defaultValue={customer?.picName}
-                                />
-                              </div>
-                            </div>
+                            <Grid>
+                              <Grid.Row>
+                                <Grid.Column
+                                  width={16}
+                                  mobile={16}
+                                  tablet={16}
+                                  computer={3}
+                                >
+                                  <Field
+                                    name="titleCustomer"
+                                    component={TextInput}
+                                    placeholder="e.g.PT .."
+                                    labelName="Title Customer"
+                                    mandatory={false}
+                                    defaultValue={customer?.titleCustomer}
+                                  />
+                                </Grid.Column>
 
-                            <div
-                              style={{
-                                alignSelf: "flex-end",
-                                marginTop: "1rem",
-                              }}
-                            >
-                              <Button
-                                type="submit"
-                                color="blue"
-                                disabled={false}
-                                floated="right"
-                                size="small"
-                                content="Search"
-                              />
-                            </div>
+                                <Grid.Column
+                                  width={16}
+                                  mobile={16}
+                                  tablet={16}
+                                  computer={7}
+                                >
+                                  {" "}
+                                  <Field
+                                    name="customerName"
+                                    component={TextInput}
+                                    placeholder="e.g. Berca Hardaya .."
+                                    labelName="Customer Name"
+                                    mandatory={false}
+                                    defaultValue={getCustomerName(
+                                      customer?.customerName
+                                    )}
+                                  />
+                                </Grid.Column>
+
+                                <Grid.Column
+                                  width={16}
+                                  mobile={16}
+                                  tablet={16}
+                                  computer={6}
+                                >
+                                  <Field
+                                    name="picName"
+                                    component={TextInput}
+                                    placeholder="e.g.Jhon Doe .."
+                                    labelName="PIC Name"
+                                    mandatory={false}
+                                    defaultValue={customer?.picName}
+                                  />
+                                </Grid.Column>
+                              </Grid.Row>
+                              <Grid.Row columns="equal">
+                                <Grid.Column
+                                  width={16}
+                                  mobile={16}
+                                  tablet={16}
+                                  computer={16}
+                                >
+                                  <Button
+                                    type="submit"
+                                    color="blue"
+                                    disabled={false}
+                                    floated="right"
+                                    size="small"
+                                    content="Search"
+                                  />
+                                </Grid.Column>
+                              </Grid.Row>
+                            </Grid>
                           </div>
                         </Form>
                       )}
