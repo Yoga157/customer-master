@@ -234,9 +234,13 @@ const ViewApproval: React.FC = (props) => {
                     <label className="customer-data-label">
                       Customer Address
                     </label>
-                    <p style={{ fontSize: "20px" }} className="grey">
-                      {customer.customerAddress}
-                    </p>
+                    <p
+                      style={{ fontSize: "20px" }}
+                      className="grey"
+                      dangerouslySetInnerHTML={{
+                        __html: customer.customerAddress,
+                      }}
+                    ></p>
                   </div>
 
                   <div className="padding-horizontal space-between-container">

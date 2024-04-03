@@ -4,7 +4,7 @@ import {
   IConversionOption,
 } from "sjs-base-model";
 
-export default class CustomerApprovedDataDetailModel extends BaseModel {
+export default class CustomerMoreDetailsModel extends BaseModel {
   customerID: number = 0;
   titleCustomer: string = "";
   customerName: string = "";
@@ -19,11 +19,11 @@ export default class CustomerApprovedDataDetailModel extends BaseModel {
   modifyDate: string = "";
   modifyUserID: number = 0;
 
-  constructor(data: Partial<CustomerApprovedDataDetailModel>) {
+  constructor(data: Partial<CustomerMoreDetailsModel>) {
     super();
     this.update(data);
   }
-  public update(data: Partial<CustomerApprovedDataDetailModel>): void {
+  public update(data: Partial<CustomerMoreDetailsModel>): void {
     const conversionOptions: IConversionOption = {
       customerID: ConversionTypeEnum.Number,
       titleCustomer: ConversionTypeEnum.String,

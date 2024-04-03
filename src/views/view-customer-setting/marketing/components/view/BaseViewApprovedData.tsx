@@ -20,25 +20,62 @@ import ModalNewCustomerAddress from "../modal/approved-page/ModalNewCustomerAddr
 import ModalNewWebsiteMedia from "../modal/approved-page/ModalNewWebsiteMedia";
 import ModalNewPIC from "../modal/approved-page/ModalNewPIC";
 import ModalNewRelatedCustomer from "../modal/approved-page/ModalNewRelatedCustomer";
+import IStore from "models/IStore";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
+import { selectCustomerMoreDetails } from "selectors/customer-master/CustomerMasterSelector";
+import { selectRequesting } from "selectors/requesting/RequestingSelector";
+
+interface ICustomer {
+  customerID: any;
+  titleCustomer: any;
+  customerName: any;
+  industryClass: any;
+  requestor: any;
+  cpAddressOfficeNumbers: any;
+  cpWebsiteSocialMedias: any;
+  customerPICs: any;
+  cpRelatedCustomers: any;
+  createDate: any;
+  createUserID: any;
+  modifyDate: any;
+  modifyUserID: any;
+}
 
 interface IProps {
   isView?: boolean;
+  customerId?: number;
+  status?: string;
+  // customer: ICustomer;
+}
+
+interface routeParams {
+  id: string;
 }
 
 const BaseViewApprovedData: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
-  const { isView } = props;
+  const { isView, customerId, status } = props;
+  const { id } = useParams<routeParams>();
 
-  const customer = {
-    customerID: 12345,
-    titleCustomer: "PT",
-    customerName: "Biffco Manufacturing",
-    requestor: "Rosa Amalia",
-    createDate: "02 January 2024",
-    industryClass: "Manufacturing",
-  };
+  const customer = useSelector((state: IStore) =>
+    selectCustomerMoreDetails(state)
+  );
+
+  useEffect(() => {
+    if (status == "NOT_NEW") {
+      dispatch(
+        CustomerMasterActions.requestCustomerMoreDetailsByCustId(
+          customerId ? customerId : Number(id)
+        )
+      );
+    } else {
+      dispatch(
+        CustomerMasterActions.requestApprovedCustomerByGenId(Number(id))
+      );
+    }
+  }, [status, id]);
 
   // edit view
   const [editView, setEditView] = useState(false);
@@ -110,6 +147,10 @@ const BaseViewApprovedData: React.FC<IProps> = (
 
   let addressOfficeHeader = [
     {
+      key: "type",
+      header: "Type",
+    },
+    {
       key: "address",
       header: "Address",
     },
@@ -119,38 +160,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     },
   ];
 
-  let addressOfficeResponse = [
-    {
-      id: 1,
-      address: "Jl. Jenderal Sudirman No. 55",
-      phoneNumber: "0123456789",
-      alternateNumber: "0987689556",
-      faxNumber: " 678990",
-    },
-    {
-      id: 2,
-      address: "Jl. Hang Tuah No. 72",
-      phoneNumber: "0123456789",
-      alternateNumber: "0987689556",
-      faxNumber: " 678990",
-    },
-  ];
-
-  let addressOffice = addressOfficeResponse.map((data) => {
-    return {
-      id: data.id,
-      address: data.address,
-      officeNumber: [
-        data.phoneNumber,
-        data.alternateNumber,
-        data.faxNumber,
-      ].join(", "),
-      phoneNumber: data.phoneNumber,
-      alternateNumber: data.alternateNumber,
-      faxNumber: data.faxNumber,
-    };
-  });
-
   let websiteMediaHeader = [
     {
       key: "type",
@@ -159,21 +168,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     {
       key: "name",
       header: "Name",
-    },
-  ];
-
-  let websiteMedia = [
-    {
-      type: "Website",
-      name: "www.biffco-manufacturing.com",
-    },
-    {
-      type: "Instagram",
-      name: "@biffco.manufacturing",
-    },
-    {
-      type: "Facebook",
-      name: "Life @ Biffco",
     },
   ];
 
@@ -200,23 +194,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     },
   ];
 
-  let pic = [
-    {
-      name: "Paulus Jeharu",
-      jabatan: "Business Owner",
-      email: "paulus.j@mail.com",
-      address: "Jl. Jenderal Sudirman No. 555",
-      phoneNumber: "0123456789",
-    },
-    {
-      name: "Paulus Jeharu",
-      jabatan: "Business Owner",
-      email: "paulus.j@mail.com",
-      address: "Jl. Jenderal Sudirman No. 555",
-      phoneNumber: "0123456789",
-    },
-  ];
-
   let relatedAccountHeader = [
     {
       key: "customerID",
@@ -228,37 +205,47 @@ const BaseViewApprovedData: React.FC<IProps> = (
     },
   ];
 
-  let relatedAccount = [
-    {
-      customerID: 23456,
-      accountName: "Biffco Factory LTD.",
-    },
-    {
-      customerID: 23456,
-      accountName: "Biffco Factory LTD.",
-    },
-  ];
-
   const titleRef = useRef(null);
   const contentRef = useRef(null);
   const tableRef = useRef(null);
 
   useEffect(() => {
-    const titleDiv = titleRef.current;
-    const contentDiv = contentRef.current;
-    const tableDiv = tableRef.current;
+    const updateDimensions = () => {
+      const titleDiv = titleRef.current;
+      const contentDiv = contentRef.current;
+      const tableDiv = tableRef.current;
 
-    if (titleDiv && contentDiv && tableDiv && isView) {
-      const titleHeight = titleDiv.offsetHeight;
+      if (titleDiv && contentDiv && tableDiv && isView) {
+        var titleHeight = titleDiv.offsetHeight;
+        var contentHeight = contentDiv.offsetHeight;
+        contentDiv.style.position = "absolute";
+        contentDiv.style.width = "100%";
+        contentDiv.style.left = "0";
+        contentDiv.style.top = `calc(${titleHeight}px + 1.5rem + 1rem + 1px)`;
 
-      contentDiv.style.position = "absolute";
-      contentDiv.style.width = "100%";
-      contentDiv.style.left = "0";
-      contentDiv.style.top = `calc(${titleHeight}px + 1.5rem + 1rem + 1px)`;
+        tableDiv.style.paddingTop = `${contentHeight}px`;
+      }
+    };
 
-      tableDiv.style.paddingTop = `${contentDiv.offsetHeight}px`;
-    }
+    // inisialisasi ukuran
+    updateDimensions();
+
+    // Event listener for window resize
+    window.addEventListener("resize", updateDimensions);
+
+    // Cleanup function to remove event listener
+    return () => {
+      window.removeEventListener("resize", updateDimensions);
+    };
   }, [isView]);
+
+  const isRequesting: boolean = useSelector((state: IStore) =>
+    selectRequesting(state, [
+      CustomerMasterActions.REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID,
+      CustomerMasterActions.REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID,
+      CustomerMasterActions.REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID,
+    ])
+  );
 
   return (
     <Fragment>
@@ -271,7 +258,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
 
       <Divider style={{ marginBottom: 0 }}></Divider>
 
-      <LoadingIndicator isActive={false}>
+      <LoadingIndicator isActive={isRequesting}>
         <div
           ref={contentRef}
           className="space-between-container padding-horizontal"
@@ -290,7 +277,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   style={{ fontSize: "20px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  {customer.customerID}
+                  {customer.customerID ? customer.customerID : "-"}
                 </p>
               </div>
 
@@ -300,7 +287,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   style={{ fontSize: "20px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  {customer.titleCustomer}
+                  {customer.titleCustomer ? customer.titleCustomer : "-"}
                 </p>
               </div>
             </div>
@@ -312,7 +299,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   style={{ fontSize: "20px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  {customer.requestor}
+                  {customer.requestor ? customer.requestor : "-"}
                 </p>
               </div>
 
@@ -322,7 +309,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   style={{ fontSize: "20px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  {customer.customerName}
+                  {customer.customerName ? customer.customerName : "-"}
                 </p>
               </div>
             </div>
@@ -336,7 +323,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   style={{ fontSize: "20px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  {customer.createDate}
+                  {customer.createDate ? customer.createDate : "-"}
                 </p>
               </div>
 
@@ -370,7 +357,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       style={{ fontSize: "20px", fontWeight: "bold" }}
                       className="grey"
                     >
-                      {customer.industryClass}
+                      {customer.industryClass ? customer.industryClass : "-"}
                     </p>
                   </>
                 )}
@@ -430,7 +417,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
               <>
                 <div className="table-container">
                   <TableCustomerDetail
-                    data={addressOffice}
+                    data={customer.cpAddressOfficeNumbers}
                     header={addressOfficeHeader}
                     sequenceNum={true}
                     Modal={ModalNewCustomerAddress}
@@ -469,7 +456,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
               <>
                 <div className="table-container">
                   <TableCustomerDetail
-                    data={websiteMedia}
+                    data={customer.cpWebsiteSocialMedias}
                     header={websiteMediaHeader}
                     sequenceNum={true}
                     Modal={ModalNewWebsiteMedia}
@@ -508,7 +495,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
               <>
                 <div className="table-container">
                   <TableCustomerDetail
-                    data={pic}
+                    data={customer.customerPICs}
                     header={picHeader}
                     sequenceNum={true}
                     Modal={ModalNewPIC}
@@ -546,7 +533,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 <Divider className="margin-0"></Divider>
                 <div className="table-container">
                   <TableCustomerDetail
-                    data={relatedAccount}
+                    data={customer.cpRelatedCustomers}
                     header={relatedAccountHeader}
                     sequenceNum={true}
                     Modal={ModalNewRelatedCustomer}

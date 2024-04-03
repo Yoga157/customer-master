@@ -1,36 +1,18 @@
-import React, {
-  Fragment,
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
+import React, { Fragment, useEffect } from "react";
 import "./ModalApprovedData.scss";
-import { Dispatch } from "redux";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { Icon, Divider, Form, Button } from "semantic-ui-react";
-import IStore from "models/IStore";
-import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
-import { Form as FinalForm, Field } from "react-final-form";
-import { DropdownClearInput } from "views/components/UI";
-import TableCustomerDetail from "./components/table/TableCustomerDetail";
-import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
-import ModalSizeEnum from "constants/ModalSizeEnum";
-import ModalNewCustomerAddress from "./components/modal/approved-page/ModalNewCustomerAddress";
-import ModalNewWebsiteMedia from "./components/modal/approved-page/ModalNewWebsiteMedia";
-import ModalNewPIC from "./components/modal/approved-page/ModalNewPIC";
-import ModalNewRelatedCustomer from "./components/modal/approved-page/ModalNewRelatedCustomer";
+import { Link, useParams } from "react-router-dom";
 import BaseViewApprovedData from "./components/view/BaseViewApprovedData";
 
 interface IProps {
   isView?: boolean;
+  customerId?: number;
+  status?: string;
 }
 
 const ViewApprovedData: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
-  const { isView } = props;
+  const { isView, customerId, status } = props;
 
   return (
     <Fragment>
@@ -42,10 +24,18 @@ const ViewApprovedData: React.FC<IProps> = (
 
       {!isView ? (
         <div className="form-container">
-          <BaseViewApprovedData isView={isView} />
+          <BaseViewApprovedData
+            isView={isView}
+            customerId={customerId}
+            status={status}
+          />
         </div>
       ) : (
-        <BaseViewApprovedData isView={isView} />
+        <BaseViewApprovedData
+          isView={isView}
+          customerId={customerId}
+          status={status}
+        />
       )}
     </Fragment>
   );

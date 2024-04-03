@@ -82,7 +82,7 @@ const CustomerTableRow: React.FC<IProps> = (
 
   const onEdit = (id: number) => {
     history.push({
-      pathname: "customer-setting/" + id,
+      pathname: `customer-setting/${id}`,
       state: { rowData },
     });
   };

@@ -87,3 +87,14 @@ export const requestApprovedCustomerByGenId = async (
   );
   return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
 };
+
+export const requestCustomerMoreDetailsByCustId = async (
+  custId: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `CustomerSetting/GetCustomerDetailsByCustID?customerID=${custId}`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
+};

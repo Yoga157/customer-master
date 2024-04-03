@@ -58,7 +58,9 @@ const ViewEditCustomerSettingPage: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const location = useLocation<ICustomerData>();
-  const [customerData, setCustomerData] = useState(location.state.rowData);
+  const [customerData, setCustomerData] = useState(
+    location.state.rowData || undefined
+  );
   const dispatch: Dispatch = useDispatch();
   const { id } = useParams<routeParams>();
   let userLogin = JSON.parse(localStorage.getItem("userLogin"));
@@ -78,7 +80,7 @@ const ViewEditCustomerSettingPage: React.FC<IProps> = (
     <Fragment>
       {role == "Marketing" ? (
         <ViewEditMarketing
-          status={customerData.approvalStatus || "NOT_NEW"}
+          status={customerData.approvalStatus?.toUpperCase() || "NOT_NEW"}
         ></ViewEditMarketing>
       ) : (
         customer.customerID != undefined && (
