@@ -15,6 +15,7 @@ import {
 } from "views/components/UI";
 import PostStatusNewCustomerModel from "stores/customer-master/models/PostStatusNewCustomerModel";
 import { useHistory, useLocation } from "react-router-dom";
+import RouteEnum from "constants/RouteEnum";
 
 interface ICustomer {
   titleCustomer: any;
@@ -67,7 +68,7 @@ const ModalRejectApproval: React.FC<IProps> = (
     dispatch(ModalAction.CLOSE());
 
     history.push({
-      pathname: "customer-setting/",
+      pathname: RouteEnum.CustomerSetting,
     });
   };
 

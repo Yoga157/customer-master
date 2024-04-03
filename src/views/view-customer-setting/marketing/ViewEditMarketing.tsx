@@ -14,8 +14,6 @@ import IStore from "models/IStore";
 import ViewApprovedData from "./ViewApprovedData";
 import ViewApproval from "./ViewApproval";
 import { selectNewCustomerDetailPending } from "selectors/customer-master/CustomerMasterSelector";
-import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
-import { selectRequesting } from "selectors/requesting/RequestingSelector";
 
 interface routeParams {
   id: string;
@@ -39,7 +37,7 @@ const ViewEditMarketing: React.FC<IProps> = (
 
   dispatch(CustomerMasterActions.setActiveTabs(4));
   useEffect(() => {
-    if (status == "NOT_NEW") {
+    if (status === "NOT_NEW") {
       dispatch(
         CustomerMasterActions.requestNewCustomerDetailByGenId(Number(id))
       );
@@ -47,30 +45,21 @@ const ViewEditMarketing: React.FC<IProps> = (
   }, [status, id]);
 
   useEffect(() => {
-    if (Array.isArray(customer)) {
-      setRealStatus("NOT_NEW");
-    } else {
-      setRealStatus(customer.approvalStatus.toUpperCase());
+    if (status == "NOT_NEW") {
+      if (Array.isArray(customer) && customer.length == 0) {
+        setRealStatus("NOT_NEW");
+      } else {
+        setRealStatus(customer.approvalStatus.toUpperCase());
+      }
     }
-  }, [customer]);
-
-  const isRequesting: boolean = useSelector((state: IStore) =>
-    selectRequesting(state, [
-      CustomerMasterActions.REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID,
-    ])
-  );
+  }, [status, customer]);
 
   return (
     <Fragment>
-      <LoadingIndicator isActive={isRequesting}>
-        {(realStatus == "APPROVE" || realStatus == "NOT_NEW") && (
-          <ViewApprovedData
-            isView={false}
-            status={realStatus}
-          ></ViewApprovedData>
-        )}
-        {realStatus == "PENDING" && <ViewApproval></ViewApproval>}
-      </LoadingIndicator>
+      {(realStatus == "APPROVE" || realStatus == "NOT_NEW") && (
+        <ViewApprovedData isView={false} status={realStatus}></ViewApprovedData>
+      )}
+      {realStatus == "PENDING" && <ViewApproval></ViewApproval>}
     </Fragment>
   );
 };

@@ -65,10 +65,16 @@ const ViewApproval: React.FC = (props) => {
   };
 
   const highlightWords = (input: string): string => {
-    const wordsArray = [
-      customer.length != 0 && customer?.customerName.toLowerCase(),
-      customer.length != 0 && customer?.picName.toLowerCase(),
-    ];
+    const wordsArray = [];
+
+    if (customer.length != 0 && customer?.customerName) {
+      wordsArray.push(customer?.customerName.toLowerCase());
+    }
+
+    if (customer.length != 0 && customer?.picName) {
+      wordsArray.push(customer?.picName.toLowerCase());
+    }
+
     const wordsToHighlight = wordsArray.join(" ");
     const words = input.split(" ");
 
@@ -371,7 +377,7 @@ const ViewApproval: React.FC = (props) => {
                   >
                     <FinalForm
                       onSubmit={(values: any) => onSearch(values)}
-                      render={({ handleSubmit, pristine, invalid }) => (
+                      render={({ handleSubmit, pristine, invalid, values }) => (
                         <Form onSubmit={handleSubmit}>
                           <div
                             style={{
@@ -445,7 +451,10 @@ const ViewApproval: React.FC = (props) => {
                                   <Button
                                     type="submit"
                                     color="blue"
-                                    disabled={false}
+                                    disabled={
+                                      !values.titleCustomer ||
+                                      !values.customerName
+                                    }
                                     floated="right"
                                     size="small"
                                     content="Search"

@@ -4,6 +4,7 @@ import React, { Fragment, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalSecondLevelActions from "stores/modal/second-level/ModalSecondLevelActions";
 import { Divider, Form, Input, Label } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import { Button, TextAreaInput, TextInput } from "views/components/UI";
@@ -18,20 +19,25 @@ interface IData {
 
 interface IProps {
   data?: IData;
+  isView?: boolean;
 }
 
 const ModalNewPIC: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
-  const { data } = props;
+  const { data, isView } = props;
 
   const onSubmitNewAddress = async (values) => {
     console.log(values);
   };
 
   const cancelClick = () => {
-    dispatch(ModalAction.CLOSE());
+    if (isView) {
+      dispatch(ModalSecondLevelActions.CLOSE());
+    } else {
+      dispatch(ModalAction.CLOSE());
+    }
   };
 
   return (

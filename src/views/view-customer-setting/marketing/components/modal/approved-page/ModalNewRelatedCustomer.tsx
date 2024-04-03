@@ -4,6 +4,7 @@ import React, { Fragment, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalSecondLevelActions from "stores/modal/second-level/ModalSecondLevelActions";
 import { Divider, Form, Input, Label } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import { Button, SearchInput } from "views/components/UI";
@@ -22,8 +23,16 @@ interface customerData {
   customerAddress: string;
 }
 
-const ModalNewRelatedCustomer: React.FC = (props) => {
+interface IProps {
+  data?: customerData;
+  isView?: boolean;
+}
+
+const ModalNewRelatedCustomer: React.FC<IProps> = (
+  props: React.PropsWithChildren<IProps>
+) => {
   const dispatch: Dispatch = useDispatch();
+  const { data, isView } = props;
 
   const [customerName, setCustomerName] = useState();
   const [customerData, setCustomerData] = useState<customerData | undefined>(
@@ -58,7 +67,11 @@ const ModalNewRelatedCustomer: React.FC = (props) => {
   };
 
   const cancelClick = () => {
-    dispatch(ModalAction.CLOSE());
+    if (isView) {
+      dispatch(ModalSecondLevelActions.CLOSE());
+    } else {
+      dispatch(ModalAction.CLOSE());
+    }
   };
 
   return (

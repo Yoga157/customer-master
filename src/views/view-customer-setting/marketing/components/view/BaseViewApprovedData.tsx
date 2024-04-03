@@ -15,6 +15,7 @@ import { Form as FinalForm, Field } from "react-final-form";
 import { DropdownClearInput } from "views/components/UI";
 import TableCustomerDetail from "../table/TableCustomerDetail";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalSecondLevelActions from "stores/modal/second-level/ModalSecondLevelActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import ModalNewCustomerAddress from "../modal/approved-page/ModalNewCustomerAddress";
 import ModalNewWebsiteMedia from "../modal/approved-page/ModalNewWebsiteMedia";
@@ -107,42 +108,78 @@ const BaseViewApprovedData: React.FC<IProps> = (
 
   // add new customer address
   const openNewAddress = useCallback((): void => {
-    dispatch(
-      ModalFirstLevelActions.OPEN(
-        <ModalNewCustomerAddress></ModalNewCustomerAddress>,
-        ModalSizeEnum.Small
-      )
-    );
+    if (isView) {
+      dispatch(
+        ModalSecondLevelActions.OPEN(
+          <ModalNewCustomerAddress isView={isView}></ModalNewCustomerAddress>,
+          ModalSizeEnum.Small
+        )
+      );
+    } else {
+      dispatch(
+        ModalFirstLevelActions.OPEN(
+          <ModalNewCustomerAddress></ModalNewCustomerAddress>,
+          ModalSizeEnum.Small
+        )
+      );
+    }
   }, [dispatch]);
 
   // add website or social media
   const openNewWebsiteSocial = useCallback((): void => {
-    dispatch(
-      ModalFirstLevelActions.OPEN(
-        <ModalNewWebsiteMedia></ModalNewWebsiteMedia>,
-        ModalSizeEnum.Small
-      )
-    );
+    if (isView) {
+      dispatch(
+        ModalSecondLevelActions.OPEN(
+          <ModalNewWebsiteMedia isView={isView}></ModalNewWebsiteMedia>,
+          ModalSizeEnum.Small
+        )
+      );
+    } else {
+      dispatch(
+        ModalFirstLevelActions.OPEN(
+          <ModalNewWebsiteMedia></ModalNewWebsiteMedia>,
+          ModalSizeEnum.Small
+        )
+      );
+    }
   }, [dispatch]);
 
   // add pic
   const openNewPIC = useCallback((): void => {
-    dispatch(
-      ModalFirstLevelActions.OPEN(
-        <ModalNewPIC></ModalNewPIC>,
-        ModalSizeEnum.Small
-      )
-    );
+    if (isView) {
+      dispatch(
+        ModalSecondLevelActions.OPEN(
+          <ModalNewPIC isView={isView}></ModalNewPIC>,
+          ModalSizeEnum.Small
+        )
+      );
+    } else {
+      dispatch(
+        ModalFirstLevelActions.OPEN(
+          <ModalNewPIC></ModalNewPIC>,
+          ModalSizeEnum.Small
+        )
+      );
+    }
   }, [dispatch]);
 
   // add related customer
   const openNewRelatedCust = useCallback((): void => {
-    dispatch(
-      ModalFirstLevelActions.OPEN(
-        <ModalNewRelatedCustomer></ModalNewRelatedCustomer>,
-        ModalSizeEnum.Small
-      )
-    );
+    if (isView) {
+      dispatch(
+        ModalSecondLevelActions.OPEN(
+          <ModalNewRelatedCustomer isView={isView}></ModalNewRelatedCustomer>,
+          ModalSizeEnum.Small
+        )
+      );
+    } else {
+      dispatch(
+        ModalFirstLevelActions.OPEN(
+          <ModalNewRelatedCustomer></ModalNewRelatedCustomer>,
+          ModalSizeEnum.Small
+        )
+      );
+    }
   }, [dispatch]);
 
   let addressOfficeHeader = [
@@ -469,7 +506,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
             <div className="accordion-container">
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <span className="bold" style={{ marginRight: "1rem" }}>
-                  ADDRESS & OFFICE NUMBER
+                  PIC CUSTOMER
                 </span>
                 <div
                   className="match-button"
