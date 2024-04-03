@@ -94,12 +94,7 @@ const TableCustomerDetail: React.FC<IProps> = (
               {sequenceNum && (
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
               )}
-              <Table.Cell
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
+              <Table.Cell>
                 {/* <Icon name="ellipsis vertical"></Icon> */}
                 <Dropdown pointing="left" icon="ellipsis vertical">
                   <Dropdown.Menu>

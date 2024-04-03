@@ -13,6 +13,9 @@ import { Link, useParams } from "react-router-dom";
 import IStore from "models/IStore";
 import ViewApprovedData from "./ViewApprovedData";
 import ViewApproval from "./ViewApproval";
+import { selectNewCustomerDetailPending } from "selectors/customer-master/CustomerMasterSelector";
+import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
+import { selectRequesting } from "selectors/requesting/RequestingSelector";
 
 interface routeParams {
   id: string;
@@ -28,17 +31,46 @@ const ViewEditMarketing: React.FC<IProps> = (
   const dispatch: Dispatch = useDispatch();
   const { status } = props;
   const { id } = useParams<routeParams>();
+  const [realStatus, setRealStatus] = useState(status);
+
+  const customer = useSelector((state: IStore) =>
+    selectNewCustomerDetailPending(state)
+  );
 
   dispatch(CustomerMasterActions.setActiveTabs(4));
+  useEffect(() => {
+    if (status == "NOT_NEW") {
+      dispatch(
+        CustomerMasterActions.requestNewCustomerDetailByGenId(Number(id))
+      );
+    }
+  }, [status, id]);
 
-  // let status = "PENDING";
+  useEffect(() => {
+    if (Array.isArray(customer)) {
+      setRealStatus("NOT_NEW");
+    } else {
+      setRealStatus(customer.approvalStatus.toUpperCase());
+    }
+  }, [customer]);
+
+  const isRequesting: boolean = useSelector((state: IStore) =>
+    selectRequesting(state, [
+      CustomerMasterActions.REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID,
+    ])
+  );
 
   return (
     <Fragment>
-      {(status == "APPROVE" || status == "NOT_NEW") && (
-        <ViewApprovedData isView={false}></ViewApprovedData>
-      )}
-      {status == "PENDING" && <ViewApproval></ViewApproval>}
+      <LoadingIndicator isActive={isRequesting}>
+        {(realStatus == "APPROVE" || realStatus == "NOT_NEW") && (
+          <ViewApprovedData
+            isView={false}
+            status={realStatus}
+          ></ViewApprovedData>
+        )}
+        {realStatus == "PENDING" && <ViewApproval></ViewApproval>}
+      </LoadingIndicator>
     </Fragment>
   );
 };

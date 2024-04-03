@@ -512,15 +512,15 @@ const App: React.FC<IProps> = (props: React.PropsWithChildren<IProps>) => (
                   path={RouteEnum.AllFeatures}
                   component={AllFeaturesPage}
                 />
-                <PrivateRoute
-                  path="/customer-setting/:id(\d+)"
-                  component={ViewCustomerSetting}
-                />
-                <PrivateRoute
+                <Route
                   path={RouteEnum.AddNewCustomerSetting}
                   component={AddNewCustomerSetting}
                 />
-                <PrivateRoute
+                <Route
+                  path={RouteEnum.ViewCustomerSetting}
+                  component={ViewCustomerSetting}
+                />
+                <Route
                   path={RouteEnum.CustomerSetting}
                   component={CustomerSettingPage}
                 />

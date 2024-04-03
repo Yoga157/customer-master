@@ -133,3 +133,19 @@ export const requestApprovedCustomerByGenId = (genId: number): any => {
     );
   };
 };
+
+export const REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID: string =
+  "CustomerMasterActions.REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID";
+export const REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID_FINISHED: string =
+  "CustomerMasterActions.REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID_FINISHED";
+
+export const requestCustomerMoreDetailsByCustId = (custId: number): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID,
+      CustomerMasterEffect.requestCustomerMoreDetailsByCustId,
+      custId
+    );
+  };
+};
