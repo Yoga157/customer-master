@@ -119,7 +119,13 @@ const TableCustomerDetail: React.FC<IProps> = (
                     {data[header.key]}
                   </Table.Cell>
                 ) : (
-                  <Table.Cell key={header.key}>{data[header.key]}</Table.Cell>
+                  <Table.Cell key={header.key}>
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: data[header.key],
+                      }}
+                    ></p>
+                  </Table.Cell>
                 )
               )}
             </Table.Row>

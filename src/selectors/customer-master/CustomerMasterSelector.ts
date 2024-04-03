@@ -41,9 +41,9 @@ export const selectReqCustomerNewAccount: Selector<
 );
 
 const _selectNewCustomerDetailPending = (models: ResultActions): any => {
-  if (Array.isArray(models.resultObj) && models.resultObj.length != 0) {
+  if (Array.isArray(models.resultObj) && models.resultObj.length > 0) {
     return {
-       customerGenID: models.resultObj[0].customerGenID,
+      customerGenID: models.resultObj[0].customerGenID,
       customerID: models.resultObj[0].customerID,
       titleCustomer: models.resultObj[0].titleCustomer,
       customerName: models.resultObj[0].customerName,
@@ -80,12 +80,22 @@ const _joinOfficeNumber = (
   alternateNumber: any,
   faxNumber: any
 ): string => {
-  if (!phoneNumber && !alternateNumber && !faxNumber) {
+  let numbers = [];
+
+  if (phoneNumber) {
+    numbers.push(phoneNumber);
+  }
+  if (alternateNumber) {
+    numbers.push(alternateNumber);
+  }
+  if (faxNumber) {
+    numbers.push(faxNumber);
+  }
+
+  if (numbers.length == 0) {
     return "-";
   } else {
-    return `${phoneNumber ? phoneNumber + "," : ""} ${
-      alternateNumber ? alternateNumber + "," : ""
-    } ${faxNumber ? faxNumber : ""}`;
+    return numbers.join(", ");
   }
 };
 
@@ -102,6 +112,19 @@ const _mappingAddressOffice = (models: any[]): any[] => {
     phoneNumber: model.phoneNumber,
     alternateNumber: model.alternateNumber,
     faxNumber: model.faxNumber,
+  }));
+};
+
+// customer pic
+const _mappingCustomerPICs = (models: any[]): any[] => {
+  return models.map((model: any): any => ({
+    id: model.customerPICID,
+    name: model.picName,
+    jabatan: model.picJobTitle,
+    email: model.picEmailAddr,
+    address: model.picAddress,
+    phoneNumber: model.picMobilePhone,
+    customerGenID: model.customerGenID,
   }));
 };
 
@@ -142,7 +165,7 @@ const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
           ? models.resultObj[0].cpWebsiteSocialMedias
           : [],
         customerPICs: models.resultObj[0].customerPICs
-          ? models.resultObj[0].customerPICs
+          ? _mappingCustomerPICs(models.resultObj[0].customerPICs)
           : [],
         cpRelatedCustomers: models.resultObj[0].cpRelatedCustomers
           ? models.resultObj[0].cpRelatedCustomers
