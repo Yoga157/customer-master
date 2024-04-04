@@ -16,13 +16,25 @@ interface IProps {
   data: any[];
   sequenceNum: any;
   Modal: React.FC<any>;
+  deleteData?: (data: any) => void;
+  refreshData?: (data: any) => void;
+  customerId?: number;
   relatedCustomer?;
 }
 
 const TableCustomerDetail: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
-  const { header, data, sequenceNum, Modal, relatedCustomer } = props;
+  const {
+    header,
+    data,
+    sequenceNum,
+    Modal,
+    relatedCustomer,
+    deleteData,
+    refreshData,
+    customerId,
+  } = props;
   const dispatch: Dispatch = useDispatch();
 
   const openEdit = useCallback(
@@ -37,13 +49,13 @@ const TableCustomerDetail: React.FC<IProps> = (
     [dispatch]
   );
 
-  const deleteData = (id) => {
-    console.log(`Hapus data ${id}`);
-  };
+  // const deleteData = (id) => {
+  //   console.log(`Hapus data ${id}`);
+  // };
 
-  const refreshData = (customerID) => {
-    console.log(`Refresh data customer ${customerID}`);
-  };
+  // const refreshData = (customerID) => {
+  //   console.log(`Refresh data customer ${customerID}`);
+  // };
 
   const openDelete = useCallback(
     (idToDel: number, content: string): void => {
@@ -53,7 +65,7 @@ const TableCustomerDetail: React.FC<IProps> = (
             deleteFunc={deleteData}
             refreshFunc={refreshData}
             id={idToDel}
-            customerID={1}
+            customerID={customerId}
             content={content}
           />,
           ModalSizeEnum.Tiny
@@ -103,12 +115,14 @@ const TableCustomerDetail: React.FC<IProps> = (
                         text="View/Edit"
                         icon="edit"
                         onClick={() => openEdit(data)}
+                        disabled={data?.type == "MAIN" ? true : false}
                       />
                     )}
                     <Dropdown.Item
                       text="Delete"
                       icon="trash alternate"
-                      onClick={() => openDelete(index, "nama tabel")}
+                      onClick={() => openDelete(data.id, "data")}
+                      disabled={data?.type == "MAIN" ? true : false}
                     />
                   </Dropdown.Menu>
                 </Dropdown>

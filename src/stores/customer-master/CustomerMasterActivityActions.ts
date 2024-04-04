@@ -8,6 +8,7 @@ import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 import ResultActions from "models/ResultActions";
 import IAction from "models/IAction";
 import PostStatusNewCustomerModel from "./models/PostStatusNewCustomerModel";
+import CustomerOfficeNumberModel from "./models/CustomerOficeNumberModel";
 import PostPeopleInChargerModel from "./models/PostPeopleInChargerModel";
 
 type ActionUnion =
@@ -148,6 +149,58 @@ export const requestCustomerMoreDetailsByCustId = (custId: number): any => {
       REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID,
       CustomerMasterEffect.requestCustomerMoreDetailsByCustId,
       custId
+    );
+  };
+};
+
+export const POST_CUSTOMER_OFFICE_NUMBER: string =
+  "CustomerMasterActions.POST_CUSTOMER_OFFICE_NUMBER";
+export const POST_CUSTOMER_OFFICE_NUMBER_FINISHED: string =
+  "CustomerMasterActions.POST_CUSTOMER_OFFICE_NUMBER_FINISHED";
+
+export const postCustomerOfficeNumber = (
+  data: CustomerOfficeNumberModel
+): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      POST_CUSTOMER_OFFICE_NUMBER,
+      CustomerMasterEffect.postCustomerOfficeNumber,
+      data
+    );
+  };
+};
+
+export const PUT_CUSTOMER_OFFICE_NUMBER: string =
+  "CustomerActions.PUT_CUSTOMER_OFFICE_NUMBER";
+export const PUT_CUSTOMER_OFFICE_NUMBER_FINISHED =
+  "CustomerActions.PUT_CUSTOMER_OFFICE_NUMBER_FINISHED";
+export const updateCustomerOfficeNumber = (
+  data: CustomerOfficeNumberModel,
+  id: number
+): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      PUT_STATUS_NEW_CUSTOMER,
+      CustomerMasterEffect.updateCustomerOfficeNumber,
+      data,
+      id
+    );
+  };
+};
+
+export const DEL_CUSTOMER_OFFICE_NUMBER: string =
+  "CustomerActions.DEL_CUSTOMER_OFFICE_NUMBER";
+export const DEL_CUSTOMER_OFFICE_NUMBER_FINISHED =
+  "CustomerActions.DEL_CUSTOMER_OFFICE_NUMBER_FINISHED";
+export const deleteCustomerOfficeNumber = (id: number): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      DEL_CUSTOMER_OFFICE_NUMBER,
+      CustomerMasterEffect.deleteCustomerOfficeNumber,
+      id
     );
   };
 };

@@ -112,6 +112,8 @@ const _mappingAddressOffice = (models: any[]): any[] => {
     phoneNumber: model.phoneNumber,
     alternateNumber: model.alternateNumber,
     faxNumber: model.faxNumber,
+    customerGenID: model.customerGenID,
+    customerID: model.customerID,
   }));
 };
 
@@ -125,7 +127,7 @@ const _mappingCustomerPICs = (models: any[]): any[] => {
     address: model.picAddress,
     phoneNumber: model.picMobilePhone,
     customerGenID: model.customerGenID,
-    customerId: model.customerId,
+    customerID: model.customerID,
   }));
 };
 

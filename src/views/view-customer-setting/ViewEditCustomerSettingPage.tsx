@@ -71,7 +71,10 @@ const ViewEditCustomerSettingPage: React.FC<IProps> = (
   );
 
   useEffect(() => {
-    if (id != undefined) {
+    if (
+      id != undefined &&
+      (role.toUpperCase() == "SALES" || role.toUpperCase() == "ADMIN")
+    ) {
       dispatch(CustomerSetting.requestCustomerDataById(Number(id)));
     }
   }, [dispatch, id]);
