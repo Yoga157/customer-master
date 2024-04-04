@@ -96,13 +96,19 @@ const CustomerTableRow: React.FC<IProps> = (
             rowData.requestedBy === userId?.fullName &&
             rowData.status?.toUpperCase() === "REJECTED"
               ? "#ffe0d9"
-              : rowData.status?.toUpperCase() === "PENDING"
-              ? "#fffb9a"
               : rowData.status?.toUpperCase() === "APPROVE"
               ? "#00FF7F"
               : role === "Marketing" &&
                 rowData.approvalStatus?.toUpperCase() == "REJECT"
               ? "#ffe0d9"
+              : role === "Marketing" &&
+                rowData.approvalStatus?.toUpperCase() == "PENDING"
+              ? "#fffb9a"
+              : role === "Marketing" &&
+                rowData.approvalStatus?.toUpperCase() == "APPROVE"
+              ? "#00FF7F"
+              : role === "Sales" && rowData.isNew == true
+              ? "#fffb9a"
               : "",
         }}
       >

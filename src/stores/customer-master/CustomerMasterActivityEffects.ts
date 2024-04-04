@@ -93,7 +93,7 @@ export const requestApprovedCustomerByGenId = async (
 export const requestCustomerMoreDetailsByCustId = async (
   custId: number
 ): Promise<ResultActions | HttpErrorResponseModel> => {
-  const controllerName = `GetCustomerDetailsByCustID?customerID=${custId}`;
+  const controllerName = `CustomerSetting/GetCustomerDetailsByCustID?customerID=${custId}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName

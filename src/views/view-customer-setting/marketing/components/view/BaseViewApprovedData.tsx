@@ -511,6 +511,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           : Number(id)
                         : Number(id)
                     }
+                    isView={isView}
                   />
                 </div>
                 <Divider className="margin-0"></Divider>
@@ -550,6 +551,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     header={websiteMediaHeader}
                     sequenceNum={true}
                     Modal={ModalNewWebsiteMedia}
+                    isView={isView}
                   />
                 </div>
                 <Divider className="margin-0"></Divider>
@@ -602,6 +604,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           : Number(id)
                         : Number(id)
                     }
+                    isView={isView}
                   />
                 </div>
                 <Divider className="margin-0"></Divider>
@@ -640,6 +643,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     header={relatedAccountHeader}
                     sequenceNum={true}
                     Modal={ModalNewRelatedCustomer}
+                    isView={isView}
                     relatedCustomer
                   />
                 </div>

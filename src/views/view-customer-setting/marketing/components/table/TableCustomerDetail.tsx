@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalSecondLevelActions from "stores/modal/second-level/ModalSecondLevelActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import React, { Fragment, useState, useCallback } from "react";
 import { Icon, Table, Dropdown } from "semantic-ui-react";
@@ -20,6 +21,7 @@ interface IProps {
   refreshData?: (data: any) => void;
   customerId?: number;
   relatedCustomer?;
+  isView?: boolean;
 }
 
 const TableCustomerDetail: React.FC<IProps> = (
@@ -34,17 +36,27 @@ const TableCustomerDetail: React.FC<IProps> = (
     deleteData,
     refreshData,
     customerId,
+    isView,
   } = props;
   const dispatch: Dispatch = useDispatch();
 
   const openEdit = useCallback(
     (dataEdit): void => {
-      dispatch(
-        ModalFirstLevelActions.OPEN(
-          <Modal data={dataEdit} />,
-          ModalSizeEnum.Small
-        )
-      );
+      if (isView) {
+        dispatch(
+          ModalSecondLevelActions.OPEN(
+            <Modal data={dataEdit} isView={isView} />,
+            ModalSizeEnum.Small
+          )
+        );
+      } else {
+        dispatch(
+          ModalFirstLevelActions.OPEN(
+            <Modal data={dataEdit} />,
+            ModalSizeEnum.Small
+          )
+        );
+      }
     },
     [dispatch]
   );
@@ -59,18 +71,33 @@ const TableCustomerDetail: React.FC<IProps> = (
 
   const openDelete = useCallback(
     (idToDel: number, content: string): void => {
-      dispatch(
-        ModalFirstLevelActions.OPEN(
-          <DeletePopUp
-            deleteFunc={deleteData}
-            refreshFunc={refreshData}
-            id={idToDel}
-            customerID={customerId}
-            content={content}
-          />,
-          ModalSizeEnum.Tiny
-        )
-      );
+      if (isView) {
+        dispatch(
+          ModalSecondLevelActions.OPEN(
+            <DeletePopUp
+              deleteFunc={deleteData}
+              refreshFunc={refreshData}
+              id={idToDel}
+              customerID={customerId}
+              content={content}
+            />,
+            ModalSizeEnum.Tiny
+          )
+        );
+      } else {
+        dispatch(
+          ModalFirstLevelActions.OPEN(
+            <DeletePopUp
+              deleteFunc={deleteData}
+              refreshFunc={refreshData}
+              id={idToDel}
+              customerID={customerId}
+              content={content}
+            />,
+            ModalSizeEnum.Tiny
+          )
+        );
+      }
     },
     [dispatch]
   );
