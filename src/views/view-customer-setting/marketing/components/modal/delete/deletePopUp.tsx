@@ -31,10 +31,10 @@ const DeletePopUp: React.FC<IProps> = (
   );
 
   const deleteClick = async () => {
-    props.deleteFunc(props.id);
-    props.refreshFunc(props.customerID);
-    // await dispatch(props.deleteFunc(props.id));
-    // await dispatch(props.refreshFunc(props.customerSettingID));
+    // props.deleteFunc(props.id);
+    // props.refreshFunc(props.customerID);
+    await dispatch(props.deleteFunc(props.id));
+    await dispatch(props.refreshFunc(props.customerID));
     await dispatch(ModalAction.CLOSE());
   };
 

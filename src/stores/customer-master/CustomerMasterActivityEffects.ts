@@ -8,6 +8,7 @@ import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 import { NumberFormatState } from "react-number-format";
 import { data } from "jquery";
 import PostStatusNewCustomerModel from "./models/PostStatusNewCustomerModel";
+import CustomerOfficeNumberModel from "./models/CustomerOficeNumberModel";
 
 export const requestSearchCustomerMaster = async (
   page: number,
@@ -97,4 +98,42 @@ export const requestCustomerMoreDetailsByCustId = async (
     controllerName
   );
   return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
+};
+
+export const postCustomerOfficeNumber = async (
+  data: CustomerOfficeNumberModel
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = "AddressOfficeNumber";
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.postToModel<ResultActions>(
+    ResultActions,
+    endpoint,
+    data
+  );
+};
+
+export const updateCustomerOfficeNumber = async (
+  data: CustomerOfficeNumberModel,
+  id: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `AddressOfficeNumber/${id}`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.putToModel<ResultActions>(ResultActions, endpoint, data);
+};
+
+export const deleteCustomerOfficeNumber = async (
+  id: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `AddressOfficeNumber/${id}`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.delToModel<ResultActions>(ResultActions, endpoint);
 };

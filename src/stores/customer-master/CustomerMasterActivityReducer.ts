@@ -125,6 +125,38 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
       customerMoreDetails: action.payload!,
     };
   },
+
+  [CustomerMasterActions.POST_CUSTOMER_OFFICE_NUMBER_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): any {
+    return {
+      ...state,
+      error: action.error!,
+      refreshPage: action.error ? false : true,
+      resultActions: action.payload!,
+    };
+  },
+
+  [CustomerMasterActions.PUT_CUSTOMER_OFFICE_NUMBER_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    return {
+      ...state,
+      resultActions: action.payload!,
+    };
+  },
+
+  [CustomerMasterActions.DEL_CUSTOMER_OFFICE_NUMBER_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    return {
+      ...state,
+      resultActions: action.payload!,
+    };
+  },
 });
 
 export default customerMasterReducer;

@@ -111,14 +111,33 @@ const BaseViewApprovedData: React.FC<IProps> = (
     if (isView) {
       dispatch(
         ModalSecondLevelActions.OPEN(
-          <ModalNewCustomerAddress isView={isView}></ModalNewCustomerAddress>,
+          <ModalNewCustomerAddress
+            isView={isView}
+            customerId={
+              status == "NOT_NEW"
+                ? customerId
+                  ? customerId
+                  : Number(id)
+                : null
+            }
+            customerGenId={status != "NOT_NEW" ? Number(id) : null}
+          ></ModalNewCustomerAddress>,
           ModalSizeEnum.Small
         )
       );
     } else {
       dispatch(
         ModalFirstLevelActions.OPEN(
-          <ModalNewCustomerAddress></ModalNewCustomerAddress>,
+          <ModalNewCustomerAddress
+            customerId={
+              status == "NOT_NEW"
+                ? customerId
+                  ? customerId
+                  : Number(id)
+                : null
+            }
+            customerGenId={status != "NOT_NEW" ? Number(id) : null}
+          ></ModalNewCustomerAddress>,
           ModalSizeEnum.Small
         )
       );
@@ -458,6 +477,21 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     header={addressOfficeHeader}
                     sequenceNum={true}
                     Modal={ModalNewCustomerAddress}
+                    deleteData={
+                      CustomerMasterActions.deleteCustomerOfficeNumber
+                    }
+                    refreshData={
+                      status == "NOT_NEW"
+                        ? CustomerMasterActions.requestCustomerMoreDetailsByCustId
+                        : CustomerMasterActions.requestApprovedCustomerByGenId
+                    }
+                    customerId={
+                      status == "NOT_NEW"
+                        ? customerId
+                          ? customerId
+                          : Number(id)
+                        : Number(id)
+                    }
                   />
                 </div>
                 <Divider className="margin-0"></Divider>

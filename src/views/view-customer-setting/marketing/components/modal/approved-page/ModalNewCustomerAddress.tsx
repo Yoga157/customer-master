@@ -13,110 +13,91 @@ import {
   TextAreaInput,
   TextInput,
 } from "views/components/UI";
+import CustomerOfficeNumberModel from "stores/customer-master/models/CustomerOficeNumberModel";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 
 interface IData {
   id: any;
+  type: string;
   address: string;
   officeNumber: string;
   phoneNumber: string;
   alternateNumber: string;
   faxNumber: string;
+  customerGenID: any;
+  customerID: any;
 }
 
 interface IProps {
   data?: IData;
   isView?: boolean;
+  customerId?: any;
+  customerGenId?: any;
 }
 
 const ModalNewCustomerAddress: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
-  const { data, isView } = props;
+  const { data, isView, customerId, customerGenId } = props;
 
   const onSubmitNewAddress = async (values) => {
-    console.log(values);
+    const customerOfficeNumber = new CustomerOfficeNumberModel({});
+    if (data) {
+      customerOfficeNumber.customerGenID = data.customerGenID;
+      customerOfficeNumber.customerID = data.customerID;
+      customerOfficeNumber.type = data.type.toUpperCase();
+      customerOfficeNumber.fullAddress = values.fullAddress;
+      customerOfficeNumber.phoneNumber = values.phoneNumber;
+      customerOfficeNumber.alternateNumber = values.alternateNumber;
+      customerOfficeNumber.faxNumber = values.faxNumber;
+      customerOfficeNumber.modifyDate = new Date();
+      customerOfficeNumber.modifyUserID = 0;
+
+      await dispatch(
+        CustomerMasterActions.updateCustomerOfficeNumber(
+          customerOfficeNumber,
+          data.id
+        )
+      );
+    } else {
+      customerOfficeNumber.customerGenID = customerGenId;
+      customerOfficeNumber.customerID = customerId;
+      customerOfficeNumber.type = "BRANCH";
+      customerOfficeNumber.fullAddress = values.fullAddress;
+      customerOfficeNumber.phoneNumber = values.phoneNumber;
+      customerOfficeNumber.alternateNumber = values.alternateNumber;
+      customerOfficeNumber.faxNumber = values.faxNumber;
+      customerOfficeNumber.createDate = new Date();
+      customerOfficeNumber.createUserID = 0;
+
+      await dispatch(
+        CustomerMasterActions.postCustomerOfficeNumber(customerOfficeNumber)
+      );
+    }
+
+    if (customerId || data?.customerID) {
+      await dispatch(
+        CustomerMasterActions.requestCustomerMoreDetailsByCustId(
+          customerId || data.customerID
+        )
+      );
+    }
+
+    if (customerGenId || data?.customerGenID) {
+      await dispatch(
+        CustomerMasterActions.requestApprovedCustomerByGenId(
+          customerGenId || data.customerGenID
+        )
+      );
+    }
+
+    if (isView) {
+      dispatch(ModalSecondLevelActions.CLOSE());
+    } else {
+      dispatch(ModalAction.CLOSE());
+    }
   };
-
-  // city
-  // const [city, setCity] = useState("");
-  // const [cityData, setCityData] = useState("");
-
-  // const cities = [
-  //   {
-  //     key: "Jakarta",
-  //     title: "Jakarta",
-  //   },
-  //   {
-  //     key: "Bandung",
-  //     title: "Bandung",
-  //   },
-  // ];
-
-  // const [filteredCities, setFilteredCities] = useState(cities);
-
-  // const handleSearchChangeCity = useCallback(
-  //   (data) => {
-  //     setCity(data);
-  //     if (data.length >= 0) {
-  //       // dispatch(CustomerSetting.requestCustomerDataByName(data));
-  //       // search data
-  //       let filter = cities.filter((city) =>
-  //         city.key.toLowerCase().includes(data.toLowerCase())
-  //       );
-  //       setFilteredCities(filter);
-  //     } else if (data.length == 0) {
-  //       setCity(undefined);
-  //       setFilteredCities(cities);
-  //     }
-  //   },
-  //   [dispatch]
-  // );
-
-  // const onResultSelectCity = async (data: any) => {
-  //   setCity(data.result.key);
-  //   setCityData(data.result);
-  // };
-
-  // // district
-  // const [district, setDistrict] = useState("");
-  // const [districtData, setDistrictData] = useState("");
-
-  // const districts = [
-  //   {
-  //     key: "Gambir",
-  //     title: "Gambir",
-  //   },
-  //   {
-  //     key: "Tanah Abang",
-  //     title: "Tanah Abang",
-  //   },
-  // ];
-
-  // const [filteredDistricts, setFilteredDistricts] = useState(districts);
-
-  // const handleSearchChangeDistrict = useCallback(
-  //   (data) => {
-  //     setDistrict(data);
-  //     if (data.length >= 0) {
-  //       // dispatch(CustomerSetting.requestCustomerDataByName(data));
-  //       // search data
-  //       let filter = districts.filter((district) =>
-  //         district.key.toLowerCase().includes(data.toLowerCase())
-  //       );
-  //       setFilteredDistricts(filter);
-  //     } else if (data.length == 0) {
-  //       setDistrict(undefined);
-  //       setFilteredDistricts(districts);
-  //     }
-  //   },
-  //   [dispatch]
-  // );
-
-  // const onResultSelectDistrict = async (data: any) => {
-  //   setDistrict(data.result.key);
-  //   setDistrictData(data.result);
-  // };
 
   const cancelClick = () => {
     if (isView) {
@@ -135,34 +116,6 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
         onSubmit={(values: any) => onSubmitNewAddress(values)}
         render={({ handleSubmit, pristine, invalid }) => (
           <Form onSubmit={handleSubmit}>
-            {/* <div style={{ display: "flex", flexDirection: "row" }}>
-              <div style={{ marginRight: "1rem" }}>
-                <Field
-                  name="city"
-                  component={SearchInput}
-                  placeholder="Type city here.."
-                  labelName="City"
-                  handleSearchChange={handleSearchChangeCity}
-                  onResultSelect={onResultSelectCity}
-                  results={filteredCities}
-                  values={city}
-                  mandatory={true}
-                />
-              </div>
-
-              <Field
-                name="district"
-                component={SearchInput}
-                placeholder="Type district here.."
-                labelName="District"
-                handleSearchChange={handleSearchChangeDistrict}
-                onResultSelect={onResultSelectDistrict}
-                results={filteredDistricts}
-                values={district}
-                mandatory={true}
-              />
-            </div> */}
-
             <div style={{ margin: "1rem 0" }}>
               <Field
                 name="fullAddress"
