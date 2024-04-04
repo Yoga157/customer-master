@@ -125,6 +125,7 @@ const _mappingCustomerPICs = (models: any[]): any[] => {
     address: model.picAddress,
     phoneNumber: model.picMobilePhone,
     customerGenID: model.customerGenID,
+    customerId: model.customerId,
   }));
 };
 

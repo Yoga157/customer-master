@@ -8,6 +8,7 @@ import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 import ResultActions from "models/ResultActions";
 import IAction from "models/IAction";
 import PostStatusNewCustomerModel from "./models/PostStatusNewCustomerModel";
+import PostPeopleInChargerModel from "./models/PostPeopleInChargerModel";
 
 type ActionUnion =
   | undefined
@@ -15,6 +16,7 @@ type ActionUnion =
   | CustomerMasterModel
   | CustomerMasterRow
   | CustomerMasterPostModel
+  | PostPeopleInChargerModel
   | boolean
   | ResultActions;
 
@@ -145,6 +147,38 @@ export const requestCustomerMoreDetailsByCustId = (custId: number): any => {
       dispatch,
       REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID,
       CustomerMasterEffect.requestCustomerMoreDetailsByCustId,
+      custId
+    );
+  };
+};
+
+export const POST_PIC: string = "CustomerMasterActions.POST_PIC";
+export const POST_PIC_FINISHED: string =
+  "CustomerMasterActions.POST_PIC_FINISHED";
+
+export const postPIC = (data: PostPeopleInChargerModel): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      POST_PIC,
+      CustomerMasterEffect.postPIC,
+      data
+    );
+  };
+};
+
+export const PUT_PIC: string = "CustomerActions.PUT_PIC";
+export const PUT_PIC_FINISHED = "CustomerActions.PUT_PIC_FINISHED";
+export const updatePIC = (
+  data: PostPeopleInChargerModel,
+  custId: number
+): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      PUT_PIC,
+      CustomerMasterEffect.updatePIC,
+      data,
       custId
     );
   };
