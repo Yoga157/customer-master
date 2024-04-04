@@ -87,8 +87,6 @@ const CustomerTableRow: React.FC<IProps> = (
     });
   };
 
-  // console.log(rowData);
-
   return (
     <Fragment>
       <Table.Row
@@ -96,16 +94,19 @@ const CustomerTableRow: React.FC<IProps> = (
         style={{
           backgroundColor:
             rowData.requestedBy === userId?.fullName &&
-            rowData.status?.toUpperCase() === "REJECTED" &&
-            rowData.status?.toUpperCase() === "REJECT"
+            rowData.status?.toUpperCase() === "REJECTED"
               ? "#ffe0d9"
-              : rowData.status?.toUpperCase() === "PENDING"
-              ? "#fffb9a"
-              : rowData.status?.toUpperCase() === "APPROVE"
-              ? "#00FF7F"
-              : (role === "Sales" || role === "Marketing") &&
-                rowData.isNew === true
+              : role === "Sales" && rowData.isNew === true
               ? "#FFF7CB"
+              : role === "Marketing" &&
+                rowData.approvalStatus?.toUpperCase() == "PENDING"
+              ? "#FFF7CB"
+              : role === "Marketing" &&
+                rowData.approvalStatus?.toUpperCase() == "APPROVE"
+              ? "#00FF7F"
+              : role === "Marketing" &&
+                rowData.approvalStatus?.toUpperCase() == "REJECT"
+              ? "#ffe0d9"
               : "",
         }}
       >
