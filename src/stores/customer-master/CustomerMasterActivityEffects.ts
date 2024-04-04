@@ -5,6 +5,7 @@ import CustomerMasterModel from "./models/CustomerMasterModel";
 import CustomerMasterRow from "./models/CustomerMasterRow";
 import ResultActions from "models/ResultActions";
 import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
+import PostPeopleInChargerModel from "./models/PostPeopleInChargerModel";
 import { NumberFormatState } from "react-number-format";
 import { data } from "jquery";
 import PostStatusNewCustomerModel from "./models/PostStatusNewCustomerModel";
@@ -92,7 +93,7 @@ export const requestApprovedCustomerByGenId = async (
 export const requestCustomerMoreDetailsByCustId = async (
   custId: number
 ): Promise<ResultActions | HttpErrorResponseModel> => {
-  const controllerName = `CustomerSetting/GetCustomerDetailsByCustID?customerID=${custId}`;
+  const controllerName = `GetCustomerDetailsByCustID?customerID=${custId}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName
@@ -137,3 +138,32 @@ export const deleteCustomerOfficeNumber = async (
   );
   return EffectUtility.delToModel<ResultActions>(ResultActions, endpoint);
 };
+
+
+export const postPIC = async (
+  data: PostPeopleInChargerModel
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = "CustomerPIC";
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.postToModel<ResultActions>(
+    ResultActions,
+    endpoint,
+    data
+  );
+};
+
+export const updatePIC = async (
+  data: PostPeopleInChargerModel,
+  custId: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `CustomerPIC/${custId}`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.putToModel<ResultActions>(ResultActions, endpoint, data);
+};
+

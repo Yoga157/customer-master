@@ -44,13 +44,13 @@ interface ICustomer {
 
 interface IProps {
   isView?: boolean;
-  customerId?: number;
+  customerId?: any;
   status?: string;
   // customer: ICustomer;
 }
 
 interface routeParams {
-  id: string;
+  id: any;
 }
 
 const BaseViewApprovedData: React.FC<IProps> = (
@@ -168,14 +168,33 @@ const BaseViewApprovedData: React.FC<IProps> = (
     if (isView) {
       dispatch(
         ModalSecondLevelActions.OPEN(
-          <ModalNewPIC isView={isView}></ModalNewPIC>,
+          <ModalNewPIC
+            isView={isView}
+            customerId={
+              status == "NOT_NEW"
+                ? customerId
+                  ? customerId
+                  : Number(id)
+                : null
+            }
+            customerGenId={status != "NOT_NEW" ? Number(id) : null}
+          ></ModalNewPIC>,
           ModalSizeEnum.Small
         )
       );
     } else {
       dispatch(
         ModalFirstLevelActions.OPEN(
-          <ModalNewPIC></ModalNewPIC>,
+          <ModalNewPIC
+            customerId={
+              status == "NOT_NEW"
+                ? customerId
+                  ? customerId
+                  : Number(id)
+                : null
+            }
+            customerGenId={status != "NOT_NEW" ? Number(id) : null}
+          ></ModalNewPIC>,
           ModalSizeEnum.Small
         )
       );
@@ -540,7 +559,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
             <div className="accordion-container">
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <span className="bold" style={{ marginRight: "1rem" }}>
-                  PIC CUSTOMER
+                  PEOPLE IN CHARGE (PIC)
                 </span>
                 <div
                   className="match-button"
