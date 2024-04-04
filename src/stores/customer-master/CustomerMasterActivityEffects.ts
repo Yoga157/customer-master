@@ -139,7 +139,6 @@ export const deleteCustomerOfficeNumber = async (
   return EffectUtility.delToModel<ResultActions>(ResultActions, endpoint);
 };
 
-
 export const postPIC = async (
   data: PostPeopleInChargerModel
 ): Promise<ResultActions | HttpErrorResponseModel> => {
@@ -167,3 +166,13 @@ export const updatePIC = async (
   return EffectUtility.putToModel<ResultActions>(ResultActions, endpoint, data);
 };
 
+export const deletePIC = async (
+  id: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `CustomerPIC/${id}`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.delToModel<ResultActions>(ResultActions, endpoint);
+};

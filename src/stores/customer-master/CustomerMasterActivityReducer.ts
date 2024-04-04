@@ -126,7 +126,7 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
     };
   },
 
-[CustomerMasterActions.POST_CUSTOMER_OFFICE_NUMBER_FINISHED](
+  [CustomerMasterActions.POST_CUSTOMER_OFFICE_NUMBER_FINISHED](
     state: ICustomerMasterState,
     action: IAction<ResultActions>
   ): any {
@@ -157,7 +157,7 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
       resultActions: action.payload!,
     };
   },
-  
+
   [CustomerMasterActions.POST_PIC_FINISHED](
     state: ICustomerMasterState,
     action: IAction<ResultActions>
@@ -171,6 +171,16 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
   },
 
   [CustomerMasterActions.PUT_PIC_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    return {
+      ...state,
+      resultActions: action.payload!,
+    };
+  },
+
+  [CustomerMasterActions.DEL_PIC_FINISHED](
     state: ICustomerMasterState,
     action: IAction<ResultActions>
   ): ICustomerMasterState {

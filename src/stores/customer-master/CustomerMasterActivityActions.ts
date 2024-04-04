@@ -236,3 +236,16 @@ export const updatePIC = (
     );
   };
 };
+
+export const DEL_PIC: string = "CustomerActions.DEL_PIC";
+export const DEL_PIC_FINISHED = "CustomerActions.DEL_PIC_FINISHED";
+export const deletePIC = (id: number): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      DEL_PIC,
+      CustomerMasterEffect.deletePIC,
+      id
+    );
+  };
+};

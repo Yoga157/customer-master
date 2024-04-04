@@ -97,11 +97,13 @@ const CustomerTableRow: React.FC<IProps> = (
           backgroundColor:
             rowData.requestedBy === userId?.fullName &&
             rowData.status?.toUpperCase() === "REJECTED" &&
-            rowData.status?.toUpperCase() === "REJECT"
+            rowData.approvalStatus?.toUpperCase() === "REJECT"
               ? "#ffe0d9"
-              : rowData.status?.toUpperCase() === "PENDING"
+              : rowData.status?.toUpperCase() === "PENDING" &&
+                rowData.approvalStatus?.toUpperCase() === "PENDING"
               ? "#fffb9a"
-              : rowData.status?.toUpperCase() === "APPROVE"
+              : rowData.status?.toUpperCase() === "APPROVE" &&
+                rowData.approvalStatus?.toUpperCase() === "APPROVE"
               ? "#00FF7F"
               : (role === "Sales" || role === "Marketing") &&
                 rowData.isNew === true

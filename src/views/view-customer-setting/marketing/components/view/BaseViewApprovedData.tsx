@@ -589,6 +589,19 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     header={picHeader}
                     sequenceNum={true}
                     Modal={ModalNewPIC}
+                    deleteData={CustomerMasterActions.deletePIC}
+                    refreshData={
+                      status == "NOT_NEW"
+                        ? CustomerMasterActions.requestCustomerMoreDetailsByCustId
+                        : CustomerMasterActions.requestApprovedCustomerByGenId
+                    }
+                    customerId={
+                      status == "NOT_NEW"
+                        ? customerId
+                          ? customerId
+                          : Number(id)
+                        : Number(id)
+                    }
                   />
                 </div>
                 <Divider className="margin-0"></Divider>
