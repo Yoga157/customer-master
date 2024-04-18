@@ -397,6 +397,42 @@ s .line {
   cursor: pointer;
 }
 
+.blacklist-yes-table {
+  padding: 0.1rem 0.6rem;
+  width: fit-content;
+  background-color: #fb7757;
+  color: white;
+  border-radius: 1rem;
+  margin: auto;
+}
+
+.blacklist-no-table {
+  padding: 0.1rem 0.6rem;
+  width: fit-content;
+  background-color: #27d4a5;
+  color: white;
+  border-radius: 1rem;
+  margin: auto;
+}
+
+.holdshipment-yes-table {
+  padding: 0.1rem 0.6rem;
+  width: fit-content;
+  background-color: #ffd500;
+  color: #55637a;
+  border-radius: 1rem;
+  margin: auto;
+}
+
+.holdshipment-no-table {
+  padding: 0.1rem 0.6rem;
+  width: fit-content;
+  background-color: #656dd1;
+  color: white;
+  border-radius: 1rem;
+  margin: auto;
+}
+
 .match-button {
   display: flex;
   flex-direction: row;

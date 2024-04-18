@@ -12,7 +12,7 @@ export default interface ICustomerSettingOptions {
 const _selectReqNewCustomer = (models: any): any => {
   // console.log(models);
   return {
-    totalRow: models.totalRows,
+    totalRows: models.totalRows,
     rows: _createTableReqNewCustomerRows(models.rows),
   };
 };

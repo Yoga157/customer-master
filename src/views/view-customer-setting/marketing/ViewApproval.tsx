@@ -16,7 +16,7 @@ import ModalSizeEnum from "constants/ModalSizeEnum";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import ModalRejectApproval from "./components/modal/approval-page/ModalRejectApproval";
 import ModalSuggestionList from "./components/modal/approval-page/ModalSuggestionList";
-import { TextInput } from "views/components/UI";
+import { TextInput, Pagination } from "views/components/UI";
 
 import IStore from "models/IStore";
 import * as CustomerMaster from "stores/customer-master/CustomerMasterActivityActions";
@@ -37,11 +37,23 @@ const ViewApproval: React.FC = (props) => {
   const dispatch: Dispatch = useDispatch();
   const { id } = useParams<routeParams>();
 
+  const customer = useSelector((state: IStore) =>
+    selectNewCustomerDetailPending(state)
+  );
+
+  // search keyword
+  const [customerName, setCustomerName] = useState(null);
+  const [picName, setPicName] = useState(null);
+
   const onSearch = async (data) => {
+    setCustomerName(data.customerName);
+    setPicName(data.picName);
+    dispatch(CustomerMaster.setActivePage(1));
+
     dispatch(
       CustomerMaster.requestSearchCustomerMaster(
         1,
-        5,
+        10,
         "CustomerID",
         "ascending",
         data.titleCustomer,
@@ -51,9 +63,27 @@ const ViewApproval: React.FC = (props) => {
     );
   };
 
-  const customer = useSelector((state: IStore) =>
-    selectNewCustomerDetailPending(state)
+  // pagination
+  const activePage = useSelector(
+    (state: IStore) => state.customerMaster.activePage
   );
+  const [pageSize, setPage] = useState(10);
+
+  const handlePaginationChange = (e: any, data: any) => {
+    dispatch(CustomerMaster.setActivePage(data.activePage));
+
+    dispatch(
+      CustomerMaster.requestSearchCustomerMaster(
+        data.activePage,
+        pageSize,
+        "CustomerID",
+        "ascending",
+        null,
+        customerName,
+        picName
+      )
+    );
+  };
 
   const suggestionList = useSelector((state: IStore) =>
     selectReqCustomerNewAccount(state)
@@ -421,7 +451,12 @@ const ViewApproval: React.FC = (props) => {
                     </div>
                   </div>
 
-                  {/* 
+                  <div className="padding-horizontal">
+                    <p className="grey margin-0 bold text-align-left">
+                      PIC Details
+                    </p>
+                  </div>
+
                   <div className="padding-horizontal">
                     <div
                       style={{
@@ -429,9 +464,17 @@ const ViewApproval: React.FC = (props) => {
                         backgroundColor: "#E1E1E1",
                         padding: "1rem",
                         margin: "1rem 0",
+                        display: "flex",
+                        flexDirection: "row",
                       }}
                     >
-                      <div className="space-between-container">
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          marginRight: "4rem",
+                        }}
+                      >
                         <div className="customer-data-container-left">
                           <label className="customer-data-label">
                             PIC Name
@@ -440,7 +483,31 @@ const ViewApproval: React.FC = (props) => {
                             style={{ fontSize: "20px", fontWeight: "bold" }}
                             className="grey"
                           >
-                            {customer.picName}
+                            {customer.picName || "No Data"}
+                          </p>
+                        </div>
+
+                        <div className="customer-data-container-left">
+                          <label className="customer-data-label">Email</label>
+                          <p
+                            style={{ fontSize: "20px", fontWeight: "bold" }}
+                            className="grey"
+                          >
+                            {customer.picEmailAddr || "No Data"}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <div className="customer-data-container-left">
+                          <label className="customer-data-label">
+                            PIC Mobile Phone
+                          </label>
+                          <p
+                            style={{ fontSize: "20px", fontWeight: "bold" }}
+                            className="grey"
+                          >
+                            {customer.picMobilePhone || "No Data"}
                           </p>
                         </div>
 
@@ -452,35 +519,12 @@ const ViewApproval: React.FC = (props) => {
                             style={{ fontSize: "20px", fontWeight: "bold" }}
                             className="grey"
                           >
-                            {customer.picJobTitle}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div style={{ display: "flex", flexDirection: "row" }}>
-                        <div className="customer-data-container-left">
-                          <label className="customer-data-label">
-                            PIC Mobile Phone
-                          </label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
-                            {customer.picMobilePhone}
-                          </p>
-                        </div>
-                        <div className="customer-data-container-left">
-                          <label className="customer-data-label">Email</label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
-                            {customer.picEmailAddr}
+                            {customer.picJobTitle || "No Data"}
                           </p>
                         </div>
                       </div>
                     </div>
-                  </div> */}
+                  </div>
 
                   <Divider></Divider>
 
@@ -517,7 +561,7 @@ const ViewApproval: React.FC = (props) => {
                           >
                             <Grid>
                               <Grid.Row>
-                                <Grid.Column
+                                {/* <Grid.Column
                                   width={16}
                                   mobile={16}
                                   tablet={16}
@@ -531,13 +575,13 @@ const ViewApproval: React.FC = (props) => {
                                     mandatory={false}
                                     defaultValue={customer?.titleCustomer}
                                   />
-                                </Grid.Column>
+                                </Grid.Column> */}
 
                                 <Grid.Column
                                   width={16}
                                   mobile={16}
                                   tablet={16}
-                                  computer={7}
+                                  computer={8}
                                 >
                                   {" "}
                                   <Field
@@ -546,9 +590,7 @@ const ViewApproval: React.FC = (props) => {
                                     placeholder="e.g. Berca Hardaya .."
                                     labelName="Customer Name"
                                     mandatory={false}
-                                    defaultValue={getCustomerName(
-                                      customer?.customerName
-                                    )}
+                                    defaultValue={customer?.customerName}
                                   />
                                 </Grid.Column>
 
@@ -556,7 +598,7 @@ const ViewApproval: React.FC = (props) => {
                                   width={16}
                                   mobile={16}
                                   tablet={16}
-                                  computer={6}
+                                  computer={8}
                                 >
                                   <Field
                                     name="picName"
@@ -578,10 +620,7 @@ const ViewApproval: React.FC = (props) => {
                                   <Button
                                     type="submit"
                                     color="blue"
-                                    disabled={
-                                      !values.titleCustomer ||
-                                      !values.customerName
-                                    }
+                                    disabled={!values.customerName}
                                     floated="right"
                                     size="small"
                                     content="Search"
@@ -599,22 +638,47 @@ const ViewApproval: React.FC = (props) => {
                     className="padding-horizontal"
                     style={{ margin: "14px 0" }}
                   >
-                    <p
-                      className="warning-text"
-                      style={{ backgroundColor: "#ffe0d9" }}
-                    >
-                      Best five suggestion customer for the word{" "}
-                      <b>{customer.customerName}</b>. Please recheck again
-                      before you <b>APPROVE or REJECT</b>.
-                    </p>
+                    <div>
+                      <p
+                        className="warning-text"
+                        style={{
+                          backgroundColor: customerName ? "#E2EFFF" : "#FFE0D9",
+                        }}
+                      >
+                        {customerName ? (
+                          <>
+                            There are <b>{suggestionList.rows.length}</b>{" "}
+                            results from the customer search{" "}
+                            <b>{customerName}</b>{" "}
+                            {picName ? (
+                              <>
+                                with <b>{picName}</b>.
+                              </>
+                            ) : (
+                              "."
+                            )}{" "}
+                            Please recheck again before you approve new customer
+                            request.
+                          </>
+                        ) : (
+                          <>
+                            Best five suggestion customer for the word{" "}
+                            <b>{customer.customerName}</b>. Please recheck again
+                            before you APPROVE or REJECT.
+                          </>
+                        )}
+                      </p>
+                    </div>
 
                     <Table striped>
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell>No</Table.HeaderCell>
                           <Table.HeaderCell>Customer Name</Table.HeaderCell>
-                          <Table.HeaderCell>PIC Name</Table.HeaderCell>
                           <Table.HeaderCell>Cust. ID</Table.HeaderCell>
+                          <Table.HeaderCell>PIC Name</Table.HeaderCell>
+                          <Table.HeaderCell>Blacklist</Table.HeaderCell>
+                          <Table.HeaderCell>Holdshipment</Table.HeaderCell>
                           <Table.HeaderCell textAlign="center">
                             Action
                           </Table.HeaderCell>
@@ -631,7 +695,9 @@ const ViewApproval: React.FC = (props) => {
                         ) : (
                           suggestionList.rows.map((data, index) => (
                             <Table.Row key={index}>
-                              <Table.Cell>{index + 1}</Table.Cell>
+                              <Table.Cell>
+                                {(activePage - 1) * pageSize + index + 1}
+                              </Table.Cell>
                               <Table.Cell>
                                 <p
                                   dangerouslySetInnerHTML={{
@@ -639,6 +705,7 @@ const ViewApproval: React.FC = (props) => {
                                   }}
                                 ></p>
                               </Table.Cell>
+                              <Table.Cell>{data.customerID}</Table.Cell>
                               <Table.Cell>
                                 <p
                                   dangerouslySetInnerHTML={{
@@ -646,7 +713,35 @@ const ViewApproval: React.FC = (props) => {
                                   }}
                                 ></p>
                               </Table.Cell>
-                              <Table.Cell>{data.customerID}</Table.Cell>
+                              <Table.Cell textAlign="center">
+                                {/* {rowData.blacklist === true ? (
+                                  <div className="blacklist-yes-table">
+                                    <Icon name="address book" size="small" />
+                                    <span>Yes</span>
+                                  </div>
+                                ) : ( */}
+                                <div className="blacklist-no-table">
+                                  <Icon name="address book" size="small" />
+                                  <span>No</span>
+                                </div>
+                                {/* )} */}
+                              </Table.Cell>
+                              <Table.Cell
+                                textAlign="center"
+                                verticalAlign="middle"
+                              >
+                                {/* {rowData.holdshipment === true ? ( */}
+                                <div className="holdshipment-yes-table">
+                                  <Icon name="truck" size="small" />
+                                  <span>Yes</span>
+                                </div>
+                                {/* ) : (
+                                  <div className="holdshipment-no-table">
+                                    <Icon name="truck" size="small" />
+                                    <span>No</span>
+                                  </div>
+                                )} */}
+                              </Table.Cell>
                               <Table.Cell
                                 style={{
                                   display: "flex",
@@ -666,6 +761,19 @@ const ViewApproval: React.FC = (props) => {
                         )}
                       </Table.Body>
                     </Table>
+
+                    {customerName && suggestionList.totalRows != 0 && (
+                      <div style={{ marginTop: "1rem" }}>
+                        <Pagination
+                          activePage={activePage}
+                          onPageChange={(e, data) =>
+                            handlePaginationChange(e, data)
+                          }
+                          totalPage={suggestionList.totalRows}
+                          pageSize={pageSize}
+                        />
+                      </div>
+                    )}
                   </div>
                   <Divider style={{ marginBottom: "0px" }}></Divider>
 
