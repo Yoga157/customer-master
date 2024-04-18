@@ -27,6 +27,7 @@ import {
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import { ApprovePopUp } from "./components/modal/approve";
 import BaseViewApprovedData from "./components/view/BaseViewApprovedData";
+import ModalViewNpwp from "./components/modal/view-npwp/ModalViewNpwp";
 
 interface routeParams {
   id: string;
@@ -87,6 +88,18 @@ const ViewApproval: React.FC = (props) => {
 
     return words.join(" ");
   };
+
+  const openViewNPWP = useCallback(
+    (src: string): void => {
+      dispatch(
+        ModalFirstLevelActions.OPEN(
+          <ModalViewNpwp imageSrc={src} />,
+          ModalSizeEnum.Mini
+        )
+      );
+    },
+    [dispatch]
+  );
 
   const openSuggestionList = useCallback((): void => {
     dispatch(
@@ -198,32 +211,49 @@ const ViewApproval: React.FC = (props) => {
               {!Array.isArray(customer) && (
                 <>
                   <div className="padding-horizontal space-between-container">
-                    <div style={{ display: "flex", flexDirection: "row" }}>
-                      <div className="customer-data-container-left">
-                        <label className="customer-data-label">
-                          Title Customer
-                        </label>
-                        <p
-                          style={{ fontSize: "20px", fontWeight: "bold" }}
-                          className="grey"
-                        >
-                          {customer.titleCustomer}
-                        </p>
-                      </div>
-                      <div className="customer-data-container-left">
-                        <label className="customer-data-label">
-                          Customer Name
-                        </label>
-                        <p
-                          style={{ fontSize: "20px", fontWeight: "bold" }}
-                          className="grey"
-                        >
-                          {customer.customerName}
-                        </p>
-                      </div>
-                    </div>
-
                     <div className="customer-data-container-left">
+                      <label className="customer-data-label">
+                        Customer Name
+                      </label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.customerName}
+                      </p>
+                    </div>
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">
+                        Customer Business Name
+                      </label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.customerName}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    className="padding-horizontal"
+                    style={{ display: "flex", flexDirection: "row" }}
+                  >
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">
+                        Holding Company Name
+                      </label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        Biffco Group
+                      </p>
+                    </div>
+                    <div
+                      className="customer-data-container-left"
+                      style={{ marginLeft: "2rem" }}
+                    >
                       <label className="customer-data-label">
                         Industry Classification
                       </label>
@@ -231,7 +261,7 @@ const ViewApproval: React.FC = (props) => {
                         style={{ fontSize: "20px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        {customer.industryClass}
+                        Manufacturing
                       </p>
                     </div>
                   </div>
@@ -251,40 +281,147 @@ const ViewApproval: React.FC = (props) => {
 
                   <div className="padding-horizontal space-between-container">
                     <div className="customer-data-container-left">
+                      <label className="customer-data-label">Country</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        Indonesia
+                      </p>
+                    </div>
+
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">City</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        Jakarta
+                      </p>
+                    </div>
+
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">ZIP Code</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        12345
+                      </p>
+                    </div>
+
+                    <div className="customer-data-container-left">
                       <label className="customer-data-label">
                         Office Number
                       </label>
                       <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        {customer.phoneNumber}
+                        021-789-0985
                       </p>
                     </div>
 
                     <div className="customer-data-container-left">
-                      <label className="customer-data-label">Website</label>
+                      <label className="customer-data-label">Webiste</label>
                       <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        {customer.website}
-                      </p>
-                    </div>
-
-                    <div className="customer-data-container-left">
-                      <label className="customer-data-label">
-                        Social Media
-                      </label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.socialMedia}
+                        www.biffco.com
                       </p>
                     </div>
                   </div>
 
+                  <div className="padding-horizontal customer-data-container-left">
+                    <label className="customer-data-label">
+                      Coorporate Email
+                    </label>
+                    <p
+                      style={{ fontSize: "20px", fontWeight: "bold" }}
+                      className="grey"
+                    >
+                      marketing.biffco@biffco.com
+                    </p>
+                  </div>
+
+                  <div
+                    className="padding-horizontal"
+                    style={{ display: "flex", flexDirection: "row" }}
+                  >
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <div className="customer-data-container-left">
+                        <label className="customer-data-label">
+                          NPWP (Tax ID Number)
+                        </label>
+                        <p
+                          style={{ fontSize: "20px", fontWeight: "bold" }}
+                          className="grey"
+                        >
+                          1145-4452-223
+                        </p>
+                      </div>
+
+                      <div className="customer-data-container-left">
+                        <label className="customer-data-label">NIB</label>
+                        <p
+                          style={{ fontSize: "20px", fontWeight: "bold" }}
+                          className="grey"
+                        >
+                          9987-8874-887
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <label className="customer-data-label">NPWP Card</label>
+                      <div
+                        style={{
+                          width: "15rem",
+                          height: "10rem",
+                          border: "#8D8C8C solid 2px",
+                          borderStyle: "dashed",
+                          borderRadius: "0.5rem",
+                          position: "relative",
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: "absolute",
+                            backgroundColor: "#656DD1",
+                            color: "white",
+                            padding: "0.5rem 1.5rem",
+                            borderRadius: "2rem",
+                            boxShadow: "0px 0px 10px 0px #00000040",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            zIndex: 1,
+                            cursor: "pointer",
+                          }}
+                          onClick={() =>
+                            openViewNPWP(
+                              "https://images.unsplash.com/photo-1566125882500-87e10f726cdc?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            )
+                          }
+                        >
+                          View
+                        </div>
+                        <img
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            filter: "blur(3px)",
+                            borderRadius: "0.5rem",
+                          }}
+                          src="https://images.unsplash.com/photo-1566125882500-87e10f726cdc?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        ></img>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 
                   <div className="padding-horizontal">
                     <div
                       style={{
@@ -343,7 +480,7 @@ const ViewApproval: React.FC = (props) => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   <Divider></Divider>
 
@@ -351,16 +488,6 @@ const ViewApproval: React.FC = (props) => {
                     <p className="grey margin-0 bold text-align-left">
                       SUGGESTION LIST
                     </p>
-
-                    {/* <Button
-              style={{ backgroundColor: "#656DD1", color: "white" }}
-              size="small"
-              type="button"
-              onClick={() => openSuggestionList()}
-            >
-              <Icon name="search" />
-              Search Customer
-            </Button> */}
                   </div>
 
                   <Divider className="margin-bottom-0"></Divider>

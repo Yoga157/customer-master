@@ -100,13 +100,13 @@ const CustomerTableRow: React.FC<IProps> = (
               ? "#00FF7F"
               : role === "Marketing" &&
                 rowData.approvalStatus?.toUpperCase() == "REJECT"
-              ? "#ffe0d9"
+              ? "#FFE0D9"
               : role === "Marketing" &&
                 rowData.approvalStatus?.toUpperCase() == "PENDING"
-              ? "#fffb9a"
+              ? "#FFF7CB"
               : role === "Marketing" &&
                 rowData.approvalStatus?.toUpperCase() == "APPROVE"
-              ? "#00FF7F"
+              ? "#ECF9C6"
               : role === "Sales" && rowData.isNew == true
               ? "#fffb9a"
               : "",
