@@ -119,7 +119,7 @@ const CustomerTableRow: React.FC<IProps> = (
                 <Dropdown.Item
                   text="View/Edit"
                   icon="edit outline"
-                  disabled={rowData.approvalStatus?.toUpperCase() == "REJECT"}
+                  // disabled={rowData.approvalStatus?.toUpperCase() == "REJECT"}
                   onClick={() =>
                     onEdit(
                       rowData.isNew ? rowData.customerGenID : rowData.customerID

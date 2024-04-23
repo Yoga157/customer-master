@@ -34,7 +34,8 @@ interface ICustomer {
 }
 
 interface IMatchCustomer {
-  titleCustomer: string;
+  blacklist: boolean;
+  holdshipment: boolean;
   customerName: string;
   picName: string;
   customerID: any;
@@ -97,25 +98,17 @@ const ModalRejectApproval: React.FC<IProps> = (
 
       <Divider></Divider>
 
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <div className="customer-data-container-left">
-          <label className="customer-data-label">Title Customer</label>
-          <p style={{ fontSize: "20px", fontWeight: "bold" }} className="grey">
-            {customer.titleCustomer}
-          </p>
-        </div>
-        <div className="customer-data-container-left">
-          <label className="customer-data-label">Customer Name</label>
-          <p style={{ fontSize: "20px", fontWeight: "bold" }} className="grey">
-            {customer.customerName}
-          </p>
-        </div>
+      <div className="customer-data-container-left">
+        <label className="customer-data-label">Customer Name</label>
+        <p style={{ fontSize: "20px", fontWeight: "bold" }} className="grey">
+          {customer.customerName}
+        </p>
       </div>
 
       <div className="customer-data-container-left">
         <label className="customer-data-label">PIC Name</label>
         <p style={{ fontSize: "20px", fontWeight: "bold" }} className="grey">
-          {customer.picName}
+          {customer.picName || "No Data"}
         </p>
       </div>
 
@@ -131,25 +124,14 @@ const ModalRejectApproval: React.FC<IProps> = (
 
           <Divider></Divider>
 
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div className="customer-data-container-left">
-              <label className="customer-data-label">Title Customer</label>
-              <p
-                style={{ fontSize: "20px", fontWeight: "bold" }}
-                className="grey"
-              >
-                {matchCustomer.titleCustomer.toUpperCase()}
-              </p>
-            </div>
-            <div className="customer-data-container-left">
-              <label className="customer-data-label">Customer Name</label>
-              <p
-                style={{ fontSize: "20px", fontWeight: "bold" }}
-                className="grey"
-              >
-                {matchCustomer.customerName}
-              </p>
-            </div>
+          <div className="customer-data-container-left">
+            <label className="customer-data-label">Customer Name</label>
+            <p
+              style={{ fontSize: "20px", fontWeight: "bold" }}
+              className="grey"
+            >
+              {matchCustomer.customerName}
+            </p>
           </div>
 
           <div style={{ display: "flex", flexDirection: "row" }}>
@@ -159,7 +141,7 @@ const ModalRejectApproval: React.FC<IProps> = (
                 style={{ fontSize: "20px", fontWeight: "bold" }}
                 className="grey"
               >
-                {matchCustomer.customerID}
+                {matchCustomer.customerID || "No Data"}
               </p>
             </div>
             <div className="customer-data-container-left">
@@ -168,7 +150,7 @@ const ModalRejectApproval: React.FC<IProps> = (
                 style={{ fontSize: "20px", fontWeight: "bold" }}
                 className="grey"
               >
-                {matchCustomer.picName}
+                {matchCustomer.picName || "No Data"}
               </p>
             </div>
           </div>

@@ -235,7 +235,7 @@ const ViewApproval: React.FC = (props) => {
           </div> */}
             </div>
 
-            <Divider></Divider>
+            <Divider style={{ marginTop: 0 }}></Divider>
 
             <LoadingIndicator isActive={isRequesting}>
               {!Array.isArray(customer) && (

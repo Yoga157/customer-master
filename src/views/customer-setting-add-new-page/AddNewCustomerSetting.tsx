@@ -149,7 +149,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <h1 className="page-title grey">REQUEST NEW CUSTOMER</h1>
             </div>
-            <Divider></Divider>
+            <Divider style={{ marginTop: 0 }}></Divider>
 
             <div className="FullContainer">
               <FinalForm
@@ -326,7 +326,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                       <h1 className="page-title-customer grey">
                         CUSTOMER INFO
                       </h1>
-                      <Divider></Divider>
+                      <Divider style={{ marginTop: 0 }}></Divider>
                       <div className="address-padd">
                         <div className="container-flex-customer">
                           <div className="container-address">

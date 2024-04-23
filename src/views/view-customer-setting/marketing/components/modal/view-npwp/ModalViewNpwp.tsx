@@ -4,6 +4,7 @@ import React, { Fragment, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalSecondLevelActions from "stores/modal/second-level/ModalSecondLevelActions";
 import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import { Divider, Form, Icon, Input, Label } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
@@ -19,6 +20,7 @@ import RouteEnum from "constants/RouteEnum";
 
 interface IProps {
   imageSrc: string;
+  isView?: boolean;
 }
 
 const ModalViewNpwp: React.FC<IProps> = (
@@ -26,12 +28,16 @@ const ModalViewNpwp: React.FC<IProps> = (
 ) => {
   const history = useHistory();
   const dispatch: Dispatch = useDispatch();
-  const { imageSrc } = props;
+  const { imageSrc, isView } = props;
 
   const [remark, setRemark] = useState("");
 
   const cancelClick = () => {
-    dispatch(ModalAction.CLOSE());
+    if (isView) {
+      dispatch(ModalSecondLevelActions.CLOSE());
+    } else {
+      dispatch(ModalAction.CLOSE());
+    }
   };
 
   return (
@@ -67,7 +73,7 @@ const ModalViewNpwp: React.FC<IProps> = (
           alignItems: "center",
         }}
       >
-        <Button type="button" onClick={cancelClick}>
+        <Button type="button" onClick={() => cancelClick()}>
           Cancel
         </Button>
         <Button

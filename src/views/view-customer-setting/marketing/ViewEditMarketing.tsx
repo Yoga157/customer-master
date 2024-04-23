@@ -56,7 +56,9 @@ const ViewEditMarketing: React.FC<IProps> = (
 
   return (
     <Fragment>
-      {(realStatus == "APPROVE" || realStatus == "NOT_NEW") && (
+      {(realStatus == "APPROVE" ||
+        realStatus == "REJECT" ||
+        realStatus == "NOT_NEW") && (
         <ViewApprovedData isView={false} status={realStatus}></ViewApprovedData>
       )}
       {realStatus == "PENDING" && <ViewApproval></ViewApproval>}

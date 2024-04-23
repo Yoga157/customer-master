@@ -25,10 +25,11 @@ const _createTableReqNewCustomerRows = (models: any[]): any[] => {
 
 const _mappingObjectTableReqNewCustomerRow = (model: any): any => {
   return {
-    titleCustomer: model.titleCustomer,
     customerID: model.customerID === null ? null : model.customerID,
-    customerName: model.customerName === "" ? "" : model.customerName,
-    picName: model.picName === "" ? "" : model.picName,
+    customerName: model.customerName,
+    picName: model.picName,
+    blacklist: model.blacklist,
+    holdshipment: model.holdshipment,
   };
 };
 
@@ -109,6 +110,9 @@ const _mappingAddressOffice = (models: any[]): any[] => {
       model.alternateNumber,
       model.faxNumber
     ),
+    country: model.country,
+    city: model.city,
+    zipCode: model.zipCode,
     phoneNumber: model.phoneNumber,
     alternateNumber: model.alternateNumber,
     faxNumber: model.faxNumber,

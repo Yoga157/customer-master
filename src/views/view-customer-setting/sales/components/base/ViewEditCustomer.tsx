@@ -9,6 +9,7 @@ import "./ViewEditCustomer.scss";
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalNoPaddingFirstLevelActions from "stores/modal/no-padding/ModalNoPaddingActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import { Form as FinalForm, Field } from "react-final-form";
 import { Link, useParams } from "react-router-dom";
@@ -163,7 +164,7 @@ const ViewEditCustomer: React.FC<IProps> = (
   const openMoreDetails = useCallback((): void => {
     console.log(customerID);
     dispatch(
-      ModalFirstLevelActions.OPEN(
+      ModalNoPaddingFirstLevelActions.OPEN(
         <ViewApprovedData
           isView={true}
           customerId={customerID}
@@ -762,7 +763,7 @@ const ViewEditCustomer: React.FC<IProps> = (
             </div>
           </div>
 
-          <Divider></Divider>
+          <Divider style={{ marginTop: 0 }}></Divider>
 
           <LoadingIndicator isActive={isRequesting}>
             <div className="padding-horizontal customer-search-container">

@@ -22,6 +22,7 @@ interface IProps {
   customerId?: number;
   relatedCustomer?;
   isView?: boolean;
+  status: string;
 }
 
 const TableCustomerDetail: React.FC<IProps> = (
@@ -37,6 +38,7 @@ const TableCustomerDetail: React.FC<IProps> = (
     refreshData,
     customerId,
     isView,
+    status,
   } = props;
   const dispatch: Dispatch = useDispatch();
 
@@ -135,7 +137,11 @@ const TableCustomerDetail: React.FC<IProps> = (
               )}
               <Table.Cell>
                 {/* <Icon name="ellipsis vertical"></Icon> */}
-                <Dropdown pointing="left" icon="ellipsis vertical">
+                <Dropdown
+                  pointing="left"
+                  icon="ellipsis vertical"
+                  disabled={status == "REJECT"}
+                >
                   <Dropdown.Menu>
                     {!relatedCustomer && (
                       <Dropdown.Item
@@ -155,12 +161,18 @@ const TableCustomerDetail: React.FC<IProps> = (
                 </Dropdown>
               </Table.Cell>
               {header.map((header) =>
-                header.textCenter ? (
-                  <Table.Cell key={header.key} textAlign="center">
-                    {data[header.key]}
+                header.key == "pin" ? (
+                  <Table.Cell
+                    key={header.key}
+                    textAlign={header.textCenter ? "center" : "left"}
+                  >
+                    {data["pin"] && <Icon name="check" />}
                   </Table.Cell>
                 ) : (
-                  <Table.Cell key={header.key}>
+                  <Table.Cell
+                    key={header.key}
+                    textAlign={header.textCenter ? "center" : "left"}
+                  >
                     <p
                       dangerouslySetInnerHTML={{
                         __html: data[header.key],

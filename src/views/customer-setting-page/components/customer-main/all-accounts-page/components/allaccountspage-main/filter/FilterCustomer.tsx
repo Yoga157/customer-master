@@ -40,6 +40,10 @@ const FilterCustomer: React.FC<{
   const [holdshipmentNoChecked, setHoldshipmentNoChecked] = useState(false);
   const [blacklistYesChecked, setBlacklistYesChecked] = useState(false);
   const [blacklistNoChecked, setBlacklistNoChecked] = useState(false);
+  const [newAccountChecked, setNewAccountChecked] = useState(false);
+  const [newRequestChecked, setNewRequestChecked] = useState(false);
+  const [rejectChecked, setRejectChecked] = useState(false);
+  const [approveChecked, setApproveChecked] = useState(false);
 
   const dispatch: Dispatch = useDispatch();
 
@@ -316,8 +320,89 @@ const FilterCustomer: React.FC<{
                           <span style={{ color: "white" }}>Named Account</span>
                         </label>
                       </div>
+
+                      <div style={{ margin: "0.3rem" }}></div>
+
+                      <div className="checkbox-newaccount">
+                        <label className="flex-center">
+                          <input
+                            type="checkbox"
+                            style={{
+                              marginRight: "0.5rem",
+                              transform: "scale(1)",
+                              margin: "0.5rem",
+                            }}
+                            checked={newAccountChecked}
+                            onChange={() =>
+                              setNewAccountChecked(!newAccountChecked)
+                            }
+                          ></input>
+                          <span>New Account</span>
+                        </label>
+                      </div>
                     </div>
                   </Grid.Row>
+                  <Divider></Divider>
+
+                  <Grid.Row>
+                    <p>New Account Type</p>
+                    <Grid.Row>
+                      <div className="checkbox-nonameaccount">
+                        <div className="flex-center">
+                          <label className="flex-center">
+                            <input
+                              name="newRequest"
+                              type="checkbox"
+                              checked={newRequestChecked}
+                              style={{
+                                marginRight: "0.5rem",
+                                transform: "scale(1)",
+                              }}
+                              onChange={() =>
+                                setNewRequestChecked(!newRequestChecked)
+                              }
+                            ></input>
+                            <span>New Request</span>
+                          </label>
+                        </div>
+
+                        <div style={{ margin: "0 1rem" }}></div>
+                        <div className="flex-center">
+                          <label className="flex-center">
+                            <input
+                              type="checkbox"
+                              style={{
+                                marginRight: "0.5rem",
+                                transform: "scale(1)",
+                              }}
+                              checked={rejectChecked}
+                              onChange={() => setRejectChecked(!rejectChecked)}
+                            ></input>
+                            <span>Reject</span>
+                          </label>
+                        </div>
+
+                        <div style={{ margin: "0 1rem" }}></div>
+                        <div className="flex-center">
+                          <label className="flex-center">
+                            <input
+                              type="checkbox"
+                              style={{
+                                marginRight: "0.5rem",
+                                transform: "scale(1)",
+                              }}
+                              checked={approveChecked}
+                              onChange={() =>
+                                setApproveChecked(!approveChecked)
+                              }
+                            ></input>
+                            <span>Approve</span>
+                          </label>
+                        </div>
+                      </div>
+                    </Grid.Row>
+                  </Grid.Row>
+
                   <Divider></Divider>
 
                   <Grid.Row>
@@ -367,9 +452,10 @@ const FilterCustomer: React.FC<{
 
                   <Grid.Row>
                     <Grid.Column>
-                      <p>Sales Assign</p>
+                      {/* <p>Sales Assign</p> */}
                       <Field
                         name="salesName"
+                        labelName="Sales Assign"
                         component={DropdownClearInput}
                         placeholder="-Choose Sales-"
                         values={salesName}
