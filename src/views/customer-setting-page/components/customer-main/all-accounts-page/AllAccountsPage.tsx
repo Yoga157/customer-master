@@ -36,6 +36,7 @@ interface FilterData {
   holdshipment: any;
   blacklist: any;
   shareableAccount: any;
+  isNew: any;
 }
 
 const AllAccountsPage: React.FC<IProps> = (
@@ -268,7 +269,8 @@ const AllAccountsPage: React.FC<IProps> = (
           filterData.holdshipment,
           filterData.nonameAccount,
           filterData.namedAccount,
-          filterData.shareableAccount
+          filterData.shareableAccount,
+          filterData.isNew
         )
       );
     } else if (myAccount) {

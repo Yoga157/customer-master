@@ -1,4 +1,4 @@
-import { Table } from "semantic-ui-react";
+import { Table, Icon } from "semantic-ui-react";
 import React, { Fragment, useState, useCallback } from "react";
 import { reqNewCustomerData } from "../../../data";
 
@@ -61,7 +61,7 @@ const TableRequestNewCustomer: React.FC<IProps> = (
           {data.length == 0 ? (
             <Table.Row>
               <Table.Cell colSpan={16} textAlign="center">
-                No-data
+                no-data
               </Table.Cell>
             </Table.Row>
           ) : (
@@ -86,6 +86,40 @@ const TableRequestNewCustomer: React.FC<IProps> = (
                   ></p>
                 </Table.Cell>
                 <Table.Cell>{data.customerID}</Table.Cell>
+
+                <Table.Cell textAlign="center" verticalAlign="middle">
+                  {data.blacklist === true ? (
+                    <div className="blacklist-yes">
+                      <Icon name="address book" size="small" />
+                      <span>Yes</span>
+                    </div>
+                  ) : (
+                    <div className="blacklist-no">
+                      <Icon name="address book" size="small" />
+                      <span>No</span>
+                    </div>
+                  )}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {data.holdshipment === true ? (
+                    <div className="holdshipment-yes">
+                      <Icon name="truck" size="small" />
+                      <span>Yes</span>
+                    </div>
+                  ) : (
+                    <div className="holdshipment-no">
+                      <Icon name="truck" size="small" />
+                      <span>No</span>
+                    </div>
+                  )}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  <div className="matching">
+                    {" "}
+                    <Icon name="check" size="small" />
+                    <span>Match</span>
+                  </div>
+                </Table.Cell>
               </Table.Row>
             ))
           )}

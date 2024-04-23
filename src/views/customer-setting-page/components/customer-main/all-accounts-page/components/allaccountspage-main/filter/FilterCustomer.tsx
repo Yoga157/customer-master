@@ -34,6 +34,8 @@ const FilterCustomer: React.FC<{
   const [shareableAccountNoChecked, setShareableAccountNoChecked] = useState(
     true
   );
+  const [isNewYesChecked, setIsNewYesChecked] = useState(true);
+  const [isNewNoChecked, setIsNewNoChecked] = useState(true);
   const [pmo_customerYesChecked, setPmo_customerYesChecked] = useState(false);
   const [pmo_customerNoChecked, setPmo_customerNoChecked] = useState(false);
   const [holdshipmentYesChecked, setHoldshipmentYesChecked] = useState(false);
@@ -93,6 +95,15 @@ const FilterCustomer: React.FC<{
         ? false
         : null;
 
+    const isNew =
+      isNewYesChecked && isNewNoChecked
+        ? null
+        : isNewYesChecked
+        ? true
+        : isNewNoChecked
+        ? false
+        : null;
+
     const pmo_customer =
       pmo_customerYesChecked && pmo_customerNoChecked
         ? null
@@ -127,6 +138,7 @@ const FilterCustomer: React.FC<{
       nonameAccount: nonameAccount,
       namedAccount: namedAccount,
       shareableAccount: shareableAccount,
+      isNew: isNew,
       pmo_customer: pmo_customer,
       newsalesAssign: newsalesAssign,
       holdshipment: holdshipment,
@@ -147,7 +159,8 @@ const FilterCustomer: React.FC<{
         holdshipment,
         nonameAccount,
         namedAccount,
-        shareableAccount
+        shareableAccount,
+        isNew
       )
     );
   };
@@ -174,6 +187,8 @@ const FilterCustomer: React.FC<{
     setNamedAccountNoChecked(true);
     setShareableAccountYesChecked(true);
     setShareableAccountNoChecked(true);
+    setIsNewYesChecked(true);
+    setIsNewNoChecked(true);
     setPmo_customerYesChecked(false);
     setPmo_customerNoChecked(false);
     setHoldshipmentYesChecked(false);
@@ -316,8 +331,29 @@ const FilterCustomer: React.FC<{
                           <span style={{ color: "white" }}>Named Account</span>
                         </label>
                       </div>
+
+                      <div style={{ margin: "0.3rem" }}></div>
+
+                      <div className="color-checbox-isNew">
+                        <label className="flex-center">
+                          <input
+                            name="isNew"
+                            type="checkbox"
+                            style={{
+                              transform: "scale(1)",
+                              margin: "0.5rem",
+                            }}
+                            checked={isNewYesChecked}
+                            onChange={() =>
+                              setIsNewYesChecked(!isNewYesChecked)
+                            }
+                          ></input>
+                          <span style={{ color: "blue" }}>New Account</span>
+                        </label>
+                      </div>
                     </div>
                   </Grid.Row>
+
                   <Divider></Divider>
 
                   <Grid.Row>

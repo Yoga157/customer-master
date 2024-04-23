@@ -43,7 +43,6 @@ const ViewApproval: React.FC = (props) => {
         5,
         "CustomerID",
         "ascending",
-        data.titleCustomer,
         data.customerName,
         data.picName
       )
@@ -160,7 +159,6 @@ const ViewApproval: React.FC = (props) => {
           5,
           "CustomerID",
           "ascending",
-          customer.titleCustomer,
           getCustomerName(customer.customerName),
           customer.picName
         )
