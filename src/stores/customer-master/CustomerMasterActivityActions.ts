@@ -31,7 +31,6 @@ export const requestSearchCustomerMaster = (
   pageSize: number,
   column: string,
   sorting?: string,
-  titleCustomer?: string,
   customerName?: string,
   picName?: string
 ): any => {
@@ -44,7 +43,6 @@ export const requestSearchCustomerMaster = (
       pageSize,
       column,
       sorting,
-      titleCustomer,
       customerName,
       picName
     );

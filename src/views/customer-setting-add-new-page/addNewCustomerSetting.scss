@@ -27,7 +27,25 @@
   color: #373b74 !important;
   font-size: 1.2rem;
   font-weight: bold !important;
-  padding: 0 2rem !important;
+  padding: 0 1rem !important;
+}
+
+.page-title-customer-result {
+  text-align: left !important;
+  margin: 0 !important;
+  color: #373b74 !important;
+  font-size: 1.2rem;
+  font-weight: bold !important;
+  padding: 1rem 1rem 0 !important;
+}
+
+.page-title-customer-info {
+  text-align: left !important;
+  margin: 0 !important;
+  color: #373b74 !important;
+  font-size: 1.2rem;
+  font-weight: bold !important;
+  padding: 0 1rem !important;
 }
 
 .LightYellowContainer {
@@ -53,7 +71,7 @@
 }
 
 .container-recheck {
-  padding: 2rem 2rem 0 2rem !important;
+  padding: 0 2rem 0 2rem !important;
 }
 
 .info-recheck {
@@ -63,6 +81,7 @@
   border-radius: 5rem;
   text-align: center;
   padding: 1rem;
+  margin: 0.5rem 0 0;
 }
 
 .padding-horizontal {
@@ -84,21 +103,33 @@
 }
 
 .recheck-submit-pad {
-  padding: 0 16rem;
-}
-
-.container-flex-customer {
-  display: flex;
-  justify-content: center;
+  padding: 0.5rem 16rem;
 }
 
 .address-padd {
   padding: 0 2rem;
 }
+.container-flex-customer {
+  display: flex;
+}
 
 .container-address {
-  width: 90%;
+  width: 60%;
   margin: 0 1rem;
+}
+
+.container-two-row {
+  display: flex;
+  width: 100%;
+}
+
+.container-country-city {
+  flex-direction: row;
+  margin-right: 0.5rem;
+}
+
+.container-zipcode-office {
+  flex-direction: row;
 }
 
 .container-upload {
@@ -106,7 +137,7 @@
 }
 
 .grey-padding {
-  padding: 1rem 4rem 1rem 4rem !important;
+  padding: 1rem 0 !important;
 }
 
 .button-container {
@@ -122,14 +153,72 @@
   width: fit-content !important;
 }
 
+.accordion-container {
+  padding: 1rem !important;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center;
+  cursor: pointer !important;
+}
+.margin-0 {
+  margin: 0px !important;
+}
+
+.blacklist-yes {
+  background-color: #fb7757;
+  color: white;
+  border-radius: 1rem;
+  width: 80%;
+  margin: auto;
+}
+
+.blacklist-no {
+  background-color: #27d4a5;
+  color: white;
+  border-radius: 1rem;
+  width: 80%;
+  margin: auto;
+}
+
+.holdshipment-yes {
+  background-color: #f6a52c;
+  color: white;
+  border-radius: 1rem;
+  width: 55%;
+  margin: auto;
+}
+
+.holdshipment-no {
+  background-color: #656dd1;
+  color: white;
+  border-radius: 1rem;
+  width: 55%;
+  margin: auto;
+}
+
+.matching {
+  background-color: #ffd500;
+  color: #55637a;
+  border-radius: 1rem;
+  width: 100%;
+  margin: auto;
+}
+
 @media only screen and (max-width: 1110px) {
   .recheck-submit-pad {
-    padding: 0 8rem;
+    padding: 0.5rem 8rem;
   }
 }
 
 @media only screen and (max-width: 925px) {
   .recheck-submit-pad {
-    padding: 0 6rem;
+    padding: 0.5rem 6rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .FullGrid767 {
+    width: 100%;
   }
 }

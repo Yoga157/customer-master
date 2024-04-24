@@ -301,7 +301,8 @@ export const requestSearchAllAcc = (
   holdshipment?: boolean,
   showNoName?: boolean,
   showNamed?: boolean,
-  showShareable?: boolean
+  showShareable?: boolean,
+  isNew?: boolean
 ): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<CustomerSettingModel>(
@@ -320,7 +321,8 @@ export const requestSearchAllAcc = (
       holdshipment,
       showNoName,
       showNamed,
-      showShareable
+      showShareable,
+      isNew
     );
   };
 };
@@ -564,7 +566,13 @@ export const PUT_ACCEPT_REQUEST_SHAREABLE: string =
 export const PUT_ACCEPT_REQUEST_SHAREABLE_FINISHED =
   "CustomerActions.PUT_ACCEPT_REQUEST_SHAREABLE_FINISHED";
 
-export const acceptRequestShareableAccount = (customerID: number, salesID: number, isApprove: boolean, modifyUserID: number, description?: string): any => {
+export const acceptRequestShareableAccount = (
+  customerID: number,
+  salesID: number,
+  isApprove: boolean,
+  modifyUserID: number,
+  description?: string
+): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<ResultActions>(
       dispatch,
@@ -608,7 +616,7 @@ export const putCustomerSettingCategoryPmo = (
       PUT_CUSTOMER_SETTING_CATEGORY_PMO,
       CustomerEffect.putCustomerSettingCategoryPmo,
       data,
-      customerID,
+      customerID
     );
   };
 };

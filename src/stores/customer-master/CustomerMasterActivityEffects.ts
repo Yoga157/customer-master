@@ -16,15 +16,12 @@ export const requestSearchCustomerMaster = async (
   pageSize: number,
   column: string | null,
   sorting?: string | null,
-  titleCustomer?: string | null,
   customerName?: string | null,
   picName?: string | null
 ): Promise<CustomerMasterModel | HttpErrorResponseModel> => {
   const controllerName = `CustomerSetting/GetCustomerSearchRequest?page=${page}&pageSize=${pageSize}&column=${column}${
-    titleCustomer || titleCustomer != null
-      ? `&titleCustomer=${titleCustomer}`
-      : ``
-  }${sorting || sorting != null ? `&sorting=${sorting}` : ``}${
+    sorting || sorting != null ? `&sorting=${sorting}` : ``
+  }${
     customerName || customerName != null ? `&customerName=${customerName}` : ``
   }${picName || picName != null ? `&picName=${picName}` : ``}`;
   const endpoint: string = environment.api.customer.replace(

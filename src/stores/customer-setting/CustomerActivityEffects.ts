@@ -219,7 +219,8 @@ export const requestSearchAllAcc = async (
   holdshipment?: boolean | null,
   showNoName?: boolean | null,
   showNamed?: boolean | null,
-  showShareable?: boolean | null
+  showShareable?: boolean | null,
+  isNew?: boolean | null
 ): Promise<CustomerSettingModel | HttpErrorResponseModel> => {
   const controllerName = `CustomerSetting/GetCustomerSettingAllAccount?page=${page}&pageSize=${pageSize}&column=${column}${
     search || search != null ? `&search=${search}` : ``
@@ -235,7 +236,7 @@ export const requestSearchAllAcc = async (
     showShareable || showShareable != null
       ? `&showShareable=${showShareable}`
       : ``
-  }`;
+  }${isNew || isNew != null ? `&isNew=${isNew}` : ``}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName
@@ -470,9 +471,22 @@ export const releaseAccount = async (
 };
 
 export const acceptRequestShareableAccount = async (
-  customerID: number, salesID: number, isApprove: boolean, modifyUserID: number, description?: string
+  customerID: number,
+  salesID: number,
+  isApprove: boolean,
+  modifyUserID: number,
+  description?: string
 ): Promise<ResultActions | HttpErrorResponseModel> => {
-  const controllerName = "CustomerSetting/ApproveCustomerSetting?customerID=" + customerID + "&salesID=" + salesID + "&isApprove=" + isApprove + "&modifyUserID=" + modifyUserID + `${description != null ? "&description=" + description : ""}`;
+  const controllerName =
+    "CustomerSetting/ApproveCustomerSetting?customerID=" +
+    customerID +
+    "&salesID=" +
+    salesID +
+    "&isApprove=" +
+    isApprove +
+    "&modifyUserID=" +
+    modifyUserID +
+    `${description != null ? "&description=" + description : ""}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName
@@ -491,27 +505,22 @@ export const requestCustomerDataById = async (
     ":controller",
     controllerName
   );
-  
-  return EffectUtility.getToModel<ResultActions>(
-    ResultActions,
-    endpoint
-  );
+
+  return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
 };
 
 // get customer by name
 export const requestCustomerDataByName = async (
   customerName: string
 ): Promise<ResultActions | HttpErrorResponseModel> => {
-  const controllerName = "CustomerSetting/GetCustomerByName?customerName=" + customerName;
+  const controllerName =
+    "CustomerSetting/GetCustomerByName?customerName=" + customerName;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName
   );
 
-  return EffectUtility.getToModel<ResultActions>(
-    ResultActions,
-    endpoint
-  );
+  return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
 };
 
 export const putCustomerSettingCategoryPmo = async (
@@ -524,9 +533,5 @@ export const putCustomerSettingCategoryPmo = async (
     controllerName
   );
 
-  return EffectUtility.putToModel<ResultActions>(
-    ResultActions,
-    endpoint,
-    data
-  );
+  return EffectUtility.putToModel<ResultActions>(ResultActions, endpoint, data);
 };
