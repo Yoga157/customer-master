@@ -190,9 +190,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
         </div>
         <LoadingIndicator>
           <div className="form-container">
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <h1 className="page-title grey">REQUEST NEW CUSTOMER</h1>
-            </div>
+            <p className="page-title grey">REQUEST NEW CUSTOMER</p>
             <Divider></Divider>
 
             <div className="FullContainer">
@@ -260,11 +258,12 @@ const AddNewCustomerSetting: React.FC<IProps> = (
 
               <div
                 className="accordion-container"
+                style={{ marginTop: "1rem" }}
                 onClick={() => setOpenCustomerAvability(!openCustomerAvability)}
               >
-                <h1 className="page-title-customer-result">
-                  CHECK CUSTOMER AVABILITY RESULT
-                </h1>
+                <span className="page-title-customer-result">
+                  CHECK CUSTOMER AVAILABILITY RESULT
+                </span>
                 {openCustomerAvability ? (
                   <Icon name="triangle down" />
                 ) : (
@@ -286,7 +285,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                           <p className="p-recheck">
                             There are{" "}
                             <b style={{ color: "black" }}>
-                              {tableData.totalRow}
+                              {tableData.totalRows}
                             </b>{" "}
                             result from the customer search{" "}
                             <b style={{ color: "black" }}>
@@ -319,7 +318,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                         onPageChange={(e, data) =>
                           handlePaginationChange(e, data)
                         }
-                        totalPage={tableData.totalRow}
+                        totalPage={tableData.totalRows}
                         pageSize={pageSize}
                       />
                     </div>
@@ -328,47 +327,45 @@ const AddNewCustomerSetting: React.FC<IProps> = (
               )}
             </div>
 
-            {tableData.rows.length === 0 ? (
-              <div className="recheck-submit-pad" style={{ opacity: 0.5 }}>
-                <div className="container-recheck-submit-disable">
-                  <input
-                    type="checkbox"
-                    disabled
-                    checked={openCustomerInfo}
-                    onChange={() => setOpenCustomerInfo(!openCustomerInfo)}
-                    style={{
-                      margin: "0 1rem",
-                      transform: "scale(1)",
-                    }}
-                  ></input>
-                  <p className="p-recheck" style={{ color: "red" }}>
-                    I HAVE CHECKED THE CUSTOMER LIST FROM THE SEARCH RESULTS.
-                    AND I DON'T FIND NAME OF THE CUSTOMER I WANT.
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="recheck-submit-pad" style={{ opacity: 1 }}>
-                <div className="container-recheck-submit">
-                  <input
-                    type="checkbox"
-                    checked={openCustomerInfo}
-                    onChange={() => {
-                      setOpenCustomerInfo(!openCustomerInfo);
+            <div
+              className="recheck-submit-pad"
+              style={{ opacity: tableData.rows.length === 0 ? 0.5 : 1 }}
+            >
+              <div className="container-recheck-submit">
+                <input
+                  type="checkbox"
+                  disabled={tableData.rows.length === 0 ? true : false}
+                  checked={openCustomerInfo}
+                  onChange={() => {
+                    setOpenCustomerInfo(!openCustomerInfo);
+                    if (tableData.rows.length === 0) {
                       setIsCheckedToggle(!isChekedToggle);
-                    }}
-                    style={{
-                      margin: "0 1rem",
-                      transform: "scale(1)",
-                    }}
-                  ></input>
-                  <p className="p-recheck" style={{ color: "#F97452" }}>
+                    }
+                    if (openCustomerInfo) {
+                      setIsCheckedToggle(false);
+                    }
+                  }}
+                  style={{
+                    margin: "0 1rem",
+                    transform: "scale(1)",
+                  }}
+                ></input>
+                <div
+                  className="p-recheck"
+                  style={{
+                    color: "red",
+                    display: "flex",
+                    flexDirection: "column",
+                    marginRight: "1rem",
+                  }}
+                >
+                  <span>
                     I HAVE CHECKED THE CUSTOMER LIST FROM THE SEARCH RESULTS.
-                    AND I DON'T FIND NAME OF THE CUSTOMER I WANT.
-                  </p>
+                  </span>
+                  <span>AND I DON'T FIND NAME OF THE CUSTOMER I WANT.</span>
                 </div>
               </div>
-            )}
+            </div>
 
             <Divider className="margin-0"></Divider>
 
@@ -381,14 +378,13 @@ const AddNewCustomerSetting: React.FC<IProps> = (
               }}
               style={{ opacity: openCustomerInfo ? 1 : 0.5 }}
             >
-              <h1 className="page-title-customer-info">CUSTOMER INFO</h1>
+              <span className="page-title-customer-info">CUSTOMER INFO</span>
               {isChekedToggle ? (
                 <Icon name="triangle down" />
               ) : (
                 <Icon name="triangle right" />
               )}
             </div>
-            <Divider className="margin-0"></Divider>
 
             {isChekedToggle && (
               <>
@@ -396,6 +392,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                   onSubmit={(values: any) => onSubmitHandler(values)}
                   render={({ handleSubmit, pristine, invalid, values }) => (
                     <Form onSubmit={handleSubmit}>
+                      <Divider className="margin-0"></Divider>
+
                       <div className="address-padd">
                         <Grid style={{ margin: "0" }}>
                           <Grid.Row columns="equal">
@@ -710,7 +708,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                         </Grid>
                       </div>
 
-                      {/* <Divider></Divider>
+                      <Divider className="margin-0"></Divider>
                       <div className="button-container">
                         <div className="button-inner-container">
                           <Button
@@ -738,27 +736,32 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                             Submit
                           </Button>
                         </div>
-                      </div> */}
+                      </div>
                     </Form>
                   )}
                 />
               </>
             )}
-            <Divider style={{ marginBottom: "0px" }}></Divider>
 
-            <div className="button-container">
-              <div className="button-inner-container">
-                <Button onClick={() => cancelClick()}>Cancel</Button>
-                <Button
-                  color="blue"
-                  style={{ marginRight: "1rem" }}
-                  type="submit"
-                  onClick={() => onSubmitHandler(data)}
-                >
-                  Submit
-                </Button>
-              </div>
-            </div>
+            {!isChekedToggle && (
+              <>
+                <Divider className="margin-0"></Divider>
+
+                <div className="button-container">
+                  <div className="button-inner-container">
+                    <Button onClick={() => cancelClick()}>Cancel</Button>
+                    <Button
+                      color="blue"
+                      style={{ marginRight: "1rem" }}
+                      type="submit"
+                      onClick={() => onSubmitHandler(data)}
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </LoadingIndicator>
       </div>

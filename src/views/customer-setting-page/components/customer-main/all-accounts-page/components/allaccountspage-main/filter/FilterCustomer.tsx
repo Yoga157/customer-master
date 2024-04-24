@@ -66,7 +66,7 @@ const FilterCustomer: React.FC<{
           salesID: data.salesID,
         },
       ]);
-      console.log(data.salesID);
+
       setSalesFilter([...salesFilter, data.salesID.toString()]);
     }
   };
@@ -347,9 +347,9 @@ const FilterCustomer: React.FC<{
                               transform: "scale(1)",
                               margin: "0.5rem",
                             }}
-                            checked={newAccountChecked}
+                            checked={isNewYesChecked}
                             onChange={() =>
-                              setNewAccountChecked(!newAccountChecked)
+                              setIsNewYesChecked(!isNewYesChecked)
                             }
                           ></input>
                           <span>New Account</span>

@@ -16,7 +16,6 @@
   text-align: left !important;
   margin: 0 !important;
   color: #373b74 !important;
-  font-size: 1.2rem;
   font-weight: bold !important;
   padding: 14px 2rem 0 2rem !important;
 }
@@ -32,20 +31,14 @@
 
 .page-title-customer-result {
   text-align: left !important;
-  margin: 0 !important;
   color: #373b74 !important;
-  font-size: 1.2rem;
   font-weight: bold !important;
-  padding: 1rem 1rem 0 !important;
 }
 
 .page-title-customer-info {
   text-align: left !important;
-  margin: 0 !important;
   color: #373b74 !important;
-  font-size: 1.2rem;
   font-weight: bold !important;
-  padding: 0 1rem !important;
 }
 
 .LightYellowContainer {
@@ -103,7 +96,8 @@
 }
 
 .recheck-submit-pad {
-  padding: 0.5rem 16rem;
+  margin: auto !important;
+  padding: 1rem !important;
 }
 
 .address-padd {
@@ -154,7 +148,7 @@
 }
 
 .accordion-container {
-  padding: 1rem !important;
+  padding: 1rem 2rem !important;
   display: flex !important;
   flex-direction: row !important;
   justify-content: space-between !important;
@@ -206,15 +200,15 @@
 }
 
 @media only screen and (max-width: 1110px) {
-  .recheck-submit-pad {
-    padding: 0.5rem 8rem;
-  }
+  // .recheck-submit-pad {
+  //   padding: 0.5rem 8rem;
+  // }
 }
 
 @media only screen and (max-width: 925px) {
-  .recheck-submit-pad {
-    padding: 0.5rem 6rem;
-  }
+  // .recheck-submit-pad {
+  //   padding: 0.5rem 6rem;
+  // }
 }
 
 @media (max-width: 767px) {

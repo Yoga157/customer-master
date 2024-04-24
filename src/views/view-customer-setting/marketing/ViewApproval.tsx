@@ -77,7 +77,6 @@ const ViewApproval: React.FC = (props) => {
         pageSize,
         "CustomerID",
         "ascending",
-        null,
         customerName,
         picName
       )
