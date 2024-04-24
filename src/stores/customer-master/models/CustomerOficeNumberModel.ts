@@ -9,6 +9,9 @@ export default class CustomerOfficeNumberModel extends BaseModel {
   phoneNumber: string = "";
   alternateNumber: string = "";
   faxNumber: string = "";
+  country: string = "";
+  city: string = "";
+  zipCode: string = "";
   createDate?: Date = undefined;
   createUserID?: number = 0;
   modifyDate?: Date = undefined;

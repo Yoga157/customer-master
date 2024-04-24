@@ -9,6 +9,7 @@ import { Divider, Form, Input, Label } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import {
   Button,
+  DropdownClearInput,
   SearchInput,
   TextAreaInput,
   TextInput,
@@ -20,6 +21,9 @@ interface IData {
   id: any;
   type: string;
   address: string;
+  country: string;
+  city: string;
+  zipCode: string;
   officeNumber: string;
   phoneNumber: string;
   alternateNumber: string;
@@ -41,12 +45,30 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
   const dispatch: Dispatch = useDispatch();
   const { data, isView, customerId, customerGenId } = props;
 
+  const typeOptions = [
+    {
+      text: "Main",
+      value: "Main",
+    },
+    {
+      text: "Branch",
+      value: "Branch",
+    },
+  ];
+
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
   const onSubmitNewAddress = async (values) => {
     const customerOfficeNumber = new CustomerOfficeNumberModel({});
     if (data) {
       customerOfficeNumber.customerGenID = data.customerGenID;
       customerOfficeNumber.customerID = data.customerID;
       customerOfficeNumber.type = data.type.toUpperCase();
+      customerOfficeNumber.country = values.country;
+      customerOfficeNumber.city = values.city;
+      customerOfficeNumber.zipCode = values.zipCode;
       customerOfficeNumber.fullAddress = values.fullAddress;
       customerOfficeNumber.phoneNumber = values.phoneNumber;
       customerOfficeNumber.alternateNumber = values.alternateNumber;
@@ -61,9 +83,12 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
         )
       );
     } else {
-      customerOfficeNumber.customerGenID = customerGenId;
-      customerOfficeNumber.customerID = customerId;
-      customerOfficeNumber.type = "BRANCH";
+      customerOfficeNumber.customerGenID = customerGenId || 0;
+      customerOfficeNumber.customerID = customerId || 0;
+      customerOfficeNumber.type = values.type.toUpperCase();
+      customerOfficeNumber.country = values.country;
+      customerOfficeNumber.city = values.city;
+      customerOfficeNumber.zipCode = values.zipCode;
       customerOfficeNumber.fullAddress = values.fullAddress;
       customerOfficeNumber.phoneNumber = values.phoneNumber;
       customerOfficeNumber.alternateNumber = values.alternateNumber;
@@ -114,16 +139,70 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
 
       <FinalForm
         onSubmit={(values: any) => onSubmitNewAddress(values)}
-        render={({ handleSubmit, pristine, invalid }) => (
+        render={({ handleSubmit, pristine, invalid, values }) => (
           <Form onSubmit={handleSubmit}>
-            <div style={{ margin: "1rem 0" }}>
+            <div
+              style={{
+                margin: "1rem 0",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <div style={{ width: "100%", marginRight: "1rem" }}>
+                <Field
+                  name="fullAddress"
+                  component={TextAreaInput}
+                  placeholder="Type full address here.."
+                  labelName="Full Address"
+                  mandatory={false}
+                  defaultValue={data?.address || null}
+                />
+              </div>
+
               <Field
-                name="fullAddress"
-                component={TextAreaInput}
-                placeholder="Type full address here.."
-                labelName="Full Address"
-                mandatory={true}
-                defaultValue={data?.address || null}
+                labelName="Type"
+                name="type"
+                component={DropdownClearInput}
+                placeholder="Choose type..."
+                options={typeOptions}
+                mandatory={false}
+                defaultValue={
+                  data?.type ? capitalizeFirstLetter(data.type) : null
+                }
+              />
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Field
+                name="country"
+                component={TextInput}
+                labelName="Country"
+                placeholder="Type country name here.."
+                mandatory={false}
+                defaultValue={data?.country || null}
+              />
+              <Field
+                name="city"
+                component={TextInput}
+                labelName="City"
+                placeholder="Type city name here.."
+                mandatory={false}
+                defaultValue={data?.city || null}
+              />
+              <Field
+                name="zipCode"
+                component={TextInput}
+                labelName="ZIP Code"
+                placeholder="Type zip code here.."
+                mandatory={false}
+                defaultValue={data?.zipCode || null}
               />
             </div>
 
@@ -139,7 +218,7 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
                 component={TextInput}
                 labelName="Phone Number"
                 placeholder="Type phone number here.."
-                mandatory={true}
+                mandatory={false}
                 defaultValue={data?.phoneNumber || null}
               />
               <Field
@@ -147,7 +226,7 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
                 component={TextInput}
                 labelName="Alternate Number"
                 placeholder="Type alternate number here.."
-                mandatory={true}
+                mandatory={false}
                 defaultValue={data?.alternateNumber || null}
               />
               <Field
@@ -155,7 +234,7 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
                 component={TextInput}
                 labelName="Fax Number"
                 placeholder="Type fax number here.."
-                mandatory={true}
+                mandatory={false}
                 defaultValue={data?.faxNumber || null}
               />
             </div>
@@ -168,6 +247,16 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
                 className="MarBot10"
                 type="submit"
                 color="blue"
+                disabled={
+                  !values.fullAddress ||
+                  !values.type ||
+                  !values.country ||
+                  !values.city ||
+                  !values.zipCode ||
+                  !values.phoneNumber ||
+                  !values.alternateNumber ||
+                  !values.faxNumber
+                }
                 //   onClick={}
               >
                 Submit

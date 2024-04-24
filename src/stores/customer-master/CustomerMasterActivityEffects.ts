@@ -90,7 +90,7 @@ export const requestApprovedCustomerByGenId = async (
 export const requestCustomerMoreDetailsByCustId = async (
   custId: number
 ): Promise<ResultActions | HttpErrorResponseModel> => {
-  const controllerName = `GetCustomerDetailsByCustID?customerID=${custId}`;
+  const controllerName = `CustomerSetting/GetCustomerDetailsByCustID?customerID=${custId}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName
@@ -126,9 +126,13 @@ export const updateCustomerOfficeNumber = async (
 };
 
 export const deleteCustomerOfficeNumber = async (
-  id: number
+  id: number,
+  customerGenId?: number,
+  customerId?: number
 ): Promise<ResultActions | HttpErrorResponseModel> => {
-  const controllerName = `AddressOfficeNumber/${id}`;
+  const controllerName = `AddressOfficeNumber/DeleteByID/${id}${
+    customerGenId ? `?customerGenID=${customerGenId}` : ``
+  }${customerId ? `?customerID=${customerId}` : ``}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName

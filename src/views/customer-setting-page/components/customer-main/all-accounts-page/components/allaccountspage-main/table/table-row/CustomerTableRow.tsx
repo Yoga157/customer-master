@@ -96,13 +96,19 @@ const CustomerTableRow: React.FC<IProps> = (
             rowData.requestedBy === userId?.fullName &&
             rowData.status?.toUpperCase() === "REJECTED"
               ? "#ffe0d9"
-              : rowData.status?.toUpperCase() === "PENDING"
-              ? "#fffb9a"
               : rowData.status?.toUpperCase() === "APPROVE"
               ? "#00FF7F"
               : role === "Marketing" &&
                 rowData.approvalStatus?.toUpperCase() == "REJECT"
-              ? "#ffe0d9"
+              ? "#FFE0D9"
+              : role === "Marketing" &&
+                rowData.approvalStatus?.toUpperCase() == "PENDING"
+              ? "#FFF7CB"
+              : role === "Marketing" &&
+                rowData.approvalStatus?.toUpperCase() == "APPROVE"
+              ? "#ECF9C6"
+              : role === "Sales" && rowData.isNew == true
+              ? "#fffb9a"
               : "",
         }}
       >
@@ -113,7 +119,7 @@ const CustomerTableRow: React.FC<IProps> = (
                 <Dropdown.Item
                   text="View/Edit"
                   icon="edit outline"
-                  disabled={rowData.approvalStatus?.toUpperCase() == "REJECT"}
+                  // disabled={rowData.approvalStatus?.toUpperCase() == "REJECT"}
                   onClick={() =>
                     onEdit(
                       rowData.isNew ? rowData.customerGenID : rowData.customerID

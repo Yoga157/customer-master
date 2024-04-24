@@ -51,6 +51,16 @@
   border-radius: 2rem;
 }
 
+.checkbox-newaccount {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #656dd1;
+  color: #656dd1;
+  border-radius: 2rem;
+  padding-right: 1rem;
+}
+
 .btn-filter-ref {
   position: absolute;
   bottom: 0;

@@ -10,17 +10,28 @@ import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import "../Modal.scss";
 
 interface IProps {
-  deleteFunc: (data: any) => any;
-  refreshFunc: (data: any) => any;
+  deleteFunc: (data?: any, a?, b?) => any;
+  refreshFunc: (data?: any) => any;
   id: number;
   customerID: number;
   content: string;
+  jenis?: string;
+  isView?: boolean;
 }
 
 const DeletePopUp: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
+  const {
+    deleteFunc,
+    refreshFunc,
+    id,
+    customerID,
+    content,
+    jenis,
+    isView,
+  } = props;
 
   const cancelClick = () => {
     dispatch(ModalAction.CLOSE());
@@ -33,8 +44,17 @@ const DeletePopUp: React.FC<IProps> = (
   const deleteClick = async () => {
     // props.deleteFunc(props.id);
     // props.refreshFunc(props.customerID);
-    await dispatch(props.deleteFunc(props.id));
-    await dispatch(props.refreshFunc(props.customerID));
+    if (jenis == "ADDRESSOFFICENUMBER") {
+      if (isView) {
+        await dispatch(deleteFunc(id, null, customerID));
+      } else {
+        await dispatch(deleteFunc(id, customerID, null));
+      }
+    } else {
+      await dispatch(deleteFunc(id));
+    }
+
+    await dispatch(refreshFunc(customerID));
     await dispatch(ModalAction.CLOSE());
   };
 

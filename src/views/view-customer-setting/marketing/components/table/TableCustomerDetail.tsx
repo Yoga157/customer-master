@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalSecondLevelActions from "stores/modal/second-level/ModalSecondLevelActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import React, { Fragment, useState, useCallback } from "react";
 import { Icon, Table, Dropdown } from "semantic-ui-react";
@@ -19,7 +20,9 @@ interface IProps {
   deleteData?: (data: any) => void;
   refreshData?: (data: any) => void;
   customerId?: number;
-  relatedCustomer?;
+  jenis?: string;
+  isView?: boolean;
+  status: string;
 }
 
 const TableCustomerDetail: React.FC<IProps> = (
@@ -30,21 +33,32 @@ const TableCustomerDetail: React.FC<IProps> = (
     data,
     sequenceNum,
     Modal,
-    relatedCustomer,
+    jenis,
     deleteData,
     refreshData,
     customerId,
+    isView,
+    status,
   } = props;
   const dispatch: Dispatch = useDispatch();
 
   const openEdit = useCallback(
     (dataEdit): void => {
-      dispatch(
-        ModalFirstLevelActions.OPEN(
-          <Modal data={dataEdit} />,
-          ModalSizeEnum.Small
-        )
-      );
+      if (isView) {
+        dispatch(
+          ModalSecondLevelActions.OPEN(
+            <Modal data={dataEdit} isView={isView} />,
+            ModalSizeEnum.Small
+          )
+        );
+      } else {
+        dispatch(
+          ModalFirstLevelActions.OPEN(
+            <Modal data={dataEdit} />,
+            ModalSizeEnum.Small
+          )
+        );
+      }
     },
     [dispatch]
   );
@@ -59,18 +73,36 @@ const TableCustomerDetail: React.FC<IProps> = (
 
   const openDelete = useCallback(
     (idToDel: number, content: string): void => {
-      dispatch(
-        ModalFirstLevelActions.OPEN(
-          <DeletePopUp
-            deleteFunc={deleteData}
-            refreshFunc={refreshData}
-            id={idToDel}
-            customerID={customerId}
-            content={content}
-          />,
-          ModalSizeEnum.Tiny
-        )
-      );
+      if (isView) {
+        dispatch(
+          ModalSecondLevelActions.OPEN(
+            <DeletePopUp
+              deleteFunc={deleteData}
+              refreshFunc={refreshData}
+              id={idToDel}
+              customerID={customerId}
+              content={content}
+              jenis={jenis}
+              isView={isView}
+            />,
+            ModalSizeEnum.Tiny
+          )
+        );
+      } else {
+        dispatch(
+          ModalFirstLevelActions.OPEN(
+            <DeletePopUp
+              deleteFunc={deleteData}
+              refreshFunc={refreshData}
+              id={idToDel}
+              customerID={customerId}
+              content={content}
+              jenis={jenis}
+            />,
+            ModalSizeEnum.Tiny
+          )
+        );
+      }
     },
     [dispatch]
   );
@@ -101,42 +133,53 @@ const TableCustomerDetail: React.FC<IProps> = (
             </Table.Cell>
           </Table.Row>
         ) : (
-          data.map((data, index) => (
+          data.map((item, index) => (
             <Table.Row key={index}>
               {sequenceNum && (
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
               )}
               <Table.Cell>
                 {/* <Icon name="ellipsis vertical"></Icon> */}
-                <Dropdown pointing="left" icon="ellipsis vertical">
+                <Dropdown
+                  pointing="left"
+                  icon="ellipsis vertical"
+                  disabled={status == "REJECT"}
+                >
                   <Dropdown.Menu>
-                    {!relatedCustomer && (
+                    {jenis?.toUpperCase() != "RELATEDCUSTOMER" && (
                       <Dropdown.Item
                         text="View/Edit"
                         icon="edit"
-                        onClick={() => openEdit(data)}
-                        disabled={data?.type == "MAIN" ? true : false}
+                        onClick={() => openEdit(item)}
                       />
                     )}
                     <Dropdown.Item
                       text="Delete"
                       icon="trash alternate"
-                      onClick={() => openDelete(data.id, "data")}
-                      disabled={data?.type == "MAIN" ? true : false}
+                      onClick={() => openDelete(item.id, "item")}
+                      disabled={
+                        item?.type == "MAIN" && data.length == 1 ? true : false
+                      }
                     />
                   </Dropdown.Menu>
                 </Dropdown>
               </Table.Cell>
               {header.map((header) =>
-                header.textCenter ? (
-                  <Table.Cell key={header.key} textAlign="center">
-                    {data[header.key]}
+                header.key == "pin" ? (
+                  <Table.Cell
+                    key={header.key}
+                    textAlign={header.textCenter ? "center" : "left"}
+                  >
+                    {item["pin"] && <Icon name="check" />}
                   </Table.Cell>
                 ) : (
-                  <Table.Cell key={header.key}>
+                  <Table.Cell
+                    key={header.key}
+                    textAlign={header.textCenter ? "center" : "left"}
+                  >
                     <p
                       dangerouslySetInnerHTML={{
-                        __html: data[header.key],
+                        __html: item[header.key],
                       }}
                     ></p>
                   </Table.Cell>

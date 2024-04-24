@@ -12,6 +12,8 @@ import * as CustomerSetting from "stores/customer-setting/CustomerActivityAction
 import { selectSearchCustomerByName } from "selectors/customer-setting/CustomerSettingSelector";
 
 import IStore from "models/IStore";
+import RelatedCustomerModel from "stores/related-customer/models/RelatedCustomerModel";
+import RelatedCustomerPostModel from "stores/related-customer/models/RelatedCustomerPostModel";
 
 interface customerData {
   title: string;
@@ -26,13 +28,15 @@ interface customerData {
 interface IProps {
   data?: customerData;
   isView?: boolean;
+  customerGenId?: number;
+  customerId?: number;
 }
 
 const ModalNewRelatedCustomer: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
-  const { data, isView } = props;
+  const { data, isView, customerGenId, customerId } = props;
 
   const [customerName, setCustomerName] = useState();
   const [customerData, setCustomerData] = useState<customerData | undefined>(
@@ -64,6 +68,16 @@ const ModalNewRelatedCustomer: React.FC<IProps> = (
   const onSubmitCustomerName = async (values) => {
     console.log(customerData);
     console.log(values);
+
+    const RelatedCustomer = new RelatedCustomerPostModel({});
+    // RelatedCustomer.relatedCustomerID = customerData.customerID;
+    // if(!isView) {
+    //   RelatedCustomer.customerGenID = customerGenId;
+    // } else {
+    //   RelatedCustomer.customerID = customerId;
+    // }
+    // RelatedCustomer.createUserID = 0;
+    // RelatedCustomer.createDate = new Date();
   };
 
   const cancelClick = () => {

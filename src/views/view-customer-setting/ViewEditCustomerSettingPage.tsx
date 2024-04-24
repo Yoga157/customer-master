@@ -85,10 +85,12 @@ const ViewEditCustomerSettingPage: React.FC<IProps> = (
         <ViewEditMarketing
           status={customerData.approvalStatus?.toUpperCase() || "NOT_NEW"}
         ></ViewEditMarketing>
+      ) : customer.customerID != undefined ? (
+        <ViewEditCustomer customer={customer} role={role} />
       ) : (
-        customer.customerID != undefined && (
-          <ViewEditCustomer customer={customer} role={role} />
-        )
+        <ViewEditMarketing
+          status={customerData.approvalStatus?.toUpperCase() || "NOT_NEW"}
+        ></ViewEditMarketing>
       )}
     </Fragment>
   );

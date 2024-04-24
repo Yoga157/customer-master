@@ -5,14 +5,14 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-// import "./ModalApprovedData.scss";
+import "../../ModalApprovedData.scss";
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Icon, Divider, Form, Button } from "semantic-ui-react";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { Form as FinalForm, Field } from "react-final-form";
-import { DropdownClearInput } from "views/components/UI";
+import { DropdownClearInput, TextInput } from "views/components/UI";
 import TableCustomerDetail from "../table/TableCustomerDetail";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
 import * as ModalSecondLevelActions from "stores/modal/second-level/ModalSecondLevelActions";
@@ -23,8 +23,12 @@ import ModalNewPIC from "../modal/approved-page/ModalNewPIC";
 import ModalNewRelatedCustomer from "../modal/approved-page/ModalNewRelatedCustomer";
 import IStore from "models/IStore";
 import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
-import { selectCustomerMoreDetails } from "selectors/customer-master/CustomerMasterSelector";
+import {
+  selectAddressOfficeOptions,
+  selectCustomerMoreDetails,
+} from "selectors/customer-master/CustomerMasterSelector";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
+import ModalViewNpwp from "../modal/view-npwp/ModalViewNpwp";
 
 interface ICustomer {
   customerID: any;
@@ -99,6 +103,28 @@ const BaseViewApprovedData: React.FC<IProps> = (
       value: "Industry",
     },
   ];
+
+  // npwp
+  const openViewNPWP = useCallback(
+    (src: string): void => {
+      if (isView) {
+        dispatch(
+          ModalSecondLevelActions.OPEN(
+            <ModalViewNpwp imageSrc={src} isView={isView} />,
+            ModalSizeEnum.Mini
+          )
+        );
+      } else {
+        dispatch(
+          ModalFirstLevelActions.OPEN(
+            <ModalViewNpwp imageSrc={src} />,
+            ModalSizeEnum.Mini
+          )
+        );
+      }
+    },
+    [dispatch]
+  );
 
   // state tabel
   const [openAddressOffice, setOpenAddressOffice] = useState(false);
@@ -206,14 +232,33 @@ const BaseViewApprovedData: React.FC<IProps> = (
     if (isView) {
       dispatch(
         ModalSecondLevelActions.OPEN(
-          <ModalNewRelatedCustomer isView={isView}></ModalNewRelatedCustomer>,
+          <ModalNewRelatedCustomer
+            isView={isView}
+            customerId={
+              status == "NOT_NEW"
+                ? customerId
+                  ? customerId
+                  : Number(id)
+                : null
+            }
+            customerGenId={status != "NOT_NEW" ? Number(id) : null}
+          ></ModalNewRelatedCustomer>,
           ModalSizeEnum.Small
         )
       );
     } else {
       dispatch(
         ModalFirstLevelActions.OPEN(
-          <ModalNewRelatedCustomer></ModalNewRelatedCustomer>,
+          <ModalNewRelatedCustomer
+            customerId={
+              status == "NOT_NEW"
+                ? customerId
+                  ? customerId
+                  : Number(id)
+                : null
+            }
+            customerGenId={status != "NOT_NEW" ? Number(id) : null}
+          ></ModalNewRelatedCustomer>,
           ModalSizeEnum.Small
         )
       );
@@ -228,6 +273,18 @@ const BaseViewApprovedData: React.FC<IProps> = (
     {
       key: "address",
       header: "Address",
+    },
+    {
+      key: "country",
+      header: "Country",
+    },
+    {
+      key: "city",
+      header: "City",
+    },
+    {
+      key: "zipCode",
+      header: "ZIP Code",
     },
     {
       key: "officeNumber",
@@ -248,12 +305,16 @@ const BaseViewApprovedData: React.FC<IProps> = (
 
   let picHeader = [
     {
+      key: "pin",
+      header: "Pin",
+    },
+    {
       key: "name",
       header: "Name",
     },
     {
-      key: "jabatan",
-      header: "Jabatan",
+      key: "jobTitle",
+      header: "Job Title",
     },
     {
       key: "email",
@@ -280,39 +341,20 @@ const BaseViewApprovedData: React.FC<IProps> = (
     },
   ];
 
-  const titleRef = useRef(null);
-  const contentRef = useRef(null);
-  const tableRef = useRef(null);
-
-  useEffect(() => {
-    const updateDimensions = () => {
-      const titleDiv = titleRef.current;
-      const contentDiv = contentRef.current;
-      const tableDiv = tableRef.current;
-
-      if (titleDiv && contentDiv && tableDiv && isView) {
-        var titleHeight = titleDiv.offsetHeight;
-        var contentHeight = contentDiv.offsetHeight;
-        contentDiv.style.position = "absolute";
-        contentDiv.style.width = "100%";
-        contentDiv.style.left = "0";
-        contentDiv.style.top = `calc(${titleHeight}px + 1.5rem + 1rem + 1px)`;
-
-        tableDiv.style.paddingTop = `${contentHeight}px`;
-      }
-    };
-
-    // inisialisasi ukuran
-    updateDimensions();
-
-    // Event listener for window resize
-    window.addEventListener("resize", updateDimensions);
-
-    // Cleanup function to remove event listener
-    return () => {
-      window.removeEventListener("resize", updateDimensions);
-    };
-  }, [isView]);
+  let accountActivityHistory = [
+    {
+      activity: "Created",
+      employeeName: "Jenny Wilson",
+      time: "02-02-2024 11:30 AM",
+      reason: null,
+    },
+    {
+      activity: "Rejected",
+      employeeName: "Jenny Wilson",
+      time: "02-02-2024 11:30 AM",
+      reason: "Lorem ipsum",
+    },
+  ];
 
   const isRequesting: boolean = useSelector((state: IStore) =>
     selectRequesting(state, [
@@ -325,27 +367,30 @@ const BaseViewApprovedData: React.FC<IProps> = (
   return (
     <Fragment>
       <p
-        ref={titleRef}
-        className={isView ? `title-paragraph` : `page-title grey`}
+        className={`page-title grey ${isView && "page-title-isview"}`}
+        style={{
+          backgroundColor:
+            (status == "REJECT" && "#FFE0D9") ||
+            (status == "APPROVE" && "#ECF9C6"),
+          borderRadius: "1rem 1rem 0 0",
+        }}
       >
-        CUSTOMER DETAILS
+        CUSTOMER DETAILS{" "}
+        {(status == "REJECT" && `- REJECTED`) ||
+          (status == "APPROVE" && `-   APPROVED`)}
       </p>
 
-      <Divider style={{ marginBottom: 0 }}></Divider>
+      <Divider className="margin-0"></Divider>
 
       <LoadingIndicator isActive={isRequesting}>
         <div
-          ref={contentRef}
-          className="space-between-container padding-horizontal"
           style={{
             backgroundColor: "#FFFB9A",
+            padding: "14px 0px",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div
-              className="data-container-column"
-              style={{ marginRight: "1rem" }}
-            >
+          <div className="space-between-container padding-horizontal">
+            <div style={{ display: "flex", flexDirection: "row" }}>
               <div className="customer-data-container-left">
                 <label className="customer-data-label">Customer ID</label>
                 <p
@@ -355,19 +400,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   {customer.customerID ? customer.customerID : "-"}
                 </p>
               </div>
-
-              <div className="customer-data-container-left">
-                <label className="customer-data-label">Title Customer</label>
-                <p
-                  style={{ fontSize: "20px", fontWeight: "bold" }}
-                  className="grey"
-                >
-                  {customer.titleCustomer ? customer.titleCustomer : "-"}
-                </p>
-              </div>
-            </div>
-
-            <div className="data-container-column">
               <div className="customer-data-container-left">
                 <label className="customer-data-label">Requestor</label>
                 <p
@@ -377,21 +409,9 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   {customer.requestor ? customer.requestor : "-"}
                 </p>
               </div>
-
-              <div className="customer-data-container-left">
-                <label className="customer-data-label">Customer Name</label>
-                <p
-                  style={{ fontSize: "20px", fontWeight: "bold" }}
-                  className="grey"
-                >
-                  {customer.customerName ? customer.customerName : "-"}
-                </p>
-              </div>
             </div>
-          </div>
 
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div className="data-container-column">
+            <div style={{ display: "flex", flexDirection: "row" }}>
               <div className="customer-data-container-end">
                 <label className="customer-data-label">Create Date</label>
                 <p
@@ -402,64 +422,346 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 </p>
               </div>
 
-              <div className="customer-data-container-end">
+              {status != "REJECT" && (
+                <div
+                  style={{ paddingTop: "14px" }}
+                  onClick={() => setEditView(!editView)}
+                >
+                  {!editView ? (
+                    <Icon name="edit" />
+                  ) : (
+                    <Icon
+                      name="save"
+                      fitted
+                      circular
+                      className="save-button-approved-page"
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="padding-horizontal space-between-container">
+            <div className="customer-data-container-left">
+              {editView ? (
+                <FinalForm
+                  onSubmit={(values: any) => {}}
+                  render={({ handleSubmit, pristine, invalid }) => (
+                    <Form onSubmit={handleSubmit}>
+                      <div style={{ width: "100%" }}>
+                        <Field
+                          name="customerName"
+                          component={TextInput}
+                          placeholder="Type customer name here..."
+                          labelName="Customer Name"
+                          mandatory={false}
+                          // defaultValue={}
+                        />
+                      </div>
+                    </Form>
+                  )}
+                />
+              ) : (
+                <>
+                  <label className="customer-data-label">Customer Name</label>
+                  <p
+                    style={{ fontSize: "20px", fontWeight: "bold" }}
+                    className="grey"
+                  >
+                    {customer.customerName}
+                  </p>
+                </>
+              )}
+            </div>
+            <div className="customer-data-container-left">
+              <label className="customer-data-label">
+                Customer Business Name
+              </label>
+              <p
+                style={{ fontSize: "20px", fontWeight: "bold" }}
+                className="grey"
+              >
+                {customer.customerName}
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="padding-horizontal"
+            style={{ display: "flex", flexDirection: "row" }}
+          >
+            <div className="customer-data-container-left">
+              <label className="customer-data-label">
+                Holding Company Name
+              </label>
+              <p
+                style={{ fontSize: "20px", fontWeight: "bold" }}
+                className="grey"
+              >
+                Biffco Group
+              </p>
+            </div>
+            <div
+              className="customer-data-container-left"
+              style={{ marginLeft: "2rem" }}
+            >
+              {editView ? (
+                <FinalForm
+                  onSubmit={(values: any) =>
+                    onSubmitIndustryClassification(values)
+                  }
+                  render={({ handleSubmit, pristine, invalid }) => (
+                    <Form onSubmit={handleSubmit}>
+                      <Field
+                        labelName="Industry Classification"
+                        name="industryClassification"
+                        component={DropdownClearInput}
+                        placeholder="Choose class..."
+                        options={industryClassificationOptions}
+                        onChanged={onChangeIndustryClassification}
+                        values={industryClassification}
+                        mandatory={true}
+                      />
+                    </Form>
+                  )}
+                />
+              ) : (
+                <>
+                  <label className="customer-data-label">
+                    Industry Classification
+                  </label>
+                  <p
+                    style={{ fontSize: "20px", fontWeight: "bold" }}
+                    className="grey"
+                  >
+                    {customer.industryClass ? customer.industryClass : "-"}
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="padding-horizontal customer-data-container-left">
+            <label className="customer-data-label">Customer Address</label>
+            <p
+              style={{ fontSize: "20px" }}
+              className="grey"
+              dangerouslySetInnerHTML={{
+                __html: customer.customerAddress || "-",
+              }}
+            ></p>
+          </div>
+
+          <div className="padding-horizontal space-between-container">
+            <div className="customer-data-container-left">
+              <label className="customer-data-label">Country</label>
+              <p
+                style={{ fontSize: "18px", fontWeight: "bold" }}
+                className="grey"
+              >
+                Indonesia
+              </p>
+            </div>
+
+            <div className="customer-data-container-left">
+              <label className="customer-data-label">City</label>
+              <p
+                style={{ fontSize: "18px", fontWeight: "bold" }}
+                className="grey"
+              >
+                Jakarta
+              </p>
+            </div>
+
+            <div className="customer-data-container-left">
+              <label className="customer-data-label">ZIP Code</label>
+              <p
+                style={{ fontSize: "18px", fontWeight: "bold" }}
+                className="grey"
+              >
+                12345
+              </p>
+            </div>
+
+            <div className="customer-data-container-left">
+              <label className="customer-data-label">Office Number</label>
+              <p
+                style={{ fontSize: "18px", fontWeight: "bold" }}
+                className="grey"
+              >
+                021-789-0985
+              </p>
+            </div>
+
+            <div className="customer-data-container-left">
+              <label className="customer-data-label">Webiste</label>
+              <p
+                style={{ fontSize: "18px", fontWeight: "bold" }}
+                className="grey"
+              >
+                www.biffco.com
+              </p>
+            </div>
+          </div>
+
+          <div className="padding-horizontal customer-data-container-left">
+            {editView ? (
+              <FinalForm
+                onSubmit={(values: any) => {}}
+                render={({ handleSubmit, pristine, invalid }) => (
+                  <Form onSubmit={handleSubmit}>
+                    <div style={{ width: "70%" }}>
+                      <Field
+                        name="corporateEmail"
+                        component={TextInput}
+                        placeholder="Type corporate email here..."
+                        labelName="Corporate Email"
+                        mandatory={false}
+                        // defaultValue={}
+                      />
+                    </div>
+                  </Form>
+                )}
+              />
+            ) : (
+              <>
+                <label className="customer-data-label">Corporate Email</label>
+                <p
+                  style={{ fontSize: "20px", fontWeight: "bold" }}
+                  className="grey"
+                >
+                  marketing.biffco@biffco.com
+                </p>
+              </>
+            )}
+          </div>
+
+          <div
+            className="padding-horizontal"
+            style={{ display: "flex", flexDirection: "row" }}
+          >
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div className="customer-data-container-left">
                 {editView ? (
                   <FinalForm
-                    onSubmit={(values: any) =>
-                      onSubmitIndustryClassification(values)
-                    }
+                    onSubmit={(values: any) => {}}
                     render={({ handleSubmit, pristine, invalid }) => (
                       <Form onSubmit={handleSubmit}>
-                        <Field
-                          labelName="Industry Classification"
-                          name="industryClassification"
-                          component={DropdownClearInput}
-                          placeholder="Choose class..."
-                          options={industryClassificationOptions}
-                          onChanged={onChangeIndustryClassification}
-                          values={industryClassification}
-                          mandatory={true}
-                        />
+                        <div style={{ width: "100%" }}>
+                          <Field
+                            name="taxIDNumber"
+                            component={TextInput}
+                            placeholder="Type tax ID number here..."
+                            labelName="NPWP (Tax ID Number)"
+                            mandatory={false}
+                            // defaultValue={}
+                          />
+                        </div>
                       </Form>
                     )}
                   />
                 ) : (
                   <>
                     <label className="customer-data-label">
-                      Industry Classification
+                      NPWP (Tax ID Number)
                     </label>
                     <p
                       style={{ fontSize: "20px", fontWeight: "bold" }}
                       className="grey"
                     >
-                      {customer.industryClass ? customer.industryClass : "-"}
+                      1145-4452-223
+                    </p>
+                  </>
+                )}
+              </div>
+
+              <div className="customer-data-container-left">
+                {editView ? (
+                  <FinalForm
+                    onSubmit={(values: any) => {}}
+                    render={({ handleSubmit, pristine, invalid }) => (
+                      <Form onSubmit={handleSubmit}>
+                        <div style={{ width: "100%" }}>
+                          <Field
+                            name="NIB"
+                            component={TextInput}
+                            placeholder="Type NIB here..."
+                            labelName="NIB"
+                            mandatory={false}
+                            // defaultValue={}
+                          />
+                        </div>
+                      </Form>
+                    )}
+                  />
+                ) : (
+                  <>
+                    <label className="customer-data-label">NIB</label>
+                    <p
+                      style={{ fontSize: "20px", fontWeight: "bold" }}
+                      className="grey"
+                    >
+                      9987-8874-887
                     </p>
                   </>
                 )}
               </div>
             </div>
 
-            <div
-              style={{ paddingTop: "14px" }}
-              onClick={() => setEditView(!editView)}
-            >
-              {!editView ? (
-                <Icon name="edit" />
-              ) : (
-                <Icon
-                  name="save"
-                  fitted
-                  circular
-                  className="save-button-approved-page"
-                />
-              )}
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <label className="customer-data-label">NPWP Card</label>
+              <div
+                style={{
+                  width: "15rem",
+                  height: "10rem",
+                  border: "#8D8C8C solid 2px",
+                  borderStyle: "dashed",
+                  borderRadius: "0.5rem",
+                  position: "relative",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    backgroundColor: "#656DD1",
+                    color: "white",
+                    padding: "0.5rem 1.5rem",
+                    borderRadius: "2rem",
+                    boxShadow: "0px 0px 10px 0px #00000040",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 1,
+                    cursor: "pointer",
+                  }}
+                  onClick={() =>
+                    openViewNPWP(
+                      "https://images.unsplash.com/photo-1566125882500-87e10f726cdc?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    )
+                  }
+                >
+                  View
+                </div>
+                <img
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    filter: "blur(3px)",
+                    borderRadius: "0.5rem",
+                  }}
+                  src="https://images.unsplash.com/photo-1566125882500-87e10f726cdc?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                ></img>
+              </div>
             </div>
           </div>
         </div>
 
         <div
-          ref={tableRef}
-          className={!isView && `padding-horizontal`}
+          // ref={tableRef}
+          // className={!isView && `padding-horizontal`}
+          className="padding-horizontal"
           style={{ margin: "2.5rem 0" }}
         >
           <div className="grey get-data-container">
@@ -469,9 +771,10 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   ADDRESS & OFFICE NUMBER
                 </span>
                 <div
-                  className="match-button"
+                  className={`match-button ${status == "REJECT" &&
+                    `button-disable`}`}
                   style={{ fontSize: "12px" }}
-                  onClick={() => openNewAddress()}
+                  onClick={status != "REJECT" && (() => openNewAddress())}
                 >
                   <Icon name="plus" />
                   <p>Add New</p>
@@ -511,13 +814,16 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           : Number(id)
                         : Number(id)
                     }
+                    isView={isView}
+                    status={status}
+                    jenis="ADDRESSOFFICENUMBER"
                   />
                 </div>
                 <Divider className="margin-0"></Divider>
               </>
             )}
 
-            <div className="accordion-container">
+            {/* <div className="accordion-container">
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <span className="bold" style={{ marginRight: "1rem" }}>
                   WEBSITE & SOCIAL MEDIA
@@ -540,9 +846,9 @@ const BaseViewApprovedData: React.FC<IProps> = (
               </div>
             </div>
 
-            <Divider className="margin-0"></Divider>
+            <Divider className="margin-0"></Divider> */}
 
-            {openWebsiteMedia && (
+            {/* {openWebsiteMedia && (
               <>
                 <div className="table-container">
                   <TableCustomerDetail
@@ -550,11 +856,13 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     header={websiteMediaHeader}
                     sequenceNum={true}
                     Modal={ModalNewWebsiteMedia}
+                    isView={isView}
+                    status={status}
                   />
                 </div>
                 <Divider className="margin-0"></Divider>
               </>
-            )}
+            )} */}
 
             <div className="accordion-container">
               <div style={{ display: "flex", flexDirection: "row" }}>
@@ -562,9 +870,10 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   PEOPLE IN CHARGE (PIC)
                 </span>
                 <div
-                  className="match-button"
+                  className={`match-button ${status == "REJECT" &&
+                    `button-disable`}`}
                   style={{ fontSize: "12px" }}
-                  onClick={() => openNewPIC()}
+                  onClick={status != "REJECT" && (() => openNewPIC())}
                 >
                   <Icon name="plus" />
                   <p>Add New</p>
@@ -602,6 +911,8 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           : Number(id)
                         : Number(id)
                     }
+                    isView={isView}
+                    status={status}
                   />
                 </div>
                 <Divider className="margin-0"></Divider>
@@ -614,9 +925,10 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   RELATED ACCOUNT/CUSTOMER
                 </span>
                 <div
-                  className="match-button"
+                  className={`match-button ${status == "REJECT" &&
+                    `button-disable`}`}
                   style={{ fontSize: "12px" }}
-                  onClick={() => openNewRelatedCust()}
+                  onClick={status != "REJECT" && (() => openNewRelatedCust())}
                 >
                   <Icon name="plus" />
                   <p>Add New</p>
@@ -640,11 +952,47 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     header={relatedAccountHeader}
                     sequenceNum={true}
                     Modal={ModalNewRelatedCustomer}
-                    relatedCustomer
+                    isView={isView}
+                    status={status}
+                    jenis={"RELATEDCUSTOMER"}
                   />
                 </div>
               </>
             )}
+          </div>
+        </div>
+
+        <div className="padding-horizontal">
+          <div
+            className="grey account-activity-container"
+            style={{ paddingBottom: "1rem", marginBottom: "1rem" }}
+          >
+            <p className="bold margin-0" style={{ padding: "1rem" }}>
+              ACCOUNT ACTIVITY HISTORY
+            </p>
+
+            <Divider style={{ margin: 0 }}></Divider>
+
+            {accountActivityHistory.map((data) => (
+              <p
+                style={{
+                  padding: "0 1rem",
+                  marginBottom: "0",
+                  marginTop: "14px",
+                }}
+              >
+                {data.activity} by <b>{data.employeeName}</b> on {data.time}{" "}
+                <span
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "small",
+                  }}
+                >
+                  {data.reason && `- ${data.reason}`}
+                </span>
+              </p>
+            ))}
+            <p></p>
           </div>
         </div>
       </LoadingIndicator>

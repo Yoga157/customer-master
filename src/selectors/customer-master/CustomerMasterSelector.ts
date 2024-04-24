@@ -12,7 +12,7 @@ export default interface ICustomerSettingOptions {
 const _selectReqNewCustomer = (models: any): any => {
   // console.log(models);
   return {
-    totalRow: models.totalRows,
+    totalRows: models.totalRows,
     rows: _createTableReqNewCustomerRows(models.rows),
   };
 };
@@ -25,10 +25,11 @@ const _createTableReqNewCustomerRows = (models: any[]): any[] => {
 
 const _mappingObjectTableReqNewCustomerRow = (model: any): any => {
   return {
-    titleCustomer: model.titleCustomer,
     customerID: model.customerID === null ? null : model.customerID,
-    customerName: model.customerName === "" ? "" : model.customerName,
-    picName: model.picName === "" ? "" : model.picName,
+    customerName: model.customerName,
+    picName: model.picName,
+    blacklist: model.blacklist,
+    holdshipment: model.holdshipment,
   };
 };
 
@@ -109,6 +110,9 @@ const _mappingAddressOffice = (models: any[]): any[] => {
       model.alternateNumber,
       model.faxNumber
     ),
+    country: model.country,
+    city: model.city,
+    zipCode: model.zipCode,
     phoneNumber: model.phoneNumber,
     alternateNumber: model.alternateNumber,
     faxNumber: model.faxNumber,
@@ -117,12 +121,36 @@ const _mappingAddressOffice = (models: any[]): any[] => {
   }));
 };
 
+const _mappingAddressOfficeOptions = (models: any[]): any[] => {
+  return models.map((model: any): any => ({
+    id: model.addressOfficeNumberID,
+    text: `${model.type.toUpperCase()} - ${model.fullAddress} ${
+      model.zipCode
+    }, ${model.city}, ${model.country}`,
+    value: `${model.type.toUpperCase()} - ${model.fullAddress} ${
+      model.zipCode
+    }, ${model.city}, ${model.country}`,
+  }));
+};
+
+const _selectAddressOfficeOptions = (models: ResultActions): any => {
+  if (Array.isArray(models.resultObj)) {
+    if (models.resultObj.length == 0) {
+      return [];
+    } else {
+      return _mappingAddressOfficeOptions(
+        models.resultObj[0].cpAddressOfficeNumbers
+      );
+    }
+  }
+};
+
 // customer pic
 const _mappingCustomerPICs = (models: any[]): any[] => {
   return models.map((model: any): any => ({
     id: model.customerPICID,
     name: model.picName,
-    jabatan: model.picJobTitle,
+    jobTitle: model.picJobTitle,
     email: model.picEmailAddr,
     address: model.picAddress,
     phoneNumber: model.picMobilePhone,
@@ -187,4 +215,9 @@ const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
 export const selectCustomerMoreDetails: Selector<IStore, any> = createSelector(
   (state: IStore) => state.customerMaster.customerMoreDetails!,
   _selectNewCustomerDetailApproved
+);
+
+export const selectAddressOfficeOptions: Selector<IStore, any> = createSelector(
+  (state: IStore) => state.customerMaster.customerMoreDetails!,
+  _selectAddressOfficeOptions
 );

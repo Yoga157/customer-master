@@ -8,15 +8,24 @@ import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
 import * as ModalSecondLevelActions from "stores/modal/second-level/ModalSecondLevelActions";
 import { Divider, Form, Input, Label } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Button, TextAreaInput, TextInput } from "views/components/UI";
+import {
+  Button,
+  CheckBoxInput,
+  DropdownClearInput,
+  TextAreaInput,
+  TextInput,
+} from "views/components/UI";
 import PostPeopleInChargerModel from "stores/customer-master/models/PostPeopleInChargerModel";
 import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import { Console } from "console";
+import { valueState } from "stores/customer-transfer/CustomerTransferActions";
+import IStore from "models/IStore";
+import { selectAddressOfficeOptions } from "selectors/customer-master/CustomerMasterSelector";
 
 interface IData {
   id: any;
   name: string;
-  jabatan: string;
+  jobTitle: string;
   email: string;
   address: string;
   phoneNumber: string;
@@ -37,10 +46,13 @@ const ModalNewPIC: React.FC<IProps> = (
   const dispatch: Dispatch = useDispatch();
   const { data, isView, customerId, customerGenId } = props;
 
-  console.log("Customer Gen ID", customerGenId);
-  console.log("Customer ID", customerId);
+  const addressOptions = useSelector((state: IStore) =>
+    selectAddressOfficeOptions(state)
+  );
+  console.log(addressOptions);
 
   const onSubmitPIC = async (values) => {
+    console.log(values);
     const userId: any = localStorage.getItem("userLogin");
 
     const RequestPIC = new PostPeopleInChargerModel(values);
@@ -48,9 +60,10 @@ const ModalNewPIC: React.FC<IProps> = (
       RequestPIC.customerPICID = data.id;
       RequestPIC.customerGenID = data.customerGenID;
       RequestPIC.picName = values.name;
-      RequestPIC.picJobTitle = values.jabatan;
-      RequestPIC.picEmailAddr = values.address;
+      RequestPIC.picJobTitle = values.jobTitle;
+      RequestPIC.picEmailAddr = values.email;
       RequestPIC.picMobilePhone = values.phoneNumber;
+      RequestPIC.picAddress = values.officeAddress;
       RequestPIC.modifyDate = new Date();
       RequestPIC.modifyUserID = JSON.parse(userId).employeeID;
       // console.log(RequestPIC);
@@ -58,9 +71,10 @@ const ModalNewPIC: React.FC<IProps> = (
     } else {
       RequestPIC.customerGenID = customerGenId;
       RequestPIC.picName = values.name;
-      RequestPIC.picJobTitle = values.jabatan;
-      RequestPIC.picEmailAddr = values.address;
+      RequestPIC.picJobTitle = values.jobTitle;
+      RequestPIC.picEmailAddr = values.email;
       RequestPIC.picMobilePhone = values.phoneNumber;
+      RequestPIC.picAddress = values.officeAddress;
       RequestPIC.createDate = new Date();
       RequestPIC.createdUserID = JSON.parse(userId).employeeID;
       await dispatch(CustomerMasterActions.postPIC(RequestPIC));
@@ -104,61 +118,75 @@ const ModalNewPIC: React.FC<IProps> = (
 
       <FinalForm
         onSubmit={(values: any) => onSubmitPIC(values)}
-        render={({ handleSubmit, pristine, invalid }) => (
+        render={({ handleSubmit, pristine, invalid, values }) => (
           <Form onSubmit={handleSubmit}>
             <div style={{ display: "flex", flexDirection: "row" }}>
               <div style={{ marginRight: "1rem", width: "100%" }}>
                 <Field
                   name="name"
                   component={TextInput}
-                  labelName="Name"
+                  labelName="PIC Name"
                   placeholder="Type pic name here.."
-                  mandatory={true}
+                  mandatory={false}
                   defaultValue={data?.name || null}
                 />
               </div>
 
               <Field
-                name="jabatan"
+                name="jobTitle"
                 component={TextInput}
-                labelName="Jabatan"
-                placeholder="Type jabatan here.."
-                mandatory={true}
-                defaultValue={data?.jabatan || null}
+                labelName="Job Title"
+                placeholder="Type job title here.."
+                mandatory={false}
+                defaultValue={data?.jobTitle || null}
               />
             </div>
 
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                marginTop: "1rem",
+              }}
+            >
               <div style={{ marginRight: "1rem" }}>
                 <Field
                   name="email"
                   component={TextInput}
                   labelName="Email"
                   placeholder="Type email here.."
-                  mandatory={true}
+                  mandatory={false}
                   defaultValue={data?.email || null}
                 />
               </div>
               <Field
                 name="phoneNumber"
                 component={TextInput}
-                labelName="Phone Number"
-                placeholder="Type phone number here.."
-                mandatory={true}
+                labelName="PIC Mobile Phone"
+                placeholder="Type mobile phone here.."
+                mandatory={false}
                 defaultValue={data?.phoneNumber || null}
               />
             </div>
 
             <div style={{ margin: "1rem 0" }}>
               <Field
-                name="officeAddress"
-                component={TextAreaInput}
-                placeholder="Type office address here.."
                 labelName="Office Address"
-                mandatory={true}
+                name="officeAddress"
+                component={DropdownClearInput}
+                placeholder="Choose office address..."
+                options={addressOptions}
+                mandatory={false}
                 defaultValue={data?.address || null}
               />
             </div>
+
+            <Field
+              label="Pin to show as main PIC"
+              name="mainPIC"
+              component={CheckBoxInput}
+              defaultChecked={false}
+            />
 
             <Divider></Divider>
 
@@ -168,6 +196,13 @@ const ModalNewPIC: React.FC<IProps> = (
                 className="MarBot10"
                 type="submit"
                 color="blue"
+                disabled={
+                  !values.name ||
+                  !values.jobTitle ||
+                  !values.email ||
+                  !values.phoneNumber ||
+                  !values.officeAddress
+                }
                 //   onClick={}
               >
                 Submit

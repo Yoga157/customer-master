@@ -8,6 +8,10 @@
   text-align: left !important;
   margin: 0 !important;
   font-weight: bold !important;
+  padding: 14px 2rem 14px 2rem !important;
+}
+
+.page-title-isview {
   padding: 14px 2rem 0 2rem !important;
 }
 
@@ -55,6 +59,11 @@
 
 .get-data-container {
   background-color: #fffb9a !important;
+  border-radius: 1rem !important;
+}
+
+.account-activity-container {
+  background-color: #c8c8c8 !important;
   border-radius: 1rem !important;
 }
 
@@ -397,6 +406,42 @@ s .line {
   cursor: pointer;
 }
 
+.blacklist-yes-table {
+  padding: 0.1rem 0.6rem;
+  width: fit-content;
+  background-color: #fb7757;
+  color: white;
+  border-radius: 1rem;
+  margin: auto;
+}
+
+.blacklist-no-table {
+  padding: 0.1rem 0.6rem;
+  width: fit-content;
+  background-color: #27d4a5;
+  color: white;
+  border-radius: 1rem;
+  margin: auto;
+}
+
+.holdshipment-yes-table {
+  padding: 0.1rem 0.6rem;
+  width: fit-content;
+  background-color: #ffd500;
+  color: #55637a;
+  border-radius: 1rem;
+  margin: auto;
+}
+
+.holdshipment-no-table {
+  padding: 0.1rem 0.6rem;
+  width: fit-content;
+  background-color: #656dd1;
+  color: white;
+  border-radius: 1rem;
+  margin: auto;
+}
+
 .match-button {
   display: flex;
   flex-direction: row;
@@ -407,6 +452,11 @@ s .line {
   width: fit-content;
   border-radius: 1rem;
   cursor: pointer;
+}
+
+.button-disable {
+  opacity: 50%;
+  cursor: default;
 }
 
 .warning-text {
