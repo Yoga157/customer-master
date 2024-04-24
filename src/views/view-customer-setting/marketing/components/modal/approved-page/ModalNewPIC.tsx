@@ -19,14 +19,16 @@ import PostPeopleInChargerModel from "stores/customer-master/models/PostPeopleIn
 import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import { Console } from "console";
 import { valueState } from "stores/customer-transfer/CustomerTransferActions";
+import IStore from "models/IStore";
+import { selectAddressOfficeOptions } from "selectors/customer-master/CustomerMasterSelector";
 
 interface IData {
   id: any;
   name: string;
-  jabatan: string;
+  jobTitle: string;
   email: string;
   address: string;
-  mobilePhone: string;
+  phoneNumber: string;
   customerGenID?: any;
   customerId?: any;
 }
@@ -44,51 +46,55 @@ const ModalNewPIC: React.FC<IProps> = (
   const dispatch: Dispatch = useDispatch();
   const { data, isView, customerId, customerGenId } = props;
 
-  console.log("Customer Gen ID", customerGenId);
-  console.log("Customer ID", customerId);
+  const addressOptions = useSelector((state: IStore) =>
+    selectAddressOfficeOptions(state)
+  );
+  console.log(addressOptions);
 
   const onSubmitPIC = async (values) => {
     console.log(values);
     const userId: any = localStorage.getItem("userLogin");
 
-    // const RequestPIC = new PostPeopleInChargerModel(values);
-    // if (data) {
-    //   RequestPIC.customerPICID = data.id;
-    //   RequestPIC.customerGenID = data.customerGenID;
-    //   RequestPIC.picName = values.name;
-    //   RequestPIC.picJobTitle = values.jabatan;
-    //   RequestPIC.picEmailAddr = values.address;
-    //   RequestPIC.picMobilePhone = values.mobilePhone;
-    //   RequestPIC.modifyDate = new Date();
-    //   RequestPIC.modifyUserID = JSON.parse(userId).employeeID;
-    //   // console.log(RequestPIC);
-    //   await dispatch(CustomerMasterActions.updatePIC(RequestPIC, data.id));
-    // } else {
-    //   RequestPIC.customerGenID = customerGenId;
-    //   RequestPIC.picName = values.name;
-    //   RequestPIC.picJobTitle = values.jabatan;
-    //   RequestPIC.picEmailAddr = values.address;
-    //   RequestPIC.picMobilePhone = values.mobilePhone;
-    //   RequestPIC.createDate = new Date();
-    //   RequestPIC.createdUserID = JSON.parse(userId).employeeID;
-    //   await dispatch(CustomerMasterActions.postPIC(RequestPIC));
-    // }
+    const RequestPIC = new PostPeopleInChargerModel(values);
+    if (data) {
+      RequestPIC.customerPICID = data.id;
+      RequestPIC.customerGenID = data.customerGenID;
+      RequestPIC.picName = values.name;
+      RequestPIC.picJobTitle = values.jobTitle;
+      RequestPIC.picEmailAddr = values.email;
+      RequestPIC.picMobilePhone = values.phoneNumber;
+      RequestPIC.picAddress = values.officeAddress;
+      RequestPIC.modifyDate = new Date();
+      RequestPIC.modifyUserID = JSON.parse(userId).employeeID;
+      // console.log(RequestPIC);
+      await dispatch(CustomerMasterActions.updatePIC(RequestPIC, data.id));
+    } else {
+      RequestPIC.customerGenID = customerGenId;
+      RequestPIC.picName = values.name;
+      RequestPIC.picJobTitle = values.jobTitle;
+      RequestPIC.picEmailAddr = values.email;
+      RequestPIC.picMobilePhone = values.phoneNumber;
+      RequestPIC.picAddress = values.officeAddress;
+      RequestPIC.createDate = new Date();
+      RequestPIC.createdUserID = JSON.parse(userId).employeeID;
+      await dispatch(CustomerMasterActions.postPIC(RequestPIC));
+    }
 
-    // if (customerId || data?.customerId) {
-    //   await dispatch(
-    //     CustomerMasterActions.requestCustomerMoreDetailsByCustId(
-    //       customerId || data.customerId
-    //     )
-    //   );
-    // }
+    if (customerId || data?.customerId) {
+      await dispatch(
+        CustomerMasterActions.requestCustomerMoreDetailsByCustId(
+          customerId || data.customerId
+        )
+      );
+    }
 
-    // if (customerGenId || data?.customerGenID) {
-    //   await dispatch(
-    //     CustomerMasterActions.requestApprovedCustomerByGenId(
-    //       customerGenId || data.customerGenID
-    //     )
-    //   );
-    // }
+    if (customerGenId || data?.customerGenID) {
+      await dispatch(
+        CustomerMasterActions.requestApprovedCustomerByGenId(
+          customerGenId || data.customerGenID
+        )
+      );
+    }
 
     if (isView) {
       dispatch(ModalSecondLevelActions.CLOSE());
@@ -132,7 +138,7 @@ const ModalNewPIC: React.FC<IProps> = (
                 labelName="Job Title"
                 placeholder="Type job title here.."
                 mandatory={false}
-                defaultValue={data?.jabatan || null}
+                defaultValue={data?.jobTitle || null}
               />
             </div>
 
@@ -154,12 +160,12 @@ const ModalNewPIC: React.FC<IProps> = (
                 />
               </div>
               <Field
-                name="mobilePhone"
+                name="phoneNumber"
                 component={TextInput}
                 labelName="PIC Mobile Phone"
                 placeholder="Type mobile phone here.."
                 mandatory={false}
-                defaultValue={data?.mobilePhone || null}
+                defaultValue={data?.phoneNumber || null}
               />
             </div>
 
@@ -169,7 +175,7 @@ const ModalNewPIC: React.FC<IProps> = (
                 name="officeAddress"
                 component={DropdownClearInput}
                 placeholder="Choose office address..."
-                // options={typeOptions}
+                options={addressOptions}
                 mandatory={false}
                 defaultValue={data?.address || null}
               />
@@ -194,8 +200,8 @@ const ModalNewPIC: React.FC<IProps> = (
                   !values.name ||
                   !values.jobTitle ||
                   !values.email ||
-                  !values.mobilePhone
-                  // !values.officeAddress
+                  !values.phoneNumber ||
+                  !values.officeAddress
                 }
                 //   onClick={}
               >

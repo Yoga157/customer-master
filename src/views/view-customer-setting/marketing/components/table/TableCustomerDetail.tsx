@@ -20,7 +20,7 @@ interface IProps {
   deleteData?: (data: any) => void;
   refreshData?: (data: any) => void;
   customerId?: number;
-  relatedCustomer?;
+  jenis?: string;
   isView?: boolean;
   status: string;
 }
@@ -33,7 +33,7 @@ const TableCustomerDetail: React.FC<IProps> = (
     data,
     sequenceNum,
     Modal,
-    relatedCustomer,
+    jenis,
     deleteData,
     refreshData,
     customerId,
@@ -82,6 +82,8 @@ const TableCustomerDetail: React.FC<IProps> = (
               id={idToDel}
               customerID={customerId}
               content={content}
+              jenis={jenis}
+              isView={isView}
             />,
             ModalSizeEnum.Tiny
           )
@@ -95,6 +97,7 @@ const TableCustomerDetail: React.FC<IProps> = (
               id={idToDel}
               customerID={customerId}
               content={content}
+              jenis={jenis}
             />,
             ModalSizeEnum.Tiny
           )
@@ -130,7 +133,7 @@ const TableCustomerDetail: React.FC<IProps> = (
             </Table.Cell>
           </Table.Row>
         ) : (
-          data.map((data, index) => (
+          data.map((item, index) => (
             <Table.Row key={index}>
               {sequenceNum && (
                 <Table.Cell textAlign="center">{index + 1}</Table.Cell>
@@ -143,19 +146,20 @@ const TableCustomerDetail: React.FC<IProps> = (
                   disabled={status == "REJECT"}
                 >
                   <Dropdown.Menu>
-                    {!relatedCustomer && (
+                    {jenis?.toUpperCase() != "RELATEDCUSTOMER" && (
                       <Dropdown.Item
                         text="View/Edit"
                         icon="edit"
-                        onClick={() => openEdit(data)}
-                        disabled={data?.type == "MAIN" ? true : false}
+                        onClick={() => openEdit(item)}
                       />
                     )}
                     <Dropdown.Item
                       text="Delete"
                       icon="trash alternate"
-                      onClick={() => openDelete(data.id, "data")}
-                      disabled={data?.type == "MAIN" ? true : false}
+                      onClick={() => openDelete(item.id, "item")}
+                      disabled={
+                        item?.type == "MAIN" && data.length == 1 ? true : false
+                      }
                     />
                   </Dropdown.Menu>
                 </Dropdown>
@@ -166,7 +170,7 @@ const TableCustomerDetail: React.FC<IProps> = (
                     key={header.key}
                     textAlign={header.textCenter ? "center" : "left"}
                   >
-                    {data["pin"] && <Icon name="check" />}
+                    {item["pin"] && <Icon name="check" />}
                   </Table.Cell>
                 ) : (
                   <Table.Cell
@@ -175,7 +179,7 @@ const TableCustomerDetail: React.FC<IProps> = (
                   >
                     <p
                       dangerouslySetInnerHTML={{
-                        __html: data[header.key],
+                        __html: item[header.key],
                       }}
                     ></p>
                   </Table.Cell>

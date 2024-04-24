@@ -21,6 +21,9 @@ interface IData {
   id: any;
   type: string;
   address: string;
+  country: string;
+  city: string;
+  zipCode: string;
   officeNumber: string;
   phoneNumber: string;
   alternateNumber: string;
@@ -53,57 +56,66 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
     },
   ];
 
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
   const onSubmitNewAddress = async (values) => {
-    console.log(values);
     const customerOfficeNumber = new CustomerOfficeNumberModel({});
-    // if (data) {
-    //   customerOfficeNumber.customerGenID = data.customerGenID;
-    //   customerOfficeNumber.customerID = data.customerID;
-    //   customerOfficeNumber.type = data.type.toUpperCase();
-    //   customerOfficeNumber.fullAddress = values.fullAddress;
-    //   customerOfficeNumber.phoneNumber = values.phoneNumber;
-    //   customerOfficeNumber.alternateNumber = values.alternateNumber;
-    //   customerOfficeNumber.faxNumber = values.faxNumber;
-    //   customerOfficeNumber.modifyDate = new Date();
-    //   customerOfficeNumber.modifyUserID = 0;
+    if (data) {
+      customerOfficeNumber.customerGenID = data.customerGenID;
+      customerOfficeNumber.customerID = data.customerID;
+      customerOfficeNumber.type = data.type.toUpperCase();
+      customerOfficeNumber.country = values.country;
+      customerOfficeNumber.city = values.city;
+      customerOfficeNumber.zipCode = values.zipCode;
+      customerOfficeNumber.fullAddress = values.fullAddress;
+      customerOfficeNumber.phoneNumber = values.phoneNumber;
+      customerOfficeNumber.alternateNumber = values.alternateNumber;
+      customerOfficeNumber.faxNumber = values.faxNumber;
+      customerOfficeNumber.modifyDate = new Date();
+      customerOfficeNumber.modifyUserID = 0;
 
-    //   await dispatch(
-    //     CustomerMasterActions.updateCustomerOfficeNumber(
-    //       customerOfficeNumber,
-    //       data.id
-    //     )
-    //   );
-    // } else {
-    //   customerOfficeNumber.customerGenID = customerGenId;
-    //   customerOfficeNumber.customerID = customerId;
-    //   customerOfficeNumber.type = "BRANCH";
-    //   customerOfficeNumber.fullAddress = values.fullAddress;
-    //   customerOfficeNumber.phoneNumber = values.phoneNumber;
-    //   customerOfficeNumber.alternateNumber = values.alternateNumber;
-    //   customerOfficeNumber.faxNumber = values.faxNumber;
-    //   customerOfficeNumber.createDate = new Date();
-    //   customerOfficeNumber.createUserID = 0;
+      await dispatch(
+        CustomerMasterActions.updateCustomerOfficeNumber(
+          customerOfficeNumber,
+          data.id
+        )
+      );
+    } else {
+      customerOfficeNumber.customerGenID = customerGenId || 0;
+      customerOfficeNumber.customerID = customerId || 0;
+      customerOfficeNumber.type = values.type.toUpperCase();
+      customerOfficeNumber.country = values.country;
+      customerOfficeNumber.city = values.city;
+      customerOfficeNumber.zipCode = values.zipCode;
+      customerOfficeNumber.fullAddress = values.fullAddress;
+      customerOfficeNumber.phoneNumber = values.phoneNumber;
+      customerOfficeNumber.alternateNumber = values.alternateNumber;
+      customerOfficeNumber.faxNumber = values.faxNumber;
+      customerOfficeNumber.createDate = new Date();
+      customerOfficeNumber.createUserID = 0;
 
-    //   await dispatch(
-    //     CustomerMasterActions.postCustomerOfficeNumber(customerOfficeNumber)
-    //   );
-    // }
+      await dispatch(
+        CustomerMasterActions.postCustomerOfficeNumber(customerOfficeNumber)
+      );
+    }
 
-    // if (customerId || data?.customerID) {
-    //   await dispatch(
-    //     CustomerMasterActions.requestCustomerMoreDetailsByCustId(
-    //       customerId || data.customerID
-    //     )
-    //   );
-    // }
+    if (customerId || data?.customerID) {
+      await dispatch(
+        CustomerMasterActions.requestCustomerMoreDetailsByCustId(
+          customerId || data.customerID
+        )
+      );
+    }
 
-    // if (customerGenId || data?.customerGenID) {
-    //   await dispatch(
-    //     CustomerMasterActions.requestApprovedCustomerByGenId(
-    //       customerGenId || data.customerGenID
-    //     )
-    //   );
-    // }
+    if (customerGenId || data?.customerGenID) {
+      await dispatch(
+        CustomerMasterActions.requestApprovedCustomerByGenId(
+          customerGenId || data.customerGenID
+        )
+      );
+    }
 
     if (isView) {
       dispatch(ModalSecondLevelActions.CLOSE());
@@ -155,6 +167,9 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
                 placeholder="Choose type..."
                 options={typeOptions}
                 mandatory={false}
+                defaultValue={
+                  data?.type ? capitalizeFirstLetter(data.type) : null
+                }
               />
             </div>
 
@@ -171,7 +186,7 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
                 labelName="Country"
                 placeholder="Type country name here.."
                 mandatory={false}
-                // defaultValue={data?.phoneNumber || null}
+                defaultValue={data?.country || null}
               />
               <Field
                 name="city"
@@ -179,7 +194,7 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
                 labelName="City"
                 placeholder="Type city name here.."
                 mandatory={false}
-                // defaultValue={data?.alternateNumber || null}
+                defaultValue={data?.city || null}
               />
               <Field
                 name="zipCode"
@@ -187,7 +202,7 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
                 labelName="ZIP Code"
                 placeholder="Type zip code here.."
                 mandatory={false}
-                // defaultValue={data?.faxNumber || null}
+                defaultValue={data?.zipCode || null}
               />
             </div>
 

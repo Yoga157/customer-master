@@ -194,13 +194,19 @@ export const DEL_CUSTOMER_OFFICE_NUMBER: string =
   "CustomerActions.DEL_CUSTOMER_OFFICE_NUMBER";
 export const DEL_CUSTOMER_OFFICE_NUMBER_FINISHED =
   "CustomerActions.DEL_CUSTOMER_OFFICE_NUMBER_FINISHED";
-export const deleteCustomerOfficeNumber = (id: number): any => {
+export const deleteCustomerOfficeNumber = (
+  id: number,
+  customerGenId?: number,
+  customerId?: number
+): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<ResultActions>(
       dispatch,
       DEL_CUSTOMER_OFFICE_NUMBER,
       CustomerMasterEffect.deleteCustomerOfficeNumber,
-      id
+      id,
+      customerGenId,
+      customerId
     );
   };
 };

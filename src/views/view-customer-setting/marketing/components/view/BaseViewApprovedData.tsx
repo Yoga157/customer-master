@@ -23,7 +23,10 @@ import ModalNewPIC from "../modal/approved-page/ModalNewPIC";
 import ModalNewRelatedCustomer from "../modal/approved-page/ModalNewRelatedCustomer";
 import IStore from "models/IStore";
 import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
-import { selectCustomerMoreDetails } from "selectors/customer-master/CustomerMasterSelector";
+import {
+  selectAddressOfficeOptions,
+  selectCustomerMoreDetails,
+} from "selectors/customer-master/CustomerMasterSelector";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import ModalViewNpwp from "../modal/view-npwp/ModalViewNpwp";
 
@@ -229,14 +232,33 @@ const BaseViewApprovedData: React.FC<IProps> = (
     if (isView) {
       dispatch(
         ModalSecondLevelActions.OPEN(
-          <ModalNewRelatedCustomer isView={isView}></ModalNewRelatedCustomer>,
+          <ModalNewRelatedCustomer
+            isView={isView}
+            customerId={
+              status == "NOT_NEW"
+                ? customerId
+                  ? customerId
+                  : Number(id)
+                : null
+            }
+            customerGenId={status != "NOT_NEW" ? Number(id) : null}
+          ></ModalNewRelatedCustomer>,
           ModalSizeEnum.Small
         )
       );
     } else {
       dispatch(
         ModalFirstLevelActions.OPEN(
-          <ModalNewRelatedCustomer></ModalNewRelatedCustomer>,
+          <ModalNewRelatedCustomer
+            customerId={
+              status == "NOT_NEW"
+                ? customerId
+                  ? customerId
+                  : Number(id)
+                : null
+            }
+            customerGenId={status != "NOT_NEW" ? Number(id) : null}
+          ></ModalNewRelatedCustomer>,
           ModalSizeEnum.Small
         )
       );
@@ -794,6 +816,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     }
                     isView={isView}
                     status={status}
+                    jenis="ADDRESSOFFICENUMBER"
                   />
                 </div>
                 <Divider className="margin-0"></Divider>
@@ -825,7 +848,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
 
             <Divider className="margin-0"></Divider> */}
 
-            {openWebsiteMedia && (
+            {/* {openWebsiteMedia && (
               <>
                 <div className="table-container">
                   <TableCustomerDetail
@@ -839,7 +862,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 </div>
                 <Divider className="margin-0"></Divider>
               </>
-            )}
+            )} */}
 
             <div className="accordion-container">
               <div style={{ display: "flex", flexDirection: "row" }}>
@@ -931,7 +954,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     Modal={ModalNewRelatedCustomer}
                     isView={isView}
                     status={status}
-                    relatedCustomer
+                    jenis={"RELATEDCUSTOMER"}
                   />
                 </div>
               </>
