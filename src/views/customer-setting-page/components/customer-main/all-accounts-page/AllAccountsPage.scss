@@ -98,7 +98,7 @@
 //Button New Request Customer
 .container-new-request-customer {
   position: fixed !important;
-  bottom: 0.5rem !important;
+  bottom: 5% !important;
   right: 0 !important;
   display: flex !important;
   flex-direction: row !important;
@@ -113,7 +113,7 @@
   width: 11.5rem !important;
   height: 2rem !important;
   font-size: 0.7rem !important;
-  margin-right: 3.2rem !important;
+  margin-right: 3.7rem !important;
   position: absolute !important;
   z-index: 1 !important;
 }
@@ -124,8 +124,7 @@
   display: flex !important ;
   justify-content: center !important ;
   align-items: center !important ;
-  height: 3.3rem !important ;
-  width: 3.3rem !important ;
+  padding: 0.5rem !important;
   margin-right: 1rem !important ;
   position: absolute !important ;
   z-index: 1 !important ;

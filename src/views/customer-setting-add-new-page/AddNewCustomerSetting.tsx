@@ -13,6 +13,8 @@ import {
   TextInput,
   SelectInput,
 } from "views/components/UI";
+import environment from "environment";
+import axios from "axios";
 import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import { Dispatch } from "redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
@@ -97,40 +99,70 @@ const AddNewCustomerSetting: React.FC<IProps> = (
     setSearcedhPicName(data.picName);
   };
 
+  const industryClassOptions = [
+    {
+      text: "Industry1",
+      value: "Industry1",
+    },
+    {
+      text: "Industry2",
+      value: "Industry2",
+    },
+  ];
+
   const onSubmitHandler = async (data: any) => {
     const userId: any = localStorage.getItem("userLogin");
-    // console.log("role", userId);
-    const RequestNewCustomer = new CustomerMasterPostModel(data);
-    if (JSON.parse(userId).role != "Sales") {
-      RequestNewCustomer.approvalStatus = "Approve";
-    } else {
-      RequestNewCustomer.approvalStatus = "";
-    }
-    RequestNewCustomer.titleCustomer = searchedTitleCust;
-    RequestNewCustomer.customerName = searchedCustomerName;
-    RequestNewCustomer.picName = searchedPicName;
-    RequestNewCustomer.customerAddress = data.customerAddress;
-    RequestNewCustomer.phoneNumber = data.phoneNumber;
-    RequestNewCustomer.industryClass = data.industryClass;
-    RequestNewCustomer.website = data.website;
-    RequestNewCustomer.socialMedia = data.socialMedia;
-    RequestNewCustomer.picMobilePhone = data.picPhoneNumber;
-    RequestNewCustomer.picJobTitle = data.picJobTitle;
-    RequestNewCustomer.picEmailAddr = data.picEmail;
-    RequestNewCustomer.createdUserID = JSON.parse(userId).employeeID;
-    RequestNewCustomer.modifyUserID = JSON.parse(userId).employeeID;
 
-    // console.log(RequestNewCustomer);
-    dispatch(
-      CustomerMasterActions.postNewCustomerMaster(RequestNewCustomer)
-    ).then(() => {
+    let formData = new FormData();
+    formData.append("CustomerName", data.customerLegalName);
+    formData.append("CustomerAddress", data.customerAddress);
+    formData.append("PhoneNumber", data.officeNumber);
+    formData.append("IndustryClass", data.industryClassification);
+    formData.append("Website", data.website);
+    formData.append("CustomerBusinessName", data.customerBusinessName);
+    formData.append("HoldingCompName", data.holdingCompanyName);
+    formData.append("City", data.city);
+    formData.append("Country", data.country);
+    formData.append("ZipCode", data.zipCode);
+    formData.append("CoorporateEmail", data.coorporateEmail);
+    formData.append("NIB", data.nib);
+    formData.append("NPWPNumber", data.Npwp);
+    formData.append("PICName", data.picName);
+    formData.append("PICMobilePhone", data.picMobilePhone);
+    formData.append("PICJobTitle", data.picJobTitle);
+    formData.append("PICEmailAddr", data.picEmail);
+    formData.append("CreatedUserID", JSON.parse(userId).employeeID);
+    formData.append("ModifyUserID", JSON.parse(userId).employeeID);
+    formData.append("File", uploadFile);
+    if (JSON.parse(userId).role === "Sales") {
+      formData.append("ApprovalStatus", "PENDING");
+    }
+    if (JSON.parse(userId).role === "Marketing") {
+      formData.append("ApprovalStatus", "APPROVE");
+    }
+
+    try {
+      const endpoint: string = environment.api.customer.replace(
+        ":controller",
+        "CustomerSetting/InsertRequestNewCustomer"
+      );
+
+      await axios.post(endpoint, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setUploadFile(null);
       dispatch(CustomerMasterActions.setActiveTabs(4));
       dispatch(CustomerMasterActions.setSuccessModal(true));
       props.history.push({
         pathname: RouteEnum.CustomerSetting,
       });
-    });
-    dispatch(CustomerMasterActions.clearResult());
+      dispatch(CustomerMasterActions.clearResult());
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const cancelClick = () => {
@@ -402,7 +434,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 name="customerLegalName"
                                 component={TextInput}
                                 labelName="Customer Legal Name"
-                                placeholder="E.g. PT. Berca Hardayaperkasa"
+                                placeholder="Type customer legal name here..."
                                 mandatory={false}
                               />
                             </Grid.Column>
@@ -410,8 +442,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               <Field
                                 name="customerBusinessName"
                                 component={TextInput}
-                                labelName="Customer Businnes Name"
-                                placeholder="E.g. Berca.."
+                                labelName="Customer Business Name"
+                                placeholder="Type customer business name here..."
                                 mandatory={false}
                               />
                             </Grid.Column>
@@ -423,7 +455,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 name="holdingCompanyName"
                                 component={TextInput}
                                 labelName="Holding Company Name"
-                                placeholder="E.g. Berca.."
+                                placeholder="Type holding company name here..."
                                 mandatory={false}
                               />
                             </Grid.Column>
@@ -434,6 +466,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 labelName="Industry Classification"
                                 allowAdditions={true}
                                 placeholder="Pick one classification"
+                                options={industryClassOptions}
                                 mandatory={false}
                               />
                             </Grid.Column>
@@ -446,7 +479,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               <Field
                                 name="customerAddress"
                                 component={RichTextEditor}
-                                placeholder="E.g Jl.Abdul Muis.."
+                                placeholder="Type customer address here..."
                                 labelName="Customer Address"
                                 mandatory={false}
                               />
@@ -459,7 +492,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                       name="country"
                                       component={TextInput}
                                       labelName="Country"
-                                      placeholder="E.g.Indonesia"
+                                      placeholder="Type country name here..."
                                       mandatory={false}
                                     />
                                   </Grid.Column>
@@ -468,7 +501,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                       name="city"
                                       component={TextInput}
                                       labelName="City"
-                                      placeholder="E.g Jakarta"
+                                      placeholder="Type city name here..."
                                       mandatory={false}
                                     />
                                   </Grid.Column>
@@ -479,7 +512,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                       name="zipCode"
                                       component={TextInput}
                                       labelName="Zip Code"
-                                      placeholder="E.g 123456.."
+                                      placeholder="Type zip code here..."
                                       mandatory={false}
                                     />
                                   </Grid.Column>
@@ -488,7 +521,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                       name="officeNumber"
                                       component={TextInput}
                                       labelName="Office Number"
-                                      placeholder="E.g 789-456"
+                                      placeholder="Type office number here..."
                                       mandatory={false}
                                     />
                                   </Grid.Column>
@@ -511,7 +544,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 name="website"
                                 component={TextInput}
                                 labelName="Website"
-                                placeholder="E.g. www.berca.com"
+                                placeholder="Type website name here..."
                                 mandatory={false}
                               />
                             </Grid.Column>
@@ -526,7 +559,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 name="coorporateEmail"
                                 component={TextInput}
                                 labelName="Coorporate Email"
-                                placeholder="e.g.marketing@berca.co.id"
+                                placeholder="Type coorporate email here..."
                                 mandatory={false}
                               />
                             </Grid.Column>
@@ -542,7 +575,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 name="nib"
                                 component={TextInput}
                                 labelName="NIB"
-                                placeholder="E.g.1236-5468-0000"
+                                placeholder="Type NIB here..."
                                 mandatory={false}
                               />
                             </Grid.Column>
@@ -557,7 +590,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 component={TextInput}
                                 labelName="NPWP (Tax ID Number)"
                                 mandatory={false}
-                                placeholder="E.g.1145-4452-223"
+                                placeholder="Type tax id number here..."
                               />
                             </Grid.Column>
                             <Grid.Column width={4} className="FullGrid767">
@@ -665,7 +698,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                             name="picName"
                                             component={TextInput}
                                             labelName="PIC Name"
-                                            placeholder="E.g. Savannah N.."
+                                            placeholder="Type PIC Name here..."
                                             mandatory={false}
                                           />
                                         </Grid.Column>
@@ -674,7 +707,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                             name="picMobilePhone"
                                             component={TextInput}
                                             labelName="PIC Mobile Phone"
-                                            placeholder="E.g. 0812-3456-7890"
+                                            placeholder="Type PIC Mobile phone here..."
                                             mandatory={false}
                                           />
                                         </Grid.Column>
@@ -685,7 +718,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                             name="picEmail"
                                             component={TextInput}
                                             labelName="Email"
-                                            placeholder="E.g. jhon.doe@berca.co.id"
+                                            placeholder="Type PIC Email here..."
                                             mandatory={false}
                                           />
                                         </Grid.Column>
@@ -694,7 +727,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                             name="picJobTitle"
                                             component={TextInput}
                                             labelName="PIC Job Title"
-                                            placeholder="E.g. Operational Manager"
+                                            placeholder="Type PIC Job title here..."
                                             mandatory={false}
                                           />
                                         </Grid.Column>
@@ -723,14 +756,23 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                             style={{ marginRight: "1rem" }}
                             type="submit"
                             disabled={
-                              pristine ||
-                              invalid ||
-                              !values.customerAddress ||
-                              !values.phoneNumber ||
+                              !values.customerLegalName ||
+                              !values.customerBusinessName ||
+                              !values.holdingCompanyName ||
                               !values.industryClassification ||
-                              !values.picPhoneNumber ||
-                              !values.picJobTitle ||
-                              !values.picEmail
+                              !values.customerAddress ||
+                              !values.country ||
+                              !values.city ||
+                              !values.zipCode ||
+                              !values.officeNumber ||
+                              !values.website ||
+                              !values.coorporateEmail ||
+                              !values.nib ||
+                              !values.Npwp ||
+                              !values.picName ||
+                              !values.picMobilePhone ||
+                              !values.picEmail ||
+                              !values.picJobTitle
                             }
                           >
                             Submit
@@ -754,7 +796,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                       color="blue"
                       style={{ marginRight: "1rem" }}
                       type="submit"
-                      onClick={() => onSubmitHandler(data)}
+                      disabled
+                      // onClick={() => onSubmitHandler(data)}
                     >
                       Submit
                     </Button>

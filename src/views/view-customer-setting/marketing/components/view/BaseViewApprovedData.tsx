@@ -30,22 +30,6 @@ import {
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import ModalViewNpwp from "../modal/view-npwp/ModalViewNpwp";
 
-interface ICustomer {
-  customerID: any;
-  titleCustomer: any;
-  customerName: any;
-  industryClass: any;
-  requestor: any;
-  cpAddressOfficeNumbers: any;
-  cpWebsiteSocialMedias: any;
-  customerPICs: any;
-  cpRelatedCustomers: any;
-  createDate: any;
-  createUserID: any;
-  modifyDate: any;
-  modifyUserID: any;
-}
-
 interface IProps {
   isView?: boolean;
   customerId?: any;
@@ -67,6 +51,8 @@ const BaseViewApprovedData: React.FC<IProps> = (
   const customer = useSelector((state: IStore) =>
     selectCustomerMoreDetails(state)
   );
+
+  // console.log(customer.npwpCard?.imageFile);
 
   useEffect(() => {
     if (status == "NOT_NEW") {
@@ -364,6 +350,22 @@ const BaseViewApprovedData: React.FC<IProps> = (
     ])
   );
 
+  function hexadecimalToBase64(hexString) {
+    hexString = hexString.replaceAll(" ", "").replaceAll(",", "");
+    let binaryString = "";
+    for (let i = 0; i < hexString.length; i += 2) {
+      binaryString += String.fromCharCode(parseInt(hexString.substr(i, 2), 16));
+    }
+    return btoa(binaryString);
+  }
+
+  // console.log(
+  //   Object.keys(customer).length != 0 &&
+  //     `data:${customer.npwpCard?.extension};base64,${hexadecimalToBase64(
+  //       customer.npwpCard?.imageFile
+  //     )}`
+  // );
+
   return (
     <Fragment>
       <p
@@ -397,7 +399,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   style={{ fontSize: "20px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  {customer.customerID ? customer.customerID : "-"}
+                  {customer.customerID}
                 </p>
               </div>
               <div className="customer-data-container-left">
@@ -406,7 +408,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   style={{ fontSize: "20px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  {customer.requestor ? customer.requestor : "-"}
+                  {customer.requestor}
                 </p>
               </div>
             </div>
@@ -418,7 +420,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   style={{ fontSize: "20px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  {customer.createDate ? customer.createDate : "-"}
+                  {customer.createDate}
                 </p>
               </div>
 
@@ -456,7 +458,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           placeholder="Type customer name here..."
                           labelName="Customer Name"
                           mandatory={false}
-                          // defaultValue={}
+                          defaultValue={customer.customerName || null}
                         />
                       </div>
                     </Form>
@@ -482,7 +484,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 style={{ fontSize: "20px", fontWeight: "bold" }}
                 className="grey"
               >
-                {customer.customerName}
+                {customer.customerBusinessName}
               </p>
             </div>
           </div>
@@ -499,7 +501,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 style={{ fontSize: "20px", fontWeight: "bold" }}
                 className="grey"
               >
-                Biffco Group
+                {customer.holdingCompName}
               </p>
             </div>
             <div
@@ -535,7 +537,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     style={{ fontSize: "20px", fontWeight: "bold" }}
                     className="grey"
                   >
-                    {customer.industryClass ? customer.industryClass : "-"}
+                    {customer.industryClass}
                   </p>
                 </>
               )}
@@ -548,7 +550,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
               style={{ fontSize: "20px" }}
               className="grey"
               dangerouslySetInnerHTML={{
-                __html: customer.customerAddress || "-",
+                __html: customer.address || "-",
               }}
             ></p>
           </div>
@@ -560,7 +562,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 style={{ fontSize: "18px", fontWeight: "bold" }}
                 className="grey"
               >
-                Indonesia
+                {customer.country}
               </p>
             </div>
 
@@ -570,7 +572,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 style={{ fontSize: "18px", fontWeight: "bold" }}
                 className="grey"
               >
-                Jakarta
+                {customer.city}
               </p>
             </div>
 
@@ -580,7 +582,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 style={{ fontSize: "18px", fontWeight: "bold" }}
                 className="grey"
               >
-                12345
+                {customer.zipCode}
               </p>
             </div>
 
@@ -590,17 +592,17 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 style={{ fontSize: "18px", fontWeight: "bold" }}
                 className="grey"
               >
-                021-789-0985
+                {customer.phoneNumber}
               </p>
             </div>
 
             <div className="customer-data-container-left">
-              <label className="customer-data-label">Webiste</label>
+              <label className="customer-data-label">Website</label>
               <p
                 style={{ fontSize: "18px", fontWeight: "bold" }}
                 className="grey"
               >
-                www.biffco.com
+                {customer.website}
               </p>
             </div>
           </div>
@@ -618,7 +620,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                         placeholder="Type corporate email here..."
                         labelName="Corporate Email"
                         mandatory={false}
-                        // defaultValue={}
+                        defaultValue={customer.coorporateEmail}
                       />
                     </div>
                   </Form>
@@ -631,7 +633,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   style={{ fontSize: "20px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  marketing.biffco@biffco.com
+                  {customer.coorporateEmail}
                 </p>
               </>
             )}
@@ -655,7 +657,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                             placeholder="Type tax ID number here..."
                             labelName="NPWP (Tax ID Number)"
                             mandatory={false}
-                            // defaultValue={}
+                            defaultValue={customer.npwpNumber}
                           />
                         </div>
                       </Form>
@@ -670,7 +672,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       style={{ fontSize: "20px", fontWeight: "bold" }}
                       className="grey"
                     >
-                      1145-4452-223
+                      {customer.npwpNumber}
                     </p>
                   </>
                 )}
@@ -689,7 +691,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                             placeholder="Type NIB here..."
                             labelName="NIB"
                             mandatory={false}
-                            // defaultValue={}
+                            defaultValue={customer.nib}
                           />
                         </div>
                       </Form>
@@ -702,7 +704,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       style={{ fontSize: "20px", fontWeight: "bold" }}
                       className="grey"
                     >
-                      9987-8874-887
+                      {customer.nib}
                     </p>
                   </>
                 )}
@@ -721,38 +723,61 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   position: "relative",
                 }}
               >
-                <div
-                  style={{
-                    position: "absolute",
-                    backgroundColor: "#656DD1",
-                    color: "white",
-                    padding: "0.5rem 1.5rem",
-                    borderRadius: "2rem",
-                    boxShadow: "0px 0px 10px 0px #00000040",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    zIndex: 1,
-                    cursor: "pointer",
-                  }}
-                  onClick={() =>
-                    openViewNPWP(
-                      "https://images.unsplash.com/photo-1566125882500-87e10f726cdc?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    )
-                  }
-                >
-                  View
-                </div>
-                <img
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    filter: "blur(3px)",
-                    borderRadius: "0.5rem",
-                  }}
-                  src="https://images.unsplash.com/photo-1566125882500-87e10f726cdc?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                ></img>
+                {Object.keys(customer).length != 0 &&
+                Object.keys(customer.npwpCard).length == 0 ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      color: "#55637A",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      zIndex: 1,
+                    }}
+                  >
+                    <Icon name="picture" style={{ fontSize: "3rem" }}></Icon>
+                    <p style={{ margin: "auto" }}>No Data</p>
+                  </div>
+                ) : (
+                  <>
+                    <div
+                      style={{
+                        position: "absolute",
+                        backgroundColor: "#656DD1",
+                        color: "white",
+                        padding: "0.5rem 1.5rem",
+                        borderRadius: "2rem",
+                        boxShadow: "0px 0px 10px 0px #00000040",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 1,
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        openViewNPWP(
+                          Object.keys(customer).length != 0 &&
+                            `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
+                        )
+                      }
+                    >
+                      View
+                    </div>
+                    <img
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        filter: "blur(3px)",
+                        borderRadius: "0.5rem",
+                      }}
+                      src={
+                        Object.keys(customer).length != 0 &&
+                        `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
+                      }
+                    ></img>
+                  </>
+                )}
               </div>
             </div>
           </div>
