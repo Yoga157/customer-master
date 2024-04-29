@@ -103,18 +103,19 @@ const CustomerTableRow: React.FC<IProps> = (
               <Dropdown.Menu>
                 {role === "Sales" && (
                   <>
-                    <Dropdown.Item
-                      text="View/Edit"
-                      icon="edit outline"
-                      onClick={() => onEdit(rowData.customerID)}
-                    />
-
                     {rowData.salesName.includes(userLogin.fullName) && (
-                      <Dropdown.Item
-                        text="Release Account"
-                        icon="times circle"
-                        onClick={onReleaseAccount}
-                      />
+                      <>
+                        <Dropdown.Item
+                          text="View/Edit"
+                          icon="edit outline"
+                          onClick={() => onEdit(rowData.customerID)}
+                        />
+                        <Dropdown.Item
+                          text="Release Account"
+                          icon="times circle"
+                          onClick={onReleaseAccount}
+                        />
+                      </>
                     )}
 
                     {!rowData.salesName.includes(userLogin.fullName) && (
@@ -132,7 +133,7 @@ const CustomerTableRow: React.FC<IProps> = (
                   </>
                 )}
 
-                {role === "Admin" && (
+                {(role === "Admin" || role === "Marketing") && (
                   <Dropdown.Item
                     text="View/Edit"
                     icon="edit outline"

@@ -773,33 +773,33 @@ const ViewApproval: React.FC = (props) => {
                                 ></p>
                               </Table.Cell>
                               <Table.Cell textAlign="center">
-                                {/* {rowData.blacklist === true ? (
+                                {data.blacklist === true ? (
                                   <div className="blacklist-yes-table">
                                     <Icon name="address book" size="small" />
                                     <span>Yes</span>
                                   </div>
-                                ) : ( */}
-                                <div className="blacklist-no-table">
-                                  <Icon name="address book" size="small" />
-                                  <span>No</span>
-                                </div>
-                                {/* )} */}
+                                ) : (
+                                  <div className="blacklist-no-table">
+                                    <Icon name="address book" size="small" />
+                                    <span>No</span>
+                                  </div>
+                                )}
                               </Table.Cell>
                               <Table.Cell
                                 textAlign="center"
                                 verticalAlign="middle"
                               >
-                                {/* {rowData.holdshipment === true ? ( */}
-                                <div className="holdshipment-yes-table">
-                                  <Icon name="truck" size="small" />
-                                  <span>Yes</span>
-                                </div>
-                                {/* ) : (
+                                {data.holdshipment === true ? (
+                                  <div className="holdshipment-yes-table">
+                                    <Icon name="truck" size="small" />
+                                    <span>Yes</span>
+                                  </div>
+                                ) : (
                                   <div className="holdshipment-no-table">
                                     <Icon name="truck" size="small" />
                                     <span>No</span>
                                   </div>
-                                )} */}
+                                )}
                               </Table.Cell>
                               <Table.Cell
                                 style={{
@@ -859,7 +859,7 @@ const ViewApproval: React.FC = (props) => {
             </LoadingIndicator>
           </>
         ) : (
-          <BaseViewApprovedData isView={false} />
+          <BaseViewApprovedData isView={false} status="APPROVE" />
         )}
       </div>
     </Fragment>

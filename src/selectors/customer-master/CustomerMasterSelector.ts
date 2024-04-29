@@ -30,6 +30,7 @@ const _mappingObjectTableReqNewCustomerRow = (model: any): any => {
     picName: model.picName,
     blacklist: model.blacklist,
     holdshipment: model.holdshipment,
+    similarity: model.similarity,
   };
 };
 
@@ -205,6 +206,15 @@ const _mappingCustomerPICs = (models: any[]): any[] => {
   }));
 };
 
+// related customer/account
+const _mappingRelatedCustomer = (models: any[]): any[] => {
+  return models.map((model: any): any => ({
+    id: model.rCustomerID,
+    customerID: model.relatedCustomerID,
+    accountName: model.relatedCustomerName,
+  }));
+};
+
 // gambar kartu npwp
 const _getTaxCard = (models: any[]): {} => {
   return {
@@ -306,7 +316,7 @@ const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
           ? _mappingCustomerPICs(models.resultObj[0].customerPICs)
           : [],
         cpRelatedCustomers: models.resultObj[0].cpRelatedCustomers
-          ? models.resultObj[0].cpRelatedCustomers
+          ? _mappingRelatedCustomer(models.resultObj[0].cpRelatedCustomers)
           : [],
         createDate: models.resultObj[0].createDate,
         createUserID: models.resultObj[0].createUserID,

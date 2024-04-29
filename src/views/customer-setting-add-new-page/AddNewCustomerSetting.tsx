@@ -73,8 +73,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
         pageSize,
         "CustomerID",
         "ascending",
-        searchedTitleCust,
-        searchedCustomerName
+        searchedCustomerName,
+        searchedPicName
       )
     );
   };
@@ -308,7 +308,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                 <>
                   <LoadingIndicator>
                     <div className="container-recheck">
-                      {tableData.rows.length === 0 ? (
+                      {tableData.rows.length === 0 &&
+                      searchedCustomerName === "" ? (
                         <div className="info-recheck">
                           <p className="p-recheck">no-data</p>
                         </div>
@@ -361,16 +362,28 @@ const AddNewCustomerSetting: React.FC<IProps> = (
 
             <div
               className="recheck-submit-pad"
-              style={{ opacity: tableData.rows.length === 0 ? 0.5 : 1 }}
+              style={{
+                opacity:
+                  tableData.rows.length === 0 && searchedCustomerName === ""
+                    ? 0.5
+                    : 1,
+              }}
             >
               <div className="container-recheck-submit">
                 <input
                   type="checkbox"
-                  disabled={tableData.rows.length === 0 ? true : false}
+                  disabled={
+                    tableData.rows.length === 0 && searchedCustomerName === ""
+                      ? true
+                      : false
+                  }
                   checked={openCustomerInfo}
                   onChange={() => {
                     setOpenCustomerInfo(!openCustomerInfo);
-                    if (tableData.rows.length === 0) {
+                    if (
+                      tableData.rows.length === 0 &&
+                      searchedCustomerName === ""
+                    ) {
                       setIsCheckedToggle(!isChekedToggle);
                     }
                     if (openCustomerInfo) {

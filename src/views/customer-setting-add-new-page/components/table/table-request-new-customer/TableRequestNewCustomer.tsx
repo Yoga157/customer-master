@@ -113,13 +113,7 @@ const TableRequestNewCustomer: React.FC<IProps> = (
                     </div>
                   )}
                 </Table.Cell>
-                <Table.Cell textAlign="center">
-                  <div className="matching">
-                    {" "}
-                    <Icon name="check" size="small" />
-                    <span>Match</span>
-                  </div>
-                </Table.Cell>
+                <Table.Cell textAlign="center">{data.similarity}%</Table.Cell>
               </Table.Row>
             ))
           )}

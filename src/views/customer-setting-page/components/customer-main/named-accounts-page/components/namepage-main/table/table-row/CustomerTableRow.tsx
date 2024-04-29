@@ -132,11 +132,13 @@ const CustomerTableRow: React.FC<IProps> = (
               <Dropdown.Menu>
                 {role === "Sales" && (
                   <>
-                    <Dropdown.Item
-                      text="View/Edit"
-                      icon="edit outline"
-                      onClick={() => onEdit(rowData.customerID)}
-                    />
+                    {rowData.salesName.includes(userId.fullName) && (
+                      <Dropdown.Item
+                        text="View/Edit"
+                        icon="edit outline"
+                        onClick={() => onEdit(rowData.customerID)}
+                      />
+                    )}
 
                     {rowData.salesName != userId.fullName &&
                       rowData.status != "Pending" && (
@@ -179,6 +181,14 @@ const CustomerTableRow: React.FC<IProps> = (
                       />
                     )}
                   </>
+                )}
+
+                {role === "Marketing" && (
+                  <Dropdown.Item
+                    text="View/Edit"
+                    icon="edit outline"
+                    onClick={() => onEdit(rowData.customerID)}
+                  />
                 )}
               </Dropdown.Menu>
             </Dropdown>

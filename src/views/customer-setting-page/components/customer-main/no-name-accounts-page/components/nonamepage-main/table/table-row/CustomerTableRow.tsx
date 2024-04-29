@@ -82,12 +82,6 @@ const CustomerTableRow: React.FC<IProps> = (
                   {role === "Sales" && (
                     <>
                       <Dropdown.Item
-                        text="View/Edit"
-                        icon="edit outline"
-                        onClick={() => onEdit(rowData.customerID)}
-                      />
-
-                      <Dropdown.Item
                         text="Claim Account"
                         icon="circle check"
                         onClick={onClaimAccount}
@@ -100,7 +94,7 @@ const CustomerTableRow: React.FC<IProps> = (
                     </>
                   )}
 
-                  {role === "Admin" && (
+                  {(role === "Marketing" || role === "Admin") && (
                     <Dropdown.Item
                       text="View/Edit"
                       icon="edit outline"

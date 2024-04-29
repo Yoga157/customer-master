@@ -23,6 +23,8 @@ import ModalNewPIC from "../modal/approved-page/ModalNewPIC";
 import ModalNewRelatedCustomer from "../modal/approved-page/ModalNewRelatedCustomer";
 import IStore from "models/IStore";
 import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
+import * as RelatedCustomerActions from "stores/related-customer/RelatedCustomerActivityActions";
+
 import {
   selectAddressOfficeOptions,
   selectCustomerMoreDetails,
@@ -349,22 +351,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
       CustomerMasterActions.REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID,
     ])
   );
-
-  function hexadecimalToBase64(hexString) {
-    hexString = hexString.replaceAll(" ", "").replaceAll(",", "");
-    let binaryString = "";
-    for (let i = 0; i < hexString.length; i += 2) {
-      binaryString += String.fromCharCode(parseInt(hexString.substr(i, 2), 16));
-    }
-    return btoa(binaryString);
-  }
-
-  // console.log(
-  //   Object.keys(customer).length != 0 &&
-  //     `data:${customer.npwpCard?.extension};base64,${hexadecimalToBase64(
-  //       customer.npwpCard?.imageFile
-  //     )}`
-  // );
 
   return (
     <Fragment>
@@ -848,47 +834,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
               </>
             )}
 
-            {/* <div className="accordion-container">
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <span className="bold" style={{ marginRight: "1rem" }}>
-                  WEBSITE & SOCIAL MEDIA
-                </span>
-                <div
-                  className="match-button"
-                  style={{ fontSize: "12px" }}
-                  onClick={() => openNewWebsiteSocial()}
-                >
-                  <Icon name="plus" />
-                  <p>Add New</p>
-                </div>
-              </div>
-              <div onClick={() => setOpenWebsiteMedia(!openWebsiteMedia)}>
-                {openWebsiteMedia ? (
-                  <Icon name="triangle down" />
-                ) : (
-                  <Icon name="triangle right" />
-                )}
-              </div>
-            </div>
-
-            <Divider className="margin-0"></Divider> */}
-
-            {/* {openWebsiteMedia && (
-              <>
-                <div className="table-container">
-                  <TableCustomerDetail
-                    data={customer.cpWebsiteSocialMedias}
-                    header={websiteMediaHeader}
-                    sequenceNum={true}
-                    Modal={ModalNewWebsiteMedia}
-                    isView={isView}
-                    status={status}
-                  />
-                </div>
-                <Divider className="margin-0"></Divider>
-              </>
-            )} */}
-
             <div className="accordion-container">
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <span className="bold" style={{ marginRight: "1rem" }}>
@@ -977,6 +922,19 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     header={relatedAccountHeader}
                     sequenceNum={true}
                     Modal={ModalNewRelatedCustomer}
+                    deleteData={RelatedCustomerActions.deleteRelatedCustomer}
+                    refreshData={
+                      status == "NOT_NEW"
+                        ? CustomerMasterActions.requestCustomerMoreDetailsByCustId
+                        : CustomerMasterActions.requestApprovedCustomerByGenId
+                    }
+                    customerId={
+                      status == "NOT_NEW"
+                        ? customerId
+                          ? customerId
+                          : Number(id)
+                        : Number(id)
+                    }
                     isView={isView}
                     status={status}
                     jenis={"RELATEDCUSTOMER"}

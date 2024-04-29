@@ -28,8 +28,8 @@ export const reqNewCustomerHeader = [
     textCenter: true,
   },
   {
-    key: "Match",
-    header: "Action",
+    key: "similarity",
+    header: "Similarity",
     textCenter: true,
   },
 ];

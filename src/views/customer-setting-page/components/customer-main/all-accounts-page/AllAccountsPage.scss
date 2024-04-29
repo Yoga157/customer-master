@@ -120,6 +120,7 @@
 
 .btn-new-request {
   background-color: rgb(255, 214, 79) !important;
+  transition: background-color 0.4s;
   border-radius: 50% !important ;
   display: flex !important ;
   justify-content: center !important ;
@@ -129,4 +130,8 @@
   position: absolute !important ;
   z-index: 1 !important ;
   cursor: pointer !important ;
+}
+
+.btn-p-new-request:hover ~ .btn-new-request {
+  background-color: #fbbd08 !important;
 }
