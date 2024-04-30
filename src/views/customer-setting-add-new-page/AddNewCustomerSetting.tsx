@@ -12,6 +12,7 @@ import {
   RichTextEditor,
   TextInput,
   SelectInput,
+  TextAreaInput,
 } from "views/components/UI";
 import environment from "environment";
 import axios from "axios";
@@ -491,10 +492,11 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                             <Grid.Column width={10}>
                               <Field
                                 name="customerAddress"
-                                component={RichTextEditor}
+                                component={TextAreaInput}
                                 placeholder="Type customer address here..."
                                 labelName="Customer Address"
                                 mandatory={false}
+                                rows={7}
                               />
                             </Grid.Column>
                             <Grid.Column width={6}>
