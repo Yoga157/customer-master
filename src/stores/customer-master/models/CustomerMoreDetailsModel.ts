@@ -5,11 +5,23 @@ import {
 } from "sjs-base-model";
 
 export default class CustomerMoreDetailsModel extends BaseModel {
+  customerGenID: number = 0;
   customerID: number = 0;
-  titleCustomer: string = "";
   customerName: string = "";
   industryClass: string = "";
+  customerBusinessName: string = "";
+  holdingCompName: string = "";
+  addr1: string = "";
+  country: string = "";
+  city: string = "";
+  zipCode: string = "";
+  nib: string = "";
+  phoneNumber: string = "";
+  website: string = "";
+  coorporateEmail: string = "";
+  npwpNumber: string = "";
   requestor: string = "";
+  req_CustomerCardFileGetByCustomerGenID_ViewModels: any[] = [];
   cpAddressOfficeNumbers: any[] = [];
   cpWebsiteSocialMedias: any[] = [];
   customerPICs: any[] = [];

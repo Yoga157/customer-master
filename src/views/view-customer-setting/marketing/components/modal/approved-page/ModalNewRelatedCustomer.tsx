@@ -14,6 +14,8 @@ import { selectSearchCustomerByName } from "selectors/customer-setting/CustomerS
 import IStore from "models/IStore";
 import RelatedCustomerModel from "stores/related-customer/models/RelatedCustomerModel";
 import RelatedCustomerPostModel from "stores/related-customer/models/RelatedCustomerPostModel";
+import * as RelatedCustomerActions from "stores/related-customer/RelatedCustomerActivityActions";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 
 interface customerData {
   title: string;
@@ -70,14 +72,34 @@ const ModalNewRelatedCustomer: React.FC<IProps> = (
     console.log(values);
 
     const RelatedCustomer = new RelatedCustomerPostModel({});
-    // RelatedCustomer.relatedCustomerID = customerData.customerID;
-    // if(!isView) {
-    //   RelatedCustomer.customerGenID = customerGenId;
-    // } else {
-    //   RelatedCustomer.customerID = customerId;
-    // }
-    // RelatedCustomer.createUserID = 0;
-    // RelatedCustomer.createDate = new Date();
+    RelatedCustomer.relatedCustomerID = customerData.customerID;
+    if (!isView) {
+      RelatedCustomer.customerGenID = customerGenId;
+    } else {
+      RelatedCustomer.customerID = customerId;
+    }
+    RelatedCustomer.createUserID = 0;
+    RelatedCustomer.createDate = new Date();
+
+    await dispatch(RelatedCustomerActions.postRelatedCustomer(RelatedCustomer));
+
+    if (customerId) {
+      await dispatch(
+        CustomerMasterActions.requestCustomerMoreDetailsByCustId(customerId)
+      );
+    }
+
+    if (customerGenId) {
+      await dispatch(
+        CustomerMasterActions.requestApprovedCustomerByGenId(customerGenId)
+      );
+    }
+
+    if (isView) {
+      dispatch(ModalSecondLevelActions.CLOSE());
+    } else {
+      dispatch(ModalAction.CLOSE());
+    }
   };
 
   const cancelClick = () => {

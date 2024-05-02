@@ -30,6 +30,7 @@ const _mappingObjectTableReqNewCustomerRow = (model: any): any => {
     picName: model.picName,
     blacklist: model.blacklist,
     holdshipment: model.holdshipment,
+    similarity: model.similarity,
   };
 };
 
@@ -44,23 +45,69 @@ export const selectReqCustomerNewAccount: Selector<
 const _selectNewCustomerDetailPending = (models: ResultActions): any => {
   if (Array.isArray(models.resultObj) && models.resultObj.length > 0) {
     return {
-      customerGenID: models.resultObj[0].customerGenID,
-      customerID: models.resultObj[0].customerID,
-      titleCustomer: models.resultObj[0].titleCustomer,
-      customerName: models.resultObj[0].customerName,
-      picName: models.resultObj[0].picName,
-      customerAddress: models.resultObj[0].customerAddress,
-      phoneNumber: models.resultObj[0].phoneNumber,
-      industryClass: models.resultObj[0].industryClass,
-      website: models.resultObj[0].website,
-      socialMedia: models.resultObj[0].socialMedia,
-      picMobilePhone: models.resultObj[0].picMobilePhone,
-      picJobTitle: models.resultObj[0].picJobTitle,
-      picEmailAddr: models.resultObj[0].picEmailAddr,
-      requestor: models.resultObj[0].requestor,
-      createDate: models.resultObj[0].createdDate,
-      isNew: models.resultObj[0].isNew,
-      approvalStatus: models.resultObj[0].approvalStatus,
+      customerGenID: models.resultObj[0].customerGenID
+        ? models.resultObj[0].customerGenID
+        : "-",
+      customerID: models.resultObj[0].customerID
+        ? models.resultObj[0].customerID
+        : "-",
+      customerName: models.resultObj[0].customerName
+        ? models.resultObj[0].customerName
+        : "-",
+      industryClass: models.resultObj[0].industryClass
+        ? models.resultObj[0].industryClass
+        : "-",
+      customerBusinessName: models.resultObj[0].customerBusinessName
+        ? models.resultObj[0].customerBusinessName
+        : "-",
+      holdingCompName: models.resultObj[0].holdingCompName
+        ? models.resultObj[0].holdingCompName
+        : "-",
+      customerAddress: models.resultObj[0].customerAddress
+        ? models.resultObj[0].customerAddress
+        : "-",
+      country: models.resultObj[0].country ? models.resultObj[0].country : "-",
+      city: models.resultObj[0].city ? models.resultObj[0].city : "-",
+      zipCode: models.resultObj[0].zipCode ? models.resultObj[0].zipCode : "-",
+      nib: models.resultObj[0].nib ? models.resultObj[0].nib : "-",
+      phoneNumber: models.resultObj[0].phoneNumber
+        ? models.resultObj[0].phoneNumber
+        : "-",
+      website: models.resultObj[0].website ? models.resultObj[0].website : "-",
+      coorporateEmail: models.resultObj[0].coorporateEmail
+        ? models.resultObj[0].coorporateEmail
+        : "-",
+      npwpNumber: models.resultObj[0].npwpNumber
+        ? models.resultObj[0].npwpNumber
+        : "-",
+      requestor: models.resultObj[0].requestor
+        ? models.resultObj[0].requestor
+        : "-",
+      npwpCard:
+        models.resultObj[0].req_CustomerCardFileGetByCustomerGenID_ViewModels
+          .length != 0
+          ? _getTaxCard(
+              models.resultObj[0]
+                .req_CustomerCardFileGetByCustomerGenID_ViewModels
+            )
+          : {},
+      picName: models.resultObj[0].picName ? models.resultObj[0].picName : "-",
+      picMobilePhone: models.resultObj[0].picMobilePhone
+        ? models.resultObj[0].picMobilePhone
+        : "-",
+      picJobTitle: models.resultObj[0].picJobTitle
+        ? models.resultObj[0].picJobTitle
+        : "-",
+      picEmailAddr: models.resultObj[0].picEmailAddr
+        ? models.resultObj[0].picEmailAddr
+        : "-",
+      createDate: models.resultObj[0].createDate
+        ? models.resultObj[0].createDate
+        : "-",
+      isNew: models.resultObj[0].isNew ? models.resultObj[0].isNew : "-",
+      approvalStatus: models.resultObj[0].approvalStatus
+        ? models.resultObj[0].approvalStatus
+        : "PENDING",
     };
   } else {
     return [];
@@ -159,6 +206,24 @@ const _mappingCustomerPICs = (models: any[]): any[] => {
   }));
 };
 
+// related customer/account
+const _mappingRelatedCustomer = (models: any[]): any[] => {
+  return models.map((model: any): any => ({
+    id: model.rCustomerID,
+    customerID: model.relatedCustomerID,
+    accountName: model.relatedCustomerName,
+  }));
+};
+
+// gambar kartu npwp
+const _getTaxCard = (models: any[]): {} => {
+  return {
+    customerCardID: models[0].customerCardID,
+    imageFile: models[0].imageFile,
+    extension: models[0].extension,
+  };
+};
+
 const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
   if (Array.isArray(models.resultObj)) {
     if (models.resultObj.length == 0) {
@@ -167,7 +232,19 @@ const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
         titleCustomer: "-",
         customerName: "-",
         industryClass: "-",
+        customerBusinessName: "-",
+        holdingCompName: "-",
+        address: "-",
+        country: "-",
+        city: "-",
+        zipCode: "-",
+        nib: "-",
+        phoneNumber: "-",
+        website: "-",
+        coorporateEmail: "-",
+        npwpNumber: "-",
         requestor: "-",
+        npwpCard: {},
         cpAddressOfficeNumbers: [],
         cpWebsiteSocialMedias: [],
         customerPICs: [],
@@ -180,15 +257,55 @@ const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
     } else {
       return {
         customerID:
-          models.resultObj[0].customerID == 0
+          models.resultObj[0].customerGenID == 0
             ? "-"
-            : models.resultObj[0].customerID,
-        titleCustomer: models.resultObj[0].titleCustomer,
+            : models.resultObj[0].customerGenID,
         customerName: models.resultObj[0].customerName,
         industryClass: models.resultObj[0].industryClass
           ? models.resultObj[0].industryClass
           : "-",
-        requestor: models.resultObj[0].requestor,
+        customerBusinessName: models.resultObj[0].customerBusinessName
+          ? models.resultObj[0].customerBusinessName
+          : "-",
+        holdingCompName: models.resultObj[0].holdingCompName
+          ? models.resultObj[0].holdingCompName
+          : "-",
+        address: models.resultObj[0].customerAddress
+          ? models.resultObj[0].customerAddress
+          : "-",
+        country: models.resultObj[0].country
+          ? models.resultObj[0].country
+          : "-",
+        city: models.resultObj[0].city ? models.resultObj[0].city : "-",
+        zipCode: models.resultObj[0].zipCode
+          ? models.resultObj[0].zipCode
+          : "-",
+        nib: models.resultObj[0].nib ? models.resultObj[0].nib : "-",
+        phoneNumber: models.resultObj[0].phoneNumber
+          ? models.resultObj[0].phoneNumber
+          : "-",
+        website: models.resultObj[0].website
+          ? models.resultObj[0].website
+          : "-",
+        coorporateEmail: models.resultObj[0].coorporateEmail
+          ? models.resultObj[0].coorporateEmail
+          : "-",
+        npwpNumber: models.resultObj[0].npwpNumber
+          ? models.resultObj[0].npwpNumber
+          : "-",
+        requestor: models.resultObj[0].requestor
+          ? models.resultObj[0].requestor
+          : "-",
+        npwpCard:
+          models.resultObj[0]
+            .req_CustomerCardFileGetByCustomerGenID_ViewModels != undefined &&
+          models.resultObj[0].req_CustomerCardFileGetByCustomerGenID_ViewModels
+            .length != 0
+            ? _getTaxCard(
+                models.resultObj[0]
+                  .req_CustomerCardFileGetByCustomerGenID_ViewModels
+              )
+            : {},
         cpAddressOfficeNumbers: models.resultObj[0].cpAddressOfficeNumbers
           ? _mappingAddressOffice(models.resultObj[0].cpAddressOfficeNumbers)
           : [],
@@ -199,7 +316,7 @@ const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
           ? _mappingCustomerPICs(models.resultObj[0].customerPICs)
           : [],
         cpRelatedCustomers: models.resultObj[0].cpRelatedCustomers
-          ? models.resultObj[0].cpRelatedCustomers
+          ? _mappingRelatedCustomer(models.resultObj[0].cpRelatedCustomers)
           : [],
         createDate: models.resultObj[0].createDate,
         createUserID: models.resultObj[0].createUserID,

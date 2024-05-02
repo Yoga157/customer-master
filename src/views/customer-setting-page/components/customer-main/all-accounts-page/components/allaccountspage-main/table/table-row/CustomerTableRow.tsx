@@ -116,16 +116,23 @@ const CustomerTableRow: React.FC<IProps> = (
           <div className="table-row-container">
             <Dropdown pointing="left" icon="ellipsis vertical">
               <Dropdown.Menu>
-                <Dropdown.Item
-                  text="View/Edit"
-                  icon="edit outline"
-                  // disabled={rowData.approvalStatus?.toUpperCase() == "REJECT"}
-                  onClick={() =>
-                    onEdit(
-                      rowData.isNew ? rowData.customerGenID : rowData.customerID
-                    )
-                  }
-                />
+                {(rowData.isNew ||
+                  rowData?.salesName?.includes(userId.fullName) ||
+                  role === "Admin" ||
+                  role === "Marketing") && (
+                  <Dropdown.Item
+                    text="View/Edit"
+                    icon="edit outline"
+                    // disabled={rowData.approvalStatus?.toUpperCase() == "REJECT"}
+                    onClick={() =>
+                      onEdit(
+                        rowData.isNew
+                          ? rowData.customerGenID
+                          : rowData.customerID
+                      )
+                    }
+                  />
+                )}
 
                 {rowData.named === false &&
                   rowData.shareable === false &&

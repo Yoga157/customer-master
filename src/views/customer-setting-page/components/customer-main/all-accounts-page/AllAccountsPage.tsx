@@ -243,7 +243,12 @@ const AllAccountsPage: React.FC<IProps> = (
 
   useEffect(() => {
     dispatch(
-      CustomerActions.requestAllAcc(1, pageSize, "CustomerID", "ascending")
+      CustomerActions.requestAllAcc(
+        activePage,
+        pageSize,
+        "CustomerID",
+        "ascending"
+      )
     );
   }, [dispatch]);
 
@@ -443,7 +448,7 @@ const AllAccountsPage: React.FC<IProps> = (
           <div className="btn-new-request" onClick={OnrequestNewCustomer}>
             <Icon
               name="user plus"
-              style={{ fontSize: "1.4rem" }}
+              style={{ fontSize: "1.4rem", margin: "0", padding: "0" }}
               circular
               inverted
               color="blue"

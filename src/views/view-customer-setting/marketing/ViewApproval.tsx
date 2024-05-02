@@ -238,6 +238,42 @@ const ViewApproval: React.FC = (props) => {
               {!Array.isArray(customer) && (
                 <>
                   <div className="padding-horizontal space-between-container">
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <div className="customer-data-container-left">
+                        <label className="customer-data-label">
+                          Customer ID
+                        </label>
+                        <p
+                          style={{ fontSize: "20px", fontWeight: "bold" }}
+                          className="grey"
+                        >
+                          {customer.customerID}
+                        </p>
+                      </div>
+
+                      <div className="customer-data-container-left">
+                        <label className="customer-data-label">Requestor</label>
+                        <p
+                          style={{ fontSize: "20px", fontWeight: "bold" }}
+                          className="grey"
+                        >
+                          {customer.requestor}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">Create Date</label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.createDate}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="padding-horizontal space-between-container">
                     <div className="customer-data-container-left">
                       <label className="customer-data-label">
                         Customer Name
@@ -257,7 +293,7 @@ const ViewApproval: React.FC = (props) => {
                         style={{ fontSize: "20px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        {customer.customerName}
+                        {customer.customerBusinessName}
                       </p>
                     </div>
                   </div>
@@ -274,7 +310,7 @@ const ViewApproval: React.FC = (props) => {
                         style={{ fontSize: "20px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        Biffco Group
+                        {customer.holdingCompName}
                       </p>
                     </div>
                     <div
@@ -288,7 +324,7 @@ const ViewApproval: React.FC = (props) => {
                         style={{ fontSize: "20px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        Manufacturing
+                        {customer.industryClass}
                       </p>
                     </div>
                   </div>
@@ -313,7 +349,7 @@ const ViewApproval: React.FC = (props) => {
                         style={{ fontSize: "18px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        Indonesia
+                        {customer.country}
                       </p>
                     </div>
 
@@ -323,7 +359,7 @@ const ViewApproval: React.FC = (props) => {
                         style={{ fontSize: "18px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        Jakarta
+                        {customer.city}
                       </p>
                     </div>
 
@@ -333,7 +369,7 @@ const ViewApproval: React.FC = (props) => {
                         style={{ fontSize: "18px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        12345
+                        {customer.zipCode}
                       </p>
                     </div>
 
@@ -345,7 +381,7 @@ const ViewApproval: React.FC = (props) => {
                         style={{ fontSize: "18px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        021-789-0985
+                        {customer.phoneNumber}
                       </p>
                     </div>
 
@@ -355,7 +391,7 @@ const ViewApproval: React.FC = (props) => {
                         style={{ fontSize: "18px", fontWeight: "bold" }}
                         className="grey"
                       >
-                        www.biffco.com
+                        {customer.website}
                       </p>
                     </div>
                   </div>
@@ -368,7 +404,7 @@ const ViewApproval: React.FC = (props) => {
                       style={{ fontSize: "20px", fontWeight: "bold" }}
                       className="grey"
                     >
-                      marketing.biffco@biffco.com
+                      {customer.coorporateEmail}
                     </p>
                   </div>
 
@@ -385,7 +421,7 @@ const ViewApproval: React.FC = (props) => {
                           style={{ fontSize: "20px", fontWeight: "bold" }}
                           className="grey"
                         >
-                          1145-4452-223
+                          {customer.npwpNumber}
                         </p>
                       </div>
 
@@ -395,7 +431,7 @@ const ViewApproval: React.FC = (props) => {
                           style={{ fontSize: "20px", fontWeight: "bold" }}
                           className="grey"
                         >
-                          9987-8874-887
+                          {customer.nib}
                         </p>
                       </div>
                     </div>
@@ -412,38 +448,64 @@ const ViewApproval: React.FC = (props) => {
                           position: "relative",
                         }}
                       >
-                        <div
-                          style={{
-                            position: "absolute",
-                            backgroundColor: "#656DD1",
-                            color: "white",
-                            padding: "0.5rem 1.5rem",
-                            borderRadius: "2rem",
-                            boxShadow: "0px 0px 10px 0px #00000040",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            zIndex: 1,
-                            cursor: "pointer",
-                          }}
-                          onClick={() =>
-                            openViewNPWP(
-                              "https://images.unsplash.com/photo-1566125882500-87e10f726cdc?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            )
-                          }
-                        >
-                          View
-                        </div>
-                        <img
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            filter: "blur(3px)",
-                            borderRadius: "0.5rem",
-                          }}
-                          src="https://images.unsplash.com/photo-1566125882500-87e10f726cdc?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        ></img>
+                        {Object.keys(customer).length != 0 &&
+                        Object.keys(customer.npwpCard).length == 0 ? (
+                          <div
+                            style={{
+                              position: "absolute",
+                              color: "#55637A",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              zIndex: 1,
+                            }}
+                          >
+                            <Icon
+                              name="picture"
+                              style={{ fontSize: "3rem" }}
+                            ></Icon>
+                            <p style={{ margin: "auto" }}>No Data</p>
+                          </div>
+                        ) : (
+                          <>
+                            <div
+                              style={{
+                                position: "absolute",
+                                backgroundColor: "#656DD1",
+                                color: "white",
+                                padding: "0.5rem 1.5rem",
+                                borderRadius: "2rem",
+                                boxShadow: "0px 0px 10px 0px #00000040",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                zIndex: 1,
+                                cursor: "pointer",
+                              }}
+                              onClick={() =>
+                                openViewNPWP(
+                                  Object.keys(customer).length != 0 &&
+                                    `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
+                                )
+                              }
+                            >
+                              View
+                            </div>
+                            <img
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                filter: "blur(3px)",
+                                borderRadius: "0.5rem",
+                              }}
+                              src={
+                                Object.keys(customer).length != 0 &&
+                                `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
+                              }
+                            ></img>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -480,7 +542,7 @@ const ViewApproval: React.FC = (props) => {
                             style={{ fontSize: "20px", fontWeight: "bold" }}
                             className="grey"
                           >
-                            {customer.picName || "No Data"}
+                            {customer.picName}
                           </p>
                         </div>
 
@@ -490,7 +552,7 @@ const ViewApproval: React.FC = (props) => {
                             style={{ fontSize: "20px", fontWeight: "bold" }}
                             className="grey"
                           >
-                            {customer.picEmailAddr || "No Data"}
+                            {customer.picEmailAddr}
                           </p>
                         </div>
                       </div>
@@ -504,7 +566,7 @@ const ViewApproval: React.FC = (props) => {
                             style={{ fontSize: "20px", fontWeight: "bold" }}
                             className="grey"
                           >
-                            {customer.picMobilePhone || "No Data"}
+                            {customer.picMobilePhone}
                           </p>
                         </div>
 
@@ -516,7 +578,7 @@ const ViewApproval: React.FC = (props) => {
                             style={{ fontSize: "20px", fontWeight: "bold" }}
                             className="grey"
                           >
-                            {customer.picJobTitle || "No Data"}
+                            {customer.picJobTitle}
                           </p>
                         </div>
                       </div>
@@ -711,33 +773,33 @@ const ViewApproval: React.FC = (props) => {
                                 ></p>
                               </Table.Cell>
                               <Table.Cell textAlign="center">
-                                {/* {rowData.blacklist === true ? (
+                                {data.blacklist === true ? (
                                   <div className="blacklist-yes-table">
                                     <Icon name="address book" size="small" />
                                     <span>Yes</span>
                                   </div>
-                                ) : ( */}
-                                <div className="blacklist-no-table">
-                                  <Icon name="address book" size="small" />
-                                  <span>No</span>
-                                </div>
-                                {/* )} */}
+                                ) : (
+                                  <div className="blacklist-no-table">
+                                    <Icon name="address book" size="small" />
+                                    <span>No</span>
+                                  </div>
+                                )}
                               </Table.Cell>
                               <Table.Cell
                                 textAlign="center"
                                 verticalAlign="middle"
                               >
-                                {/* {rowData.holdshipment === true ? ( */}
-                                <div className="holdshipment-yes-table">
-                                  <Icon name="truck" size="small" />
-                                  <span>Yes</span>
-                                </div>
-                                {/* ) : (
+                                {data.holdshipment === true ? (
+                                  <div className="holdshipment-yes-table">
+                                    <Icon name="truck" size="small" />
+                                    <span>Yes</span>
+                                  </div>
+                                ) : (
                                   <div className="holdshipment-no-table">
                                     <Icon name="truck" size="small" />
                                     <span>No</span>
                                   </div>
-                                )} */}
+                                )}
                               </Table.Cell>
                               <Table.Cell
                                 style={{
@@ -797,7 +859,7 @@ const ViewApproval: React.FC = (props) => {
             </LoadingIndicator>
           </>
         ) : (
-          <BaseViewApprovedData isView={false} />
+          <BaseViewApprovedData isView={false} status="APPROVE" />
         )}
       </div>
     </Fragment>
