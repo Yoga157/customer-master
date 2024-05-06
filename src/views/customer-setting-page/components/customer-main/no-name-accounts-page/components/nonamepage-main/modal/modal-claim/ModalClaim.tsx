@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import IStore from "models/IStore";
 import { Form as FinalForm } from "react-final-form";
 import { Form, Grid, Card, Divider } from "semantic-ui-react";
-import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalAction from "stores/modal/no-padding/ModalNoPaddingActions";
 import "../Modal.scss";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
@@ -35,6 +35,8 @@ const ClaimAccount: React.FC<IProps> = (
   const activePage = useSelector(
     (state: IStore) => state.customerSetting.activePage
   );
+  const BU_LoginUser = "1070102003";
+  const BU_ToCompare = BU_LoginUser.slice(0, -5) + "00000";
 
   const cancelClick = () => {
     dispatch(ModalAction.CLOSE());
@@ -89,7 +91,9 @@ const ClaimAccount: React.FC<IProps> = (
   return (
     <Fragment>
       <Card.Header>
-        <h4>Claim Accounts</h4>
+        <h4 style={{ paddingInline: "2rem", paddingTop: "2rem" }}>
+          Claim Accounts
+        </h4>
       </Card.Header>
       <Divider></Divider>
       <LoadingIndicator isActive={isRequesting}>
@@ -98,37 +102,67 @@ const ClaimAccount: React.FC<IProps> = (
           render={({ handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
               <div>
-                <div className="modal-container-claim">
+                <div
+                  className="modal-container-claim"
+                  style={{
+                    marginInline: "2rem",
+                    marginTop: "1rem",
+                    marginBottom: "1rem",
+                  }}
+                >
                   <p className="text-claim">
                     Please pay more attention to customer accounts that you
-                    choose ?
+                    choose.
                   </p>
                 </div>
-                <Divider></Divider>
+                <Divider style={{ margin: 0, padding: 0 }}></Divider>
                 {rowData.map((data) => {
                   return (
                     <>
                       <Grid.Row
                         width={1}
-                        className="padding-0"
                         key={data.customerID}
+                        style={{
+                          backgroundColor:
+                            !data.industryClassBusiness.includes(
+                              BU_ToCompare
+                            ) && "#FFE0D9",
+                          paddingInline: "2rem",
+                          paddingTop: "1rem",
+                          paddingBottom: "1rem",
+                        }}
                       >
-                        <Grid.Column>
-                          <h2 style={{ color: "#55637a" }}>
+                        <div style={{ display: "flex", flexDirection: "row" }}>
+                          <h4
+                            style={{
+                              color: "#55637a",
+                              marginRight: "1rem",
+                              padding: 0,
+                              marginBottom: 0,
+                            }}
+                          >
                             {data.customerName}
-                          </h2>
-                        </Grid.Column>
+                          </h4>
+                          {!data.industryClassBusiness.includes(
+                            BU_ToCompare
+                          ) && (
+                            <p style={{ color: "red", fontStyle: "italic" }}>
+                              Cross BU Account
+                            </p>
+                          )}
+                        </div>
                       </Grid.Row>
 
-                      <Divider></Divider>
+                      <Divider style={{ padding: 0, margin: 0 }}></Divider>
                     </>
                   );
                 })}
               </div>
-              <div style={{ textAlign: "center" }}>
+
+              <div style={{ textAlign: "center", marginTop: "1rem" }}>
                 <Button
                   type="button"
-                  onClick={cancelClick}
+                  onClick={() => cancelClick()}
                   className="btn-cancel"
                 >
                   Cancel

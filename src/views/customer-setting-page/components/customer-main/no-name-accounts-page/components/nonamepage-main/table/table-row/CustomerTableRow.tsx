@@ -74,6 +74,7 @@ const CustomerTableRow: React.FC<IProps> = (
                         ? true
                         : false
                     }
+                    disabled={rowData.industryClass === null}
                   ></input>
                 </label>
               </div>
@@ -113,9 +114,11 @@ const CustomerTableRow: React.FC<IProps> = (
               </p>{" "}
             </div>
           </Table.Cell>
-          <Table.Cell textAlign="center">{rowData.JDECustId}</Table.Cell>
-          <Table.Cell textAlign="center">{rowData.customerID}</Table.Cell>
-          <Table.Cell textAlign="center">{rowData.IndustryClass}</Table.Cell>
+          <Table.Cell textAlign="center">{rowData.jdeCustomerID}</Table.Cell>
+          <Table.Cell textAlign="center">
+            {rowData.customerID ? rowData.customerID : rowData.customerGenID}
+          </Table.Cell>
+          <Table.Cell textAlign="center">{rowData.industryClass}</Table.Cell>
           <Table.Cell>
             <div className="row-customerName">
               <p style={{ fontSize: "1rem" }}> {rowData.customerName}</p>{" "}
