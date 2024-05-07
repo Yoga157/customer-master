@@ -1,11 +1,23 @@
-import React, { Fragment, useState, useCallback } from "react";
+import React, { Fragment, useState, useCallback, useEffect } from "react";
 import "../Modal.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
-import { Divider, Form, Grid } from "semantic-ui-react";
+import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
+import * as ModalAction from "stores/modal/no-padding/ModalNoPaddingActions";
+import { Divider, Form, Grid, Card } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
-import { DropdownClearInput, Button, TextAreaInput } from "views/components/UI";
+import ModCloseApprove from "../modal-closeApprove/ModalRequestApprove";
+import ModCloseReject from "../modal-closeReject/ModalRequestReject";
+import ModalSizeEnum from "constants/ModalSizeEnum";
+import {
+  DropdownClearInput,
+  Button,
+  TextAreaInput,
+  RadioButton,
+} from "views/components/UI";
+import IStore from "models/IStore";
+
 import * as CustomerSetting from "stores/customer-setting/CustomerActivityActions";
 
 interface IProps {
@@ -20,18 +32,11 @@ const ModalAcceptRequestShareableAccount: React.FC<IProps> = (
   const [isReject, setIsReject] = useState(null);
   const [alasan, setAlasan] = useState(null);
 
-  const actionOptions = [
-    { key: 1, value: "Reject", text: "Reject" },
-    { key: 2, value: "Approve", text: "Approve" },
-  ];
-
-  const onSubmitAction = (value: any) => {};
-
-  const onChangeAction = (data: any) => {
-    if (data == "Reject") {
-      setIsReject(true);
-    } else if (data == "Approve") {
+  const onChangeAction = (data) => {
+    if (data === "Approve") {
       setIsReject(false);
+    } else if (data === "Reject") {
+      setIsReject(true);
     }
   };
 
@@ -48,9 +53,49 @@ const ModalAcceptRequestShareableAccount: React.FC<IProps> = (
       )
     ).then(() => {
       dispatch(CustomerSetting.requestCustomerDataById(customer.customerID));
-      dispatch(ModalAction.CLOSE());
+
+      dispatch(CustomerMasterActions.setSuccessModal(isReject));
+
+      if (!isReject) {
+        dispatch(ModalAction.CLOSE());
+        dispatch(
+          ModalFirstLevelActions.OPEN(
+            <ModCloseApprove customer={customer} />,
+            ModalSizeEnum.Tiny
+          )
+        );
+      } else {
+        dispatch(ModalAction.CLOSE());
+        dispatch(
+          ModalFirstLevelActions.OPEN(
+            <ModCloseReject customer={customer} />,
+            ModalSizeEnum.Tiny
+          )
+        );
+      }
     });
   };
+
+  const isSuccess = useSelector(
+    (state: IStore) => state.customerMaster.isSuccess
+  );
+  const openModal = useCallback(() => {
+    if (isSuccess) {
+      dispatch(
+        ModalFirstLevelActions.OPEN(
+          <ModCloseApprove customer={customer} />,
+          ModalSizeEnum.Tiny
+        )
+      );
+    }
+  }, [dispatch, isSuccess]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      openModal();
+      dispatch(CustomerMasterActions.setSuccessModal(false));
+    }
+  }, [isSuccess]);
 
   const cancelClick = () => {
     dispatch(ModalAction.CLOSE());
@@ -58,76 +103,97 @@ const ModalAcceptRequestShareableAccount: React.FC<IProps> = (
 
   return (
     <Fragment>
+      <Card.Header style={{ padding: "1.5rem 1rem 0" }}>
+        <h4>APPROVE/REJECT JOIN REQUEST ACCOUNTS</h4>
+      </Card.Header>
+      {/* <Divider className="divider0"></Divider> */}
+
+      <div
+        style={{
+          backgroundColor: "#FFE0D9",
+          display: "flex",
+          alignItems: "center",
+          padding: "1rem 0rem",
+        }}
+      >
+        <div style={{ marginLeft: "1rem", marginRight: "0.5rem" }}>
+          {" "}
+          <p className="text-bold" style={{ margin: 0 }}>
+            {customer.customerName}
+          </p>
+        </div>
+        <div style={{ marginRight: "1rem" }}>
+          {" "}
+          <p style={{ color: "#F97452", margin: 0 }}>Cross BU Account</p>
+        </div>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "1rem",
+        }}
+      >
+        <span>
+          Request by.{" "}
+          <span className="text-bold">
+            {customer.shareableApprovalStatus.requestedBy}{" "}
+          </span>
+          <span>from CSS</span>
+        </span>
+      </div>
+
       <FinalForm
         onSubmit={(values: any) => onSubmitHandler(values)}
         render={({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <Grid.Row>
-              <div className="img-container">
-                <div style={{ padding: "0px" }}>
-                  <img
-                    className="ui centered medium"
-                    src="/assets/info.png"
-                    sizes="small"
-                  />
-                </div>
-              </div>
-            </Grid.Row>
-            <Grid.Row
-              centered
-              style={{ textAlign: "center", marginBottom: "1rem" }}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "1rem",
+              }}
             >
-              <span style={{ padding: "10px" }}>
-                Are you sure want to approve this shareable account request?
-              </span>
-              <p className="text-bold" style={{ margin: 0 }}>
-                {customer.customerName}
-              </p>
-              <span>
-                Request By{" "}
-                <span className="text-bold">
-                  {customer.shareableApprovalStatus.requestedBy}
-                </span>
-              </span>
-            </Grid.Row>
-            <Grid.Row centered>
-              <FinalForm
-                onSubmit={(values: any) => onSubmitAction(values)}
-                render={({ handleSubmit, pristine, invalid }) => (
-                  <Form
-                    onSubmit={handleSubmit}
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      minWidth: "fit-content",
-                    }}
-                  >
-                    <Field
-                      labelName="Choose Action To Continue"
-                      name="action"
-                      component={DropdownClearInput}
-                      placeholder="Choose action"
-                      options={actionOptions}
-                      onChanged={onChangeAction}
-                      mandatory={true}
-                    />
-                  </Form>
-                )}
-              />
+              <div style={{ display: "flex", marginBottom: "1rem" }}>
+                <label style={{ marginRight: "1rem" }}>
+                  <input
+                    type="radio"
+                    name="approval"
+                    value="Approve"
+                    checked={isReject === false}
+                    onChange={(e) => onChangeAction(e.target.value)}
+                  />
+                  <span style={{ marginRight: "1rem", marginLeft: "0.5rem" }}>
+                    APPROVE
+                  </span>
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="reject"
+                    value="Reject"
+                    checked={isReject === true}
+                    onChange={(e) => onChangeAction(e.target.value)}
+                  />
+                  <span style={{ marginLeft: "0.5rem" }}>REJECT</span>
+                </label>
+              </div>
               {isReject && (
-                <TextAreaInput
-                  input={{
-                    value: alasan,
-                    onChange: setAlasan,
-                    name: "alasan",
-                    onBlur: () => {},
-                    onFocus: () => {},
-                  }}
-                  meta={{ touched: null, error: null }}
-                  labelName={"Reason To Reject"}
-                ></TextAreaInput>
+                <div style={{ width: "90%" }}>
+                  <label style={{ color: "rgb(85 99 122 / 77%)" }}>
+                    Reason to reject <span style={{ color: "red" }}>*</span>
+                    <textarea
+                      style={{ width: "100%" }}
+                      value={alasan}
+                      onChange={(e) => setAlasan(e.target.value)}
+                    />
+                  </label>
+                </div>
               )}
-            </Grid.Row>
+            </div>
+
             <Divider></Divider>
             <div className="text-align-center">
               <Button type="button" onClick={cancelClick}>

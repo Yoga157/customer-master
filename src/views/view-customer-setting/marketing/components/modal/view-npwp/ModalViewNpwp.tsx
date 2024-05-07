@@ -50,20 +50,6 @@ const ModalViewNpwp: React.FC<IProps> = (
         src={imageSrc}
       ></img>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          backgroundColor: "#FFD500",
-          color: "#55637A",
-          padding: "0.5rem 1.5rem",
-          borderRadius: "2rem",
-          fontSize: "small",
-        }}
-      >
-        <Icon name="upload"></Icon> Reupload NPWP Card Image
-      </div>
-
       <Divider></Divider>
 
       <div
@@ -75,15 +61,6 @@ const ModalViewNpwp: React.FC<IProps> = (
       >
         <Button type="button" onClick={() => cancelClick()}>
           Cancel
-        </Button>
-        <Button
-          textAlign="center"
-          className="MarBot10"
-          type="submit"
-          color="blue"
-          style={{ marginRight: "1rem" }}
-        >
-          Submit
         </Button>
       </div>
     </Fragment>

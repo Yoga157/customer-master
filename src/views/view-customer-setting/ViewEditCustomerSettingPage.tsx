@@ -59,7 +59,7 @@ const ViewEditCustomerSettingPage: React.FC<IProps> = (
 ) => {
   const location = useLocation<ICustomerData>();
   const [customerData, setCustomerData] = useState(
-    location.state.rowData || undefined
+    location?.state?.rowData || undefined
   );
   const dispatch: Dispatch = useDispatch();
   const { id } = useParams<routeParams>();
@@ -83,13 +83,13 @@ const ViewEditCustomerSettingPage: React.FC<IProps> = (
     <Fragment>
       {role == "Marketing" ? (
         <ViewEditMarketing
-          status={customerData.approvalStatus?.toUpperCase() || "NOT_NEW"}
+          status={customerData?.approvalStatus?.toUpperCase() || "NOT_NEW"}
         ></ViewEditMarketing>
       ) : customer.customerID != undefined ? (
         <ViewEditCustomer customer={customer} role={role} />
       ) : (
         <ViewEditMarketing
-          status={customerData.approvalStatus?.toUpperCase() || "NOT_NEW"}
+          status={customerData?.approvalStatus?.toUpperCase() || "NOT_NEW"}
         ></ViewEditMarketing>
       )}
     </Fragment>

@@ -962,12 +962,19 @@ const ViewEditCustomer: React.FC<IProps> = (
               <p className="grey margin-0 bold text-align-left">
                 ACCOUNT OWNER SETTING
               </p>
-              <ClaimReleaseButton
+              {/* <ClaimReleaseButton
                 customer={customer}
                 accountStatus={accountStatus}
                 isEmployeeOwnCustomer={isEmployeeOwnCustomer}
                 isEmployeeRequestShareable={isEmployeeRequestShareable}
                 role={role}
+              /> */}
+              <ClaimReleaseButton
+                customer={customer}
+                accountStatus={"Named Account"}
+                isEmployeeOwnCustomer={isEmployeeOwnCustomer}
+                isEmployeeRequestShareable={isEmployeeRequestShareable}
+                role={"ADMIN"}
               />
             </div>
 

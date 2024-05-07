@@ -297,6 +297,10 @@ const BaseViewApprovedData: React.FC<IProps> = (
       header: "Pin",
     },
     {
+      key: "cap",
+      header: "CAP",
+    },
+    {
       key: "name",
       header: "Name",
     },

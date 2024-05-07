@@ -45,6 +45,7 @@ const ModalNewPIC: React.FC<IProps> = (
 ) => {
   const dispatch: Dispatch = useDispatch();
   const { data, isView, customerId, customerGenId } = props;
+  const userId: any = localStorage.getItem("userLogin");
 
   const addressOptions = useSelector((state: IStore) =>
     selectAddressOfficeOptions(state)
@@ -110,6 +111,7 @@ const ModalNewPIC: React.FC<IProps> = (
       dispatch(ModalAction.CLOSE());
     }
   };
+  console.log("role", userId);
 
   return (
     <Fragment>
@@ -181,16 +183,36 @@ const ModalNewPIC: React.FC<IProps> = (
               />
             </div>
 
-            <Field
-              label="Pin to show as main PIC"
-              name="mainPIC"
-              component={CheckBoxInput}
-              defaultChecked={false}
-            />
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ marginRight: "1rem " }}>
+                <Field
+                  label="Pin to show as main PIC"
+                  name="mainPIC"
+                  component={CheckBoxInput}
+                  defaultChecked={false}
+                />
+              </div>
 
+              <div>
+                <Field
+                  style={{
+                    margin: "0 1rem",
+                    transform: "scale(1)",
+                  }}
+                  label="CAP Customer"
+                  name="capCustomer"
+                  component={CheckBoxInput}
+                  defaultChecked={false}
+                  disabled={JSON.parse(userId).role !== "Admin" ? true : false}
+                />
+              </div>
+            </div>
             <Divider></Divider>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button type="button" onClick={cancelClick}>
+                Cancel
+              </Button>
               <Button
                 textAlign="center"
                 className="MarBot10"
@@ -203,12 +225,8 @@ const ModalNewPIC: React.FC<IProps> = (
                   !values.phoneNumber ||
                   !values.officeAddress
                 }
-                //   onClick={}
               >
                 Submit
-              </Button>
-              <Button type="button" onClick={cancelClick}>
-                Cancel
               </Button>
             </div>
           </Form>

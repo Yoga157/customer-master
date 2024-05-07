@@ -386,7 +386,7 @@ const ViewApproval: React.FC = (props) => {
                     </div>
 
                     <div className="customer-data-container-left">
-                      <label className="customer-data-label">Webiste</label>
+                      <label className="customer-data-label">Website</label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
                         className="grey"

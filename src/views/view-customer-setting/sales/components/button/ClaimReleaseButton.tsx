@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Icon, Button } from "semantic-ui-react";
 import "./ClaimReleaseButton.scss";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalNoPaddingFirstLevelActions from "stores/modal/no-padding/ModalNoPaddingActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import ModalClaimAccount from "../modal/modal-claim-account/ModalClaimAccount";
 import ModalReleaseAccount from "../modal/modal-release-account/ModalReleaseAccount";
@@ -56,9 +57,9 @@ const ClaimReleaseButton: React.FC<IProps> = (
   /** Request Shareable Account */
   const onAcceptRequestShareableAccount = async () => {
     dispatch(
-      ModalFirstLevelActions.OPEN(
+      ModalNoPaddingFirstLevelActions.OPEN(
         <ModalAcceptRequestShareableAccount customer={customer} />,
-        ModalSizeEnum.Tiny
+        ModalSizeEnum.Small
       )
     );
   };
@@ -183,24 +184,26 @@ const ClaimReleaseButton: React.FC<IProps> = (
         )}
 
       {/* accept shareable request */}
-      {accountStatus == "Named Account" &&
-        customer.shareableApprovalStatus.status?.toUpperCase() == "PENDING" &&
-        role?.toUpperCase() == "ADMIN" && (
+      {(accountStatus == "Named Account" &&
+        customer.shareableApprovalStatus.status?.toUpperCase() ==
+          "PENDING_DIRECTORATE") ||
+        (customer.shareableApprovalStatus.status?.toUpperCase() ==
+          "PENDING_ADMIN" && (
           <div className="accept-shareable-container">
             <p className="text-request-by">
               Request by {customer.shareableApprovalStatus?.requestedBy}
             </p>
             <Button
-              color="red"
+              color="yellow"
               size="small"
               type="button"
               onClick={() => onAcceptRequestShareableAccount()}
             >
-              <Icon name="share" />
-              Accept Shareable Request
+              <Icon name="check circle" style={{ color: "black" }} />
+              Approve/Reject Join Request
             </Button>
           </div>
-        )}
+        ))}
     </Fragment>
   );
 };
