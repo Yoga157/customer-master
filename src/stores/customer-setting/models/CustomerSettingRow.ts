@@ -36,6 +36,7 @@ export default class CustomerSettingRow extends BaseModel {
   status?: string = null;
   isNew?: boolean = false;
   approvalStatus?: string = "";
+  salesHistory?: any[] = [];
 
   constructor(data: Partial<CustomerSettingRow>) {
     super();

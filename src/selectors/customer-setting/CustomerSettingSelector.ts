@@ -72,6 +72,7 @@ const _mappingObjectTableRow = (model: any): any => {
     status: model.status === null ? null : model.status,
     isNew: model.isNew === null ? null : model.isNew,
     approvalStatus: model.approvalStatus === null ? null : model.approvalStatus,
+    salesHistory: model.salesHistory.length == 0 ? {} : model.salesHistory[0],
   };
 };
 
@@ -123,6 +124,7 @@ const _mappingObjectTableNameRow = (model: any): any => {
     status: model.status === null ? null : model.status,
     isNew: model.isNew === null ? null : model.isNew,
     approvalStatus: model.approvalStatus === null ? null : model.approvalStatus,
+    salesHistory: model.salesHistory.length == 0 ? {} : model.salesHistory[0],
   };
 };
 
@@ -176,6 +178,7 @@ const _mappingObjectTableShareableRow = (model: any): any => {
     status: model.status === null ? null : model.status,
     isNew: model.isNew === null ? null : model.isNew,
     approvalStatus: model.approvalStatus === null ? null : model.approvalStatus,
+    salesHistory: model.salesHistory.length == 0 ? {} : model.salesHistory[0],
   };
 };
 
@@ -227,6 +230,7 @@ const _mappingObjectTableAllRow = (model: any): any => {
     status: model.status === null ? null : model.status,
     isNew: model.isNew === null ? null : model.isNew,
     approvalStatus: model.approvalStatus === null ? null : model.approvalStatus,
+    salesHistory: model.salesHistory.length == 0 ? {} : model.salesHistory[0],
   };
 };
 
