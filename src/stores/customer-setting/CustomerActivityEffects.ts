@@ -470,11 +470,13 @@ export const releaseAccount = async (
   return EffectUtility.putToModel<ResultActions>(ResultActions, endpoint);
 };
 
-export const acceptRequestShareableAccount = async (
+export const approveRejectClaimAccount = async (
   customerID: number,
   salesID: number,
   isApprove: boolean,
   modifyUserID: number,
+  directorateApprovedBy?: number,
+  adminApprovedBy?: number,
   description?: string
 ): Promise<ResultActions | HttpErrorResponseModel> => {
   const controllerName =
@@ -486,7 +488,13 @@ export const acceptRequestShareableAccount = async (
     isApprove +
     "&modifyUserID=" +
     modifyUserID +
-    `${description != null ? "&description=" + description : ""}`;
+    `${description != null ? "&description=" + description : ""}` +
+    `${
+      directorateApprovedBy != null
+        ? "&directorateApprovedBy=" + directorateApprovedBy
+        : ""
+    }` +
+    `${adminApprovedBy != null ? "&adminApprovedBy=" + adminApprovedBy : ""}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName

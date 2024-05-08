@@ -3,6 +3,7 @@ import { Table, Dropdown, Icon } from "semantic-ui-react";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as CustomerSettingActions from "stores/customer-setting/CustomerActivityActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import "./CustomerTableRowStyle.scss";
 import RequestForm from "../../modal/modal-reqshareaccount/ModalReqShare";
@@ -78,7 +79,12 @@ const CustomerTableRow: React.FC<IProps> = (
   const onApproveShareable = useCallback((): void => {
     dispatch(
       ModalFirstLevelActions.OPEN(
-        <ApproveReq rowData={[rowData]} />,
+        <ApproveReq
+          rowData={[rowData]}
+          isDirectorate={true}
+          isAdmin={false}
+          refreshFunc={CustomerSettingActions.requestNamedAcc()}
+        />,
         ModalSizeEnum.Tiny
       )
     );

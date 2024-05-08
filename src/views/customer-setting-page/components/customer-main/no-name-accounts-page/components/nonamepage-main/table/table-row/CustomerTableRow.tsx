@@ -3,10 +3,11 @@ import { Table, Dropdown, Icon } from "semantic-ui-react";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as CustomerSettingACtion from "stores/customer-setting/CustomerActivityActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import "./CustomerTableRowStyle.scss";
 import ClaimFormEdit from "../../modal/modal-claim-edit/FormClaim";
-// import ApproveReq from "../../modal/modal-approverequest/FormApproveShareable";
+import ApproveReq from "../../../../../named-accounts-page/components/namepage-main/modal/modal-approverequest/FormApproveShareable";
 import { useHistory } from "react-router-dom";
 
 interface IProps {
@@ -59,15 +60,20 @@ const CustomerTableRow: React.FC<IProps> = (
     });
   };
 
-  // const onApproveShareable = useCallback((): void => {
-  //   dispatch(
-  //     ModalFirstLevelActions.OPEN(
-  //       <ApproveReq rowData={[rowData]} />,
-  //       ModalSizeEnum.Tiny
-  //     )
-  //   );
-  //   getRowData([]);
-  // }, [dispatch, rowData]);
+  const onApproveShareable = useCallback((): void => {
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ApproveReq
+          rowData={[rowData]}
+          isDirectorate={true}
+          isAdmin={false}
+          refreshFunc={CustomerSettingACtion.requestNoNameAcc()}
+        />,
+        ModalSizeEnum.Tiny
+      )
+    );
+    getRowData([]);
+  }, [dispatch, rowData]);
 
   // mengecek apakah sales yang melakukan request ada di hirarki
   const isSubordinate = (employeeKey: any) => {
@@ -134,7 +140,7 @@ const CustomerTableRow: React.FC<IProps> = (
                             <Dropdown.Item
                               text="Approve Claim Request"
                               icon="circle check"
-                              // onClick={onApproveShareable}
+                              onClick={onApproveShareable}
                             />
                           </>
                         )}
