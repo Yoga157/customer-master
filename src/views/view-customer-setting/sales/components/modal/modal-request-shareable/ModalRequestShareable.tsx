@@ -22,13 +22,15 @@ import * as CustomerSetting from "stores/customer-setting/CustomerActivityAction
 
 interface IProps {
   customer: any;
+  isDirectorate: boolean;
+  isAdmin: boolean;
 }
 
 const ModalAcceptRequestShareableAccount: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
-  const { customer } = props;
+  const { customer, isDirectorate, isAdmin } = props;
   const [isReject, setIsReject] = useState(null);
   const [alasan, setAlasan] = useState(null);
 
@@ -44,11 +46,13 @@ const ModalAcceptRequestShareableAccount: React.FC<IProps> = (
     let userLogin = JSON.parse(localStorage.getItem("userLogin"));
 
     dispatch(
-      CustomerSetting.acceptRequestShareableAccount(
+      CustomerSetting.approveRejectClaimAccount(
         customer.customerID,
         Number(customer.shareableApprovalStatus.requestedUserID),
         !isReject,
         userLogin?.employeeID,
+        isDirectorate ? userLogin?.employeeID : null,
+        isAdmin ? userLogin?.employeeID : null,
         alasan
       )
     ).then(() => {
