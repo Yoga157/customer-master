@@ -56,6 +56,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   const activePage = useSelector(
     (state: IStore) => state.customerMaster.activePage
   );
+  const userId: any = localStorage.getItem("userLogin");
+
   const [pageSize, setPage] = useState(10);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
@@ -604,8 +606,12 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 name="Npwp"
                                 component={TextInput}
                                 labelName="NPWP (Tax ID Number)"
-                                mandatory={false}
                                 placeholder="Type tax id number here..."
+                                mandatory={
+                                  JSON.parse(userId).role === "Sales"
+                                    ? true
+                                    : false
+                                }
                               />
                             </Grid.Column>
                             <Grid.Column width={4} className="FullGrid767">
@@ -615,7 +621,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                   width: "100%",
                                   display: "flex",
                                   flexDirection: "column",
-                                  alignItems: "center",
                                 }}
                                 onClick={handleUploadClick}
                               >
@@ -783,7 +788,10 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               !values.website ||
                               !values.coorporateEmail ||
                               !values.nib ||
-                              !values.Npwp ||
+                              (!values.Npwp &&
+                                JSON.parse(userId).role === "Sales") ||
+                              (!uploadFile &&
+                                JSON.parse(userId).role === "Sales") ||
                               !values.picName ||
                               !values.picMobilePhone ||
                               !values.picEmail ||

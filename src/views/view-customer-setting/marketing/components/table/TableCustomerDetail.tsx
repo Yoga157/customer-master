@@ -165,12 +165,12 @@ const TableCustomerDetail: React.FC<IProps> = (
                 </Dropdown>
               </Table.Cell>
               {header.map((header) =>
-                header.key == "pin" ? (
+                header.key == "pin" || header.key == "cap" ? (
                   <Table.Cell
                     key={header.key}
                     textAlign={header.textCenter ? "center" : "left"}
                   >
-                    {item["pin"] && <Icon name="check" />}
+                    {item["pin"] || (item["cap"] && <Icon name="check" />)}
                   </Table.Cell>
                 ) : (
                   <Table.Cell

@@ -63,7 +63,7 @@ const ClaimAccount: React.FC<IProps> = (
     props.getRowData([]);
     dispatch(ModalAction.CLOSE());
     if (filterData != undefined) {
-      console.log(filterData);
+      // console.log(filterData);
       dispatch(
         CustomerSettingAct.requestSearchNoNameAcc(
           activePage,
