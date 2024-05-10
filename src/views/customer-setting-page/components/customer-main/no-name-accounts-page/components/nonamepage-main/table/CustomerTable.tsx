@@ -24,6 +24,8 @@ const CustomerTable: React.FC<IProps> = (
   const [columns, setColumns] = useState("");
   const [direction, setDirection] = useState("ascending" as any);
 
+  console.log(props.tableData);
+
   const reloads = (columns: any) => {
     setColumns(columns);
     setDirection(direction === "ascending" ? "descending" : "ascending");

@@ -49,7 +49,11 @@ const CustomerTableRow: React.FC<IProps> = (
   const onApproveShareable = useCallback((): void => {
     dispatch(
       ModalFirstLevelActions.OPEN(
-        <ShareableReq rowData={[rowData]} />,
+        <ShareableReq
+          rowData={[rowData]}
+          isDirectorate={true}
+          isAdmin={false}
+        />,
         ModalSizeEnum.Tiny
       )
     );

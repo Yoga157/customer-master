@@ -13,13 +13,15 @@ import * as CustomerSettingAct from "stores/customer-setting/CustomerActivityAct
 
 interface IProps {
   rowData: any;
+  isDirectorate: boolean;
+  isAdmin: boolean;
 }
 
 const ApproveShareableReq: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
-  const { rowData } = props;
+  const { rowData, isDirectorate, isAdmin } = props;
 
   const cancelClick = () => {
     dispatch(ModalAction.CLOSE());
@@ -30,15 +32,17 @@ const ApproveShareableReq: React.FC<IProps> = (
   );
 
   const onSubmitHandler = async (e) => {
-    const userId: any = localStorage.getItem("userLogin");
+    const userId: any = JSON.parse(localStorage.getItem("userLogin"));
 
     for (let j = 0; j < rowData.length; j++) {
       await dispatch(
-        CustomerSettingAct.acceptRequestShareableAccount(
+        CustomerSettingAct.approveRejectClaimAccount(
           (rowData.customerID = props.rowData[j].customerID),
           (rowData.salesID = props.rowData[j].salesShareableID),
           true,
-          (rowData.modifyUserID = JSON.parse(userId).employeeID)
+          (rowData.modifyUserID = userId.employeeID),
+          isDirectorate ? userId.employeeID : null,
+          isAdmin ? userId.employeeID : null
         )
       );
     }

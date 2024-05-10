@@ -58,7 +58,10 @@ const ClaimReleaseButton: React.FC<IProps> = (
   const onAcceptRequestShareableAccount = async () => {
     dispatch(
       ModalNoPaddingFirstLevelActions.OPEN(
-        <ModalAcceptRequestShareableAccount customer={customer} />,
+        <ModalAcceptRequestShareableAccount customer={customer}
+          isDirectorate={false}
+          isAdmin={false}
+          />,
         ModalSizeEnum.Small
       )
     );

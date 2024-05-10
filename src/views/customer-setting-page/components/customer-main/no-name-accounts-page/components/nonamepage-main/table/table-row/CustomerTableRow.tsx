@@ -3,9 +3,11 @@ import { Table, Dropdown, Icon } from "semantic-ui-react";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as CustomerSettingACtion from "stores/customer-setting/CustomerActivityActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import "./CustomerTableRowStyle.scss";
 import ClaimFormEdit from "../../modal/modal-claim-edit/FormClaim";
+import ApproveReq from "../../../../../named-accounts-page/components/namepage-main/modal/modal-approverequest/FormApproveShareable";
 import { useHistory } from "react-router-dom";
 
 interface IProps {
@@ -58,6 +60,35 @@ const CustomerTableRow: React.FC<IProps> = (
     });
   };
 
+  const onApproveShareable = useCallback((): void => {
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ApproveReq
+          rowData={[rowData]}
+          isDirectorate={true}
+          isAdmin={false}
+          refreshFunc={CustomerSettingACtion.requestNoNameAcc()}
+        />,
+        ModalSizeEnum.Tiny
+      )
+    );
+    getRowData([]);
+  }, [dispatch, rowData]);
+
+  // mengecek apakah sales yang melakukan request ada di hirarki
+  const isSubordinate = (employeeKey: any) => {
+    let userLogin = JSON.parse(localStorage.getItem("userLogin"));
+
+    if (employeeKey != undefined) {
+      let foundEmployee = userLogin.hirarki.find(
+        (obj) => obj.employeeID === employeeKey
+      );
+      return foundEmployee ? true : false;
+    }
+
+    return false;
+  };
+
   return (
     <Fragment>
       {rowData && data && (
@@ -74,6 +105,11 @@ const CustomerTableRow: React.FC<IProps> = (
                         ? true
                         : false
                     }
+                    disabled={
+                      rowData.industryClass === null ||
+                      rowData.salesHistory?.status === "PENDING_DIRECTORATE" ||
+                      rowData.salesHistory?.status === "PENDING_ADMIN"
+                    }
                   ></input>
                 </label>
               </div>
@@ -85,7 +121,29 @@ const CustomerTableRow: React.FC<IProps> = (
                         text="Claim Account"
                         icon="circle check"
                         onClick={onClaimAccount}
+                        disabled={
+                          rowData.industryClass === null ||
+                          rowData.salesHistory?.status ===
+                            "PENDING_DIRECTORATE" ||
+                          rowData.salesHistory?.status === "PENDING_ADMIN"
+                        }
                       />
+
+                      {rowData.salesHistory?.status == "PENDING_DIRECTORATE" &&
+                        isSubordinate(rowData.salesHistory?.salesKey) && (
+                          <>
+                            <Dropdown.Item
+                              text="View/Edit"
+                              icon="edit outline"
+                              onClick={() => onEdit(rowData.customerID)}
+                            />
+                            <Dropdown.Item
+                              text="Approve Claim Request"
+                              icon="circle check"
+                              onClick={onApproveShareable}
+                            />
+                          </>
+                        )}
 
                       {rowData.status !== "CANCEL" &&
                         rowData.CustomerID === "" && (
@@ -113,9 +171,11 @@ const CustomerTableRow: React.FC<IProps> = (
               </p>{" "}
             </div>
           </Table.Cell>
-          <Table.Cell textAlign="center">{rowData.JDECustId}</Table.Cell>
-          <Table.Cell textAlign="center">{rowData.customerID}</Table.Cell>
-          <Table.Cell textAlign="center">{rowData.IndustryClass}</Table.Cell>
+          <Table.Cell textAlign="center">{rowData.jdeCustomerID}</Table.Cell>
+          <Table.Cell textAlign="center">
+            {rowData.customerID ? rowData.customerID : rowData.customerGenID}
+          </Table.Cell>
+          <Table.Cell textAlign="center">{rowData.industryClass}</Table.Cell>
           <Table.Cell>
             <div className="row-customerName">
               <p style={{ fontSize: "1rem" }}> {rowData.customerName}</p>{" "}
