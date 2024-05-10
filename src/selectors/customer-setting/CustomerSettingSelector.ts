@@ -312,6 +312,11 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
     return {
       accountStatus: model.resultObj.accountStatus,
       customerID: model.resultObj.customerID,
+      jdeCustomerID: model.resultObj.jdeCustomerID,
+      customerGenID: model.resultObj.customerGenID,
+      industryClassID: model.resultObj.industryClassID,
+      industryClass: model.resultObj.industryClass,
+      industryClassBusiness: model.resultObj.industryClassBusiness,
       customerCategory: model.resultObj.customerCategory,
       customerName: model.resultObj.customerName,
       customerAddress: model.resultObj.customerAddress,
@@ -332,6 +337,9 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
               requestedUserID:
                 model.resultObj.shareableApprovalStatus[lastIndex]
                   .requestedUserID,
+              requestedUserKey:
+                model.resultObj.shareableApprovalStatus[lastIndex]
+                  .requestedUserKey,
               requestedDirectorate:
                 model.resultObj.shareableApprovalStatus[lastIndex]
                   .requestedDirectorate,
@@ -341,11 +349,15 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
               approvedDirectorateBy:
                 model.resultObj.shareableApprovalStatus[lastIndex]
                   .approvedDirectorateBy,
+              directorateApprovedDate:
+                model.resultObj.shareableApprovalStatus[lastIndex]
+                  .directorateApprovedDate,
               approvedAdminBy:
                 model.resultObj.shareableApprovalStatus[lastIndex]
                   .approvedAdminBy,
-              approvalDate:
-                model.resultObj.shareableApprovalStatus[lastIndex].approvalDate,
+              adminApprovedDate:
+                model.resultObj.shareableApprovalStatus[lastIndex]
+                  .adminApprovedDate,
             }
           : [],
     };

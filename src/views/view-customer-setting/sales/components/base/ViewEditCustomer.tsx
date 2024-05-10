@@ -85,6 +85,11 @@ interface IProps {
     accountStatus: string;
     customerSettingID: number;
     customerID: number;
+    jdeCustomerID: number;
+    customerGenID: number;
+    industryClassID: number;
+    industryClass: string;
+    industryClassBusiness: number;
     shareable: boolean;
     named: boolean;
     pmoCustomer: boolean;
@@ -111,6 +116,7 @@ const ViewEditCustomer: React.FC<IProps> = (
   const { id } = useParams<routeParams>();
   const { customer, role } = props;
   const customerID = Number(id);
+  // console.log(customer);
 
   /** Customer data */
   const accountStatus = customer.accountStatus;
@@ -658,7 +664,7 @@ const ViewEditCustomer: React.FC<IProps> = (
               display: showStatus ? "block" : "none",
             }}
           >
-            <h4>Shareable Account Approval</h4>
+            <h4>Request Account Approval</h4>
             <div className="space-between-container">
               <div ref={firstDivRef} className="information-container">
                 <div className="circle-information"></div>
@@ -672,20 +678,125 @@ const ViewEditCustomer: React.FC<IProps> = (
                 </span>
               </div>
 
-              <div ref={secondDivRef} className="information-container">
+              <div className="information-container">
                 <div className="circle-information"></div>
-                <p className="margin-0">
-                  {shareableRequestStatus == "PENDING"
-                    ? "Waiting Approval By"
-                    : shareableRequestStatus == "APPROVED"
-                    ? "Approved By"
-                    : "Rejected By"}
-                </p>
+
+                {shareableRequestStatus == "PENDING_DIRECTORATE" && (
+                  <p className="margin-0">Waiting Approval Director</p>
+                )}
+
+                {shareableRequestStatus == "PENDING_ADMIN" ||
+                  (shareableRequestStatus == "ASSIGN" && (
+                    <p className="margin-0">Approved Director</p>
+                  ))}
+
+                {shareableRequestStatus == "REJECTED_DIRECTORATE" && (
+                  <p className="margin-0">Rejected Director</p>
+                )}
+
                 <p className="margin-0" style={{ fontWeight: "bold" }}>
-                  {shareableApprovalStatus?.approvalBy}
+                  {shareableApprovalStatus?.approvedDirectorateBy ||
+                    employeeName}
                 </p>
                 <span style={{ color: "grey" }}>
-                  {shareableRequestStatus == "PENDING" ? (
+                  {shareableRequestStatus == "PENDING_DIRECTORATE" && (
+                    <>
+                      <Icon
+                        name="exclamation circle"
+                        style={{ color: "#FFA800" }}
+                      />{" "}
+                      Waiting Approval
+                    </>
+                  )}
+
+                  {shareableRequestStatus == "PENDING_ADMIN" ||
+                    (shareableRequestStatus == "ASSIGN" && (
+                      <>
+                        <Icon
+                          name="check circle"
+                          style={{ color: "#27D4A5" }}
+                        />
+                        {shareableApprovalStatus?.directorateApprovedDate}
+                      </>
+                    ))}
+
+                  {shareableRequestStatus == "REJECTED_DIRECTORATE" && (
+                    <>
+                      <Icon
+                        name="exclamation circle"
+                        style={{ color: "#FFA800" }}
+                      />
+                      <span
+                        className="reject-text"
+                        onClick={() =>
+                          openReason(shareableApprovalStatus?.description)
+                        }
+                      >
+                        , Click to see the reason
+                      </span>
+                    </>
+                  )}
+                </span>
+              </div>
+
+              <div
+                ref={secondDivRef}
+                className="information-container"
+                style={{ alignSelf: "start" }}
+              >
+                <div className="circle-information"></div>
+
+                {shareableRequestStatus.includes("PENDING") && (
+                  <p className="margin-0">Waiting Approval Admin</p>
+                )}
+
+                {shareableRequestStatus.includes("ASSIGN") && (
+                  <p className="margin-0">Approved Admin</p>
+                )}
+
+                {shareableRequestStatus.includes("REJECTED") && (
+                  <p className="margin-0">Rejected Admin</p>
+                )}
+
+                <p className="margin-0" style={{ fontWeight: "bold" }}>
+                  {shareableApprovalStatus?.approvedAdminBy}
+                </p>
+                <span style={{ color: "grey" }}>
+                  {shareableRequestStatus.includes("PENDING") && (
+                    <>
+                      <Icon
+                        name="exclamation circle"
+                        style={{ color: "#FFA800" }}
+                      />{" "}
+                      Waiting Approval{" "}
+                    </>
+                  )}
+
+                  {shareableRequestStatus.includes("ASSIGN") && (
+                    <>
+                      <Icon name="check circle" style={{ color: "#27D4A5" }} />{" "}
+                      {shareableApprovalStatus?.adminApprovedDate}
+                    </>
+                  )}
+
+                  {shareableRequestStatus.includes("REJECTED_DIRECTORATE") && (
+                    <>
+                      <Icon name="remove circle" style={{ color: "red" }} />{" "}
+                      Rejected{" "}
+                      {shareableApprovalStatus == "REJECTED_ADMIN" && (
+                        <span
+                          className="reject-text"
+                          onClick={() =>
+                            openReason(shareableApprovalStatus?.description)
+                          }
+                        >
+                          , Click to see the reason
+                        </span>
+                      )}
+                    </>
+                  )}
+
+                  {/* {shareableRequestStatus == "PENDING" ? (
                     <>
                       <Icon
                         name="exclamation circle"
@@ -711,7 +822,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                         Click to see the reason
                       </span>
                     </>
-                  )}
+                  )} */}
                 </span>
               </div>
 
@@ -730,7 +841,7 @@ const ViewEditCustomer: React.FC<IProps> = (
           >
             <div className="purple-arrow">
               <span className="purple-arrow-text">
-                {!showStatus ? "Approval Status" : ""}
+                {!showStatus ? "Approval Steps" : ""}
                 <Icon name="angle down" style={{ color: "white" }} />
               </span>
             </div>
@@ -795,7 +906,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                   style={{ fontSize: "24px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  {customer.customerID}
+                  {customer.customerGenID}
                 </p>
               </div>
 
@@ -805,7 +916,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                   style={{ fontSize: "24px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  JDE Cust. ID
+                  {customer.jdeCustomerID}
                 </p>
               </div>
 
@@ -819,7 +930,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                       style={{ fontSize: "24px", fontWeight: "bold" }}
                       className="grey"
                     >
-                      {customer.customerCategory || "No Data"}
+                      {customer.industryClass || "No Data"}
                     </p>
                   </>
                 ) : (
@@ -961,20 +1072,20 @@ const ViewEditCustomer: React.FC<IProps> = (
               <p className="grey margin-0 bold text-align-left">
                 ACCOUNT OWNER SETTING
               </p>
-              {/* <ClaimReleaseButton
+              <ClaimReleaseButton
                 customer={customer}
                 accountStatus={accountStatus}
                 isEmployeeOwnCustomer={isEmployeeOwnCustomer}
                 isEmployeeRequestShareable={isEmployeeRequestShareable}
                 role={role}
-              /> */}
-              <ClaimReleaseButton
+              />
+              {/* <ClaimReleaseButton
                 customer={customer}
                 accountStatus={"Named Account"}
                 isEmployeeOwnCustomer={isEmployeeOwnCustomer}
                 isEmployeeRequestShareable={isEmployeeRequestShareable}
                 role={"ADMIN"}
-              />
+              /> */}
             </div>
 
             <Divider></Divider>

@@ -8,6 +8,7 @@ export default interface ICustomerMasterState {
   readonly activeTabs: number;
   readonly customerNewByGenId: ResultActions;
   readonly customerMoreDetails: ResultActions;
+  readonly industryClass: ResultActions;
   isSuccess: boolean;
   error: boolean;
   refreshPage: boolean;

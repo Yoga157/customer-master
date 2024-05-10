@@ -329,6 +329,18 @@ const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
   }
 };
 
+const _selectIndustryClassOptions = (models: ResultActions): any => {
+  console.log(models);
+  if (Array.isArray(models.resultObj)) {
+    models.resultObj.map((model: any): any => ({
+      text: model.industryClass,
+      value: model.industryClassID,
+    }));
+  } else {
+    return [];
+  }
+};
+
 export const selectCustomerMoreDetails: Selector<IStore, any> = createSelector(
   (state: IStore) => state.customerMaster.customerMoreDetails!,
   _selectNewCustomerDetailApproved
@@ -337,4 +349,9 @@ export const selectCustomerMoreDetails: Selector<IStore, any> = createSelector(
 export const selectAddressOfficeOptions: Selector<IStore, any> = createSelector(
   (state: IStore) => state.customerMaster.customerMoreDetails!,
   _selectAddressOfficeOptions
+);
+
+export const getIndustryClassOptions: Selector<IStore, any> = createSelector(
+  (state: IStore) => state.customerMaster.industryClass,
+  _selectIndustryClassOptions
 );

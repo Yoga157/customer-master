@@ -11,6 +11,7 @@ export const initialState: ICustomerMasterState = {
   data: new CustomerMasterModel({}),
   customerNewByGenId: new ResultActions({}),
   customerMoreDetails: new ResultActions({}),
+  industryClass: new ResultActions({}),
   error: false,
   refreshPage: false,
   resultActions: new ResultActions({}),
@@ -187,6 +188,17 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
     return {
       ...state,
       resultActions: action.payload!,
+    };
+  },
+
+  [CustomerMasterActions.REQUEST_INDUSTRY_CLASS_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    console.log(action.payload);
+    return {
+      ...state,
+      industryClass: action.payload!,
     };
   },
 });

@@ -177,3 +177,14 @@ export const deletePIC = async (
   );
   return EffectUtility.delToModel<ResultActions>(ResultActions, endpoint);
 };
+
+export const getIndustryClass = async (
+  custId: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `CustomerSetting/GetIndustryClass`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
+};

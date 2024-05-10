@@ -35,6 +35,7 @@ import "./addNewCustomerSetting.scss";
 import CustomerMasterPostModel from "stores/customer-master/models/CustomerMasterPostModel";
 import RouteEnum from "constants/RouteEnum";
 import ModalEditViewNpwp from "./components/modal/viewedit-npwp/ModalViewEditNpwp";
+import { selectIndustryOptions } from "selectors/select-options";
 
 interface IProps {
   history: any;
@@ -48,6 +49,10 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   const tableData = useSelector((state: IStore) =>
     selectReqCustomerNewAccount(state)
   );
+  const industryClassOptions = useSelector((state: IStore) =>
+    selectIndustryOptions(state)
+  );
+  console.log(industryClassOptions);
   const history = useHistory();
   const [searchedCustomerName, setSearchedCustomerName] = useState("");
   const [searchedPicName, setSearcedhPicName] = useState("");
@@ -102,16 +107,16 @@ const AddNewCustomerSetting: React.FC<IProps> = (
     setSearcedhPicName(data.picName);
   };
 
-  const industryClassOptions = [
-    {
-      text: "Industry1",
-      value: "Industry1",
-    },
-    {
-      text: "Industry2",
-      value: "Industry2",
-    },
-  ];
+  // const industryClassOptions = [
+  //   {
+  //     text: "Industry1",
+  //     value: "Industry1",
+  //   },
+  //   {
+  //     text: "Industry2",
+  //     value: "Industry2",
+  //   },
+  // ];
 
   const onSubmitHandler = async (data: any) => {
     const userId: any = localStorage.getItem("userLogin");
@@ -209,6 +214,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
 
   useEffect(() => {
     dispatch(CustomerMasterActions.clearResult());
+    dispatch(CustomerMasterActions.getIndustryClass());
   }, []);
 
   useEffect(() => {
