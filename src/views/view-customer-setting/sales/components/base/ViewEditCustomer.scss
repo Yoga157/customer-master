@@ -32,6 +32,9 @@
 .boolean-container {
   border-radius: 20px !important;
   width: fit-content !important;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
 }
 
 .margin-0 {
@@ -92,7 +95,8 @@
   display: flex !important;
   flex-direction: column !important;
   text-align: center !important;
-  margin-right: 4rem !important;
+  // margin-right: 4rem !important;
+  padding: 0 2rem 0 0rem !important;
   margin-bottom: 14px !important;
 }
 
@@ -115,7 +119,7 @@
 }
 
 .customer-data-label {
-  margin-right: 10px !important;
+  // margin-right: 10px !important;
   margin-bottom: 5px !important;
   color: #a0a8b3;
 }
@@ -178,6 +182,19 @@
 
 .toggle-margin {
   margin: 0 0.5rem !important;
+}
+.container-padding-bu {
+  padding: 0 6rem 0 6rem !important;
+  margin-bottom: 1rem;
+}
+.container-BU {
+  display: flex;
+  justify-content: center;
+  background-color: #ffe0d9;
+  border-radius: 5rem;
+  text-align: center;
+  padding: 1rem;
+  margin: 0.5rem 0 0;
 }
 
 .sales-assign-list {

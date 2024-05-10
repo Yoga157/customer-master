@@ -55,7 +55,7 @@ const ModalApproveClose: React.FC<IProps> = (
         <Divider></Divider>
         <div style={{ textAlign: "center" }}>
           <Button type="button" color="blue" onClick={cancelClick}>
-            Cancel
+            Ok
           </Button>
         </div>
       </LoadingIndicator>

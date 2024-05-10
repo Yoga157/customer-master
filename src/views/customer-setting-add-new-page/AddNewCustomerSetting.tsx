@@ -609,8 +609,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 placeholder="Type tax id number here..."
                                 mandatory={
                                   JSON.parse(userId).role === "Sales"
-                                    ? true
-                                    : false
+                                    ? false
+                                    : true
                                 }
                               />
                             </Grid.Column>
