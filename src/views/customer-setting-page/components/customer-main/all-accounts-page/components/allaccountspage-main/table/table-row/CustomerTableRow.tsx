@@ -229,13 +229,13 @@ const CustomerTableRow: React.FC<IProps> = (
           )}
         </Table.Cell>
         <Table.Cell textAlign="center">
-          {rowData.JDECustId ? rowData.JDECustId : "-"}
+          {rowData.JDECustId ? rowData.jdeCustomerID : "-"}
         </Table.Cell>
         <Table.Cell textAlign="center">
           {rowData.customerID == 0 ? "-" : rowData.customerID}
         </Table.Cell>
         <Table.Cell textAlign="center">
-          {rowData.IndustryClass == null ? "-" : rowData.IndustryClass}
+          {rowData.IndustryClass == null ? "-" : rowData.industryClass}
         </Table.Cell>
         <Table.Cell textAlign="center">
           {rowData.customerCategory == null ? "-" : rowData.customerCategory}

@@ -79,6 +79,8 @@ import ClaimReleaseButton from "../button/ClaimReleaseButton";
 import CustomerSettingPutModel from "stores/customer-setting/models/CustomerSettingPutModel";
 import ModalShowRejectReason from "../modal/modal-show-reject-reason/ModalShowRejectReason";
 import ViewApprovedData from "views/view-customer-setting/marketing/ViewApprovedData";
+import { selectIndustry } from "selectors/customer-master/CustomerMasterSelector";
+import * as IndustryClassOptionsAction from "stores/customer-master/CustomerMasterActivityActions";
 
 interface IProps {
   customer: {
@@ -142,17 +144,27 @@ const ViewEditCustomer: React.FC<IProps> = (
   };
 
   // industry classification
+  // const [industryClass, setIndustryClass] = useState("");
+  // const industryClassOptions = [
+  //   {
+  //     text: "Manufacturing",
+  //     value: "Manufacturing",
+  //   },
+  //   {
+  //     text: "Industry",
+  //     value: "Industry",
+  //   },
+  // ];
+
   const [industryClass, setIndustryClass] = useState("");
-  const industryClassOptions = [
-    {
-      text: "Manufacturing",
-      value: "Manufacturing",
-    },
-    {
-      text: "Industry",
-      value: "Industry",
-    },
-  ];
+
+  const industryClassOptions = useSelector((state: IStore) =>
+    selectIndustry(state)
+  );
+
+  useEffect(() => {
+    dispatch(IndustryClassOptionsAction.getIndustryClassification());
+  }, []);
 
   const onSubmitIndustryClass = async (e) => {};
 

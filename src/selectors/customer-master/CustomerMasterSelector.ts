@@ -2,7 +2,7 @@ import { createSelector, ParametricSelector } from "reselect";
 import IStore from "../../models/IStore";
 import { Selector } from "react-redux";
 import ResultActions from "models/ResultActions";
-import CustomerMasterPostModel from "stores/customer-master/models/CustomerMasterPostModel";
+import IOptionsDataString from "selectors/select-options/models/IOptionsDataString";
 
 export default interface ICustomerSettingOptions {
   readonly text: string;
@@ -337,4 +337,41 @@ export const selectCustomerMoreDetails: Selector<IStore, any> = createSelector(
 export const selectAddressOfficeOptions: Selector<IStore, any> = createSelector(
   (state: IStore) => state.customerMaster.customerMoreDetails!,
   _selectAddressOfficeOptions
+);
+
+const _selectIndustry = (models: any[]): any[] => {
+  if (Array.isArray(models) && models.length > 0) {
+    const resultArray = models.map((model) => ({
+      text: model.industryClass,
+      value: model.industryClassID,
+    }));
+    return resultArray;
+  } else {
+    return [];
+  }
+};
+
+export const selectIndustry: Selector<IStore, any[]> = createSelector(
+  (state: IStore) => state.customerMaster.industryClassification.resultObj,
+  _selectIndustry
+);
+
+const _selectAccountHistory = (models: ResultActions): any => {
+  console.log("selector", models);
+  if (Array.isArray(models.resultObj)) {
+    return models.resultObj.map((item) => ({
+      accountActivityHistoryID: item.accountActivityHistoryID,
+      customerID: item.customerID,
+      customerGenID: item.customerGenID,
+      description: item.description,
+      createDate: item.createDate,
+    }));
+  } else {
+    return [];
+  }
+};
+
+export const selectAccountHistory: Selector<IStore, any> = createSelector(
+  (state: IStore) => state.customerMaster.accountHistoryDetailsBygenId!,
+  _selectAccountHistory
 );

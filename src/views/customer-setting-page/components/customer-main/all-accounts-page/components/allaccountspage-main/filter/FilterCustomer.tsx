@@ -138,6 +138,17 @@ const FilterCustomer: React.FC<{
         ? false
         : null;
 
+    console.log({
+      nonameAccount: nonameAccount,
+      namedAccount: namedAccount,
+      shareableAccount: shareableAccount,
+      isNew: isNew,
+      pmo_customer: pmo_customer,
+      newsalesAssign: newsalesAssign,
+      holdshipment: holdshipment,
+      blacklist: blacklist,
+    });
+
     getFilterData({
       nonameAccount: nonameAccount,
       namedAccount: namedAccount,
