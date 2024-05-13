@@ -57,6 +57,7 @@ const ReleaseAccount: React.FC<IProps> = (
       NewAssignSales.createUserID = JSON.parse(userId)?.employeeID;
       NewAssignSales.requestedDate = new Date();
       NewAssignSales.createDate = new Date();
+
       await dispatch(CustomerSettingAct.postRequestAccount(NewAssignSales));
     }
     dispatch(ModalAction.CLOSE());

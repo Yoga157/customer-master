@@ -33,6 +33,7 @@ const CustomerTable: React.FC<IProps> = (
       CustomerActions.requestNamedAcc(activePage, pageSize, columns, direction)
     );
   };
+  console.log(props.tableData);
 
   return (
     <Table

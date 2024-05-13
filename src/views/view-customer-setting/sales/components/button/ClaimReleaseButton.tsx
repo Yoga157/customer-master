@@ -147,7 +147,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
         )}
 
       {/* already had request */}
-      {accountStatus == "Named Account" &&
+      {/* {accountStatus == "Named Account" &&
         !isEmployeeOwnCustomer &&
         !isEmployeeRequestShareable &&
         customer.shareableApprovalStatus.length != 0 &&
@@ -157,7 +157,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
             <Icon name="wait" />
             Already had pending request
           </Button>
-        )}
+        )} */}
 
       {/* release shareable account */}
       {accountStatus == "Shareable Account" &&
@@ -175,7 +175,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
         )}
 
       {/* claim shareable account */}
-      {accountStatus == "Shareable Account" &&
+      {/* {accountStatus == "Shareable Account" &&
         !isEmployeeOwnCustomer &&
         role?.toUpperCase() == "SALES" && (
           <Button
@@ -187,7 +187,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
             <Icon name="check circle" />
             Claim Account
           </Button>
-        )}
+        )} */}
 
       {/* already claimed shareable account */}
       {accountStatus == "Named Account" &&
@@ -217,17 +217,18 @@ const ClaimReleaseButton: React.FC<IProps> = (
 
       {/* accept pending requets by admin */}
       {customer.shareableApprovalStatus.status?.toUpperCase() ==
-        "PENDING_ADMIN" && (
-        <Button
-          color="yellow"
-          size="small"
-          type="button"
-          onClick={() => onAcceptRequestAccount(false, true)}
-        >
-          <Icon name="check circle" style={{ color: "black" }} />
-          Approve/Reject Join Request
-        </Button>
-      )}
+        "PENDING_ADMIN" &&
+        role?.toUpperCase() == "ADMIN" && (
+          <Button
+            color="yellow"
+            size="small"
+            type="button"
+            onClick={() => onAcceptRequestAccount(false, true)}
+          >
+            <Icon name="check circle" style={{ color: "black" }} />
+            Approve/Reject Join Request
+          </Button>
+        )}
     </Fragment>
   );
 };

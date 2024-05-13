@@ -48,6 +48,22 @@ const CustomerTableRow: React.FC<IProps> = (
     // setIsChecked((prevChecked) => !prevChecked);
   };
 
+  // mengecek apakah sales yang melakukan request ada di hirarki
+  const isSubordinate = (employeeKey: any) => {
+    let userLogin = JSON.parse(localStorage.getItem("userLogin"));
+
+    if (employeeKey != undefined) {
+      let foundEmployee = userLogin.hirarki.find(
+        (obj) => obj.employeeID === employeeKey
+      );
+      return foundEmployee && userLogin.employeeKey != foundEmployee.employeeID
+        ? true
+        : false;
+    }
+
+    return false;
+  };
+
   const onRequestAccount = useCallback((): void => {
     dispatch(
       ModalFirstLevelActions.OPEN(
@@ -77,13 +93,16 @@ const CustomerTableRow: React.FC<IProps> = (
   }, [dispatch, rowData]);
 
   const onApproveShareable = useCallback((): void => {
+    let isDirectorate =
+      isSubordinate(rowData.salesHistory?.salesKey) && role != "Admin";
+
     dispatch(
       ModalFirstLevelActions.OPEN(
         <ApproveReq
           rowData={[rowData]}
-          isDirectorate={true}
-          isAdmin={false}
-          refreshFunc={CustomerSettingActions.requestNamedAcc()}
+          isDirectorate={isDirectorate}
+          isAdmin={!isDirectorate}
+          refreshFunc={CustomerSettingActions.requestNamedAcc}
         />,
         ModalSizeEnum.Tiny
       )
@@ -130,7 +149,11 @@ const CustomerTableRow: React.FC<IProps> = (
                       ? true
                       : false
                   }
-                  disabled={!rowData.salesName.includes(userId.fullName)}
+                  disabled={
+                    !rowData.salesName.includes(userId.fullName) ||
+                    rowData.salesHistory?.status === "PENDING_DIRECTORATE" ||
+                    rowData.salesHistory?.status === "PENDING_ADMIN"
+                  }
                 ></input>
               </label>
             </div>
@@ -146,21 +169,43 @@ const CustomerTableRow: React.FC<IProps> = (
                       />
                     )}
 
-                    {rowData.salesName != userId.fullName &&
-                      rowData.status != "Pending" && (
+                    {isSubordinate(rowData.salesHistory?.salesKey) &&
+                      rowData.salesHistory?.status == "PENDING_DIRECTORATE" && (
                         <Dropdown.Item
-                          text="Request Share Account"
-                          icon="share"
-                          onClick={onRequestAccount}
+                          text="View/Edit"
+                          icon="edit outline"
+                          onClick={() => onEdit(rowData.customerID)}
                         />
                       )}
 
+                    <Dropdown.Item
+                      text="Request Share Account"
+                      icon="share"
+                      onClick={onRequestAccount}
+                      disabled={
+                        rowData.salesName.includes(userId.fullName) ||
+                        rowData.salesHistory?.status ===
+                          "PENDING_DIRECTORATE" ||
+                        rowData.salesHistory?.status === "PENDING_ADMIN"
+                      }
+                    />
+
                     {rowData.salesName.includes(userId.fullName) &&
-                      rowData.status != "Pending" && (
+                      !rowData.salesHistory?.status.includes("PENDING") && (
                         <Dropdown.Item
-                          text="Realease Account"
+                          text="Release Account"
                           icon="times circle"
                           onClick={onReleaseAccount}
+                        />
+                      )}
+
+                    {rowData.salesHistory?.status?.toUpperCase() ==
+                      "PENDING_DIRECTORATE" &&
+                      isSubordinate(rowData.salesHistory?.salesKey) && (
+                        <Dropdown.Item
+                          text="Approve Shareable Request"
+                          icon="circle check"
+                          onClick={onApproveShareable}
                         />
                       )}
 
@@ -179,7 +224,8 @@ const CustomerTableRow: React.FC<IProps> = (
                       onClick={() => onEdit(rowData.customerID)}
                     />
 
-                    {rowData.status?.toUpperCase() == "PENDING" && (
+                    {rowData.salesHistory?.status?.toUpperCase() ==
+                      "PENDING_ADMIN" && (
                       <Dropdown.Item
                         text="Approve Shareable Request"
                         icon="circle check"

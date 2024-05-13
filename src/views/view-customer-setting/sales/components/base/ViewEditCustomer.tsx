@@ -122,6 +122,12 @@ const ViewEditCustomer: React.FC<IProps> = (
   const accountStatus = customer.accountStatus;
   const shareableApprovalStatus = customer?.shareableApprovalStatus;
   const shareableRequestStatus = shareableApprovalStatus?.status?.toUpperCase();
+  // kondisi untuk menampilkan approval steps
+  const showApprovalSteps =
+    shareableApprovalStatus.length != 0 &&
+    shareableApprovalStatus.approvedDirectorateBy == null &&
+    shareableApprovalStatus.approvedAdminBy == null &&
+    shareableRequestStatus == "ASSIGN";
 
   // get employeeName dari local storage
   // cek apakah employeeName memiliki customer ini
@@ -653,7 +659,7 @@ const ViewEditCustomer: React.FC<IProps> = (
 
   return (
     <Fragment>
-      {shareableApprovalStatus.length != 0 && (
+      {!showApprovalSteps && (
         <div ref={statusDivRef} className="status-approval-container">
           <div
             className="status-container"
@@ -678,25 +684,27 @@ const ViewEditCustomer: React.FC<IProps> = (
                 </span>
               </div>
 
-              <div className="information-container">
+              <div
+                className="information-container"
+                style={{ alignSelf: "start" }}
+              >
                 <div className="circle-information"></div>
 
                 {shareableRequestStatus == "PENDING_DIRECTORATE" && (
                   <p className="margin-0">Waiting Approval Director</p>
                 )}
 
-                {shareableRequestStatus == "PENDING_ADMIN" ||
-                  (shareableRequestStatus == "ASSIGN" && (
-                    <p className="margin-0">Approved Director</p>
-                  ))}
+                {(shareableRequestStatus == "PENDING_ADMIN" ||
+                  shareableRequestStatus == "ASSIGN") && (
+                  <p className="margin-0">Approved Director</p>
+                )}
 
                 {shareableRequestStatus == "REJECTED_DIRECTORATE" && (
                   <p className="margin-0">Rejected Director</p>
                 )}
 
                 <p className="margin-0" style={{ fontWeight: "bold" }}>
-                  {shareableApprovalStatus?.approvedDirectorateBy ||
-                    employeeName}
+                  {shareableApprovalStatus?.approvedDirectorateBy}
                 </p>
                 <span style={{ color: "grey" }}>
                   {shareableRequestStatus == "PENDING_DIRECTORATE" && (
@@ -709,16 +717,13 @@ const ViewEditCustomer: React.FC<IProps> = (
                     </>
                   )}
 
-                  {shareableRequestStatus == "PENDING_ADMIN" ||
-                    (shareableRequestStatus == "ASSIGN" && (
-                      <>
-                        <Icon
-                          name="check circle"
-                          style={{ color: "#27D4A5" }}
-                        />
-                        {shareableApprovalStatus?.directorateApprovedDate}
-                      </>
-                    ))}
+                  {(shareableRequestStatus == "PENDING_ADMIN" ||
+                    shareableRequestStatus == "ASSIGN") && (
+                    <>
+                      <Icon name="check circle" style={{ color: "#27D4A5" }} />
+                      {shareableApprovalStatus?.directorateApprovedDate}
+                    </>
+                  )}
 
                   {shareableRequestStatus == "REJECTED_DIRECTORATE" && (
                     <>
@@ -746,15 +751,15 @@ const ViewEditCustomer: React.FC<IProps> = (
               >
                 <div className="circle-information"></div>
 
-                {shareableRequestStatus.includes("PENDING") && (
+                {shareableRequestStatus?.includes("PENDING") && (
                   <p className="margin-0">Waiting Approval Admin</p>
                 )}
 
-                {shareableRequestStatus.includes("ASSIGN") && (
+                {shareableRequestStatus?.includes("ASSIGN") && (
                   <p className="margin-0">Approved Admin</p>
                 )}
 
-                {shareableRequestStatus.includes("REJECTED") && (
+                {shareableRequestStatus?.includes("REJECTED") && (
                   <p className="margin-0">Rejected Admin</p>
                 )}
 
@@ -762,7 +767,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                   {shareableApprovalStatus?.approvedAdminBy}
                 </p>
                 <span style={{ color: "grey" }}>
-                  {shareableRequestStatus.includes("PENDING") && (
+                  {shareableRequestStatus?.includes("PENDING") && (
                     <>
                       <Icon
                         name="exclamation circle"
@@ -772,14 +777,14 @@ const ViewEditCustomer: React.FC<IProps> = (
                     </>
                   )}
 
-                  {shareableRequestStatus.includes("ASSIGN") && (
+                  {shareableRequestStatus == "ASSIGN" && (
                     <>
                       <Icon name="check circle" style={{ color: "#27D4A5" }} />{" "}
                       {shareableApprovalStatus?.adminApprovedDate}
                     </>
                   )}
 
-                  {shareableRequestStatus.includes("REJECTED_DIRECTORATE") && (
+                  {shareableRequestStatus?.includes("REJECTED_DIRECTORATE") && (
                     <>
                       <Icon name="remove circle" style={{ color: "red" }} />{" "}
                       Rejected{" "}
@@ -795,34 +800,6 @@ const ViewEditCustomer: React.FC<IProps> = (
                       )}
                     </>
                   )}
-
-                  {/* {shareableRequestStatus == "PENDING" ? (
-                    <>
-                      <Icon
-                        name="exclamation circle"
-                        style={{ color: "#FFA800" }}
-                      />{" "}
-                      Waiting Approval{" "}
-                    </>
-                  ) : shareableRequestStatus == "APPROVED" ? (
-                    <>
-                      <Icon name="check circle" style={{ color: "#27D4A5" }} />{" "}
-                      {shareableApprovalStatus?.approvalDate}
-                    </>
-                  ) : (
-                    <>
-                      <Icon name="remove circle" style={{ color: "red" }} />{" "}
-                      Rejected,{" "}
-                      <span
-                        className="reject-text"
-                        onClick={() =>
-                          openReason(shareableApprovalStatus?.description)
-                        }
-                      >
-                        Click to see the reason
-                      </span>
-                    </>
-                  )} */}
                 </span>
               </div>
 

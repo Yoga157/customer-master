@@ -3,7 +3,7 @@ import { Table, Dropdown, Icon } from "semantic-ui-react";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
-import * as CustomerSettingACtion from "stores/customer-setting/CustomerActivityActions";
+import * as CustomerSettingAction from "stores/customer-setting/CustomerActivityActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import "./CustomerTableRowStyle.scss";
 import ClaimFormEdit from "../../modal/modal-claim-edit/FormClaim";
@@ -77,7 +77,8 @@ const CustomerTableRow: React.FC<IProps> = (
   };
 
   const onApproveRequestAccount = useCallback((): void => {
-    let isDirectorate = isSubordinate(rowData.salesHistory?.salesKey);
+    let isDirectorate =
+      isSubordinate(rowData.salesHistory?.salesKey) && role != "Admin";
 
     dispatch(
       ModalFirstLevelActions.OPEN(
@@ -85,7 +86,7 @@ const CustomerTableRow: React.FC<IProps> = (
           rowData={[rowData]}
           isDirectorate={isDirectorate}
           isAdmin={!isDirectorate}
-          refreshFunc={CustomerSettingACtion.requestNoNameAcc}
+          refreshFunc={CustomerSettingAction.requestNoNameAcc}
         />,
         ModalSizeEnum.Tiny
       )
