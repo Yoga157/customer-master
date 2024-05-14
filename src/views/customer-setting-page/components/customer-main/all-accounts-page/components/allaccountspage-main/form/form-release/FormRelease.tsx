@@ -61,7 +61,6 @@ const ReleaseAccount: React.FC<IProps> = (
     dispatch(ModalAction.CLOSE());
 
     if (filterData != undefined) {
-      console.log(filterData);
       dispatch(
         CustomerSettingAct.requestSearchAllAcc(
           activePage,

@@ -144,7 +144,9 @@ const ModalAcceptRequestShareableAccount: React.FC<IProps> = (
           <span className="text-bold">
             {customer.shareableApprovalStatus.requestedBy}{" "}
           </span>
-          <span>from CSS</span>
+          <span>
+            from {customer.shareableApprovalStatus.requestedDirectorate}
+          </span>
         </span>
       </div>
 

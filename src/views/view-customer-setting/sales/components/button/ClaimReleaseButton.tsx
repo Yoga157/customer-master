@@ -29,7 +29,20 @@ const ClaimReleaseButton: React.FC<IProps> = (
     isEmployeeRequestShareable,
     role,
   } = props;
+
   const userLogin: any = JSON.parse(localStorage.getItem("userLogin"));
+
+  const isSubordinate = (employeeKey: any) => {
+    if (employeeKey != undefined) {
+      let foundEmployee = userLogin.hirarki.find(
+        (obj) => obj.employeeID === employeeKey
+      );
+      return foundEmployee && userLogin.employeeKey != foundEmployee.employeeID
+        ? true
+        : false;
+    }
+    return false;
+  };
 
   /** Claim Account */
   const onClaimAccount = async () => {
@@ -55,13 +68,14 @@ const ClaimReleaseButton: React.FC<IProps> = (
   };
 
   /** Request Shareable Account */
-  const onAcceptRequestShareableAccount = async () => {
+  const onAcceptRequestAccount = async (isDirectorate, isAdmin) => {
     dispatch(
       ModalNoPaddingFirstLevelActions.OPEN(
-        <ModalAcceptRequestShareableAccount customer={customer}
-          isDirectorate={false}
-          isAdmin={false}
-          />,
+        <ModalAcceptRequestShareableAccount
+          customer={customer}
+          isDirectorate={isDirectorate}
+          isAdmin={isAdmin}
+        />,
         ModalSizeEnum.Small
       )
     );
@@ -70,7 +84,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
   return (
     <Fragment>
       {/* claim no name account */}
-      {accountStatus == "No Name Account" && role?.toUpperCase() == "SALES" && (
+      {/* {accountStatus == "No Name Account" && role?.toUpperCase() == "SALES" && (
         <Button
           color="yellow"
           size="small"
@@ -80,7 +94,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
           <Icon name="check circle" />
           Claim Account
         </Button>
-      )}
+      )} */}
 
       {/* release named account */}
       {accountStatus == "Named Account" &&
@@ -133,7 +147,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
         )}
 
       {/* already had request */}
-      {accountStatus == "Named Account" &&
+      {/* {accountStatus == "Named Account" &&
         !isEmployeeOwnCustomer &&
         !isEmployeeRequestShareable &&
         customer.shareableApprovalStatus.length != 0 &&
@@ -143,7 +157,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
             <Icon name="wait" />
             Already had pending request
           </Button>
-        )}
+        )} */}
 
       {/* release shareable account */}
       {accountStatus == "Shareable Account" &&
@@ -161,7 +175,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
         )}
 
       {/* claim shareable account */}
-      {accountStatus == "Shareable Account" &&
+      {/* {accountStatus == "Shareable Account" &&
         !isEmployeeOwnCustomer &&
         role?.toUpperCase() == "SALES" && (
           <Button
@@ -173,7 +187,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
             <Icon name="check circle" />
             Claim Account
           </Button>
-        )}
+        )} */}
 
       {/* already claimed shareable account */}
       {accountStatus == "Named Account" &&
@@ -186,27 +200,35 @@ const ClaimReleaseButton: React.FC<IProps> = (
           </Button>
         )}
 
-      {/* accept shareable request */}
-      {(accountStatus == "Named Account" &&
-        customer.shareableApprovalStatus.status?.toUpperCase() ==
-          "PENDING_DIRECTORATE") ||
-        (customer.shareableApprovalStatus.status?.toUpperCase() ==
-          "PENDING_ADMIN" && (
-          <div className="accept-shareable-container">
-            <p className="text-request-by">
-              Request by {customer.shareableApprovalStatus?.requestedBy}
-            </p>
-            <Button
-              color="yellow"
-              size="small"
-              type="button"
-              onClick={() => onAcceptRequestShareableAccount()}
-            >
-              <Icon name="check circle" style={{ color: "black" }} />
-              Approve/Reject Join Request
-            </Button>
-          </div>
-        ))}
+      {/* accept pending request by directorate */}
+      {customer.shareableApprovalStatus.status?.toUpperCase() ==
+        "PENDING_DIRECTORATE" &&
+        isSubordinate(customer.shareableApprovalStatus?.requestedUserKey) && (
+          <Button
+            color="yellow"
+            size="small"
+            type="button"
+            onClick={() => onAcceptRequestAccount(true, false)}
+          >
+            <Icon name="check circle" style={{ color: "black" }} />
+            Approve/Reject Join Request
+          </Button>
+        )}
+
+      {/* accept pending requets by admin */}
+      {customer.shareableApprovalStatus.status?.toUpperCase() ==
+        "PENDING_ADMIN" &&
+        role?.toUpperCase() == "ADMIN" && (
+          <Button
+            color="yellow"
+            size="small"
+            type="button"
+            onClick={() => onAcceptRequestAccount(false, true)}
+          >
+            <Icon name="check circle" style={{ color: "black" }} />
+            Approve/Reject Join Request
+          </Button>
+        )}
     </Fragment>
   );
 };

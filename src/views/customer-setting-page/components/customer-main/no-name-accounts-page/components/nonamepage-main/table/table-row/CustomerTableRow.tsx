@@ -3,7 +3,7 @@ import { Table, Dropdown, Icon } from "semantic-ui-react";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
-import * as CustomerSettingACtion from "stores/customer-setting/CustomerActivityActions";
+import * as CustomerSettingAction from "stores/customer-setting/CustomerActivityActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import "./CustomerTableRowStyle.scss";
 import ClaimFormEdit from "../../modal/modal-claim-edit/FormClaim";
@@ -60,21 +60,6 @@ const CustomerTableRow: React.FC<IProps> = (
     });
   };
 
-  const onApproveShareable = useCallback((): void => {
-    dispatch(
-      ModalFirstLevelActions.OPEN(
-        <ApproveReq
-          rowData={[rowData]}
-          isDirectorate={true}
-          isAdmin={false}
-          refreshFunc={CustomerSettingACtion.requestNoNameAcc()}
-        />,
-        ModalSizeEnum.Tiny
-      )
-    );
-    getRowData([]);
-  }, [dispatch, rowData]);
-
   // mengecek apakah sales yang melakukan request ada di hirarki
   const isSubordinate = (employeeKey: any) => {
     let userLogin = JSON.parse(localStorage.getItem("userLogin"));
@@ -83,11 +68,31 @@ const CustomerTableRow: React.FC<IProps> = (
       let foundEmployee = userLogin.hirarki.find(
         (obj) => obj.employeeID === employeeKey
       );
-      return foundEmployee ? true : false;
+      return foundEmployee && userLogin.employeeKey != foundEmployee.employeeID
+        ? true
+        : false;
     }
 
     return false;
   };
+
+  const onApproveRequestAccount = useCallback((): void => {
+    let isDirectorate =
+      isSubordinate(rowData.salesHistory?.salesKey) && role != "Admin";
+
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ApproveReq
+          rowData={[rowData]}
+          isDirectorate={isDirectorate}
+          isAdmin={!isDirectorate}
+          refreshFunc={CustomerSettingAction.requestNoNameAcc}
+        />,
+        ModalSizeEnum.Tiny
+      )
+    );
+    getRowData([]);
+  }, [dispatch, rowData]);
 
   return (
     <Fragment>
@@ -106,6 +111,7 @@ const CustomerTableRow: React.FC<IProps> = (
                         : false
                     }
                     disabled={
+                      role === "Admin" ||
                       rowData.industryClass === null ||
                       rowData.salesHistory?.status === "PENDING_DIRECTORATE" ||
                       rowData.salesHistory?.status === "PENDING_ADMIN"
@@ -140,7 +146,7 @@ const CustomerTableRow: React.FC<IProps> = (
                             <Dropdown.Item
                               text="Approve Claim Request"
                               icon="circle check"
-                              onClick={onApproveShareable}
+                              onClick={onApproveRequestAccount}
                             />
                           </>
                         )}
@@ -152,7 +158,26 @@ const CustomerTableRow: React.FC<IProps> = (
                     </>
                   )}
 
-                  {(role === "Marketing" || role === "Admin") && (
+                  {role === "Admin" && (
+                    <>
+                      <Dropdown.Item
+                        text="View/Edit"
+                        icon="edit outline"
+                        onClick={() => onEdit(rowData.customerID)}
+                      />
+                      {rowData.salesHistory?.status == "PENDING_ADMIN" && (
+                        <>
+                          <Dropdown.Item
+                            text="Approve Claim Request"
+                            icon="circle check"
+                            onClick={onApproveRequestAccount}
+                          />
+                        </>
+                      )}
+                    </>
+                  )}
+
+                  {role === "Marketing" && (
                     <Dropdown.Item
                       text="View/Edit"
                       icon="edit outline"

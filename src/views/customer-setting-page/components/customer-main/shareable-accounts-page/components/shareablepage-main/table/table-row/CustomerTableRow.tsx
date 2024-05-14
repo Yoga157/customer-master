@@ -3,10 +3,12 @@ import { Table, Dropdown, Icon } from "semantic-ui-react";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as CustomerSettingAction from "stores/customer-setting/CustomerActivityActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import "./CustomerTableRowStyle.scss";
 import ClaimForm from "../../form/modal-claim/ModalClaim";
 import ReleaseForm from "../../form/modal-release/ModalRelease";
+import ApproveReq from "../../../../../named-accounts-page/components/namepage-main/modal/modal-approverequest/FormApproveShareable";
 import { useHistory } from "react-router-dom";
 
 interface IProps {
@@ -73,6 +75,39 @@ const CustomerTableRow: React.FC<IProps> = (
     getRowData([]);
   }, [dispatch, rowData]);
 
+  const isSubordinate = (employeeKey: any) => {
+    let userLogin = JSON.parse(localStorage.getItem("userLogin"));
+
+    if (employeeKey != undefined) {
+      let foundEmployee = userLogin.hirarki.find(
+        (obj) => obj.employeeID === employeeKey
+      );
+      return foundEmployee && userLogin.employeeKey != foundEmployee.employeeID
+        ? true
+        : false;
+    }
+
+    return false;
+  };
+
+  const onApproveRequestAccount = useCallback((): void => {
+    let isDirectorate =
+      isSubordinate(rowData.salesHistory?.salesKey) && role != "Admin";
+
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ApproveReq
+          rowData={[rowData]}
+          isDirectorate={isDirectorate}
+          isAdmin={!isDirectorate}
+          refreshFunc={CustomerSettingAction.requestNoNameAcc}
+        />,
+        ModalSizeEnum.Tiny
+      )
+    );
+    getRowData([]);
+  }, [dispatch, rowData]);
+
   const onEdit = (id: number) => {
     history.push({
       pathname: "customer-setting/" + id,
@@ -118,13 +153,42 @@ const CustomerTableRow: React.FC<IProps> = (
                       </>
                     )}
 
-                    {!rowData.salesName.includes(userLogin.fullName) && (
+                    {rowData.salesHistory?.requestedBy ==
+                      userLogin.fullName && (
+                      <Dropdown.Item
+                        text="View/Edit"
+                        icon="edit outline"
+                        onClick={() => onEdit(rowData.customerID)}
+                      />
+                    )}
+
+                    {
                       <Dropdown.Item
                         text="Claim Account"
                         icon="circle check"
                         onClick={onClaimAccount}
+                        disabled={
+                          rowData.salesName.includes(userLogin.fullName) ||
+                          rowData.salesHistory?.status.includes("PENDING")
+                        }
                       />
-                    )}
+                    }
+
+                    {rowData.salesHistory?.status == "PENDING_DIRECTORATE" &&
+                      isSubordinate(rowData.salesHistory?.salesKey) && (
+                        <>
+                          <Dropdown.Item
+                            text="View/Edit"
+                            icon="edit outline"
+                            onClick={() => onEdit(rowData.customerID)}
+                          />
+                          <Dropdown.Item
+                            text="Approve Claim Request"
+                            icon="circle check"
+                            onClick={onApproveRequestAccount}
+                          />
+                        </>
+                      )}
 
                     {rowData.status !== "CANCEL" &&
                       rowData.CustomerID === "" && (
@@ -133,7 +197,27 @@ const CustomerTableRow: React.FC<IProps> = (
                   </>
                 )}
 
-                {(role === "Admin" || role === "Marketing") && (
+                {role === "Admin" && (
+                  <>
+                    <Dropdown.Item
+                      text="View/Edit"
+                      icon="edit outline"
+                      onClick={() => onEdit(rowData.customerID)}
+                    />
+
+                    {rowData.salesHistory?.status == "PENDING_ADMIN" && (
+                      <>
+                        <Dropdown.Item
+                          text="Approve Claim Request"
+                          icon="circle check"
+                          onClick={onApproveRequestAccount}
+                        />
+                      </>
+                    )}
+                  </>
+                )}
+
+                {role === "Marketing" && (
                   <Dropdown.Item
                     text="View/Edit"
                     icon="edit outline"

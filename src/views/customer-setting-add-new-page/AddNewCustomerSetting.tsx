@@ -59,6 +59,10 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   const tableData = useSelector((state: IStore) =>
     selectReqCustomerNewAccount(state)
   );
+  const industryClassOptions = useSelector((state: IStore) =>
+    selectIndustryOptions(state)
+  );
+
   const history = useHistory();
   const [searchedCustomerName, setSearchedCustomerName] = useState("");
   const [searchedPicName, setSearcedhPicName] = useState("");
@@ -123,7 +127,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   //     value: "Industry2",
   //   },
   // ];
-
+  
   const industryClassOptions = useSelector((state: IStore) =>
     selectIndustry(state)
   );
@@ -228,6 +232,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
 
   useEffect(() => {
     dispatch(CustomerMasterActions.clearResult());
+    dispatch(CustomerMasterActions.getIndustryClass());
   }, []);
 
   useEffect(() => {
