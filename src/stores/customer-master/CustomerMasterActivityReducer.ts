@@ -10,8 +10,9 @@ import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 export const initialState: ICustomerMasterState = {
   data: new CustomerMasterModel({}),
   customerNewByGenId: new ResultActions({}),
+  industryClassification: new ResultActions({}),
   customerMoreDetails: new ResultActions({}),
-  industryClass: new ResultActions({}),
+  accountHistoryDetailsBygenId: new ResultActions({}),
   error: false,
   refreshPage: false,
   resultActions: new ResultActions({}),
@@ -191,14 +192,33 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
     };
   },
 
-  [CustomerMasterActions.REQUEST_INDUSTRY_CLASS_FINISHED](
+  [CustomerMasterActions.REQUEST_INDUSTRY_CLASSIFICATION_FINISHED](
     state: ICustomerMasterState,
     action: IAction<ResultActions>
   ): ICustomerMasterState {
-    console.log(action.payload);
     return {
       ...state,
-      industryClass: action.payload!,
+      industryClassification: action.payload!,
+    };
+  },
+
+  [CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_GEN_ID_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    return {
+      ...state,
+      accountHistoryDetailsBygenId: action.payload!,
+    };
+  },
+
+  [CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_CUST_ID_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    return {
+      ...state,
+      accountHistoryDetailsBygenId: action.payload!,
     };
   },
 });

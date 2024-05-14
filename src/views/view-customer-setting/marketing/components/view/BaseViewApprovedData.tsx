@@ -28,9 +28,12 @@ import * as RelatedCustomerActions from "stores/related-customer/RelatedCustomer
 import {
   selectAddressOfficeOptions,
   selectCustomerMoreDetails,
+  selectAccountHistory,
 } from "selectors/customer-master/CustomerMasterSelector";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import ModalViewNpwp from "../modal/view-npwp/ModalViewNpwp";
+import { selectIndustry } from "selectors/customer-master/CustomerMasterSelector";
+import * as IndustryClassOptionsAction from "stores/customer-master/CustomerMasterActivityActions";
 
 interface IProps {
   isView?: boolean;
@@ -79,16 +82,24 @@ const BaseViewApprovedData: React.FC<IProps> = (
   const onChangeIndustryClassification = (data: any) => {
     setIndustryClassification(data);
   };
-  const industryClassificationOptions = [
-    {
-      text: "Manufacturing",
-      value: "Manufacturing",
-    },
-    {
-      text: "Industry",
-      value: "Industry",
-    },
-  ];
+  // const industryClassificationOptions = [
+  //   {
+  //     text: "Manufacturing",
+  //     value: "Manufacturing",
+  //   },
+  //   {
+  //     text: "Industry",
+  //     value: "Industry",
+  //   },
+  // ];
+
+  const industryClassificationOptions = useSelector((state: IStore) =>
+    selectIndustry(state)
+  );
+
+  useEffect(() => {
+    dispatch(IndustryClassOptionsAction.getIndustryClassification());
+  }, []);
 
   // npwp
   const openViewNPWP = useCallback(
@@ -331,20 +342,42 @@ const BaseViewApprovedData: React.FC<IProps> = (
     },
   ];
 
-  let accountActivityHistory = [
-    {
-      activity: "Created",
-      employeeName: "Jenny Wilson",
-      time: "02-02-2024 11:30 AM",
-      reason: null,
-    },
-    {
-      activity: "Rejected",
-      employeeName: "Jenny Wilson",
-      time: "02-02-2024 11:30 AM",
-      reason: "Lorem ipsum",
-    },
-  ];
+  // let accountActivityHistory = [
+  //   {
+  //     activity: "Created",
+  //     employeeName: "Jenny Wilson",
+  //     time: "02-02-2024 11:30 AM",
+  //     reason: null,
+  //   },
+  //   {
+  //     activity: "Rejected",
+  //     employeeName: "Jenny Wilson",
+  //     time: "02-02-2024 11:30 AM",
+  //     reason: "Lorem ipsum",
+  //   },
+  // ];
+
+  const accountActivityHistory = useSelector((state: IStore) =>
+    selectAccountHistory(state)
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (status === "NOT_NEW") {
+        await dispatch(
+          CustomerMasterActions.requestAccountHistoryByCustId(
+            customerId ? customerId : Number(id)
+          )
+        );
+      } else {
+        await dispatch(
+          CustomerMasterActions.requestAccountHistoryByGenId(Number(id))
+        );
+      }
+    };
+
+    fetchData();
+  }, [status, id]);
 
   const isRequesting: boolean = useSelector((state: IStore) =>
     selectRequesting(state, [
@@ -504,9 +537,9 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   render={({ handleSubmit, pristine, invalid }) => (
                     <Form onSubmit={handleSubmit}>
                       <Field
-                        labelName="Industry Classification"
                         name="industryClassification"
                         component={DropdownClearInput}
+                        labelName="Industry Classification"
                         placeholder="Choose class..."
                         options={industryClassificationOptions}
                         onChanged={onChangeIndustryClassification}
@@ -955,29 +988,35 @@ const BaseViewApprovedData: React.FC<IProps> = (
             <p className="bold margin-0" style={{ padding: "1rem" }}>
               ACCOUNT ACTIVITY HISTORY
             </p>
-
             <Divider style={{ margin: 0 }}></Divider>
 
-            {accountActivityHistory.map((data) => (
-              <p
-                style={{
-                  padding: "0 1rem",
-                  marginBottom: "0",
-                  marginTop: "14px",
-                }}
-              >
-                {data.activity} by <b>{data.employeeName}</b> on {data.time}{" "}
-                <span
+            {accountActivityHistory.length > 0 &&
+              accountActivityHistory.map((data) => (
+                <p
                   style={{
-                    fontStyle: "italic",
-                    fontSize: "small",
+                    padding: "0 1rem",
+                    marginBottom: "0",
+                    marginTop: "14px",
                   }}
                 >
-                  {data.reason && `- ${data.reason}`}
-                </span>
+                  {/* {data.description}{" "} */}
+                  {data.description.slice(0, data.description.indexOf(" ") + 3)}
+                  <span style={{ fontWeight: "bold", color: "black" }}>
+                    {data.description.slice(
+                      data.description.indexOf(" ") + 3,
+                      data.description.indexOf("on")
+                    )}
+                  </span>
+                  {data.description.slice(data.description.indexOf("on"))}
+                </p>
+              ))}
+            {accountActivityHistory.length === 0 && (
+              <p
+                style={{ textAlign: "center", margin: "1rem", color: "black" }}
+              >
+                No activity history found.
               </p>
-            ))}
-            <p></p>
+            )}
           </div>
         </div>
       </LoadingIndicator>

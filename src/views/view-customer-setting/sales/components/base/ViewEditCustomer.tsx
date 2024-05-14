@@ -79,6 +79,8 @@ import ClaimReleaseButton from "../button/ClaimReleaseButton";
 import CustomerSettingPutModel from "stores/customer-setting/models/CustomerSettingPutModel";
 import ModalShowRejectReason from "../modal/modal-show-reject-reason/ModalShowRejectReason";
 import ViewApprovedData from "views/view-customer-setting/marketing/ViewApprovedData";
+import { selectIndustry } from "selectors/customer-master/CustomerMasterSelector";
+import * as IndustryClassOptionsAction from "stores/customer-master/CustomerMasterActivityActions";
 
 interface IProps {
   customer: {
@@ -153,17 +155,27 @@ const ViewEditCustomer: React.FC<IProps> = (
   };
 
   // industry classification
+  // const [industryClass, setIndustryClass] = useState("");
+  // const industryClassOptions = [
+  //   {
+  //     text: "Manufacturing",
+  //     value: "Manufacturing",
+  //   },
+  //   {
+  //     text: "Industry",
+  //     value: "Industry",
+  //   },
+  // ];
+
   const [industryClass, setIndustryClass] = useState("");
-  const industryClassOptions = [
-    {
-      text: "Manufacturing",
-      value: "Manufacturing",
-    },
-    {
-      text: "Industry",
-      value: "Industry",
-    },
-  ];
+
+  const industryClassOptions = useSelector((state: IStore) =>
+    selectIndustry(state)
+  );
+
+  useEffect(() => {
+    dispatch(IndustryClassOptionsAction.getIndustryClassification());
+  }, []);
 
   const onSubmitIndustryClass = async (e) => {};
 
@@ -851,6 +863,21 @@ const ViewEditCustomer: React.FC<IProps> = (
           <Divider style={{ marginTop: 0 }}></Divider>
 
           <LoadingIndicator isActive={isRequesting}>
+            <div className="container-padding-bu">
+              <div className="container-BU">
+                <span
+                  className="p-BU"
+                  style={{
+                    color: "#55637A",
+                    fontWeight: 400,
+                    fontSize: "1.1rem",
+                  }}
+                >
+                  This account industry classification not on your BU list. You
+                  will need cross BU approval to join in this account.
+                </span>
+              </div>
+            </div>
             <div className="padding-horizontal customer-search-container">
               <div className="customer-data-container">
                 <label
@@ -996,6 +1023,29 @@ const ViewEditCustomer: React.FC<IProps> = (
                     )}
                   />
                 )}
+              </div>
+
+              <div className="customer-data-container">
+                <div>
+                  <label className="customer-data-label">Cap Customer</label>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    <p className="margin-0">OFF</p>
+                    <Checkbox
+                      toggle
+                      checked={pmoCustomer == "TRUE" ? true : false}
+                      onChange={() => handlePmoCustomer()}
+                      className="toggle-margin"
+                      disabled={role.toUpperCase() == "SALES"}
+                    ></Checkbox>
+                    <p className="margin-0">ON</p>
+                  </div>
+                </div>
               </div>
 
               <div>

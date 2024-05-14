@@ -254,17 +254,50 @@ export const deletePIC = (id: number): any => {
   };
 };
 
-export const REQUEST_INDUSTRY_CLASS: string =
-  "CustomerMasterActions.REQUEST_INDUSTRY_CLASS";
-export const REQUEST_INDUSTRY_CLASS_FINISHED: string =
-  "CustomerMasterActions.REQUEST_INDUSTRY_CLASS_FINISHED";
+export const REQUEST_INDUSTRY_CLASSIFICATION: string =
+  "CustomerMasterActions.REQUEST_INDUSTRY_CLASSIFICATION";
+export const REQUEST_INDUSTRY_CLASSIFICATION_FINISHED: string =
+  "CustomerMasterActions.REQUEST_INDUSTRY_CLASSIFICATION_FINISHED";
 
-export const getIndustryClass = (): any => {
+export const getIndustryClassification = (): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<ResultActions>(
       dispatch,
-      REQUEST_INDUSTRY_CLASS,
-      CustomerMasterEffect.getIndustryClass
+      REQUEST_INDUSTRY_CLASSIFICATION,
+      CustomerMasterEffect.getIndustryClassification
+    );
+  };
+};
+
+//Account History
+export const REQUEST_ACCOUNT_HISTORY_BY_GEN_ID: string =
+  "CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_GEN_ID";
+export const REQUEST_ACCOUNT_HISTORY_BY_GEN_ID_FINISHED: string =
+  "CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_GEN_ID_FINISHED";
+
+export const requestAccountHistoryByGenId = (genId: number): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      REQUEST_ACCOUNT_HISTORY_BY_GEN_ID,
+      CustomerMasterEffect.requestAccountHistoryByGenId,
+      genId
+    );
+  };
+};
+
+export const REQUEST_ACCOUNT_HISTORY_BY_CUST_ID: string =
+  "CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_CUST_ID";
+export const REQUEST_ACCOUNT_HISTORY_BY_CUST_ID_FINISHED: string =
+  "CustomerMasterActionsREQUEST_ACCOUNT_HISTORY_BY_CUST_ID_FINISHED";
+
+export const requestAccountHistoryByCustId = (custId: number): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      REQUEST_ACCOUNT_HISTORY_BY_CUST_ID,
+      CustomerMasterEffect.requestAccountHistoryByCustId,
+      custId
     );
   };
 };

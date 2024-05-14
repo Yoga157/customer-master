@@ -12,6 +12,8 @@ import {
   RichTextEditor,
   TextInput,
   SelectInput,
+  DropdownInput,
+  DropdownClearInput,
   TextAreaInput,
 } from "views/components/UI";
 import environment from "environment";
@@ -26,7 +28,14 @@ import { Form as FinalForm, Field } from "react-final-form";
 import { useHistory } from "react-router-dom";
 import TableRequestNewCustomer from "./components/table/table-request-new-customer/TableRequestNewCustomer";
 import { reqNewCustomerData } from "./data";
-import { Form, Grid, Divider, Segment, Icon } from "semantic-ui-react";
+import {
+  Form,
+  Grid,
+  Divider,
+  Segment,
+  Icon,
+  Dropdown,
+} from "semantic-ui-react";
 import { FileUpload } from "views/components/UI";
 import { selectReqCustomerNewAccount } from "selectors/customer-master/CustomerMasterSelector";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
@@ -35,7 +44,8 @@ import "./addNewCustomerSetting.scss";
 import CustomerMasterPostModel from "stores/customer-master/models/CustomerMasterPostModel";
 import RouteEnum from "constants/RouteEnum";
 import ModalEditViewNpwp from "./components/modal/viewedit-npwp/ModalViewEditNpwp";
-import { selectIndustryOptions } from "selectors/select-options";
+import { selectIndustry } from "selectors/customer-master/CustomerMasterSelector";
+import * as IndustryClassOptionsAction from "stores/customer-master/CustomerMasterActivityActions";
 
 interface IProps {
   history: any;
@@ -117,6 +127,14 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   //     value: "Industry2",
   //   },
   // ];
+  
+  const industryClassOptions = useSelector((state: IStore) =>
+    selectIndustry(state)
+  );
+
+  useEffect(() => {
+    dispatch(IndustryClassOptionsAction.getIndustryClassification());
+  }, []);
 
   const onSubmitHandler = async (data: any) => {
     const userId: any = localStorage.getItem("userLogin");
@@ -484,7 +502,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                             <Grid.Column width={4} className="FullGrid767">
                               <Field
                                 name="industryClassification"
-                                component={SelectInput}
+                                component={DropdownClearInput}
                                 labelName="Industry Classification"
                                 allowAdditions={true}
                                 placeholder="Pick one classification"
@@ -615,8 +633,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 placeholder="Type tax id number here..."
                                 mandatory={
                                   JSON.parse(userId).role === "Sales"
-                                    ? true
-                                    : false
+                                    ? false
+                                    : true
                                 }
                               />
                             </Grid.Column>

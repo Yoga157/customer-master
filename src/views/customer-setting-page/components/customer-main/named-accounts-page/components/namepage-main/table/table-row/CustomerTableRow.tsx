@@ -266,9 +266,9 @@ const CustomerTableRow: React.FC<IProps> = (
             </p>{" "}
           </div>
         </Table.Cell>
-        <Table.Cell textAlign="center">{rowData.JDECustId}</Table.Cell>
+        <Table.Cell textAlign="center">{rowData.jdeCustomerID}</Table.Cell>
         <Table.Cell textAlign="center">{rowData.customerID}</Table.Cell>
-        <Table.Cell textAlign="center">{rowData.IndustryClass}</Table.Cell>
+        <Table.Cell textAlign="center">{rowData.industryClass}</Table.Cell>
         <Table.Cell>{rowData.customerCategory}</Table.Cell>
         <Table.Cell>
           <div

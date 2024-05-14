@@ -178,10 +178,33 @@ export const deletePIC = async (
   return EffectUtility.delToModel<ResultActions>(ResultActions, endpoint);
 };
 
-export const getIndustryClass = async (
+export const getIndustryClassification = async (): Promise<
+  ResultActions | HttpErrorResponseModel
+> => {
+  const controllerName = `CustomerSetting/GetIndustryClass`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
+};
+
+//Account History
+export const requestAccountHistoryByGenId = async (
+  genId: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `AccountActivityHistory/GetAccountActivityHistoryByID?customerGenID=${genId}`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
+};
+
+export const requestAccountHistoryByCustId = async (
   custId: number
 ): Promise<ResultActions | HttpErrorResponseModel> => {
-  const controllerName = `CustomerSetting/GetIndustryClass`;
+  const controllerName = `AccountActivityHistory/GetAccountActivityHistoryByID?customerId=${custId}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName
