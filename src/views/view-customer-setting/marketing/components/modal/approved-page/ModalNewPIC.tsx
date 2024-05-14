@@ -50,10 +50,8 @@ const ModalNewPIC: React.FC<IProps> = (
   const addressOptions = useSelector((state: IStore) =>
     selectAddressOfficeOptions(state)
   );
-  console.log(addressOptions);
 
   const onSubmitPIC = async (values) => {
-    console.log(values);
     const userId: any = localStorage.getItem("userLogin");
 
     const RequestPIC = new PostPeopleInChargerModel(values);
@@ -67,7 +65,7 @@ const ModalNewPIC: React.FC<IProps> = (
       RequestPIC.picAddress = values.officeAddress;
       RequestPIC.modifyDate = new Date();
       RequestPIC.modifyUserID = JSON.parse(userId).employeeID;
-      // console.log(RequestPIC);
+
       await dispatch(CustomerMasterActions.updatePIC(RequestPIC, data.id));
     } else {
       RequestPIC.customerGenID = customerGenId;
@@ -111,7 +109,6 @@ const ModalNewPIC: React.FC<IProps> = (
       dispatch(ModalAction.CLOSE());
     }
   };
-  console.log("role", userId);
 
   return (
     <Fragment>

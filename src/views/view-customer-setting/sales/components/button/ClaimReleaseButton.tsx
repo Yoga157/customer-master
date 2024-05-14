@@ -29,7 +29,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
     isEmployeeRequestShareable,
     role,
   } = props;
-  console.log(customer.shareableApprovalStatus);
+
   const userLogin: any = JSON.parse(localStorage.getItem("userLogin"));
 
   const isSubordinate = (employeeKey: any) => {

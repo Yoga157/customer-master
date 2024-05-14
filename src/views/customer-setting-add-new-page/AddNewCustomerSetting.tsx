@@ -52,7 +52,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   const industryClassOptions = useSelector((state: IStore) =>
     selectIndustryOptions(state)
   );
-  console.log(industryClassOptions);
+
   const history = useHistory();
   const [searchedCustomerName, setSearchedCustomerName] = useState("");
   const [searchedPicName, setSearcedhPicName] = useState("");

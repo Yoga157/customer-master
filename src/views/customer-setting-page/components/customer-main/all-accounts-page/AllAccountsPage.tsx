@@ -226,7 +226,6 @@ const AllAccountsPage: React.FC<IProps> = (
     }
   }, [dispatch, isSuccess]);
 
-  // console.log("Nilai Allacount", isSuccess);
   useEffect(() => {
     if (isSuccess) {
       openModal();

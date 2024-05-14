@@ -54,8 +54,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     selectCustomerMoreDetails(state)
   );
 
-  // console.log(customer.npwpCard?.imageFile);
-
   useEffect(() => {
     if (status == "NOT_NEW") {
       dispatch(

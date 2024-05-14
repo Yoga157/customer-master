@@ -153,14 +153,26 @@ const CustomerTableRow: React.FC<IProps> = (
                       </>
                     )}
 
-                    {!rowData.salesName.includes(userLogin.fullName) &&
-                      !rowData.salesHistory?.status.includes("PENDING") && (
-                        <Dropdown.Item
-                          text="Claim Account"
-                          icon="circle check"
-                          onClick={onClaimAccount}
-                        />
-                      )}
+                    {rowData.salesHistory?.requestedBy ==
+                      userLogin.fullName && (
+                      <Dropdown.Item
+                        text="View/Edit"
+                        icon="edit outline"
+                        onClick={() => onEdit(rowData.customerID)}
+                      />
+                    )}
+
+                    {
+                      <Dropdown.Item
+                        text="Claim Account"
+                        icon="circle check"
+                        onClick={onClaimAccount}
+                        disabled={
+                          rowData.salesName.includes(userLogin.fullName) ||
+                          rowData.salesHistory?.status.includes("PENDING")
+                        }
+                      />
+                    }
 
                     {rowData.salesHistory?.status == "PENDING_DIRECTORATE" &&
                       isSubordinate(rowData.salesHistory?.salesKey) && (
@@ -185,7 +197,27 @@ const CustomerTableRow: React.FC<IProps> = (
                   </>
                 )}
 
-                {(role === "Admin" || role === "Marketing") && (
+                {role === "Admin" && (
+                  <>
+                    <Dropdown.Item
+                      text="View/Edit"
+                      icon="edit outline"
+                      onClick={() => onEdit(rowData.customerID)}
+                    />
+
+                    {rowData.salesHistory?.status == "PENDING_ADMIN" && (
+                      <>
+                        <Dropdown.Item
+                          text="Approve Claim Request"
+                          icon="circle check"
+                          onClick={onApproveRequestAccount}
+                        />
+                      </>
+                    )}
+                  </>
+                )}
+
+                {role === "Marketing" && (
                   <Dropdown.Item
                     text="View/Edit"
                     icon="edit outline"

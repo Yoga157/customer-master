@@ -116,7 +116,6 @@ const ViewEditCustomer: React.FC<IProps> = (
   const { id } = useParams<routeParams>();
   const { customer, role } = props;
   const customerID = Number(id);
-  // console.log(customer);
 
   /** Customer data */
   const accountStatus = customer.accountStatus;
@@ -646,7 +645,6 @@ const ViewEditCustomer: React.FC<IProps> = (
 
   const openReason = useCallback(
     (desc: string): void => {
-      console.log(desc);
       dispatch(
         ModalFirstLevelActions.OPEN(
           <ModalShowRejectReason description={desc} />,
