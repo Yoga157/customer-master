@@ -46,7 +46,6 @@ const FilterCustomer: React.FC<{
   );
 
   const onResultSelectSales = (data: any): any => {
-    console.log(data);
     let checkSales = salesAssignArray.find((obj) => obj.sales === data.salesID);
     if (checkSales === undefined && data.salesID != undefined) {
       setSalesAssignArray([
@@ -56,7 +55,7 @@ const FilterCustomer: React.FC<{
           salesID: data.salesID,
         },
       ]);
-      console.log(data.salesID);
+
       setSalesFilter([...salesFilter, data.salesID.toString()]);
     }
   };

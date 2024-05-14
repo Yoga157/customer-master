@@ -68,9 +68,6 @@ const ModalNewRelatedCustomer: React.FC<IProps> = (
   };
 
   const onSubmitCustomerName = async (values) => {
-    console.log(customerData);
-    console.log(values);
-
     const RelatedCustomer = new RelatedCustomerPostModel({});
     RelatedCustomer.relatedCustomerID = customerData.customerID;
     if (!isView) {

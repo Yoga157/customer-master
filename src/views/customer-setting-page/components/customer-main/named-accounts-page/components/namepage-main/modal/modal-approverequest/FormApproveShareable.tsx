@@ -15,7 +15,7 @@ interface IProps {
   rowData: any;
   isDirectorate: boolean;
   isAdmin: boolean;
-  refreshFunc: (page?: any, pageSize?: any, column?: any) => any;
+  refreshFunc: (page?: any, pageSize?: any, column?: any, sorting?: any) => any;
 }
 
 const ApproveShareableReq: React.FC<IProps> = (
@@ -39,7 +39,7 @@ const ApproveShareableReq: React.FC<IProps> = (
       await dispatch(
         CustomerSettingAct.approveRejectClaimAccount(
           (rowData.customerID = props.rowData[j].customerID),
-          (rowData.salesID = props.rowData[j].salesShareableID),
+          (rowData.salesID = props.rowData[j].salesHistory.salesID),
           true,
           (rowData.modifyUserID = userId.employeeID),
           isDirectorate ? userId.employeeID : null,
@@ -48,7 +48,7 @@ const ApproveShareableReq: React.FC<IProps> = (
       );
     }
     dispatch(ModalAction.CLOSE());
-    dispatch(refreshFunc(1, 10, "CustomerID"));
+    dispatch(refreshFunc(1, 10, "CustomerID", "ascending"));
   };
 
   return (

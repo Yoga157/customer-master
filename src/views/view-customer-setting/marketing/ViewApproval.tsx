@@ -41,6 +41,8 @@ const ViewApproval: React.FC = (props) => {
     selectNewCustomerDetailPending(state)
   );
 
+  let userLogin = JSON.parse(localStorage.getItem("userLogin"));
+
   // search keyword
   const [customerName, setCustomerName] = useState(null);
   const [picName, setPicName] = useState(null);
@@ -585,275 +587,297 @@ const ViewApproval: React.FC = (props) => {
                     </div>
                   </div>
 
-                  <Divider></Divider>
+                  {userLogin.role.toUpperCase() == "MARKETING" && (
+                    <>
+                      <Divider></Divider>
 
-                  <div className="padding-horizontal title-button-row">
-                    <p className="grey margin-0 bold text-align-left">
-                      SUGGESTION LIST
-                    </p>
-                  </div>
+                      <div className="padding-horizontal title-button-row">
+                        <p className="grey margin-0 bold text-align-left">
+                          SUGGESTION LIST
+                        </p>
+                      </div>
 
-                  <Divider className="margin-bottom-0"></Divider>
+                      <Divider className="margin-bottom-0"></Divider>
 
-                  <div
-                    className="padding-horizontal"
-                    style={{
-                      backgroundColor: "#FFFB9A",
-                      display: "flex",
-                      flexDirection: "column",
-                      padding: "1rem 0",
-                      width: "100%",
-                    }}
-                  >
-                    <FinalForm
-                      onSubmit={(values: any) => onSearch(values)}
-                      render={({ handleSubmit, pristine, invalid, values }) => (
-                        <Form onSubmit={handleSubmit}>
-                          <div
-                            style={{
-                              backgroundColor: "#FFFB9A",
-                              display: "flex",
-                              flexDirection: "column",
-                              padding: "1rem 0",
-                              width: "100%",
-                            }}
-                          >
-                            <Grid>
-                              <Grid.Row>
-                                {/* <Grid.Column
-                                  width={16}
-                                  mobile={16}
-                                  tablet={16}
-                                  computer={3}
-                                >
-                                  <Field
-                                    name="titleCustomer"
-                                    component={TextInput}
-                                    placeholder="e.g.PT .."
-                                    labelName="Title Customer"
-                                    mandatory={false}
-                                    defaultValue={customer?.titleCustomer}
-                                  />
-                                </Grid.Column> */}
-
-                                <Grid.Column
-                                  width={16}
-                                  mobile={16}
-                                  tablet={16}
-                                  computer={8}
-                                >
-                                  {" "}
-                                  <Field
-                                    name="customerName"
-                                    component={TextInput}
-                                    placeholder="e.g. Berca Hardaya .."
-                                    labelName="Customer Name"
-                                    mandatory={false}
-                                    defaultValue={customer?.customerName}
-                                  />
-                                </Grid.Column>
-
-                                <Grid.Column
-                                  width={16}
-                                  mobile={16}
-                                  tablet={16}
-                                  computer={8}
-                                >
-                                  <Field
-                                    name="picName"
-                                    component={TextInput}
-                                    placeholder="e.g.Jhon Doe .."
-                                    labelName="PIC Name"
-                                    mandatory={false}
-                                    defaultValue={customer?.picName}
-                                  />
-                                </Grid.Column>
-                              </Grid.Row>
-                              <Grid.Row columns="equal">
-                                <Grid.Column
-                                  width={16}
-                                  mobile={16}
-                                  tablet={16}
-                                  computer={16}
-                                >
-                                  <Button
-                                    type="submit"
-                                    color="blue"
-                                    disabled={!values.customerName}
-                                    floated="right"
-                                    size="small"
-                                    content="Search"
-                                  />
-                                </Grid.Column>
-                              </Grid.Row>
-                            </Grid>
-                          </div>
-                        </Form>
-                      )}
-                    />
-                  </div>
-
-                  <div
-                    className="padding-horizontal"
-                    style={{ margin: "14px 0" }}
-                  >
-                    <div>
-                      <p
-                        className="warning-text"
+                      <div
+                        className="padding-horizontal"
                         style={{
-                          backgroundColor: customerName ? "#E2EFFF" : "#FFE0D9",
+                          backgroundColor: "#FFFB9A",
+                          display: "flex",
+                          flexDirection: "column",
+                          padding: "1rem 0",
+                          width: "100%",
                         }}
                       >
-                        {customerName ? (
-                          <>
-                            There are <b>{suggestionList.rows.length}</b>{" "}
-                            results from the customer search{" "}
-                            <b>{customerName}</b>{" "}
-                            {picName ? (
-                              <>
-                                with <b>{picName}</b>.
-                              </>
-                            ) : (
-                              "."
-                            )}{" "}
-                            Please recheck again before you approve new customer
-                            request.
-                          </>
-                        ) : (
-                          <>
-                            Best five suggestion customer for the word{" "}
-                            <b>{customer.customerName}</b>. Please recheck again
-                            before you APPROVE or REJECT.
-                          </>
-                        )}
-                      </p>
-                    </div>
-
-                    <Table striped>
-                      <Table.Header>
-                        <Table.Row>
-                          <Table.HeaderCell>No</Table.HeaderCell>
-                          <Table.HeaderCell>Customer Name</Table.HeaderCell>
-                          <Table.HeaderCell>Cust. ID</Table.HeaderCell>
-                          <Table.HeaderCell>PIC Name</Table.HeaderCell>
-                          <Table.HeaderCell>Blacklist</Table.HeaderCell>
-                          <Table.HeaderCell>Holdshipment</Table.HeaderCell>
-                          <Table.HeaderCell textAlign="center">
-                            Action
-                          </Table.HeaderCell>
-                        </Table.Row>
-                      </Table.Header>
-
-                      <Table.Body>
-                        {suggestionList.rows.length == 0 ? (
-                          <Table.Row>
-                            <Table.Cell colSpan={16} textAlign="center">
-                              No data
-                            </Table.Cell>
-                          </Table.Row>
-                        ) : (
-                          suggestionList.rows.map((data, index) => (
-                            <Table.Row key={index}>
-                              <Table.Cell>
-                                {(activePage - 1) * pageSize + index + 1}
-                              </Table.Cell>
-                              <Table.Cell>
-                                <p
-                                  dangerouslySetInnerHTML={{
-                                    __html: highlightWords(data.customerName),
-                                  }}
-                                ></p>
-                              </Table.Cell>
-                              <Table.Cell>{data.customerID}</Table.Cell>
-                              <Table.Cell>
-                                <p
-                                  dangerouslySetInnerHTML={{
-                                    __html: highlightWords(data.picName),
-                                  }}
-                                ></p>
-                              </Table.Cell>
-                              <Table.Cell textAlign="center">
-                                {data.blacklist === true ? (
-                                  <div className="blacklist-yes-table">
-                                    <Icon name="address book" size="small" />
-                                    <span>Yes</span>
-                                  </div>
-                                ) : (
-                                  <div className="blacklist-no-table">
-                                    <Icon name="address book" size="small" />
-                                    <span>No</span>
-                                  </div>
-                                )}
-                              </Table.Cell>
-                              <Table.Cell
-                                textAlign="center"
-                                verticalAlign="middle"
-                              >
-                                {data.holdshipment === true ? (
-                                  <div className="holdshipment-yes-table">
-                                    <Icon name="truck" size="small" />
-                                    <span>Yes</span>
-                                  </div>
-                                ) : (
-                                  <div className="holdshipment-no-table">
-                                    <Icon name="truck" size="small" />
-                                    <span>No</span>
-                                  </div>
-                                )}
-                              </Table.Cell>
-                              <Table.Cell
+                        <FinalForm
+                          onSubmit={(values: any) => onSearch(values)}
+                          render={({
+                            handleSubmit,
+                            pristine,
+                            invalid,
+                            values,
+                          }) => (
+                            <Form onSubmit={handleSubmit}>
+                              <div
                                 style={{
+                                  backgroundColor: "#FFFB9A",
                                   display: "flex",
-                                  justifyContent: "center",
+                                  flexDirection: "column",
+                                  padding: "1rem 0",
+                                  width: "100%",
                                 }}
                               >
-                                <div
-                                  className="match-button"
-                                  onClick={() => openMatch(data)}
-                                >
-                                  <Icon name="check" />
-                                  <p>Match</p>
-                                </div>
-                              </Table.Cell>
-                            </Table.Row>
-                          ))
-                        )}
-                      </Table.Body>
-                    </Table>
+                                <Grid>
+                                  <Grid.Row>
+                                    {/* <Grid.Column
+                                    width={16}
+                                    mobile={16}
+                                    tablet={16}
+                                    computer={3}
+                                  >
+                                    <Field
+                                      name="titleCustomer"
+                                      component={TextInput}
+                                      placeholder="e.g.PT .."
+                                      labelName="Title Customer"
+                                      mandatory={false}
+                                      defaultValue={customer?.titleCustomer}
+                                    />
+                                  </Grid.Column> */}
 
-                    {customerName && suggestionList.totalRows != 0 && (
-                      <div style={{ marginTop: "1rem" }}>
-                        <Pagination
-                          activePage={activePage}
-                          onPageChange={(e, data) =>
-                            handlePaginationChange(e, data)
-                          }
-                          totalPage={suggestionList.totalRows}
-                          pageSize={pageSize}
+                                    <Grid.Column
+                                      width={16}
+                                      mobile={16}
+                                      tablet={16}
+                                      computer={8}
+                                    >
+                                      {" "}
+                                      <Field
+                                        name="customerName"
+                                        component={TextInput}
+                                        placeholder="e.g. Berca Hardaya .."
+                                        labelName="Customer Name"
+                                        mandatory={false}
+                                        defaultValue={customer?.customerName}
+                                      />
+                                    </Grid.Column>
+
+                                    <Grid.Column
+                                      width={16}
+                                      mobile={16}
+                                      tablet={16}
+                                      computer={8}
+                                    >
+                                      <Field
+                                        name="picName"
+                                        component={TextInput}
+                                        placeholder="e.g.Jhon Doe .."
+                                        labelName="PIC Name"
+                                        mandatory={false}
+                                        defaultValue={customer?.picName}
+                                      />
+                                    </Grid.Column>
+                                  </Grid.Row>
+                                  <Grid.Row columns="equal">
+                                    <Grid.Column
+                                      width={16}
+                                      mobile={16}
+                                      tablet={16}
+                                      computer={16}
+                                    >
+                                      <Button
+                                        type="submit"
+                                        color="blue"
+                                        disabled={!values.customerName}
+                                        floated="right"
+                                        size="small"
+                                        content="Search"
+                                      />
+                                    </Grid.Column>
+                                  </Grid.Row>
+                                </Grid>
+                              </div>
+                            </Form>
+                          )}
                         />
                       </div>
-                    )}
-                  </div>
-                  <Divider style={{ marginBottom: "0px" }}></Divider>
 
-                  <div className="button-container">
-                    <div className="button-inner-container">
-                      <Button style={{ marginRight: "1rem" }} type="button">
-                        Close
-                      </Button>
-                      <Button
-                        color="blue"
-                        style={{ marginRight: "1rem" }}
-                        type="button"
-                        onClick={() => onApprove()}
+                      <div
+                        className="padding-horizontal"
+                        style={{ margin: "14px 0" }}
                       >
-                        Approve
-                      </Button>
-                      <Button color="yellow" onClick={() => rejectApproval()}>
-                        Reject
-                      </Button>
-                    </div>
-                  </div>
+                        <div>
+                          <p
+                            className="warning-text"
+                            style={{
+                              backgroundColor: customerName
+                                ? "#E2EFFF"
+                                : "#FFE0D9",
+                            }}
+                          >
+                            {customerName ? (
+                              <>
+                                There are <b>{suggestionList.rows.length}</b>{" "}
+                                results from the customer search{" "}
+                                <b>{customerName}</b>{" "}
+                                {picName ? (
+                                  <>
+                                    with <b>{picName}</b>.
+                                  </>
+                                ) : (
+                                  "."
+                                )}{" "}
+                                Please recheck again before you approve new
+                                customer request.
+                              </>
+                            ) : (
+                              <>
+                                Best five suggestion customer for the word{" "}
+                                <b>{customer.customerName}</b>. Please recheck
+                                again before you APPROVE or REJECT.
+                              </>
+                            )}
+                          </p>
+                        </div>
+
+                        <Table striped>
+                          <Table.Header>
+                            <Table.Row>
+                              <Table.HeaderCell>No</Table.HeaderCell>
+                              <Table.HeaderCell>Customer Name</Table.HeaderCell>
+                              <Table.HeaderCell>Cust. ID</Table.HeaderCell>
+                              <Table.HeaderCell>PIC Name</Table.HeaderCell>
+                              <Table.HeaderCell>Blacklist</Table.HeaderCell>
+                              <Table.HeaderCell>Holdshipment</Table.HeaderCell>
+                              <Table.HeaderCell textAlign="center">
+                                Action
+                              </Table.HeaderCell>
+                            </Table.Row>
+                          </Table.Header>
+
+                          <Table.Body>
+                            {suggestionList.rows.length == 0 ? (
+                              <Table.Row>
+                                <Table.Cell colSpan={16} textAlign="center">
+                                  No data
+                                </Table.Cell>
+                              </Table.Row>
+                            ) : (
+                              suggestionList.rows.map((data, index) => (
+                                <Table.Row key={index}>
+                                  <Table.Cell>
+                                    {(activePage - 1) * pageSize + index + 1}
+                                  </Table.Cell>
+                                  <Table.Cell>
+                                    <p
+                                      dangerouslySetInnerHTML={{
+                                        __html: highlightWords(
+                                          data.customerName
+                                        ),
+                                      }}
+                                    ></p>
+                                  </Table.Cell>
+                                  <Table.Cell>{data.customerID}</Table.Cell>
+                                  <Table.Cell>
+                                    <p
+                                      dangerouslySetInnerHTML={{
+                                        __html: highlightWords(data.picName),
+                                      }}
+                                    ></p>
+                                  </Table.Cell>
+                                  <Table.Cell textAlign="center">
+                                    {data.blacklist === true ? (
+                                      <div className="blacklist-yes-table">
+                                        <Icon
+                                          name="address book"
+                                          size="small"
+                                        />
+                                        <span>Yes</span>
+                                      </div>
+                                    ) : (
+                                      <div className="blacklist-no-table">
+                                        <Icon
+                                          name="address book"
+                                          size="small"
+                                        />
+                                        <span>No</span>
+                                      </div>
+                                    )}
+                                  </Table.Cell>
+                                  <Table.Cell
+                                    textAlign="center"
+                                    verticalAlign="middle"
+                                  >
+                                    {data.holdshipment === true ? (
+                                      <div className="holdshipment-yes-table">
+                                        <Icon name="truck" size="small" />
+                                        <span>Yes</span>
+                                      </div>
+                                    ) : (
+                                      <div className="holdshipment-no-table">
+                                        <Icon name="truck" size="small" />
+                                        <span>No</span>
+                                      </div>
+                                    )}
+                                  </Table.Cell>
+                                  <Table.Cell
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    <div
+                                      className="match-button"
+                                      onClick={() => openMatch(data)}
+                                    >
+                                      <Icon name="check" />
+                                      <p>Match</p>
+                                    </div>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))
+                            )}
+                          </Table.Body>
+                        </Table>
+
+                        {customerName && suggestionList.totalRows != 0 && (
+                          <div style={{ marginTop: "1rem" }}>
+                            <Pagination
+                              activePage={activePage}
+                              onPageChange={(e, data) =>
+                                handlePaginationChange(e, data)
+                              }
+                              totalPage={suggestionList.totalRows}
+                              pageSize={pageSize}
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <Divider style={{ marginBottom: "0px" }}></Divider>
+
+                      <div className="button-container">
+                        <div className="button-inner-container">
+                          <Button style={{ marginRight: "1rem" }} type="button">
+                            Close
+                          </Button>
+                          <Button
+                            color="blue"
+                            style={{ marginRight: "1rem" }}
+                            type="button"
+                            onClick={() => onApprove()}
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            color="yellow"
+                            onClick={() => rejectApproval()}
+                          >
+                            Reject
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </>
               )}
             </LoadingIndicator>

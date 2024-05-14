@@ -10,7 +10,6 @@ export default interface ICustomerSettingOptions {
 }
 
 const _selectReqNewCustomer = (models: any): any => {
-  // console.log(models);
   return {
     totalRows: models.totalRows,
     rows: _createTableReqNewCustomerRows(models.rows),
@@ -324,6 +323,17 @@ const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
         modifyUserID: models.resultObj[0].modifyUserID,
       };
     }
+  } else {
+    return [];
+  }
+};
+
+const _selectIndustryClassOptions = (models: ResultActions): any => {
+  if (Array.isArray(models.resultObj)) {
+    models.resultObj.map((model: any): any => ({
+      text: model.industryClass,
+      value: model.industryClassID,
+    }));
   } else {
     return [];
   }

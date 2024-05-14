@@ -63,14 +63,6 @@ const TableCustomerDetail: React.FC<IProps> = (
     [dispatch]
   );
 
-  // const deleteData = (id) => {
-  //   console.log(`Hapus data ${id}`);
-  // };
-
-  // const refreshData = (customerID) => {
-  //   console.log(`Refresh data customer ${customerID}`);
-  // };
-
   const openDelete = useCallback(
     (idToDel: number, content: string): void => {
       if (isView) {
