@@ -85,8 +85,11 @@ import * as IndustryClassOptionsAction from "stores/customer-master/CustomerMast
 interface IProps {
   customer: {
     accountStatus: string;
+    jdeCustomerID: any;
     customerSettingID: number;
     customerID: number;
+    industryClassID: any;
+    industryClass: string;
     shareable: boolean;
     named: boolean;
     pmoCustomer: boolean;
@@ -96,6 +99,7 @@ interface IProps {
     blacklist: boolean;
     holdshipment: boolean;
     salesName: any;
+    capFlag: any;
     avgAR: number;
     shareableApprovalStatus?: any;
   };
@@ -156,7 +160,7 @@ const ViewEditCustomer: React.FC<IProps> = (
   //   },
   // ];
 
-  const [industryClass, setIndustryClass] = useState("");
+  const [industryClass, setIndustryClass] = useState(customer.industryClassID);
 
   const industryClassOptions = useSelector((state: IStore) =>
     selectIndustry(state)
@@ -319,6 +323,16 @@ const ViewEditCustomer: React.FC<IProps> = (
     }
   };
 
+  const [capFlag, setCapFlag] = useState(customer.capFlag ? "TRUE" : "FALSE");
+
+  const handleCapFlag = () => {
+    if (capFlag == "FALSE") {
+      setCapFlag("TRUE");
+    } else {
+      setCapFlag("FALSE");
+    }
+  };
+
   /** Invoicing schedule */
   const invoicingSchedule = useSelector((state: IStore) =>
     selectInvoicingSchedule(state)
@@ -350,6 +364,9 @@ const ViewEditCustomer: React.FC<IProps> = (
     PutCustomerSetting.customerID = customer.customerID;
     PutCustomerSetting.customerCategory = customerCategory;
     PutCustomerSetting.pmoCustomer = pmoCustomer == "TRUE" ? true : false;
+    PutCustomerSetting.capFlag = capFlag == "TRUE" ? true : false;
+    PutCustomerSetting.industryClass = industryClass;
+    PutCustomerSetting.modifyUserID = userLogin.userID;
 
     await dispatch(
       CustomerSetting.putCustomerSettingCategoryPmo(
@@ -758,6 +775,7 @@ const ViewEditCustomer: React.FC<IProps> = (
         <div className="form-container">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p className="page-title grey">VIEW/EDIT CUSTOMER SETTING</p>
+
             <div className="pmo-toggle">
               <p style={{ margin: "0 1rem 0 0" }}>PMO customer</p>
               <div style={{ display: "flex", justifyContent: "center" }}>
@@ -832,7 +850,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                   style={{ fontSize: "24px", fontWeight: "bold" }}
                   className="grey"
                 >
-                  JDE Cust. ID
+                  {customer.jdeCustomerID}
                 </p>
               </div>
 
@@ -840,7 +858,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                 {role.toUpperCase() == "SALES" ? (
                   <>
                     <label className="customer-data-label">
-                      Industry Classification
+                      {customer.industryClass}{" "}
                     </label>
                     <p
                       style={{ fontSize: "24px", fontWeight: "bold" }}
@@ -952,8 +970,8 @@ const ViewEditCustomer: React.FC<IProps> = (
                     <p className="margin-0">OFF</p>
                     <Checkbox
                       toggle
-                      checked={pmoCustomer == "TRUE" ? true : false}
-                      onChange={() => handlePmoCustomer()}
+                      checked={capFlag == "TRUE" ? true : false}
+                      onChange={() => handleCapFlag()}
                       className="toggle-margin"
                       disabled={role.toUpperCase() == "SALES"}
                     ></Checkbox>
@@ -1555,7 +1573,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                               <Table.HeaderCell>Customer Name</Table.HeaderCell>
                               <Table.HeaderCell>Address</Table.HeaderCell>
                               <Table.HeaderCell>
-                                Cust. Category
+                                {customer.industryClass}{" "}
                               </Table.HeaderCell>
                               <Table.HeaderCell>
                                 Avg. AR (Days)
@@ -1601,7 +1619,9 @@ const ViewEditCustomer: React.FC<IProps> = (
                                   </Table.Cell>
                                   <Table.Cell>{data.customerName}</Table.Cell>
                                   <Table.Cell>{data.address}</Table.Cell>
-                                  <Table.Cell>{data.category}</Table.Cell>
+                                  <Table.Cell>
+                                    {data.customerCategory}
+                                  </Table.Cell>
                                   <Table.Cell>{data.avgAR}</Table.Cell>
                                   <Table.Cell>
                                     <Label

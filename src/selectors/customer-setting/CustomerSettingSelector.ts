@@ -304,6 +304,8 @@ export const selectPostResponseCustomerSetting: Selector<
 );
 
 export const _selectCustomerDataById = (model: ResultActions): any => {
+  console.log("selector customer data", model);
+
   if (Object.keys(model.resultObj).length != 0) {
     let lastIndex =
       model.resultObj.shareableApprovalStatus.length != 0
@@ -312,7 +314,10 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
     return {
       accountStatus: model.resultObj.accountStatus,
       customerID: model.resultObj.customerID,
+      jdeCustomerID: model.resultObj.jdeCustomerID,
       customerCategory: model.resultObj.customerCategory,
+      industryClassID: model.resultObj.industryClassID,
+      industryClass: model.resultObj.industryClass,
       customerName: model.resultObj.customerName,
       customerAddress: model.resultObj.customerAddress,
       pmoCustomer:
@@ -321,6 +326,7 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
       holdshipment: model.resultObj.holdshipment,
       avgAR: model.resultObj.avgAR,
       salesName: model.resultObj.salesName,
+      capFlag: model.resultObj.capFlag,
       shareableApprovalStatus:
         model.resultObj.shareableApprovalStatus.length != 0
           ? {
