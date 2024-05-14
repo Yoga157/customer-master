@@ -9,7 +9,7 @@ export default class CustomerSettingPutModel extends BaseModel {
   customerCategory: string = "";
   pmoCustomer: boolean = false;
   capFlag: boolean = false;
-  industryClass: string = "false";
+  industryClass: number = 0;
   modifyUserID: number = 0;
 
   constructor(data: Partial<CustomerSettingPutModel>) {

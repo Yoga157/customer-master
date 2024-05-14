@@ -85,7 +85,6 @@ import * as IndustryClassOptionsAction from "stores/customer-master/CustomerMast
 interface IProps {
   customer: {
     accountStatus: string;
-    jdeCustomerID: any;
     customerSettingID: number;
     customerID: number;
     jdeCustomerID: number;
