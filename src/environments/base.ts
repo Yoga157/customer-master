@@ -20,6 +20,7 @@ export default function baseEnv(baseApi: string) {
       // customer: `http://bhpapisrvdev.berca.co.id:7007/api/:controller`,
       customer: `https://localhost:5001/api/:controller`,
       login: `http://bhpapisrvdev.berca.co.id:7000/api/AuthServerService/:controller`,
+      employee: `http://bhpapisrvdev:7000/api/DQGenericService/Employee/:employeeId`,
     },
     isProduction: false,
     isDevelopment: true,

@@ -58,10 +58,13 @@ const ModalRejectApproval: React.FC<IProps> = (
   const [remark, setRemark] = useState("");
 
   const onReject = async (data) => {
+    const userLogin: any = localStorage.getItem("userLogin");
+
     const rejectCustomerData = new PostStatusNewCustomerModel({});
     rejectCustomerData.customerGenID = customerGenId;
     rejectCustomerData.approvalStatus = "REJECT";
     rejectCustomerData.remark = data.remark;
+    rejectCustomerData.modifyUserID = userLogin.employeeID;
 
     await dispatch(
       CustomerMasterActions.updateStatusNewCustomer(rejectCustomerData)
