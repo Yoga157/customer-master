@@ -103,6 +103,7 @@ interface IProps {
     blacklist: boolean;
     holdshipment: boolean;
     salesName: any;
+    capFlag: any;
     avgAR: number;
     capFlag: boolean;
     shareableApprovalStatus?: any;
@@ -158,19 +159,7 @@ const ViewEditCustomer: React.FC<IProps> = (
   };
 
   // industry classification
-  // const [industryClass, setIndustryClass] = useState("");
-  // const industryClassOptions = [
-  //   {
-  //     text: "Manufacturing",
-  //     value: "Manufacturing",
-  //   },
-  //   {
-  //     text: "Industry",
-  //     value: "Industry",
-  //   },
-  // ];
-
-  const [industryClass, setIndustryClass] = useState("");
+  const [industryClass, setIndustryClass] = useState(customer.industryClassID);
 
   const industryClassOptions = useSelector((state: IStore) =>
     selectIndustry(state)
@@ -334,11 +323,10 @@ const ViewEditCustomer: React.FC<IProps> = (
     }
   };
 
-  /** Add cap setting */
   const [capFlag, setCapFlag] = useState(customer.capFlag ? "TRUE" : "FALSE");
 
   const handleCapFlag = () => {
-    if (pmoCustomer == "FALSE") {
+    if (capFlag == "FALSE") {
       setCapFlag("TRUE");
     } else {
       setCapFlag("FALSE");
@@ -377,6 +365,7 @@ const ViewEditCustomer: React.FC<IProps> = (
     PutCustomerSetting.customerCategory = customerCategory;
     PutCustomerSetting.pmoCustomer = pmoCustomer == "TRUE" ? true : false;
     PutCustomerSetting.capFlag = capFlag == "TRUE" ? true : false;
+    PutCustomerSetting.industryClass = industryClass;
     PutCustomerSetting.modifyUserID = userLogin.employeeID;
 
     await dispatch(
@@ -872,6 +861,7 @@ const ViewEditCustomer: React.FC<IProps> = (
         <div className="form-container">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p className="page-title grey">VIEW/EDIT CUSTOMER SETTING</p>
+
             <div className="pmo-toggle">
               <p style={{ margin: "0 1rem 0 0" }}>PMO customer</p>
               <div style={{ display: "flex", justifyContent: "center" }}>
@@ -964,7 +954,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                 {role.toUpperCase() == "SALES" ? (
                   <>
                     <label className="customer-data-label">
-                      Industry Classification
+                      {customer.industryClass}{" "}
                     </label>
                     <p
                       style={{ fontSize: "24px", fontWeight: "bold" }}
@@ -1679,7 +1669,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                               <Table.HeaderCell>Customer Name</Table.HeaderCell>
                               <Table.HeaderCell>Address</Table.HeaderCell>
                               <Table.HeaderCell>
-                                Cust. Category
+                                {customer.industryClass}{" "}
                               </Table.HeaderCell>
                               <Table.HeaderCell>
                                 Avg. AR (Days)
@@ -1725,7 +1715,9 @@ const ViewEditCustomer: React.FC<IProps> = (
                                   </Table.Cell>
                                   <Table.Cell>{data.customerName}</Table.Cell>
                                   <Table.Cell>{data.address}</Table.Cell>
-                                  <Table.Cell>{data.category}</Table.Cell>
+                                  <Table.Cell>
+                                    {data.customerCategory}
+                                  </Table.Cell>
                                   <Table.Cell>{data.avgAR}</Table.Cell>
                                   <Table.Cell>
                                     <Label

@@ -35,11 +35,13 @@ interface ICustomerData {
     lastProjectName: any;
     modifiedBy: any;
     modifiedDate: any;
+    industryClassID: any;
     named: any;
     pmoCustomer: any;
     relatedCustomer: any;
     requestedBy: any;
     salesName: any;
+    capFlag: any;
     salesShareableID: any;
     shareable: any;
     status: any;

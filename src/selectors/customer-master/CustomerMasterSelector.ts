@@ -369,7 +369,6 @@ export const selectIndustry: Selector<IStore, any[]> = createSelector(
 );
 
 const _selectAccountHistory = (models: ResultActions): any => {
-  console.log("selector", models);
   if (Array.isArray(models.resultObj)) {
     return models.resultObj.map((item) => ({
       accountActivityHistoryID: item.accountActivityHistoryID,

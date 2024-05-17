@@ -38,7 +38,7 @@ export default class CustomerMoreDetailsModel extends BaseModel {
   public update(data: Partial<CustomerMoreDetailsModel>): void {
     const conversionOptions: IConversionOption = {
       customerID: ConversionTypeEnum.Number,
-      titleCustomer: ConversionTypeEnum.String,
+      // titleCustomer: ConversionTypeEnum.String,
       customerName: ConversionTypeEnum.String,
       industryClass: ConversionTypeEnum.String,
       requestor: ConversionTypeEnum.String,

@@ -304,6 +304,8 @@ export const selectPostResponseCustomerSetting: Selector<
 );
 
 export const _selectCustomerDataById = (model: ResultActions): any => {
+  console.log("selector customer data", model);
+
   if (Object.keys(model.resultObj).length != 0) {
     let lastIndex =
       model.resultObj.shareableApprovalStatus.length != 0

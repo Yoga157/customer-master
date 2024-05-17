@@ -10,6 +10,7 @@ import { NumberFormatState } from "react-number-format";
 import { data } from "jquery";
 import PostStatusNewCustomerModel from "./models/PostStatusNewCustomerModel";
 import CustomerOfficeNumberModel from "./models/CustomerOficeNumberModel";
+import CustomerMoreDetailsModel from "./models/CustomerMoreDetailsModel";
 
 export const requestSearchCustomerMaster = async (
   page: number,
@@ -96,6 +97,18 @@ export const requestCustomerMoreDetailsByCustId = async (
     controllerName
   );
   return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
+};
+
+export const updateIndustryClassByID = async (
+  data: CustomerMoreDetailsModel,
+  genId: number
+): Promise<ResultActions | HttpErrorResponseModel> => {
+  const controllerName = `CustomerSetting/UpdateIndustryClassByID?customerGenID=${genId}`;
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+  return EffectUtility.putToModel<ResultActions>(ResultActions, endpoint, data);
 };
 
 export const postCustomerOfficeNumber = async (

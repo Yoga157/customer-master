@@ -10,6 +10,7 @@ import IAction from "models/IAction";
 import PostStatusNewCustomerModel from "./models/PostStatusNewCustomerModel";
 import CustomerOfficeNumberModel from "./models/CustomerOficeNumberModel";
 import PostPeopleInChargerModel from "./models/PostPeopleInChargerModel";
+import CustomerMoreDetailsModel from "./models/CustomerMoreDetailsModel";
 
 type ActionUnion =
   | undefined
@@ -147,6 +148,25 @@ export const requestCustomerMoreDetailsByCustId = (custId: number): any => {
       REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID,
       CustomerMasterEffect.requestCustomerMoreDetailsByCustId,
       custId
+    );
+  };
+};
+
+export const PUT_INDUSTRY_CLASS_BY_ID: string =
+  "CustomerActions.PUT_INDUSTRY_CLASS_BY_ID";
+export const PUT_INDUSTRY_CLASS_BY_ID_FINISHED: string =
+  "CustomerActions.PUT_INDUSTRY_CLASS_BY_ID_FINISHED";
+export const updateIndustryClassByID = (
+  data: CustomerMoreDetailsModel,
+  id: number
+): any => {
+  return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      PUT_INDUSTRY_CLASS_BY_ID,
+      CustomerMasterEffect.updateIndustryClassByID,
+      data,
+      id
     );
   };
 };
