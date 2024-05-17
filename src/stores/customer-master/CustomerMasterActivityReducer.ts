@@ -128,6 +128,16 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
     };
   },
 
+  [CustomerMasterActions.PUT_INDUSTRY_CLASS_BY_ID_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    return {
+      ...state,
+      resultActions: action.payload!,
+    };
+  },
+
   [CustomerMasterActions.POST_CUSTOMER_OFFICE_NUMBER_FINISHED](
     state: ICustomerMasterState,
     action: IAction<ResultActions>

@@ -488,6 +488,19 @@ s .line {
   padding-top: 14px;
 }
 
+.margin-2-5 {
+  margin-top: 1.5rem;
+}
+
+.grid-padding-horizontal {
+  padding: 0 3rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.custom-paddingRight {
+  margin-right: 2rem !important;
+}
+
 @media only screen and (max-width: 767px) {
   .form-container {
     margin: 0.25rem !important;

@@ -320,8 +320,6 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
       industryClass: model.resultObj.industryClass,
       industryClassBusiness: model.resultObj.industryClassBusiness,
       customerCategory: model.resultObj.customerCategory,
-      industryClassID: model.resultObj.industryClassID,
-      industryClass: model.resultObj.industryClass,
       customerName: model.resultObj.customerName,
       customerAddress: model.resultObj.customerAddress,
       pmoCustomer:

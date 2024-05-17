@@ -9,7 +9,14 @@ import "../../ModalApprovedData.scss";
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Icon, Divider, Form, Button } from "semantic-ui-react";
+import {
+  Icon,
+  Divider,
+  Form,
+  Button,
+  Grid,
+  GridColumn,
+} from "semantic-ui-react";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { Form as FinalForm, Field } from "react-final-form";
 import { DropdownClearInput, TextInput } from "views/components/UI";
@@ -22,6 +29,9 @@ import ModalNewWebsiteMedia from "../modal/approved-page/ModalNewWebsiteMedia";
 import ModalNewPIC from "../modal/approved-page/ModalNewPIC";
 import ModalNewRelatedCustomer from "../modal/approved-page/ModalNewRelatedCustomer";
 import IStore from "models/IStore";
+import ToastStatusEnum from "constants/ToastStatusEnum";
+import * as ToastsAction from "stores/toasts/ToastsAction";
+import CustomerMoreDetailsModel from "stores/customer-master/models/CustomerMoreDetailsModel";
 import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import * as RelatedCustomerActions from "stores/related-customer/RelatedCustomerActivityActions";
 
@@ -30,6 +40,7 @@ import {
   selectCustomerMoreDetails,
   selectAccountHistory,
 } from "selectors/customer-master/CustomerMasterSelector";
+
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import ModalViewNpwp from "../modal/view-npwp/ModalViewNpwp";
 import { selectIndustry } from "selectors/customer-master/CustomerMasterSelector";
@@ -82,20 +93,77 @@ const BaseViewApprovedData: React.FC<IProps> = (
   const onChangeIndustryClassification = (data: any) => {
     setIndustryClassification(data);
   };
-  // const industryClassificationOptions = [
-  //   {
-  //     text: "Manufacturing",
-  //     value: "Manufacturing",
-  //   },
-  //   {
-  //     text: "Industry",
-  //     value: "Industry",
-  //   },
-  // ];
 
   const industryClassificationOptions = useSelector((state: IStore) =>
     selectIndustry(state)
   );
+
+  // const onSaveEdit = async (values) => {
+  //   let userLogin = JSON.parse(localStorage.getItem("userLogin"));
+
+  //   const PutCustomerMoreDetails = new CustomerMoreDetailsModel({});
+  //   PutCustomerMoreDetails.industryClass = customer.industryClassification;
+  //   PutCustomerMoreDetails.customerName = customer.customerName;
+  //   PutCustomerMoreDetails.coorporateEmail = customer.coorporateEmail;
+  //   PutCustomerMoreDetails.npwpNumber = customer.npwpNumber;
+  //   PutCustomerMoreDetails.nib = customer.nib;
+  //   PutCustomerMoreDetails.modifyUserID = userLogin.employeeID;
+
+  //   await dispatch(
+  //     CustomerMasterActions.updateIndustryClassByID(
+  //       PutCustomerMoreDetails,
+  //       Number(id) || customer.customerId
+  //     )
+  //   );
+  //   await dispatch(
+  //     CustomerMasterActions.requestCustomerMoreDetailsByCustId(
+  //       customerId ? customerId : Number(id)
+  //     )
+  //   );
+  //   await dispatch(
+  //     CustomerMasterActions.requestApprovedCustomerByGenId(Number(id))
+  //   );
+  //   await dispatch(
+  //     ToastsAction.add(
+  //       "Update customer detail data success!",
+  //       ToastStatusEnum.Success
+  //     )
+  //   );
+  // };
+
+  const onSaveEdit = async (values) => {
+    let userLogin = JSON.parse(localStorage.getItem("userLogin"));
+
+    const PutCustomerMoreDetails = new CustomerMoreDetailsModel({});
+    PutCustomerMoreDetails.industryClass = values.industryClassification;
+    PutCustomerMoreDetails.customerName = values.customerName;
+    PutCustomerMoreDetails.coorporateEmail = values.coorporateEmail;
+    PutCustomerMoreDetails.npwpNumber = values.npwpNumber;
+    PutCustomerMoreDetails.nib = values.nib;
+    PutCustomerMoreDetails.modifyUserID = userLogin.employeeID;
+
+    const customerIdToUse = customerId || Number(id);
+
+    await dispatch(
+      CustomerMasterActions.updateIndustryClassByID(
+        PutCustomerMoreDetails,
+        customerIdToUse
+      )
+    );
+    await dispatch(
+      ToastsAction.add(
+        "Update customer detail data success!",
+        ToastStatusEnum.Success
+      )
+    );
+    await dispatch(
+      CustomerMasterActions.requestCustomerMoreDetailsByCustId(customerIdToUse)
+    );
+    await dispatch(
+      CustomerMasterActions.requestApprovedCustomerByGenId(Number(id))
+    );
+    setEditView(false);
+  };
 
   useEffect(() => {
     dispatch(IndustryClassOptionsAction.getIndustryClassification());
@@ -342,21 +410,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     },
   ];
 
-  // let accountActivityHistory = [
-  //   {
-  //     activity: "Created",
-  //     employeeName: "Jenny Wilson",
-  //     time: "02-02-2024 11:30 AM",
-  //     reason: null,
-  //   },
-  //   {
-  //     activity: "Rejected",
-  //     employeeName: "Jenny Wilson",
-  //     time: "02-02-2024 11:30 AM",
-  //     reason: "Lorem ipsum",
-  //   },
-  // ];
-
   const accountActivityHistory = useSelector((state: IStore) =>
     selectAccountHistory(state)
   );
@@ -412,396 +465,420 @@ const BaseViewApprovedData: React.FC<IProps> = (
             padding: "14px 0px",
           }}
         >
-          <div className="space-between-container padding-horizontal">
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <div className="customer-data-container-left">
-                <label className="customer-data-label">Customer ID</label>
-                <p
-                  style={{ fontSize: "20px", fontWeight: "bold" }}
-                  className="grey"
-                >
-                  {customer.customerID}
-                </p>
-              </div>
-              <div className="customer-data-container-left">
-                <label className="customer-data-label">Requestor</label>
-                <p
-                  style={{ fontSize: "20px", fontWeight: "bold" }}
-                  className="grey"
-                >
-                  {customer.requestor}
-                </p>
-              </div>
-            </div>
+          <FinalForm
+            onSubmit={(values: any) => onSaveEdit(values)}
+            render={({ handleSubmit, pristine, invalid, values }) => (
+              <Form onSubmit={handleSubmit}>
+                <Grid>
+                  <Grid.Row>
+                    <GridColumn>
+                      {status != "REJECT" && (
+                        <div
+                          style={{
+                            float: "right",
+                            margin: "0rem 2rem -1rem",
+                          }}
+                          onClick={() => setEditView(!editView)}
+                        >
+                          {!editView ? (
+                            <Icon name="edit" />
+                          ) : (
+                            <Icon
+                              name="save"
+                              fitted
+                              circular
+                              className="save-button-approved-page"
+                              onClick={handleSubmit}
+                            />
+                          )}
+                        </div>
+                      )}
+                    </GridColumn>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column width={3} className="grid-padding-horizontal">
+                      <label className="customer-data-label">Customer ID</label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.customerID}
+                      </p>
+                    </Grid.Column>
+                    <Grid.Column width={5} style={{ padding: "0" }}>
+                      <label className="customer-data-label">Requestor</label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.requestor}
+                      </p>
+                    </Grid.Column>
+                    <Grid.Column
+                      width={4}
+                      floated="right"
+                      style={{ padding: "0" }}
+                    >
+                      <label className="customer-data-label">Create Date</label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.createDate}
+                      </p>
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column width={5} className="grid-padding-horizontal">
+                      {editView ? (
+                        <Form onSubmit={handleSubmit}>
+                          <div style={{ width: "100%" }}>
+                            <Field
+                              name="customerName"
+                              component={TextInput}
+                              placeholder="Type customer name here..."
+                              labelName="Customer Name"
+                              mandatory={false}
+                              defaultValue={customer.customerName || null}
+                            />
+                          </div>
+                        </Form>
+                      ) : (
+                        <>
+                          <label className="customer-data-label">
+                            Customer Name
+                          </label>
+                          <p
+                            style={{ fontSize: "20px", fontWeight: "bold" }}
+                            className="grey"
+                          >
+                            {customer.customerName}
+                          </p>
+                        </>
+                      )}
+                    </Grid.Column>{" "}
+                    <Grid.Column floated="right" width={6}>
+                      <label className="customer-data-label">
+                        Customer Business Name
+                      </label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.customerBusinessName}
+                      </p>
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column
+                      width={5}
+                      className="grid-padding-horizontal"
+                      style={{ marginRight: "10rem" }}
+                    >
+                      <label className="customer-data-label">
+                        Holding Company Name
+                      </label>
+                      <p
+                        style={{ fontSize: "20px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.holdingCompName}
+                      </p>
+                    </Grid.Column>{" "}
+                    <Grid.Column width={4} style={{ padding: "0" }}>
+                      {editView ? (
+                        <Form onSubmit={handleSubmit}>
+                          <Field
+                            name="industryClassification"
+                            component={DropdownClearInput}
+                            labelName="Industry Classification"
+                            placeholder="Choose class..."
+                            options={industryClassificationOptions}
+                            onChanged={onChangeIndustryClassification}
+                            values={industryClassification}
+                            mandatory={false}
+                          />
+                        </Form>
+                      ) : (
+                        <>
+                          <label className="customer-data-label">
+                            Industry Classification
+                          </label>
+                          <p
+                            style={{ fontSize: "20px", fontWeight: "bold" }}
+                            className="grey"
+                          >
+                            {customer.industryClass}
+                          </p>
+                        </>
+                      )}
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column className="grid-padding-horizontal">
+                      <label className="customer-data-label">
+                        Customer Address
+                      </label>
+                      <p
+                        style={{ fontSize: "20px" }}
+                        className="grey"
+                        dangerouslySetInnerHTML={{
+                          __html: customer.address || "-",
+                        }}
+                      ></p>
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column
+                      className="grid-padding-horizontal custom-paddingRight"
+                      width={2}
+                    >
+                      <label className="customer-data-label">Country</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.country}
+                      </p>
+                    </Grid.Column>
+                    <Grid.Column
+                      width={2}
+                      className="custom-paddingRight"
+                      style={{ padding: "0" }}
+                    >
+                      <label className="customer-data-label ">City</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.city}
+                      </p>
+                    </Grid.Column>
+                    <Grid.Column
+                      width={2}
+                      className="custom-paddingRight"
+                      style={{ padding: "0" }}
+                    >
+                      <label className="customer-data-label">ZIP Code</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.zipCode}
+                      </p>
+                    </Grid.Column>
+                    <Grid.Column
+                      width={2}
+                      className="custom-paddingRight"
+                      style={{ padding: "0" }}
+                    >
+                      <label className="customer-data-label">
+                        Office Number
+                      </label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.phoneNumber}
+                      </p>
+                    </Grid.Column>
+                    <Grid.Column width={4} style={{ padding: "0" }}>
+                      <label className="customer-data-label">Website</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.website}
+                      </p>
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column className="grid-padding-horizontal">
+                      {editView ? (
+                        <Form onSubmit={handleSubmit}>
+                          <div style={{ width: "35%" }}>
+                            <Field
+                              name="corporateEmail"
+                              component={TextInput}
+                              placeholder="Type corporate email here..."
+                              labelName="Corporate Email"
+                              mandatory={false}
+                              defaultValue={customer.coorporateEmail}
+                            />
+                          </div>
+                        </Form>
+                      ) : (
+                        <>
+                          <label className="customer-data-label">
+                            Corporate Email
+                          </label>
+                          <p
+                            style={{ fontSize: "20px", fontWeight: "bold" }}
+                            className="grey"
+                          >
+                            {customer.coorporateEmail}
+                          </p>
+                        </>
+                      )}
+                    </Grid.Column>
+                  </Grid.Row>
 
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <div className="customer-data-container-end">
-                <label className="customer-data-label">Create Date</label>
-                <p
-                  style={{ fontSize: "20px", fontWeight: "bold" }}
-                  className="grey"
-                >
-                  {customer.createDate}
-                </p>
-              </div>
-
-              {status != "REJECT" && (
-                <div
-                  style={{ paddingTop: "14px" }}
-                  onClick={() => setEditView(!editView)}
-                >
-                  {!editView ? (
-                    <Icon name="edit" />
-                  ) : (
-                    <Icon
-                      name="save"
-                      fitted
-                      circular
-                      className="save-button-approved-page"
-                    />
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="padding-horizontal space-between-container">
-            <div className="customer-data-container-left">
-              {editView ? (
-                <FinalForm
-                  onSubmit={(values: any) => {}}
-                  render={({ handleSubmit, pristine, invalid }) => (
-                    <Form onSubmit={handleSubmit}>
-                      <div style={{ width: "100%" }}>
-                        <Field
-                          name="customerName"
-                          component={TextInput}
-                          placeholder="Type customer name here..."
-                          labelName="Customer Name"
-                          mandatory={false}
-                          defaultValue={customer.customerName || null}
-                        />
+                  <Grid.Row columns={2}>
+                    <Grid.Column width={5}>
+                      <Grid>
+                        <Grid.Row>
+                          <Grid.Column
+                            width={12}
+                            className="grid-padding-horizontal"
+                          >
+                            {editView ? (
+                              <Form onSubmit={handleSubmit}>
+                                <div style={{ width: "30" }}>
+                                  <Field
+                                    name="taxIDNumber"
+                                    component={TextInput}
+                                    placeholder="Type tax ID number here..."
+                                    labelName="NPWP (Tax ID Number)"
+                                    mandatory={false}
+                                    defaultValue={customer.npwpNumber}
+                                  />
+                                </div>
+                              </Form>
+                            ) : (
+                              <>
+                                <label className="customer-data-label">
+                                  NPWP (Tax ID Number)
+                                </label>
+                                <p
+                                  style={{
+                                    fontSize: "20px",
+                                    fontWeight: "bold",
+                                  }}
+                                  className="grey"
+                                >
+                                  {customer.npwpNumber}
+                                </p>
+                              </>
+                            )}
+                          </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                          <Grid.Column
+                            width={10}
+                            className="grid-padding-horizontal"
+                          >
+                            {editView ? (
+                              <Form onSubmit={handleSubmit}>
+                                <div style={{ width: "100%" }}>
+                                  <Field
+                                    name="NIB"
+                                    component={TextInput}
+                                    placeholder="Type NIB here..."
+                                    labelName="NIB"
+                                    mandatory={false}
+                                    defaultValue={customer.nib}
+                                  />
+                                </div>
+                              </Form>
+                            ) : (
+                              <>
+                                <label className="customer-data-label">
+                                  NIB
+                                </label>
+                                <p
+                                  style={{
+                                    fontSize: "20px",
+                                    fontWeight: "bold",
+                                  }}
+                                  className="grey"
+                                >
+                                  {customer.nib}
+                                </p>
+                              </>
+                            )}
+                          </Grid.Column>
+                        </Grid.Row>
+                      </Grid>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <label className="customer-data-label">NPWP Card</label>
+                        <div
+                          style={{
+                            width: "15rem",
+                            height: "10rem",
+                            border: "#8D8C8C solid 2px",
+                            borderStyle: "dashed",
+                            borderRadius: "0.5rem",
+                            position: "relative",
+                          }}
+                        >
+                          {Object.keys(customer).length != 0 &&
+                          Object.keys(customer.npwpCard).length == 0 ? (
+                            <div
+                              style={{
+                                position: "absolute",
+                                color: "#55637A",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                zIndex: 1,
+                              }}
+                            >
+                              <Icon
+                                name="picture"
+                                style={{ fontSize: "3rem" }}
+                              ></Icon>
+                              <p style={{ margin: "auto" }}>No Data</p>
+                            </div>
+                          ) : (
+                            <>
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  backgroundColor: "#656DD1",
+                                  color: "white",
+                                  padding: "0.5rem 1.5rem",
+                                  borderRadius: "2rem",
+                                  boxShadow: "0px 0px 10px 0px #00000040",
+                                  top: "50%",
+                                  left: "50%",
+                                  transform: "translate(-50%, -50%)",
+                                  zIndex: 1,
+                                  cursor: "pointer",
+                                }}
+                                onClick={() =>
+                                  openViewNPWP(
+                                    Object.keys(customer).length != 0 &&
+                                      `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
+                                  )
+                                }
+                              >
+                                View
+                              </div>
+                              <img
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  objectFit: "cover",
+                                  filter: "blur(3px)",
+                                  borderRadius: "0.5rem",
+                                }}
+                                src={
+                                  Object.keys(customer).length != 0 &&
+                                  `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
+                                }
+                              ></img>
+                            </>
+                          )}
+                        </div>
                       </div>
-                    </Form>
-                  )}
-                />
-              ) : (
-                <>
-                  <label className="customer-data-label">Customer Name</label>
-                  <p
-                    style={{ fontSize: "20px", fontWeight: "bold" }}
-                    className="grey"
-                  >
-                    {customer.customerName}
-                  </p>
-                </>
-              )}
-            </div>
-            <div className="customer-data-container-left">
-              <label className="customer-data-label">
-                Customer Business Name
-              </label>
-              <p
-                style={{ fontSize: "20px", fontWeight: "bold" }}
-                className="grey"
-              >
-                {customer.customerBusinessName}
-              </p>
-            </div>
-          </div>
-
-          <div
-            className="padding-horizontal"
-            style={{ display: "flex", flexDirection: "row" }}
-          >
-            <div className="customer-data-container-left">
-              <label className="customer-data-label">
-                Holding Company Name
-              </label>
-              <p
-                style={{ fontSize: "20px", fontWeight: "bold" }}
-                className="grey"
-              >
-                {customer.holdingCompName}
-              </p>
-            </div>
-            <div
-              className="customer-data-container-left"
-              style={{ marginLeft: "2rem" }}
-            >
-              {editView ? (
-                <FinalForm
-                  onSubmit={(values: any) =>
-                    onSubmitIndustryClassification(values)
-                  }
-                  render={({ handleSubmit, pristine, invalid }) => (
-                    <Form onSubmit={handleSubmit}>
-                      <Field
-                        name="industryClassification"
-                        component={DropdownClearInput}
-                        labelName="Industry Classification"
-                        placeholder="Choose class..."
-                        options={industryClassificationOptions}
-                        onChanged={onChangeIndustryClassification}
-                        values={industryClassification}
-                        mandatory={true}
-                      />
-                    </Form>
-                  )}
-                />
-              ) : (
-                <>
-                  <label className="customer-data-label">
-                    Industry Classification
-                  </label>
-                  <p
-                    style={{ fontSize: "20px", fontWeight: "bold" }}
-                    className="grey"
-                  >
-                    {customer.industryClass}
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className="padding-horizontal customer-data-container-left">
-            <label className="customer-data-label">Customer Address</label>
-            <p
-              style={{ fontSize: "20px" }}
-              className="grey"
-              dangerouslySetInnerHTML={{
-                __html: customer.address || "-",
-              }}
-            ></p>
-          </div>
-
-          <div className="padding-horizontal space-between-container">
-            <div className="customer-data-container-left">
-              <label className="customer-data-label">Country</label>
-              <p
-                style={{ fontSize: "18px", fontWeight: "bold" }}
-                className="grey"
-              >
-                {customer.country}
-              </p>
-            </div>
-
-            <div className="customer-data-container-left">
-              <label className="customer-data-label">City</label>
-              <p
-                style={{ fontSize: "18px", fontWeight: "bold" }}
-                className="grey"
-              >
-                {customer.city}
-              </p>
-            </div>
-
-            <div className="customer-data-container-left">
-              <label className="customer-data-label">ZIP Code</label>
-              <p
-                style={{ fontSize: "18px", fontWeight: "bold" }}
-                className="grey"
-              >
-                {customer.zipCode}
-              </p>
-            </div>
-
-            <div className="customer-data-container-left">
-              <label className="customer-data-label">Office Number</label>
-              <p
-                style={{ fontSize: "18px", fontWeight: "bold" }}
-                className="grey"
-              >
-                {customer.phoneNumber}
-              </p>
-            </div>
-
-            <div className="customer-data-container-left">
-              <label className="customer-data-label">Website</label>
-              <p
-                style={{ fontSize: "18px", fontWeight: "bold" }}
-                className="grey"
-              >
-                {customer.website}
-              </p>
-            </div>
-          </div>
-
-          <div className="padding-horizontal customer-data-container-left">
-            {editView ? (
-              <FinalForm
-                onSubmit={(values: any) => {}}
-                render={({ handleSubmit, pristine, invalid }) => (
-                  <Form onSubmit={handleSubmit}>
-                    <div style={{ width: "70%" }}>
-                      <Field
-                        name="corporateEmail"
-                        component={TextInput}
-                        placeholder="Type corporate email here..."
-                        labelName="Corporate Email"
-                        mandatory={false}
-                        defaultValue={customer.coorporateEmail}
-                      />
-                    </div>
-                  </Form>
-                )}
-              />
-            ) : (
-              <>
-                <label className="customer-data-label">Corporate Email</label>
-                <p
-                  style={{ fontSize: "20px", fontWeight: "bold" }}
-                  className="grey"
-                >
-                  {customer.coorporateEmail}
-                </p>
-              </>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </Form>
             )}
-          </div>
-
-          <div
-            className="padding-horizontal"
-            style={{ display: "flex", flexDirection: "row" }}
-          >
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div className="customer-data-container-left">
-                {editView ? (
-                  <FinalForm
-                    onSubmit={(values: any) => {}}
-                    render={({ handleSubmit, pristine, invalid }) => (
-                      <Form onSubmit={handleSubmit}>
-                        <div style={{ width: "100%" }}>
-                          <Field
-                            name="taxIDNumber"
-                            component={TextInput}
-                            placeholder="Type tax ID number here..."
-                            labelName="NPWP (Tax ID Number)"
-                            mandatory={false}
-                            defaultValue={customer.npwpNumber}
-                          />
-                        </div>
-                      </Form>
-                    )}
-                  />
-                ) : (
-                  <>
-                    <label className="customer-data-label">
-                      NPWP (Tax ID Number)
-                    </label>
-                    <p
-                      style={{ fontSize: "20px", fontWeight: "bold" }}
-                      className="grey"
-                    >
-                      {customer.npwpNumber}
-                    </p>
-                  </>
-                )}
-              </div>
-
-              <div className="customer-data-container-left">
-                {editView ? (
-                  <FinalForm
-                    onSubmit={(values: any) => {}}
-                    render={({ handleSubmit, pristine, invalid }) => (
-                      <Form onSubmit={handleSubmit}>
-                        <div style={{ width: "100%" }}>
-                          <Field
-                            name="NIB"
-                            component={TextInput}
-                            placeholder="Type NIB here..."
-                            labelName="NIB"
-                            mandatory={false}
-                            defaultValue={customer.nib}
-                          />
-                        </div>
-                      </Form>
-                    )}
-                  />
-                ) : (
-                  <>
-                    <label className="customer-data-label">NIB</label>
-                    <p
-                      style={{ fontSize: "20px", fontWeight: "bold" }}
-                      className="grey"
-                    >
-                      {customer.nib}
-                    </p>
-                  </>
-                )}
-              </div>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <label className="customer-data-label">NPWP Card</label>
-              <div
-                style={{
-                  width: "15rem",
-                  height: "10rem",
-                  border: "#8D8C8C solid 2px",
-                  borderStyle: "dashed",
-                  borderRadius: "0.5rem",
-                  position: "relative",
-                }}
-              >
-                {Object.keys(customer).length != 0 &&
-                Object.keys(customer.npwpCard).length == 0 ? (
-                  <div
-                    style={{
-                      position: "absolute",
-                      color: "#55637A",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      zIndex: 1,
-                    }}
-                  >
-                    <Icon name="picture" style={{ fontSize: "3rem" }}></Icon>
-                    <p style={{ margin: "auto" }}>No Data</p>
-                  </div>
-                ) : (
-                  <>
-                    <div
-                      style={{
-                        position: "absolute",
-                        backgroundColor: "#656DD1",
-                        color: "white",
-                        padding: "0.5rem 1.5rem",
-                        borderRadius: "2rem",
-                        boxShadow: "0px 0px 10px 0px #00000040",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        zIndex: 1,
-                        cursor: "pointer",
-                      }}
-                      onClick={() =>
-                        openViewNPWP(
-                          Object.keys(customer).length != 0 &&
-                            `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
-                        )
-                      }
-                    >
-                      View
-                    </div>
-                    <img
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        filter: "blur(3px)",
-                        borderRadius: "0.5rem",
-                      }}
-                      src={
-                        Object.keys(customer).length != 0 &&
-                        `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
-                      }
-                    ></img>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
+          />
         </div>
 
         <div

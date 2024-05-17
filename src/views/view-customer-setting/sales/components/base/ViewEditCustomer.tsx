@@ -156,18 +156,6 @@ const ViewEditCustomer: React.FC<IProps> = (
   };
 
   // industry classification
-  // const [industryClass, setIndustryClass] = useState("");
-  // const industryClassOptions = [
-  //   {
-  //     text: "Manufacturing",
-  //     value: "Manufacturing",
-  //   },
-  //   {
-  //     text: "Industry",
-  //     value: "Industry",
-  //   },
-  // ];
-
   const [industryClass, setIndustryClass] = useState(customer.industryClassID);
 
   const industryClassOptions = useSelector((state: IStore) =>
