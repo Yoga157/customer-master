@@ -197,9 +197,7 @@ const CustomerTableRow: React.FC<IProps> = (
             </div>
           </Table.Cell>
           <Table.Cell textAlign="center">{rowData.jdeCustomerID}</Table.Cell>
-          <Table.Cell textAlign="center">
-            {rowData.customerID ? rowData.customerID : rowData.customerGenID}
-          </Table.Cell>
+          <Table.Cell textAlign="center">{rowData.customerGenID}</Table.Cell>
           <Table.Cell textAlign="center">{rowData.industryClass}</Table.Cell>
           <Table.Cell>
             <div className="row-customerName">
