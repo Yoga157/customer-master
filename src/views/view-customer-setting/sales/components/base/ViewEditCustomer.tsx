@@ -104,6 +104,7 @@ interface IProps {
     holdshipment: boolean;
     salesName: any;
     avgAR: number;
+    capFlag: boolean;
     shareableApprovalStatus?: any;
   };
   role: string;
@@ -333,6 +334,17 @@ const ViewEditCustomer: React.FC<IProps> = (
     }
   };
 
+  /** Add cap setting */
+  const [capFlag, setCapFlag] = useState(customer.capFlag ? "TRUE" : "FALSE");
+
+  const handleCapFlag = () => {
+    if (pmoCustomer == "FALSE") {
+      setCapFlag("TRUE");
+    } else {
+      setCapFlag("FALSE");
+    }
+  };
+
   /** Invoicing schedule */
   const invoicingSchedule = useSelector((state: IStore) =>
     selectInvoicingSchedule(state)
@@ -364,6 +376,8 @@ const ViewEditCustomer: React.FC<IProps> = (
     PutCustomerSetting.customerID = customer.customerID;
     PutCustomerSetting.customerCategory = customerCategory;
     PutCustomerSetting.pmoCustomer = pmoCustomer == "TRUE" ? true : false;
+    PutCustomerSetting.capFlag = capFlag == "TRUE" ? true : false;
+    PutCustomerSetting.modifyUserID = userLogin.employeeID;
 
     await dispatch(
       CustomerSetting.putCustomerSettingCategoryPmo(
@@ -1062,8 +1076,8 @@ const ViewEditCustomer: React.FC<IProps> = (
                     <p className="margin-0">OFF</p>
                     <Checkbox
                       toggle
-                      checked={pmoCustomer == "TRUE" ? true : false}
-                      onChange={() => handlePmoCustomer()}
+                      checked={capFlag == "TRUE" ? true : false}
+                      onChange={() => handleCapFlag()}
                       className="toggle-margin"
                       disabled={role.toUpperCase() == "SALES"}
                     ></Checkbox>

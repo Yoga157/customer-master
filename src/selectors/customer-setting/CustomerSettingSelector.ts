@@ -326,6 +326,7 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
       holdshipment: model.resultObj.holdshipment,
       avgAR: model.resultObj.avgAR,
       salesName: model.resultObj.salesName,
+      capFlag: model.resultObj.capFlag,
       shareableApprovalStatus:
         model.resultObj.shareableApprovalStatus.length != 0
           ? {
