@@ -61,6 +61,8 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
   };
 
   const onSubmitNewAddress = async (values) => {
+    const userId: any = JSON.parse(localStorage.getItem("userLogin"));
+
     const customerOfficeNumber = new CustomerOfficeNumberModel({});
     if (data) {
       customerOfficeNumber.customerGenID = data.customerGenID;
@@ -74,7 +76,7 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
       customerOfficeNumber.alternateNumber = values.alternateNumber;
       customerOfficeNumber.faxNumber = values.faxNumber;
       customerOfficeNumber.modifyDate = new Date();
-      customerOfficeNumber.modifyUserID = 0;
+      customerOfficeNumber.modifyUserID = userId.employeeID;
 
       await dispatch(
         CustomerMasterActions.updateCustomerOfficeNumber(
@@ -94,7 +96,9 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
       customerOfficeNumber.alternateNumber = values.alternateNumber;
       customerOfficeNumber.faxNumber = values.faxNumber;
       customerOfficeNumber.createDate = new Date();
-      customerOfficeNumber.createUserID = 0;
+      customerOfficeNumber.createUserID = userId.employeeID;
+      customerOfficeNumber.modifyDate = new Date();
+      customerOfficeNumber.modifyUserID = userId.employeeID;
 
       await dispatch(
         CustomerMasterActions.postCustomerOfficeNumber(customerOfficeNumber)
@@ -107,11 +111,21 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
           customerId || data.customerID
         )
       );
+      await dispatch(
+        CustomerMasterActions.requestAccountHistoryByCustId(
+          customerId || data.customerID
+        )
+      );
     }
 
     if (customerGenId || data?.customerGenID) {
       await dispatch(
         CustomerMasterActions.requestApprovedCustomerByGenId(
+          customerGenId || data.customerGenID
+        )
+      );
+      await dispatch(
+        CustomerMasterActions.requestAccountHistoryByGenId(
           customerGenId || data.customerGenID
         )
       );

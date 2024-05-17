@@ -12,7 +12,6 @@ import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import CustomerSettingPostModel from "stores/customer-setting/models/CustomerSettingPostModel";
 import * as CustomerSettingAct from "stores/customer-setting/CustomerActivityActions";
 import * as EmployeeActions from "stores/employee/EmployeeActions";
-import { getEmployeeBuToCompare } from "utilities/Helper";
 import { selectEmployeeDeptId } from "selectors/employee/EmployeeSelector";
 
 interface IProps {

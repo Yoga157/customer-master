@@ -199,6 +199,8 @@ const _mappingCustomerPICs = (models: any[]): any[] => {
     jobTitle: model.picJobTitle,
     email: model.picEmailAddr,
     address: model.picAddress,
+    pin: model.pinFlag,
+    cap: model.capFlag,
     phoneNumber: model.picMobilePhone,
     customerGenID: model.customerGenID,
     customerID: model.customerID,

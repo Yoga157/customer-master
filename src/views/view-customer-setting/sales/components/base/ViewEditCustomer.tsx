@@ -82,7 +82,6 @@ import ViewApprovedData from "views/view-customer-setting/marketing/ViewApproved
 import { selectIndustry } from "selectors/customer-master/CustomerMasterSelector";
 import * as IndustryClassOptionsAction from "stores/customer-master/CustomerMasterActivityActions";
 import * as EmployeeActions from "stores/employee/EmployeeActions";
-import { getEmployeeData } from "utilities/Helper";
 import { selectEmployeeDeptId } from "selectors/employee/EmployeeSelector";
 
 interface IProps {
@@ -884,23 +883,24 @@ const ViewEditCustomer: React.FC<IProps> = (
               )) ||
               !String(customer.industryClassBusiness).includes(
                 employeeData.buToCompare
-              )) && (
-              <div className="container-padding-bu">
-                <div className="container-BU">
-                  <span
-                    className="p-BU"
-                    style={{
-                      color: "#55637A",
-                      fontWeight: 400,
-                      fontSize: "1.1rem",
-                    }}
-                  >
-                    This account industry classification not on your BU list.
-                    You will need cross BU approval to join in this account.
-                  </span>
+              )) &&
+              role == "Sales" && (
+                <div className="container-padding-bu">
+                  <div className="container-BU">
+                    <span
+                      className="p-BU"
+                      style={{
+                        color: "#55637A",
+                        fontWeight: 400,
+                        fontSize: "1.1rem",
+                      }}
+                    >
+                      This account industry classification not on your BU list.
+                      You will need cross BU approval to join in this account.
+                    </span>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             <div className="padding-horizontal customer-search-container">
               <div className="customer-data-container">
