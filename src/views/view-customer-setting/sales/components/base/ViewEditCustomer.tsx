@@ -81,6 +81,8 @@ import ModalShowRejectReason from "../modal/modal-show-reject-reason/ModalShowRe
 import ViewApprovedData from "views/view-customer-setting/marketing/ViewApprovedData";
 import { selectIndustry } from "selectors/customer-master/CustomerMasterSelector";
 import * as IndustryClassOptionsAction from "stores/customer-master/CustomerMasterActivityActions";
+import * as EmployeeActions from "stores/employee/EmployeeActions";
+import { selectEmployeeDeptId } from "selectors/employee/EmployeeSelector";
 
 interface IProps {
   customer: {
@@ -103,6 +105,7 @@ interface IProps {
     salesName: any;
     capFlag: any;
     avgAR: number;
+    capFlag: boolean;
     shareableApprovalStatus?: any;
   };
   role: string;
@@ -164,6 +167,7 @@ const ViewEditCustomer: React.FC<IProps> = (
 
   useEffect(() => {
     dispatch(IndustryClassOptionsAction.getIndustryClassification());
+    // setEmployee(getEmployeeData(userLogin.employeeID, userLogin.token));
   }, []);
 
   const onSubmitIndustryClass = async (e) => {};
@@ -362,7 +366,7 @@ const ViewEditCustomer: React.FC<IProps> = (
     PutCustomerSetting.pmoCustomer = pmoCustomer == "TRUE" ? true : false;
     PutCustomerSetting.capFlag = capFlag == "TRUE" ? true : false;
     PutCustomerSetting.industryClass = industryClass;
-    PutCustomerSetting.modifyUserID = userLogin.userID;
+    PutCustomerSetting.modifyUserID = userLogin.employeeID;
 
     await dispatch(
       CustomerSetting.putCustomerSettingCategoryPmo(
@@ -556,6 +560,7 @@ const ViewEditCustomer: React.FC<IProps> = (
   /** data yang perlu di get */
   useEffect(() => {
     if (customer.customerID != undefined) {
+      dispatch(EmployeeActions.requestEmployeeById(userLogin.employeeID));
       dispatch(CustomerName.requestCustomerCategory());
 
       dispatch(ConfigItem.requestConfigItem(customer.customerID));
@@ -669,6 +674,18 @@ const ViewEditCustomer: React.FC<IProps> = (
     [dispatch]
   );
 
+  // cek yang login sudah mejadi sales di account
+  const chekSales = () => {
+    const foundItem = accountOwnerData.find((item) =>
+      item.salesName.includes(userLogin.fullName)
+    );
+    return foundItem ? true : false;
+  };
+
+  const employeeData = useSelector((state: IStore) =>
+    selectEmployeeDeptId(state)
+  );
+
   return (
     <Fragment>
       {!showApprovalSteps && (
@@ -739,10 +756,8 @@ const ViewEditCustomer: React.FC<IProps> = (
 
                   {shareableRequestStatus == "REJECTED_DIRECTORATE" && (
                     <>
-                      <Icon
-                        name="exclamation circle"
-                        style={{ color: "#FFA800" }}
-                      />
+                      <Icon name="remove circle" style={{ color: "red" }} />
+                      Rejected
                       <span
                         className="reject-text"
                         onClick={() =>
@@ -866,21 +881,31 @@ const ViewEditCustomer: React.FC<IProps> = (
           <Divider style={{ marginTop: 0 }}></Divider>
 
           <LoadingIndicator isActive={isRequesting}>
-            <div className="container-padding-bu">
-              <div className="container-BU">
-                <span
-                  className="p-BU"
-                  style={{
-                    color: "#55637A",
-                    fontWeight: 400,
-                    fontSize: "1.1rem",
-                  }}
-                >
-                  This account industry classification not on your BU list. You
-                  will need cross BU approval to join in this account.
-                </span>
-              </div>
-            </div>
+            {((!chekSales() &&
+              !String(customer.industryClassBusiness).includes(
+                employeeData.buToCompare
+              )) ||
+              !String(customer.industryClassBusiness).includes(
+                employeeData.buToCompare
+              )) &&
+              role == "Sales" && (
+                <div className="container-padding-bu">
+                  <div className="container-BU">
+                    <span
+                      className="p-BU"
+                      style={{
+                        color: "#55637A",
+                        fontWeight: 400,
+                        fontSize: "1.1rem",
+                      }}
+                    >
+                      This account industry classification not on your BU list.
+                      You will need cross BU approval to join in this account.
+                    </span>
+                  </div>
+                </div>
+              )}
+
             <div className="padding-horizontal customer-search-container">
               <div className="customer-data-container">
                 <label

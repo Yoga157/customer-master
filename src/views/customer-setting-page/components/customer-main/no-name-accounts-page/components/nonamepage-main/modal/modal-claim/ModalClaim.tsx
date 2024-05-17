@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Button } from "views/components/UI";
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,8 @@ import LoadingIndicator from "views/components/loading-indicator/LoadingIndicato
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import CustomerSettingPostModel from "stores/customer-setting/models/CustomerSettingPostModel";
 import * as CustomerSettingAct from "stores/customer-setting/CustomerActivityActions";
+import * as EmployeeActions from "stores/employee/EmployeeActions";
+import { selectEmployeeDeptId } from "selectors/employee/EmployeeSelector";
 
 interface IProps {
   rowData: any;
@@ -35,15 +37,26 @@ const ClaimAccount: React.FC<IProps> = (
   const activePage = useSelector(
     (state: IStore) => state.customerSetting.activePage
   );
-  const BU_LoginUser = "1070102003";
-  const BU_ToCompare = BU_LoginUser.slice(0, -5) + "00000";
+
+  let userLogin = JSON.parse(localStorage.getItem("userLogin"));
+
+  const employeeData = useSelector((state: IStore) =>
+    selectEmployeeDeptId(state)
+  );
+
+  useEffect(() => {
+    dispatch(EmployeeActions.requestEmployeeById(userLogin.employeeID));
+  }, [dispatch]);
 
   const cancelClick = () => {
     dispatch(ModalAction.CLOSE());
   };
 
   const isRequesting: boolean = useSelector((state: IStore) =>
-    selectRequesting(state, [CustomerSettingAct.POST_CLAIM_ACCOUNT])
+    selectRequesting(state, [
+      CustomerSettingAct.POST_CLAIM_ACCOUNT,
+      EmployeeActions.REQUEST_EMPLOYEES_ENGINEER_BY_ID,
+    ])
   );
   const onSubmitHandler = async (e) => {
     const userId: any = localStorage.getItem("userLogin");
@@ -124,7 +137,7 @@ const ClaimAccount: React.FC<IProps> = (
                         style={{
                           backgroundColor:
                             !data.industryClassBusiness.includes(
-                              BU_ToCompare
+                              employeeData.buToCompare
                             ) && "#FFE0D9",
                           paddingInline: "2rem",
                           paddingTop: "1rem",
@@ -143,7 +156,7 @@ const ClaimAccount: React.FC<IProps> = (
                             {data.customerName}
                           </h4>
                           {!data.industryClassBusiness.includes(
-                            BU_ToCompare
+                            employeeData.buToCompare
                           ) && (
                             <p style={{ color: "red", fontStyle: "italic" }}>
                               Cross BU Account

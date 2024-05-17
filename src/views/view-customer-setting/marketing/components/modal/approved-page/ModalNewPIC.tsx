@@ -10,6 +10,7 @@ import { Divider, Form, Input, Label } from "semantic-ui-react";
 import { Form as FinalForm, Field } from "react-final-form";
 import {
   Button,
+  CheckBox,
   CheckBoxInput,
   DropdownClearInput,
   TextAreaInput,
@@ -29,6 +30,8 @@ interface IData {
   email: string;
   address: string;
   phoneNumber: string;
+  pin?: boolean;
+  cap?: boolean;
   customerGenID?: any;
   customerId?: any;
 }
@@ -45,6 +48,18 @@ const ModalNewPIC: React.FC<IProps> = (
 ) => {
   const dispatch: Dispatch = useDispatch();
   const { data, isView, customerId, customerGenId } = props;
+
+  const [pinFlag, setPinFlag] = useState(data?.pin || false);
+  const [capFlag, setCapFlag] = useState(data?.cap || false);
+
+  const changePinFlag = () => {
+    setPinFlag(!pinFlag);
+  };
+
+  const changeCapFlag = () => {
+    setCapFlag(!capFlag);
+  };
+
   const userId: any = localStorage.getItem("userLogin");
 
   const addressOptions = useSelector((state: IStore) =>
@@ -52,6 +67,7 @@ const ModalNewPIC: React.FC<IProps> = (
   );
 
   const onSubmitPIC = async (values) => {
+    console.log(values);
     const userId: any = localStorage.getItem("userLogin");
 
     const RequestPIC = new PostPeopleInChargerModel(values);
@@ -63,6 +79,8 @@ const ModalNewPIC: React.FC<IProps> = (
       RequestPIC.picEmailAddr = values.email;
       RequestPIC.picMobilePhone = values.phoneNumber;
       RequestPIC.picAddress = values.officeAddress;
+      RequestPIC.capFlag = capFlag;
+      RequestPIC.pinFlag = pinFlag;
       RequestPIC.modifyDate = new Date();
       RequestPIC.modifyUserID = JSON.parse(userId).employeeID;
 
@@ -74,8 +92,12 @@ const ModalNewPIC: React.FC<IProps> = (
       RequestPIC.picEmailAddr = values.email;
       RequestPIC.picMobilePhone = values.phoneNumber;
       RequestPIC.picAddress = values.officeAddress;
+      RequestPIC.capFlag = capFlag;
+      RequestPIC.pinFlag = pinFlag;
       RequestPIC.createDate = new Date();
       RequestPIC.createdUserID = JSON.parse(userId).employeeID;
+      RequestPIC.modifyDate = new Date();
+      RequestPIC.modifyUserID = JSON.parse(userId).employeeID;
       await dispatch(CustomerMasterActions.postPIC(RequestPIC));
     }
 
@@ -85,11 +107,21 @@ const ModalNewPIC: React.FC<IProps> = (
           customerId || data.customerId
         )
       );
+      await dispatch(
+        CustomerMasterActions.requestAccountHistoryByCustId(
+          customerId || data.customerId
+        )
+      );
     }
 
     if (customerGenId || data?.customerGenID) {
       await dispatch(
         CustomerMasterActions.requestApprovedCustomerByGenId(
+          customerGenId || data.customerGenID
+        )
+      );
+      await dispatch(
+        CustomerMasterActions.requestAccountHistoryByGenId(
           customerGenId || data.customerGenID
         )
       );
@@ -186,7 +218,11 @@ const ModalNewPIC: React.FC<IProps> = (
                   label="Pin to show as main PIC"
                   name="mainPIC"
                   component={CheckBoxInput}
-                  defaultChecked={false}
+                  input={{
+                    value: pinFlag,
+                    onChange: changePinFlag,
+                  }}
+                  defaultChecked={pinFlag}
                 />
               </div>
 
@@ -199,8 +235,12 @@ const ModalNewPIC: React.FC<IProps> = (
                   label="CAP Customer"
                   name="capCustomer"
                   component={CheckBoxInput}
-                  defaultChecked={false}
-                  disabled={JSON.parse(userId).role !== "Admin" ? true : false}
+                  input={{
+                    value: capFlag,
+                    onChange: changeCapFlag,
+                  }}
+                  defaultChecked={capFlag}
+                  disabled={JSON.parse(userId).role !== "Admin"}
                 />
               </div>
             </div>
