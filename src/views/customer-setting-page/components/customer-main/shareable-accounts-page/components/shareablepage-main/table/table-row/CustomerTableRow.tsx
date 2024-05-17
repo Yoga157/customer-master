@@ -153,14 +153,14 @@ const CustomerTableRow: React.FC<IProps> = (
                       </>
                     )}
 
-                    {rowData.salesHistory?.requestedBy ==
-                      userLogin.fullName && (
-                      <Dropdown.Item
-                        text="View/Edit"
-                        icon="edit outline"
-                        onClick={() => onEdit(rowData.customerID)}
-                      />
-                    )}
+                    {rowData.salesHistory?.requestedBy == userLogin.fullName &&
+                      !rowData.salesName.includes(userLogin.fullName) && (
+                        <Dropdown.Item
+                          text="View/Edit"
+                          icon="edit outline"
+                          onClick={() => onEdit(rowData.customerID)}
+                        />
+                      )}
 
                     {
                       <Dropdown.Item
@@ -234,7 +234,7 @@ const CustomerTableRow: React.FC<IProps> = (
           </div>
         </Table.Cell>
         <Table.Cell textAlign="center">{rowData.jdeCustomerID}</Table.Cell>
-        <Table.Cell textAlign="center">{rowData.customerID}</Table.Cell>
+        <Table.Cell textAlign="center">{rowData.customerGenID}</Table.Cell>
         <Table.Cell textAlign="center">{rowData.industryClass}</Table.Cell>
         <Table.Cell>{rowData.customerCategory}</Table.Cell>
         <Table.Cell>

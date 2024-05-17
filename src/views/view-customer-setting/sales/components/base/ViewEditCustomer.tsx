@@ -105,7 +105,6 @@ interface IProps {
     salesName: any;
     capFlag: any;
     avgAR: number;
-    capFlag: boolean;
     shareableApprovalStatus?: any;
   };
   role: string;
@@ -888,6 +887,7 @@ const ViewEditCustomer: React.FC<IProps> = (
               !String(customer.industryClassBusiness).includes(
                 employeeData.buToCompare
               )) &&
+              !customer.salesName.includes(userLogin.fullName) &&
               role == "Sales" && (
                 <div className="container-padding-bu">
                   <div className="container-BU">
