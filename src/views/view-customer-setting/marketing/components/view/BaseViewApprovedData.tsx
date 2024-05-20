@@ -67,6 +67,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
   const customer = useSelector((state: IStore) =>
     selectCustomerMoreDetails(state)
   );
+  console.log(customer);
 
   useEffect(() => {
     if (status == "NOT_NEW") {
@@ -269,6 +270,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+            customerCAPFlag={customer.capFlag}
           ></ModalNewPIC>,
           ModalSizeEnum.Small
         )
@@ -285,6 +287,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+            customerCAPFlag={false}
           ></ModalNewPIC>,
           ModalSizeEnum.Small
         )
@@ -995,6 +998,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     }
                     isView={isView}
                     status={status}
+                    customerCAPFlag={customer.capFlag}
                   />
                 </div>
                 <Divider className="margin-0"></Divider>

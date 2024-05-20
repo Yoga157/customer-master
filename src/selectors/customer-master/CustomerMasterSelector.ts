@@ -244,6 +244,7 @@ const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
         website: "-",
         coorporateEmail: "-",
         npwpNumber: "-",
+        capFlag: false,
         requestor: "-",
         npwpCard: {},
         cpAddressOfficeNumbers: [],
@@ -294,6 +295,7 @@ const _selectNewCustomerDetailApproved = (models: ResultActions): any => {
         npwpNumber: models.resultObj[0].npwpNumber
           ? models.resultObj[0].npwpNumber
           : "-",
+        capFlag: models.resultObj[0].capFlag,
         requestor: models.resultObj[0].requestor
           ? models.resultObj[0].requestor
           : "-",
