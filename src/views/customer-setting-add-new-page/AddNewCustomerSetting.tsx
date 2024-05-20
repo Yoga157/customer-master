@@ -392,14 +392,18 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                   checked={openCustomerInfo}
                   onChange={() => {
                     setOpenCustomerInfo(!openCustomerInfo);
+
                     if (
                       tableData.rows.length === 0 &&
                       searchedCustomerName === ""
                     ) {
                       setIsCheckedToggle(!isChekedToggle);
                     }
+
                     if (openCustomerInfo) {
                       setIsCheckedToggle(false);
+                    } else if (!openCustomerInfo) {
+                      setIsCheckedToggle(true);
                     }
                   }}
                   style={{

@@ -969,7 +969,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                   {data.description.slice(0, data.description.indexOf(" ") + 3)}
                   <span style={{ fontWeight: "bold", color: "black" }}>
                     {data.description.slice(
-                      data.description.indexOf(" ") + 3,
+                      data.description.indexOf("by") + 3,
                       data.description.indexOf("on")
                     )}
                   </span>

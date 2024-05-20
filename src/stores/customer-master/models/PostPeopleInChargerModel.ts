@@ -8,6 +8,8 @@ export default class PostPeopleInChargerModel extends BaseModel {
   picEmailAddr: string = "";
   picAddress: string = "";
   picMobilePhone: string = "";
+  pinFlag: boolean = false;
+  capFlag: boolean = false;
   createDate?: Date = undefined;
   createdUserID?: number = 0;
   modifyDate?: Date = undefined;

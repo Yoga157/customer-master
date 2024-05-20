@@ -158,12 +158,22 @@ const TableCustomerDetail: React.FC<IProps> = (
               </Table.Cell>
               {header.map((header) =>
                 header.key == "pin" || header.key == "cap" ? (
-                  <Table.Cell
-                    key={header.key}
-                    textAlign={header.textCenter ? "center" : "left"}
-                  >
-                    {item["pin"] || (item["cap"] && <Icon name="check" />)}
-                  </Table.Cell>
+                  (header.key == "pin" && (
+                    <Table.Cell
+                      key={header.key}
+                      textAlign={header.textCenter ? "center" : "left"}
+                    >
+                      {item["pin"] && <Icon name="check" />}
+                    </Table.Cell>
+                  )) ||
+                  (header.key == "cap" && (
+                    <Table.Cell
+                      key={header.key}
+                      textAlign={header.textCenter ? "center" : "left"}
+                    >
+                      {item["cap"] && <Icon name="check" />}
+                    </Table.Cell>
+                  ))
                 ) : (
                   <Table.Cell
                     key={header.key}

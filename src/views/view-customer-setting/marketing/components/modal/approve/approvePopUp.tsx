@@ -27,10 +27,13 @@ const ApprovePopUp: React.FC<IProps> = (
   };
 
   const approveClick = async () => {
+    const userLogin: any = localStorage.getItem("userLogin");
+
     const approveCustomerData = new PostStatusNewCustomerModel({});
     approveCustomerData.customerGenID = customerGenID;
     approveCustomerData.approvalStatus = "APPROVE";
     approveCustomerData.remark = null;
+    approveCustomerData.modifyUserID = userLogin.employeeID;
 
     await dispatch(
       CustomerMasterActions.updateStatusNewCustomer(approveCustomerData)

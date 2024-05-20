@@ -68,6 +68,8 @@ const ModalNewRelatedCustomer: React.FC<IProps> = (
   };
 
   const onSubmitCustomerName = async (values) => {
+    const userId: any = JSON.parse(localStorage.getItem("userLogin"));
+
     const RelatedCustomer = new RelatedCustomerPostModel({});
     RelatedCustomer.relatedCustomerID = customerData.customerID;
     if (!isView) {
@@ -75,20 +77,36 @@ const ModalNewRelatedCustomer: React.FC<IProps> = (
     } else {
       RelatedCustomer.customerID = customerId;
     }
-    RelatedCustomer.createUserID = 0;
+    RelatedCustomer.createUserID = userId.employeeID;
+    RelatedCustomer.modifyUserID = userId.employeeID;
+    RelatedCustomer.modifyDate = new Date();
     RelatedCustomer.createDate = new Date();
 
     await dispatch(RelatedCustomerActions.postRelatedCustomer(RelatedCustomer));
 
+    if (customerId || data?.customerID) {
+      await dispatch(
+        CustomerMasterActions.requestCustomerMoreDetailsByCustId(
+          customerId || data.customerID
+        )
+      );
+    }
+
     if (customerId) {
       await dispatch(
         CustomerMasterActions.requestCustomerMoreDetailsByCustId(customerId)
+      );
+      await dispatch(
+        CustomerMasterActions.requestAccountHistoryByCustId(customerId)
       );
     }
 
     if (customerGenId) {
       await dispatch(
         CustomerMasterActions.requestApprovedCustomerByGenId(customerGenId)
+      );
+      await dispatch(
+        CustomerMasterActions.requestAccountHistoryByGenId(customerGenId)
       );
     }
 

@@ -83,11 +83,21 @@ const AllAccountsPage: React.FC<IProps> = (
       setMyAccount(false);
 
       dispatch(
-        CustomerActions.requestAllAcc(
+        CustomerActions.requestSearchAllAcc(
           activePage,
           pageSize,
           "CustomerID",
-          "ascending"
+          null,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true
         )
       );
     }
@@ -114,11 +124,21 @@ const AllAccountsPage: React.FC<IProps> = (
       setMyAccount(false);
 
       dispatch(
-        CustomerActions.requestAllAcc(
+        CustomerActions.requestSearchAllAcc(
           activePage,
           pageSize,
           "CustomerID",
-          "ascending"
+          null,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true
         )
       );
     }
@@ -192,11 +212,21 @@ const AllAccountsPage: React.FC<IProps> = (
         });
     } else {
       dispatch(
-        CustomerActions.requestAllAcc(
+        CustomerActions.requestSearchAllAcc(
           1,
           tableData.totalRow,
           "CustomerID",
-          "ascending"
+          null,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true
         )
       )
         .then(() => {
@@ -204,11 +234,21 @@ const AllAccountsPage: React.FC<IProps> = (
         })
         .then(() => {
           dispatch(
-            CustomerActions.requestAllAcc(
+            CustomerActions.requestSearchAllAcc(
               1,
               pageSize,
               "CustomerID",
-              "ascending"
+              null,
+              "ascending",
+              null,
+              null,
+              null,
+              null,
+              null,
+              true,
+              true,
+              true,
+              true
             )
           );
         });
@@ -242,11 +282,21 @@ const AllAccountsPage: React.FC<IProps> = (
 
   useEffect(() => {
     dispatch(
-      CustomerActions.requestAllAcc(
+      CustomerActions.requestSearchAllAcc(
         activePage,
         pageSize,
         "CustomerID",
-        "ascending"
+        null,
+        "ascending",
+        null,
+        null,
+        null,
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
       )
     );
   }, [dispatch]);
@@ -268,6 +318,7 @@ const AllAccountsPage: React.FC<IProps> = (
           null,
           "ascending",
           filterData.newsalesAssign,
+          null,
           filterData.pmo_customer,
           filterData.blacklist,
           filterData.holdshipment,
@@ -315,11 +366,21 @@ const AllAccountsPage: React.FC<IProps> = (
       );
     } else {
       dispatch(
-        CustomerActions.requestAllAcc(
+        CustomerActions.requestSearchAllAcc(
           data.activePage,
           pageSize,
           "CustomerID",
-          "ascending"
+          null,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true
         )
       );
     }

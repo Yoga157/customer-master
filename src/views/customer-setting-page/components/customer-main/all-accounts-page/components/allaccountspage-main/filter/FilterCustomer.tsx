@@ -74,39 +74,39 @@ const FilterCustomer: React.FC<{
   const onSubmitHandler = async () => {
     const nonameAccount =
       noNameAccountYesChecked && noNameAccountNoChecked
-        ? null
+        ? true
         : noNameAccountYesChecked
         ? true
         : noNameAccountNoChecked
         ? false
-        : null;
+        : true;
 
     const namedAccount =
       namedAccountYesChecked && namedAccountNoChecked
-        ? null
+        ? true
         : namedAccountYesChecked
         ? true
         : namedAccountNoChecked
         ? false
-        : null;
+        : true;
 
     const shareableAccount =
       sharaebleAccountYesChecked && shareableAccountNoChecked
-        ? null
+        ? true
         : sharaebleAccountYesChecked
         ? true
         : shareableAccountNoChecked
         ? false
-        : null;
+        : true;
 
     const isNew =
       isNewYesChecked && isNewNoChecked
-        ? null
+        ? true
         : isNewYesChecked
         ? true
         : isNewNoChecked
         ? false
-        : null;
+        : true;
 
     const pmo_customer =
       pmo_customerYesChecked && pmo_customerNoChecked
