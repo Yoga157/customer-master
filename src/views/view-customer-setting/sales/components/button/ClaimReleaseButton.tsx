@@ -83,19 +83,6 @@ const ClaimReleaseButton: React.FC<IProps> = (
 
   return (
     <Fragment>
-      {/* claim no name account */}
-      {/* {accountStatus == "No Name Account" && role?.toUpperCase() == "SALES" && (
-        <Button
-          color="yellow"
-          size="small"
-          type="button"
-          onClick={() => onClaimAccount()}
-        >
-          <Icon name="check circle" />
-          Claim Account
-        </Button>
-      )} */}
-
       {/* release named account */}
       {accountStatus == "Named Account" &&
         isEmployeeOwnCustomer &&
@@ -146,19 +133,6 @@ const ClaimReleaseButton: React.FC<IProps> = (
           </Button>
         )}
 
-      {/* already had request */}
-      {/* {accountStatus == "Named Account" &&
-        !isEmployeeOwnCustomer &&
-        !isEmployeeRequestShareable &&
-        customer.shareableApprovalStatus.length != 0 &&
-        customer.shareableApprovalStatus?.requestedBy != userLogin.fullName &&
-        role?.toUpperCase() == "SALES" && (
-          <Button size="small" type="button" disabled>
-            <Icon name="wait" />
-            Already had pending request
-          </Button>
-        )} */}
-
       {/* release shareable account */}
       {accountStatus == "Shareable Account" &&
         isEmployeeOwnCustomer &&
@@ -173,21 +147,6 @@ const ClaimReleaseButton: React.FC<IProps> = (
             Release Account
           </Button>
         )}
-
-      {/* claim shareable account */}
-      {/* {accountStatus == "Shareable Account" &&
-        !isEmployeeOwnCustomer &&
-        role?.toUpperCase() == "SALES" && (
-          <Button
-            color="yellow"
-            size="small"
-            type="button"
-            onClick={() => onClaimAccount()}
-          >
-            <Icon name="check circle" />
-            Claim Account
-          </Button>
-        )} */}
 
       {/* already claimed shareable account */}
       {accountStatus == "Named Account" &&

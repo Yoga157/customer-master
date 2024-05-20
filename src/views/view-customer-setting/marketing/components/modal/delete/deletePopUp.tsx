@@ -42,8 +42,6 @@ const DeletePopUp: React.FC<IProps> = (
   );
 
   const deleteClick = async () => {
-    // props.deleteFunc(props.id);
-    // props.refreshFunc(props.customerID);
     if (jenis == "ADDRESSOFFICENUMBER") {
       if (isView) {
         await dispatch(deleteFunc(id, null, customerID));
@@ -92,7 +90,6 @@ const DeletePopUp: React.FC<IProps> = (
           </Form>
         )}
       />
-      {/* </LoadingIndicator> */}
     </Fragment>
   );
 };

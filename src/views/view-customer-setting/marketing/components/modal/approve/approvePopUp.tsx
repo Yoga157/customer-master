@@ -74,7 +74,6 @@ const ApprovePopUp: React.FC<IProps> = (
           </Form>
         )}
       />
-      {/* </LoadingIndicator> */}
     </Fragment>
   );
 };

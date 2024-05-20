@@ -143,7 +143,6 @@ const ModalNewRelatedCustomer: React.FC<IProps> = (
                 className="MarBot10"
                 type="submit"
                 color="blue"
-                //   onClick={}
               >
                 Submit
               </Button>

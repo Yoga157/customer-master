@@ -59,9 +59,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   const tableData = useSelector((state: IStore) =>
     selectReqCustomerNewAccount(state)
   );
-  // const industryClassOptions = useSelector((state: IStore) =>
-  //   selectIndustryOptions(state)
-  // );
 
   const history = useHistory();
   const [searchedCustomerName, setSearchedCustomerName] = useState("");
@@ -116,17 +113,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
     setSearchedCustomerName(data.customerName);
     setSearcedhPicName(data.picName);
   };
-
-  // const industryClassOptions = [
-  //   {
-  //     text: "Industry1",
-  //     value: "Industry1",
-  //   },
-  //   {
-  //     text: "Industry2",
-  //     value: "Industry2",
-  //   },
-  // ];
 
   const industryClassOptions = useSelector((state: IStore) =>
     selectIndustry(state)
@@ -232,7 +218,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
 
   useEffect(() => {
     dispatch(CustomerMasterActions.clearResult());
-    // dispatch(CustomerMasterActions.getIndustryClass());
   }, []);
 
   useEffect(() => {
@@ -586,7 +571,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                 component={TextInput}
                                 labelName="Website"
                                 placeholder="Type website name here..."
-                                mandatory={false}
+                                mandatory={true}
                               />
                             </Grid.Column>
                             <Grid.Column
@@ -640,32 +625,19 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                             </Grid.Column>
                             <Grid.Column width={4} className="FullGrid767">
                               <div
-                                style={{
-                                  position: "relative",
-                                  width: "100%",
-                                  display: "flex",
-                                  flexDirection: "column",
-                                }}
+                                className="container-npwp"
                                 onClick={handleUploadClick}
                               >
                                 <label style={{ color: "#A9A8C4" }}>
                                   NPWP Card{" "}
-                                  <span style={{ color: "red" }}>*</span>
+                                  {JSON.parse(userId).role === "Sales" && (
+                                    <span style={{ color: "red" }}>*</span>
+                                  )}
                                 </label>
+
                                 <div
+                                  className="card-npwp"
                                   style={{
-                                    height: "10rem",
-                                    maxWidth: "15rem",
-                                    width: "100%",
-                                    border: "#8D8C8C solid 2px",
-                                    borderStyle: "dashed",
-                                    borderRadius: "0.5rem",
-                                    position: "relative",
-                                    backgroundColor: "#FBFBFB",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    justifyContent: "center",
-                                    textAlign: "center",
                                     backgroundImage: uploadFile
                                       ? `url(${URL.createObjectURL(
                                           uploadFile
@@ -676,13 +648,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                     backgroundPosition: "center",
                                   }}
                                 >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      flexDirection: "column",
-                                      alignItems: "center",
-                                    }}
-                                  >
+                                  <div className="flex-column-center">
                                     {uploadFile ? null : (
                                       <Icon name="upload" size="big" />
                                     )}{" "}
@@ -694,20 +660,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                                   </div>
                                   {uploadFile && (
                                     <div
-                                      style={{
-                                        position: "absolute",
-                                        backgroundColor: "#656DD1",
-                                        color: "white",
-                                        padding: "0.3rem 0.5rem",
-                                        borderRadius: "2rem",
-                                        boxShadow: "0px 0px 10px 0px #00000040",
-                                        bottom: "3rem",
-                                        left: "50%",
-                                        transform: "translateX(-50%)",
-                                        zIndex: 1,
-                                        cursor: "pointer",
-                                        fontSize: "0.8rem",
-                                      }}
+                                      className="container-reuploud"
                                       onClick={openEditViewNPWP}
                                     >
                                       <span>View or Reupload</span>
@@ -723,15 +676,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               </div>
                             </Grid.Column>
                             <Grid.Column width={8} className="FullGrid767">
-                              <label
-                                style={{
-                                  color: "#55637A",
-                                  fontSize: "1rem",
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                PIC Details
-                              </label>
+                              <label className="label-pic">PIC Details</label>
                               <div className="grey-padding">
                                 <Segment className="LightGreyContainer">
                                   <Grid.Column width={6}>
@@ -809,7 +754,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               !values.city ||
                               !values.zipCode ||
                               !values.officeNumber ||
-                              !values.website ||
+                              // !values.website ||
                               !values.coorporateEmail ||
                               !values.nib ||
                               (!values.Npwp &&

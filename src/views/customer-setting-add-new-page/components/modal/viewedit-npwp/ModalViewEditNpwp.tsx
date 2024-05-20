@@ -49,29 +49,12 @@ const ModalViewNpwp: React.FC<IProps> = ({
           <img
             src={URL.createObjectURL(newUploadFile || uploadFile)}
             alt="NPWP Card"
-            style={{
-              width: "100%",
-              borderRadius: "0.5rem",
-              marginBottom: "1rem",
-            }}
+            className="card-reuploud"
           />
         </div>
       )}
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          backgroundColor: "#FFD500",
-          color: "#55637A",
-          padding: "0.5rem 1.5rem",
-          borderRadius: "2rem",
-          fontSize: "small",
-          marginBottom: "1rem",
-          cursor: "pointer",
-        }}
-        onClick={handleReuploadClick}
-      >
+      <div className="btn-reuploud" onClick={handleReuploadClick}>
         <Icon name="upload" /> Reupload NPWP Card Image
       </div>
 
@@ -86,6 +69,7 @@ const ModalViewNpwp: React.FC<IProps> = ({
       <Divider />
 
       <div
+        className="btn-cancel-reuploud"
         style={{
           display: "flex",
           justifyContent: "center",

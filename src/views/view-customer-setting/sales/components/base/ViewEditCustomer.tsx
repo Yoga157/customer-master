@@ -1107,13 +1107,6 @@ const ViewEditCustomer: React.FC<IProps> = (
                 isEmployeeRequestShareable={isEmployeeRequestShareable}
                 role={role}
               />
-              {/* <ClaimReleaseButton
-                customer={customer}
-                accountStatus={"Named Account"}
-                isEmployeeOwnCustomer={isEmployeeOwnCustomer}
-                isEmployeeRequestShareable={isEmployeeRequestShareable}
-                role={"ADMIN"}
-              /> */}
             </div>
 
             <Divider></Divider>

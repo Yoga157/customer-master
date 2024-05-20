@@ -98,39 +98,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     selectIndustry(state)
   );
 
-  // const onSaveEdit = async (values) => {
-  //   let userLogin = JSON.parse(localStorage.getItem("userLogin"));
-
-  //   const PutCustomerMoreDetails = new CustomerMoreDetailsModel({});
-  //   PutCustomerMoreDetails.industryClass = customer.industryClassification;
-  //   PutCustomerMoreDetails.customerName = customer.customerName;
-  //   PutCustomerMoreDetails.coorporateEmail = customer.coorporateEmail;
-  //   PutCustomerMoreDetails.npwpNumber = customer.npwpNumber;
-  //   PutCustomerMoreDetails.nib = customer.nib;
-  //   PutCustomerMoreDetails.modifyUserID = userLogin.employeeID;
-
-  //   await dispatch(
-  //     CustomerMasterActions.updateIndustryClassByID(
-  //       PutCustomerMoreDetails,
-  //       Number(id) || customer.customerId
-  //     )
-  //   );
-  //   await dispatch(
-  //     CustomerMasterActions.requestCustomerMoreDetailsByCustId(
-  //       customerId ? customerId : Number(id)
-  //     )
-  //   );
-  //   await dispatch(
-  //     CustomerMasterActions.requestApprovedCustomerByGenId(Number(id))
-  //   );
-  //   await dispatch(
-  //     ToastsAction.add(
-  //       "Update customer detail data success!",
-  //       ToastStatusEnum.Success
-  //     )
-  //   );
-  // };
-
   const onSaveEdit = async (values) => {
     let userLogin = JSON.parse(localStorage.getItem("userLogin"));
 
@@ -357,17 +324,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     },
   ];
 
-  let websiteMediaHeader = [
-    {
-      key: "type",
-      header: "Type",
-    },
-    {
-      key: "name",
-      header: "Name",
-    },
-  ];
-
   let picHeader = [
     {
       key: "pin",
@@ -496,23 +452,13 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     </GridColumn>
                   </Grid.Row>
                   <Grid.Row>
-                    <Grid.Column width={3} className="grid-padding-horizontal">
+                    <Grid.Column width={4} className="grid-padding-horizontal">
                       <label className="customer-data-label">Customer ID</label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.customerID}
-                      </p>
+                      <p className="grey p-pic-font">{customer.customerID}</p>
                     </Grid.Column>
                     <Grid.Column width={5} style={{ padding: "0" }}>
                       <label className="customer-data-label">Requestor</label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.requestor}
-                      </p>
+                      <p className="grey p-pic-font">{customer.requestor}</p>
                     </Grid.Column>
                     <Grid.Column
                       width={4}
@@ -520,12 +466,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       style={{ padding: "0" }}
                     >
                       <label className="customer-data-label">Create Date</label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.createDate}
-                      </p>
+                      <p className="grey p-pic-font">{customer.createDate}</p>
                     </Grid.Column>
                   </Grid.Row>
                   <Grid.Row>
@@ -548,10 +489,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           <label className="customer-data-label">
                             Customer Name
                           </label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
+                          <p className="grey p-pic-font">
                             {customer.customerName}
                           </p>
                         </>
@@ -561,10 +499,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label">
                         Customer Business Name
                       </label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
+                      <p className="grey p-pic-font">
                         {customer.customerBusinessName}
                       </p>
                     </Grid.Column>
@@ -578,10 +513,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label">
                         Holding Company Name
                       </label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
+                      <p className="grey p-pic-font">
                         {customer.holdingCompName}
                       </p>
                     </Grid.Column>{" "}
@@ -604,10 +536,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           <label className="customer-data-label">
                             Industry Classification
                           </label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
+                          <p className="grey p-pic-font">
                             {customer.industryClass}
                           </p>
                         </>
@@ -621,7 +550,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       </label>
                       <p
                         style={{ fontSize: "20px" }}
-                        className="grey"
+                        className="grey p-pic-font"
                         dangerouslySetInnerHTML={{
                           __html: customer.address || "-",
                         }}
@@ -636,7 +565,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label">Country</label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
-                        className="grey"
+                        className="grey p-pic-font"
                       >
                         {customer.country}
                       </p>
@@ -649,7 +578,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label ">City</label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
-                        className="grey"
+                        className="grey p-pic-font"
                       >
                         {customer.city}
                       </p>
@@ -662,7 +591,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label">ZIP Code</label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
-                        className="grey"
+                        className="grey p-pic-font"
                       >
                         {customer.zipCode}
                       </p>
@@ -677,7 +606,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       </label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
-                        className="grey"
+                        className="grey p-pic-font"
                       >
                         {customer.phoneNumber}
                       </p>
@@ -686,7 +615,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label">Website</label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
-                        className="grey"
+                        className="grey p-pic-font"
                       >
                         {customer.website}
                       </p>
@@ -712,10 +641,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           <label className="customer-data-label">
                             Corporate Email
                           </label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
+                          <p className="grey p-pic-font">
                             {customer.coorporateEmail}
                           </p>
                         </>
@@ -754,7 +680,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                                     fontSize: "20px",
                                     fontWeight: "bold",
                                   }}
-                                  className="grey"
+                                  className="grey p-pic-font"
                                 >
                                   {customer.npwpNumber}
                                 </p>
@@ -775,7 +701,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                                     component={TextInput}
                                     placeholder="Type NIB here..."
                                     labelName="NIB"
-                                    mandatory={false}
+                                    mandatory={true}
                                     defaultValue={customer.nib}
                                   />
                                 </div>
@@ -790,7 +716,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                                     fontSize: "20px",
                                     fontWeight: "bold",
                                   }}
-                                  className="grey"
+                                  className="grey p-pic-font"
                                 >
                                   {customer.nib}
                                 </p>
@@ -803,28 +729,10 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     <Grid.Column>
                       <div style={{ display: "flex", flexDirection: "column" }}>
                         <label className="customer-data-label">NPWP Card</label>
-                        <div
-                          style={{
-                            width: "15rem",
-                            height: "10rem",
-                            border: "#8D8C8C solid 2px",
-                            borderStyle: "dashed",
-                            borderRadius: "0.5rem",
-                            position: "relative",
-                          }}
-                        >
+                        <div className="npwp-card-approve">
                           {Object.keys(customer).length != 0 &&
                           Object.keys(customer.npwpCard).length == 0 ? (
-                            <div
-                              style={{
-                                position: "absolute",
-                                color: "#55637A",
-                                top: "50%",
-                                left: "50%",
-                                transform: "translate(-50%, -50%)",
-                                zIndex: 1,
-                              }}
-                            >
+                            <div className="position-transparan-npwp">
                               <Icon
                                 name="picture"
                                 style={{ fontSize: "3rem" }}
@@ -834,18 +742,11 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           ) : (
                             <>
                               <div
+                                className="open-view-npwp"
                                 style={{
-                                  position: "absolute",
-                                  backgroundColor: "#656DD1",
-                                  color: "white",
-                                  padding: "0.5rem 1.5rem",
-                                  borderRadius: "2rem",
-                                  boxShadow: "0px 0px 10px 0px #00000040",
                                   top: "50%",
                                   left: "50%",
                                   transform: "translate(-50%, -50%)",
-                                  zIndex: 1,
-                                  cursor: "pointer",
                                 }}
                                 onClick={() =>
                                   openViewNPWP(
@@ -857,13 +758,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                                 View
                               </div>
                               <img
-                                style={{
-                                  width: "100%",
-                                  height: "100%",
-                                  objectFit: "cover",
-                                  filter: "blur(3px)",
-                                  borderRadius: "0.5rem",
-                                }}
+                                className="npwp-img"
                                 src={
                                   Object.keys(customer).length != 0 &&
                                   `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
@@ -881,12 +776,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
           />
         </div>
 
-        <div
-          // ref={tableRef}
-          // className={!isView && `padding-horizontal`}
-          className="padding-horizontal"
-          style={{ margin: "2.5rem 0" }}
-        >
+        <div className="padding-horizontal" style={{ margin: "2.5rem 0" }}>
           <div className="grey get-data-container">
             <div className="accordion-container">
               <div style={{ display: "flex", flexDirection: "row" }}>
@@ -1076,7 +966,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     marginTop: "14px",
                   }}
                 >
-                  {/* {data.description}{" "} */}
                   {data.description.slice(0, data.description.indexOf(" ") + 3)}
                   <span style={{ fontWeight: "bold", color: "black" }}>
                     {data.description.slice(
@@ -1097,19 +986,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
           </div>
         </div>
       </LoadingIndicator>
-
-      {/* <Divider className="margin-0"></Divider>
-  
-          <div className="button-container">
-            <div className="button-inner-container">
-              <Button style={{ marginRight: "1rem" }} type="button">
-                Close
-              </Button>
-              <Button color="blue" type="button">
-                Save Change
-              </Button>
-            </div>
-          </div> */}
     </Fragment>
   );
 };

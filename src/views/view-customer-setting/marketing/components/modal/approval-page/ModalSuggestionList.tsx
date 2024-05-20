@@ -138,50 +138,6 @@ const ModalSuggestionList: React.FC<IProps> = (
                   content="Search"
                 />
               </div>
-
-              {/* <Grid>
-                <Grid.Row columns="equal">
-                  <Grid.Column width={3} className="FullGrid767 LabelNameLabel">
-                    <Field
-                      name="titleCustomer"
-                      component={TextInput}
-                      placeholder="e.g.PT .."
-                      labelName="Title Customer"
-                      mandatory={false}
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={7} className="FullGrid767">
-                    <Field
-                      name="customerName"
-                      component={TextInput}
-                      placeholder="e.g. Berca Hardaya .."
-                      labelName="Customer Name"
-                      mandatory={false}
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={6} className="FullGrid767">
-                    <Field
-                      name="picName"
-                      component={TextInput}
-                      placeholder="e.g.Jhon Doe .."
-                      labelName="PIC Name"
-                      mandatory={false}
-                    />
-                  </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns="equal">
-                  <Grid.Column>
-                    <Button
-                      type="submit"
-                      color="blue"
-                      disabled={false}
-                      floated="right"
-                      size="small"
-                      content="Search"
-                    />
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid> */}
             </div>
           </Form>
         )}

@@ -257,7 +257,6 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
                   !values.alternateNumber ||
                   !values.faxNumber
                 }
-                //   onClick={}
               >
                 Submit
               </Button>
