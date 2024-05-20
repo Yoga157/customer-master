@@ -93,7 +93,7 @@ interface IProps {
     customerGenID: number;
     industryClassID: number;
     industryClass: string;
-    industryClassBusiness: number;
+    industryClassBusiness: string;
     shareable: boolean;
     named: boolean;
     pmoCustomer: boolean;
@@ -615,6 +615,7 @@ const ViewEditCustomer: React.FC<IProps> = (
       BrandSummary.REQUEST_GET_BRAND_SUMMARY,
       ServiceSummary.REQUEST_GET_SERVICE_SUMMARY,
       ProjectHistory.REQUEST_GET_PROJECT_HISTORY,
+      EmployeeActions.REQUEST_EMPLOYEES_ENGINEER_BY_ID,
     ])
   );
 
@@ -880,14 +881,14 @@ const ViewEditCustomer: React.FC<IProps> = (
           <Divider style={{ marginTop: 0 }}></Divider>
 
           <LoadingIndicator isActive={isRequesting}>
-            {((!chekSales() &&
-              !String(customer.industryClassBusiness).includes(
-                employeeData.buToCompare
-              )) ||
-              !String(customer.industryClassBusiness).includes(
-                employeeData.buToCompare
-              )) &&
-              !customer.salesName.includes(userLogin.fullName) &&
+            {customer.industryClassBusiness != null &&
+              ((!chekSales() &&
+                !customer.industryClassBusiness.includes(
+                  employeeData.buToCompare
+                )) ||
+                !customer.industryClassBusiness.includes(
+                  employeeData.buToCompare
+                )) &&
               role == "Sales" && (
                 <div className="container-padding-bu">
                   <div className="container-BU">
