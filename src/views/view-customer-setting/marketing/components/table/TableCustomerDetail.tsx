@@ -23,6 +23,7 @@ interface IProps {
   jenis?: string;
   isView?: boolean;
   status: string;
+  customerCAPFlag?: boolean;
 }
 
 const TableCustomerDetail: React.FC<IProps> = (
@@ -39,6 +40,7 @@ const TableCustomerDetail: React.FC<IProps> = (
     customerId,
     isView,
     status,
+    customerCAPFlag,
   } = props;
   const dispatch: Dispatch = useDispatch();
 
@@ -47,14 +49,18 @@ const TableCustomerDetail: React.FC<IProps> = (
       if (isView) {
         dispatch(
           ModalSecondLevelActions.OPEN(
-            <Modal data={dataEdit} isView={isView} />,
+            <Modal
+              data={dataEdit}
+              isView={isView}
+              customerCAPFlag={customerCAPFlag}
+            />,
             ModalSizeEnum.Small
           )
         );
       } else {
         dispatch(
           ModalFirstLevelActions.OPEN(
-            <Modal data={dataEdit} />,
+            <Modal data={dataEdit} customerCAPFlag={customerCAPFlag} />,
             ModalSizeEnum.Small
           )
         );

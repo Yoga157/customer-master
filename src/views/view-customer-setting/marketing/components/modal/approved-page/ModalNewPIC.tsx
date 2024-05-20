@@ -41,13 +41,15 @@ interface IProps {
   isView?: boolean;
   customerId?: any;
   customerGenId?: any;
+  customerCAPFlag?: boolean;
 }
 
 const ModalNewPIC: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
-  const { data, isView, customerId, customerGenId } = props;
+  const { data, isView, customerId, customerGenId, customerCAPFlag } = props;
+  console.log(customerCAPFlag);
 
   const [pinFlag, setPinFlag] = useState(data?.pin || false);
   const [capFlag, setCapFlag] = useState(data?.cap || false);
@@ -240,7 +242,9 @@ const ModalNewPIC: React.FC<IProps> = (
                     onChange: changeCapFlag,
                   }}
                   defaultChecked={capFlag}
-                  disabled={JSON.parse(userId).role !== "Admin"}
+                  disabled={
+                    JSON.parse(userId).role !== "Admin" || !customerCAPFlag
+                  }
                 />
               </div>
             </div>
