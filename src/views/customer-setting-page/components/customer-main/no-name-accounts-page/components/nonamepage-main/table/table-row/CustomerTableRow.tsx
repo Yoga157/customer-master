@@ -47,7 +47,7 @@ const CustomerTableRow: React.FC<IProps> = (
     dispatch(
       ModalFirstLevelActions.OPEN(
         <ClaimFormEdit rowData={[rowData]} />,
-        ModalSizeEnum.Tiny
+        ModalSizeEnum.Small
       )
     );
     getRowData([]);

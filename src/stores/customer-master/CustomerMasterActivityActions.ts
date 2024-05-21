@@ -295,13 +295,17 @@ export const REQUEST_ACCOUNT_HISTORY_BY_GEN_ID: string =
 export const REQUEST_ACCOUNT_HISTORY_BY_GEN_ID_FINISHED: string =
   "CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_GEN_ID_FINISHED";
 
-export const requestAccountHistoryByGenId = (genId: number): any => {
+export const requestAccountHistoryByGenId = (
+  genId: number,
+  showAll: boolean
+): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<ResultActions>(
       dispatch,
       REQUEST_ACCOUNT_HISTORY_BY_GEN_ID,
       CustomerMasterEffect.requestAccountHistoryByGenId,
-      genId
+      genId,
+      showAll
     );
   };
 };
@@ -309,15 +313,19 @@ export const requestAccountHistoryByGenId = (genId: number): any => {
 export const REQUEST_ACCOUNT_HISTORY_BY_CUST_ID: string =
   "CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_CUST_ID";
 export const REQUEST_ACCOUNT_HISTORY_BY_CUST_ID_FINISHED: string =
-  "CustomerMasterActionsREQUEST_ACCOUNT_HISTORY_BY_CUST_ID_FINISHED";
+  "CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_CUST_ID_FINISHED";
 
-export const requestAccountHistoryByCustId = (custId: number): any => {
+export const requestAccountHistoryByCustId = (
+  custId: number,
+  showAll: boolean
+): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<ResultActions>(
       dispatch,
       REQUEST_ACCOUNT_HISTORY_BY_CUST_ID,
       CustomerMasterEffect.requestAccountHistoryByCustId,
-      custId
+      custId,
+      showAll
     );
   };
 };

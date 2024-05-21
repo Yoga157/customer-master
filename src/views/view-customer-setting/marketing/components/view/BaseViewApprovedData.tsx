@@ -158,9 +158,10 @@ const BaseViewApprovedData: React.FC<IProps> = (
     [dispatch]
   );
 
+  const [showAllHistory, setShowAllHistory] = useState(false);
+
   // state tabel
   const [openAddressOffice, setOpenAddressOffice] = useState(false);
-  const [openWebsiteMedia, setOpenWebsiteMedia] = useState(false);
   const [openPic, setOpenPic] = useState(false);
   const [openRelatedAcc, setOpenRelatedAcc] = useState(false);
 
@@ -202,25 +203,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     }
   }, [dispatch]);
 
-  // add website or social media
-  const openNewWebsiteSocial = useCallback((): void => {
-    if (isView) {
-      dispatch(
-        ModalSecondLevelActions.OPEN(
-          <ModalNewWebsiteMedia isView={isView}></ModalNewWebsiteMedia>,
-          ModalSizeEnum.Small
-        )
-      );
-    } else {
-      dispatch(
-        ModalFirstLevelActions.OPEN(
-          <ModalNewWebsiteMedia></ModalNewWebsiteMedia>,
-          ModalSizeEnum.Small
-        )
-      );
-    }
-  }, [dispatch]);
-
   // add pic
   const openNewPIC = useCallback((): void => {
     if (isView) {
@@ -236,6 +218,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+            showAllHistory={showAllHistory}
           ></ModalNewPIC>,
           ModalSizeEnum.Small
         )
@@ -252,6 +235,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+            showAllHistory={showAllHistory}
           ></ModalNewPIC>,
           ModalSizeEnum.Small
         )
@@ -274,6 +258,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+            showAllHistory={showAllHistory}
           ></ModalNewRelatedCustomer>,
           ModalSizeEnum.Small
         )
@@ -290,6 +275,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+            showAllHistory={showAllHistory}
           ></ModalNewRelatedCustomer>,
           ModalSizeEnum.Small
         )
@@ -375,12 +361,13 @@ const BaseViewApprovedData: React.FC<IProps> = (
       if (status === "NOT_NEW") {
         await dispatch(
           CustomerMasterActions.requestAccountHistoryByCustId(
-            customerId ? customerId : Number(id)
+            customerId ? customerId : Number(id),
+            false
           )
         );
       } else {
         await dispatch(
-          CustomerMasterActions.requestAccountHistoryByGenId(Number(id))
+          CustomerMasterActions.requestAccountHistoryByGenId(Number(id), false)
         );
       }
     };
@@ -393,6 +380,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
       CustomerMasterActions.REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID,
       CustomerMasterActions.REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID,
       CustomerMasterActions.REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID,
+      CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_GEN_ID,
     ])
   );
 
@@ -413,12 +401,12 @@ const BaseViewApprovedData: React.FC<IProps> = (
       </p>
 
       <Divider className="margin-0"></Divider>
-
       <LoadingIndicator isActive={isRequesting}>
         <div
           style={{
             backgroundColor: "#FFFB9A",
-            padding: "14px 0px",
+
+            padding: !isView && "14px 0px",
           }}
         >
           <FinalForm
@@ -732,7 +720,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                         <div className="npwp-card-approve">
                           {Object.keys(customer).length != 0 &&
                           Object.keys(customer.npwpCard).length == 0 ? (
-                            <div className="position-transparan-npwp">
+                            <div className="position-transparan-npwp top-npwp">
                               <Icon
                                 name="picture"
                                 style={{ fontSize: "3rem" }}
@@ -948,41 +936,90 @@ const BaseViewApprovedData: React.FC<IProps> = (
         </div>
 
         <div className="padding-horizontal">
-          <div
-            className="grey account-activity-container"
-            style={{ paddingBottom: "1rem", marginBottom: "1rem" }}
-          >
-            <p className="bold margin-0" style={{ padding: "1rem" }}>
-              ACCOUNT ACTIVITY HISTORY
-            </p>
-            <Divider style={{ margin: 0 }}></Divider>
-
-            {accountActivityHistory.length > 0 &&
-              accountActivityHistory.map((data) => (
+          <div className="grey account-activity-container">
+            <div className="flex-between-center padd-flex-center">
+              <div className="flex-center">
                 <p
-                  style={{
-                    padding: "0 1rem",
-                    marginBottom: "0",
-                    marginTop: "14px",
-                  }}
+                  className="bold margin-0"
+                  style={{ padding: "1rem", margin: "0", textAlign: "center" }}
                 >
-                  {data.description.slice(0, data.description.indexOf(" ") + 3)}
-                  <span style={{ fontWeight: "bold", color: "black" }}>
-                    {data.description.slice(
-                      data.description.indexOf("by") + 3,
-                      data.description.indexOf("on")
-                    )}
-                  </span>
-                  {data.description.slice(data.description.indexOf("on"))}
+                  ACCOUNT ACTIVITY HISTORY
                 </p>
-              ))}
-            {accountActivityHistory.length === 0 && (
-              <p
-                style={{ textAlign: "center", margin: "1rem", color: "black" }}
-              >
-                No activity history found.
-              </p>
-            )}
+              </div>
+              <div className="bold margin-0 padd-flex-center">
+                <label className="flex-center">
+                  <input
+                    name="showAllHistory"
+                    type="checkbox"
+                    checked={showAllHistory}
+                    style={{ marginRight: "0.5rem", transform: "scale(1)" }}
+                    onChange={async (event) => {
+                      const isChecked = event.target.checked;
+                      setShowAllHistory(isChecked);
+                      if (status === "NOT_NEW") {
+                        await dispatch(
+                          CustomerMasterActions.requestAccountHistoryByCustId(
+                            customerId ? customerId : Number(id),
+                            isChecked
+                          )
+                        );
+                      } else {
+                        await dispatch(
+                          CustomerMasterActions.requestAccountHistoryByGenId(
+                            Number(id),
+                            isChecked
+                          )
+                        );
+                      }
+                    }}
+                  />
+                  <span>Show All Log History</span>
+                </label>
+              </div>
+            </div>
+            <Divider style={{ margin: 0 }}></Divider>
+            <div className="container-overflow-y">
+              {accountActivityHistory.length > 0 &&
+                accountActivityHistory.map((data, index) => (
+                  <p
+                    key={index}
+                    style={{
+                      padding: "0 1rem",
+                      marginBottom: "0",
+                      marginTop: "14px",
+                      color: "#55637A",
+                    }}
+                  >
+                    {data.description.slice(
+                      0,
+                      data.description.indexOf("by") + 3
+                    )}
+                    <span style={{ fontWeight: "bold", color: "black" }}>
+                      {data.description.slice(
+                        data.description.indexOf("by") + 3,
+                        data.description.indexOf("on")
+                      )}
+                    </span>
+                    {data.description.slice(data.description.indexOf("on"))}
+                    {data.remark && (
+                      <span
+                        style={{
+                          fontStyle: "italic",
+                          fontWeight: 400,
+                          color: "#7b7f8b",
+                        }}
+                      >
+                        {" "}
+                        - {data.remark}
+                      </span>
+                    )}
+                  </p>
+                ))}
+
+              {accountActivityHistory.length === 0 && (
+                <p className="p-black-center">No activity history found.</p>
+              )}
+            </div>
           </div>
         </div>
       </LoadingIndicator>

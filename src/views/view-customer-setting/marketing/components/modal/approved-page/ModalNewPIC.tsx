@@ -41,13 +41,14 @@ interface IProps {
   isView?: boolean;
   customerId?: any;
   customerGenId?: any;
+  showAllHistory: boolean;
 }
 
 const ModalNewPIC: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
-  const { data, isView, customerId, customerGenId } = props;
+  const { data, isView, customerId, customerGenId, showAllHistory } = props;
 
   const [pinFlag, setPinFlag] = useState(data?.pin || false);
   const [capFlag, setCapFlag] = useState(data?.cap || false);
@@ -109,7 +110,8 @@ const ModalNewPIC: React.FC<IProps> = (
       );
       await dispatch(
         CustomerMasterActions.requestAccountHistoryByCustId(
-          customerId || data.customerId
+          customerId || data.customerId,
+          showAllHistory
         )
       );
     }
@@ -122,7 +124,8 @@ const ModalNewPIC: React.FC<IProps> = (
       );
       await dispatch(
         CustomerMasterActions.requestAccountHistoryByGenId(
-          customerGenId || data.customerGenID
+          customerGenId || data.customerGenID,
+          showAllHistory
         )
       );
     }

@@ -32,13 +32,14 @@ interface IProps {
   isView?: boolean;
   customerGenId?: number;
   customerId?: number;
+  showAllHistory: boolean;
 }
 
 const ModalNewRelatedCustomer: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
-  const { data, isView, customerGenId, customerId } = props;
+  const { data, isView, customerGenId, customerId, showAllHistory } = props;
 
   const [customerName, setCustomerName] = useState();
   const [customerData, setCustomerData] = useState<customerData | undefined>(
@@ -97,7 +98,10 @@ const ModalNewRelatedCustomer: React.FC<IProps> = (
         CustomerMasterActions.requestCustomerMoreDetailsByCustId(customerId)
       );
       await dispatch(
-        CustomerMasterActions.requestAccountHistoryByCustId(customerId)
+        CustomerMasterActions.requestAccountHistoryByCustId(
+          customerId,
+          showAllHistory
+        )
       );
     }
 
@@ -106,7 +110,10 @@ const ModalNewRelatedCustomer: React.FC<IProps> = (
         CustomerMasterActions.requestApprovedCustomerByGenId(customerGenId)
       );
       await dispatch(
-        CustomerMasterActions.requestAccountHistoryByGenId(customerGenId)
+        CustomerMasterActions.requestAccountHistoryByGenId(
+          customerGenId,
+          showAllHistory
+        )
       );
     }
 

@@ -13,6 +13,7 @@ export default class CustomerSettingPostModel extends BaseModel {
   pmoCustomer?: boolean = false;
   requestedBy?: number = 0;
   requestedDate?: Date = new Date();
+  claimRemark?: string = "";
   createDate?: Date = new Date();
   createUserID: number = 0;
   modifyDate?: Date | undefined = undefined;
@@ -32,6 +33,7 @@ export default class CustomerSettingPostModel extends BaseModel {
       pmoCustomer: ConversionTypeEnum.Boolean,
       requestedBy: ConversionTypeEnum.Number,
       requestedDate: ConversionTypeEnum.String,
+      claimRemark: ConversionTypeEnum.String,
       createUserID: ConversionTypeEnum.Number,
       createDate: ConversionTypeEnum.String,
       modifyUserID: ConversionTypeEnum.Number,
