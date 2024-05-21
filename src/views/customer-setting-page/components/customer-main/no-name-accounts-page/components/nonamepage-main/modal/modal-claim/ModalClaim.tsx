@@ -37,7 +37,6 @@ const ClaimAccount: React.FC<IProps> = (
   const activePage = useSelector(
     (state: IStore) => state.customerSetting.activePage
   );
-  const [isRemark, setRemark] = useState(null);
 
   let userLogin = JSON.parse(localStorage.getItem("userLogin"));
 
@@ -59,19 +58,25 @@ const ClaimAccount: React.FC<IProps> = (
       EmployeeActions.REQUEST_EMPLOYEES_ENGINEER_BY_ID,
     ])
   );
-  const onSubmitHandler = async (e) => {
-    const userId: any = localStorage.getItem("userLogin");
 
+  const addRemark = (remark: string, jdeCustomerID: number) => {
+    let obj = rowData.find((item) => item.jdeCustomerID === jdeCustomerID);
+    obj["remark"] = remark;
+  };
+
+  const onSubmitHandler = async (e) => {
     for (let j = 0; j < rowData.length; j++) {
       const NewClaimAccount = new CustomerSettingPostModel(e);
       NewClaimAccount.customerSettingID = 0;
       NewClaimAccount.customerID = rowData[j].customerID;
-      NewClaimAccount.salesID = JSON.parse(userId)?.employeeID;
-      NewClaimAccount.requestedBy = JSON.parse(userId)?.employeeID;
+      NewClaimAccount.salesID = userLogin?.employeeID;
+      NewClaimAccount.requestedBy = userLogin?.employeeID;
       NewClaimAccount.requestedDate = new Date();
-      NewClaimAccount.claimRemark = isRemark;
+      NewClaimAccount.claimRemark = rowData[j]?.remark
+        ? rowData[j].remark
+        : null;
       NewClaimAccount.createDate = new Date();
-      NewClaimAccount.createUserID = JSON.parse(userId)?.employeeID;
+      NewClaimAccount.createUserID = userLogin?.employeeID;
 
       await dispatch(CustomerSettingAct.postClaimAccount(NewClaimAccount));
     }
@@ -178,8 +183,13 @@ const ClaimAccount: React.FC<IProps> = (
                                 <textarea
                                   style={{ width: "100%" }}
                                   rows={4}
-                                  value={isRemark}
-                                  onChange={(e) => setRemark(e.target.value)}
+                                  // value={isRemark}
+                                  onChange={(e) =>
+                                    addRemark(
+                                      e.target.value,
+                                      data.jdeCustomerID
+                                    )
+                                  }
                                 />
                               </label>
                             </div>
@@ -205,7 +215,7 @@ const ClaimAccount: React.FC<IProps> = (
                   className="btn-submit"
                   type="submit"
                   color="blue"
-                  disabled={isRemark == null}
+                  // disabled={isRemark == null}
                 >
                   Submit
                 </Button>

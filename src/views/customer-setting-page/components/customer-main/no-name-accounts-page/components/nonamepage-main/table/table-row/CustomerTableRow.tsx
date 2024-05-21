@@ -3,6 +3,7 @@ import { Table, Dropdown, Icon } from "semantic-ui-react";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalNoPaddingFirstLevelActions from "stores/modal/no-padding/ModalNoPaddingActions";
 import * as CustomerSettingAction from "stores/customer-setting/CustomerActivityActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import "./CustomerTableRowStyle.scss";
@@ -45,7 +46,7 @@ const CustomerTableRow: React.FC<IProps> = (
 
   const onClaimAccount = useCallback((): void => {
     dispatch(
-      ModalFirstLevelActions.OPEN(
+      ModalNoPaddingFirstLevelActions.OPEN(
         <ClaimFormEdit rowData={[rowData]} />,
         ModalSizeEnum.Small
       )

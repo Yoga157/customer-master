@@ -508,7 +508,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                         {customer.holdingCompName}
                       </p>
                     </Grid.Column>{" "}
-                    <Grid.Column width={4} style={{ padding: "0" }}>
+                    <Grid.Column width={5} style={{ padding: "0" }}>
                       {editView ? (
                         <Form onSubmit={handleSubmit}>
                           <Field
@@ -562,7 +562,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       </p>
                     </Grid.Column>
                     <Grid.Column
-                      width={2}
+                      width={3}
                       className="custom-paddingRight"
                       style={{ padding: "0" }}
                     >

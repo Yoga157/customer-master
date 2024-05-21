@@ -6,7 +6,7 @@ import IStore from "models/IStore";
 import "../Modal.scss";
 import { Form as FinalForm } from "react-final-form";
 import { Form, Grid, Divider, Card } from "semantic-ui-react";
-import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalAction from "stores/modal/no-padding/ModalNoPaddingActions";
 import {} from "revalidate";
 import CustomerSettingPostModel from "stores/customer-setting/models/CustomerSettingPostModel";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
@@ -57,6 +57,7 @@ const ClaimAccountEdit: React.FC<IProps> = (
       NewClaimAccount.salesID = JSON.parse(userId)?.employeeID;
       NewClaimAccount.requestedBy = JSON.parse(userId)?.employeeID;
       NewClaimAccount.requestedDate = new Date();
+      NewClaimAccount.claimRemark = isRemark;
       NewClaimAccount.createDate = new Date();
       NewClaimAccount.createUserID = JSON.parse(userId)?.employeeID;
 
@@ -71,7 +72,9 @@ const ClaimAccountEdit: React.FC<IProps> = (
   return (
     <Fragment>
       <Card.Header>
-        <h4>Claim Accounts</h4>
+        <h4 style={{ paddingInline: "2rem", paddingTop: "2rem" }}>
+          Claim Accounts
+        </h4>
       </Card.Header>
       <Divider></Divider>
 
@@ -90,8 +93,7 @@ const ClaimAccountEdit: React.FC<IProps> = (
                   }}
                 >
                   <p className="text-claim">
-                    Please pay more attention to customer accounts that you
-                    choose.
+                    Are you sure want to claim this account ?
                   </p>
                 </div>
                 <Divider style={{ margin: 0, padding: 0 }}></Divider>
@@ -109,7 +111,6 @@ const ClaimAccountEdit: React.FC<IProps> = (
                           paddingInline: "2rem",
                           paddingTop: "1rem",
                           paddingBottom: "1rem",
-                          marginTop: "0.5rem",
                         }}
                       >
                         <div style={{ display: "flex", flexDirection: "row" }}>
