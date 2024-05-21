@@ -67,7 +67,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
   const customer = useSelector((state: IStore) =>
     selectCustomerMoreDetails(state)
   );
-  console.log(customer);
 
   useEffect(() => {
     if (status == "NOT_NEW") {
@@ -418,21 +417,15 @@ const BaseViewApprovedData: React.FC<IProps> = (
   );
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (status === "NOT_NEW") {
-        await dispatch(
-          CustomerMasterActions.requestAccountHistoryByCustId(
-            customerId ? customerId : Number(id)
-          )
-        );
-      } else {
-        await dispatch(
-          CustomerMasterActions.requestAccountHistoryByGenId(Number(id))
-        );
-      }
-    };
-
-    fetchData();
+    if (status === "NOT_NEW") {
+      dispatch(
+        CustomerMasterActions.requestAccountHistoryByCustId(
+          customerId ? customerId : Number(id)
+        )
+      );
+    } else {
+      dispatch(CustomerMasterActions.requestAccountHistoryByGenId(Number(id)));
+    }
   }, [status, id]);
 
   const isRequesting: boolean = useSelector((state: IStore) =>
@@ -440,6 +433,8 @@ const BaseViewApprovedData: React.FC<IProps> = (
       CustomerMasterActions.REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID,
       CustomerMasterActions.REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID,
       CustomerMasterActions.REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID,
+      CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_CUST_ID,
+      CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_GEN_ID,
     ])
   );
 

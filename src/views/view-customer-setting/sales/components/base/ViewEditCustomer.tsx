@@ -724,7 +724,8 @@ const ViewEditCustomer: React.FC<IProps> = (
                 )}
 
                 {(shareableRequestStatus == "PENDING_ADMIN" ||
-                  shareableRequestStatus == "ASSIGN") && (
+                  shareableRequestStatus == "ASSIGN" ||
+                  shareableRequestStatus == "REJECTED_ADMIN") && (
                   <p className="margin-0">Approved Director</p>
                 )}
 
@@ -735,6 +736,13 @@ const ViewEditCustomer: React.FC<IProps> = (
                 <p className="margin-0" style={{ fontWeight: "bold" }}>
                   {shareableApprovalStatus?.approvedDirectorateBy}
                 </p>
+
+                {shareableRequestStatus === "REJECTED_DIRECTORATE" && (
+                  <p className="margin-0" style={{ fontWeight: "bold" }}>
+                    {shareableApprovalStatus?.rejectedBy}
+                  </p>
+                )}
+
                 <span style={{ color: "grey" }}>
                   {shareableRequestStatus == "PENDING_DIRECTORATE" && (
                     <>
@@ -747,7 +755,8 @@ const ViewEditCustomer: React.FC<IProps> = (
                   )}
 
                   {(shareableRequestStatus == "PENDING_ADMIN" ||
-                    shareableRequestStatus == "ASSIGN") && (
+                    shareableRequestStatus == "ASSIGN" ||
+                    shareableRequestStatus == "REJECTED_ADMIN") && (
                     <>
                       <Icon name="check circle" style={{ color: "#27D4A5" }} />
                       {shareableApprovalStatus?.directorateApprovedDate}
@@ -757,7 +766,7 @@ const ViewEditCustomer: React.FC<IProps> = (
                   {shareableRequestStatus == "REJECTED_DIRECTORATE" && (
                     <>
                       <Icon name="remove circle" style={{ color: "red" }} />
-                      Rejected
+                      Rejected {shareableApprovalStatus?.rejectedDate}
                       <span
                         className="reject-text"
                         onClick={() =>
@@ -793,6 +802,13 @@ const ViewEditCustomer: React.FC<IProps> = (
                 <p className="margin-0" style={{ fontWeight: "bold" }}>
                   {shareableApprovalStatus?.approvedAdminBy}
                 </p>
+
+                {shareableRequestStatus === "REJECTED_ADMIN" && (
+                  <p className="margin-0" style={{ fontWeight: "bold" }}>
+                    {shareableApprovalStatus?.rejectedBy}
+                  </p>
+                )}
+
                 <span style={{ color: "grey" }}>
                   {shareableRequestStatus?.includes("PENDING") && (
                     <>
@@ -811,20 +827,25 @@ const ViewEditCustomer: React.FC<IProps> = (
                     </>
                   )}
 
-                  {shareableRequestStatus?.includes("REJECTED_DIRECTORATE") && (
+                  {shareableRequestStatus === "REJECTED_DIRECTORATE" && (
                     <>
                       <Icon name="remove circle" style={{ color: "red" }} />{" "}
-                      Rejected{" "}
-                      {shareableApprovalStatus == "REJECTED_ADMIN" && (
-                        <span
-                          className="reject-text"
-                          onClick={() =>
-                            openReason(shareableApprovalStatus?.description)
-                          }
-                        >
-                          , Click to see the reason
-                        </span>
-                      )}
+                      Rejected
+                    </>
+                  )}
+
+                  {shareableRequestStatus === "REJECTED_ADMIN" && (
+                    <>
+                      <Icon name="remove circle" style={{ color: "red" }} />{" "}
+                      Rejected {shareableApprovalStatus?.rejectedDate}{" "}
+                      <span
+                        className="reject-text"
+                        onClick={() =>
+                          openReason(shareableApprovalStatus?.description)
+                        }
+                      >
+                        , Click to see the reason
+                      </span>
                     </>
                   )}
                 </span>
