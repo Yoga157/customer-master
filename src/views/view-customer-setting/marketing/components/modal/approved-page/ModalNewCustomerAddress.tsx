@@ -10,7 +10,6 @@ import { Form as FinalForm, Field } from "react-final-form";
 import {
   Button,
   DropdownClearInput,
-  SearchInput,
   TextAreaInput,
   TextInput,
 } from "views/components/UI";
@@ -37,13 +36,14 @@ interface IProps {
   isView?: boolean;
   customerId?: any;
   customerGenId?: any;
+  showAllHistory?: boolean;
 }
 
 const ModalNewCustomerAddress: React.FC<IProps> = (
   props: React.PropsWithChildren<IProps>
 ) => {
   const dispatch: Dispatch = useDispatch();
-  const { data, isView, customerId, customerGenId } = props;
+  const { data, isView, customerId, customerGenId, showAllHistory } = props;
 
   const typeOptions = [
     {
@@ -113,7 +113,8 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
       );
       await dispatch(
         CustomerMasterActions.requestAccountHistoryByCustId(
-          customerId || data.customerID
+          customerId || data.customerID,
+          showAllHistory
         )
       );
     }
@@ -126,7 +127,8 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
       );
       await dispatch(
         CustomerMasterActions.requestAccountHistoryByGenId(
-          customerGenId || data.customerGenID
+          customerGenId || data.customerGenID,
+          showAllHistory
         )
       );
     }
@@ -271,7 +273,6 @@ const ModalNewCustomerAddress: React.FC<IProps> = (
                   !values.alternateNumber ||
                   !values.faxNumber
                 }
-                //   onClick={}
               >
                 Submit
               </Button>

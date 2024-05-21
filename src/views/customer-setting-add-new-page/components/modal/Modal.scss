@@ -5,3 +5,27 @@
 .divider-margin-bottom-0 {
   margin-bottom: 0px !important;
 }
+
+.card-reuploud {
+  width: 100%;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.btn-reuploud {
+  display: flex;
+  justify-content: center;
+  background-color: #ffd500;
+  color: #55637a;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2rem;
+  font-size: small;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.btn-cancel-reuploud {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

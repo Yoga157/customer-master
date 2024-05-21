@@ -12,7 +12,7 @@ export const initialState: ICustomerMasterState = {
   customerNewByGenId: new ResultActions({}),
   industryClassification: new ResultActions({}),
   customerMoreDetails: new ResultActions({}),
-  accountHistoryDetailsBygenId: new ResultActions({}),
+  accountHistoryDetails: new ResultActions({}),
   error: false,
   refreshPage: false,
   resultActions: new ResultActions({}),
@@ -218,7 +218,7 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
   ): ICustomerMasterState {
     return {
       ...state,
-      accountHistoryDetailsBygenId: action.payload!,
+      accountHistoryDetails: action.payload!,
     };
   },
 
@@ -228,7 +228,7 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
   ): ICustomerMasterState {
     return {
       ...state,
-      accountHistoryDetailsBygenId: action.payload!,
+      accountHistoryDetails: action.payload!,
     };
   },
 });

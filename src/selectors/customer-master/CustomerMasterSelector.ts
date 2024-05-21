@@ -378,6 +378,7 @@ const _selectAccountHistory = (models: ResultActions): any => {
       customerGenID: item.customerGenID,
       description: item.description,
       createDate: item.createDate,
+      remark: item.remark,
     }));
   } else {
     return [];
@@ -385,6 +386,6 @@ const _selectAccountHistory = (models: ResultActions): any => {
 };
 
 export const selectAccountHistory: Selector<IStore, any> = createSelector(
-  (state: IStore) => state.customerMaster.accountHistoryDetailsBygenId!,
+  (state: IStore) => state.customerMaster.accountHistoryDetails!,
   _selectAccountHistory
 );

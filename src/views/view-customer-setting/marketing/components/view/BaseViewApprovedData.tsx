@@ -98,39 +98,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     selectIndustry(state)
   );
 
-  // const onSaveEdit = async (values) => {
-  //   let userLogin = JSON.parse(localStorage.getItem("userLogin"));
-
-  //   const PutCustomerMoreDetails = new CustomerMoreDetailsModel({});
-  //   PutCustomerMoreDetails.industryClass = customer.industryClassification;
-  //   PutCustomerMoreDetails.customerName = customer.customerName;
-  //   PutCustomerMoreDetails.coorporateEmail = customer.coorporateEmail;
-  //   PutCustomerMoreDetails.npwpNumber = customer.npwpNumber;
-  //   PutCustomerMoreDetails.nib = customer.nib;
-  //   PutCustomerMoreDetails.modifyUserID = userLogin.employeeID;
-
-  //   await dispatch(
-  //     CustomerMasterActions.updateIndustryClassByID(
-  //       PutCustomerMoreDetails,
-  //       Number(id) || customer.customerId
-  //     )
-  //   );
-  //   await dispatch(
-  //     CustomerMasterActions.requestCustomerMoreDetailsByCustId(
-  //       customerId ? customerId : Number(id)
-  //     )
-  //   );
-  //   await dispatch(
-  //     CustomerMasterActions.requestApprovedCustomerByGenId(Number(id))
-  //   );
-  //   await dispatch(
-  //     ToastsAction.add(
-  //       "Update customer detail data success!",
-  //       ToastStatusEnum.Success
-  //     )
-  //   );
-  // };
-
   const onSaveEdit = async (values) => {
     let userLogin = JSON.parse(localStorage.getItem("userLogin"));
 
@@ -191,9 +158,10 @@ const BaseViewApprovedData: React.FC<IProps> = (
     [dispatch]
   );
 
+  const [showAllHistory, setShowAllHistory] = useState(false);
+
   // state tabel
   const [openAddressOffice, setOpenAddressOffice] = useState(false);
-  const [openWebsiteMedia, setOpenWebsiteMedia] = useState(false);
   const [openPic, setOpenPic] = useState(false);
   const [openRelatedAcc, setOpenRelatedAcc] = useState(false);
 
@@ -235,25 +203,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     }
   }, [dispatch]);
 
-  // add website or social media
-  const openNewWebsiteSocial = useCallback((): void => {
-    if (isView) {
-      dispatch(
-        ModalSecondLevelActions.OPEN(
-          <ModalNewWebsiteMedia isView={isView}></ModalNewWebsiteMedia>,
-          ModalSizeEnum.Small
-        )
-      );
-    } else {
-      dispatch(
-        ModalFirstLevelActions.OPEN(
-          <ModalNewWebsiteMedia></ModalNewWebsiteMedia>,
-          ModalSizeEnum.Small
-        )
-      );
-    }
-  }, [dispatch]);
-
   // add pic
   const openNewPIC = useCallback((): void => {
     if (isView) {
@@ -269,6 +218,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+            showAllHistory={showAllHistory}
             customerCAPFlag={customer.capFlag}
           ></ModalNewPIC>,
           ModalSizeEnum.Small
@@ -286,6 +236,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+            showAllHistory={showAllHistory}
             customerCAPFlag={false}
           ></ModalNewPIC>,
           ModalSizeEnum.Small
@@ -309,6 +260,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+            showAllHistory={showAllHistory}
           ></ModalNewRelatedCustomer>,
           ModalSizeEnum.Small
         )
@@ -325,6 +277,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+            showAllHistory={showAllHistory}
           ></ModalNewRelatedCustomer>,
           ModalSizeEnum.Small
         )
@@ -356,17 +309,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
     {
       key: "officeNumber",
       header: "Office Number",
-    },
-  ];
-
-  let websiteMediaHeader = [
-    {
-      key: "type",
-      header: "Type",
-    },
-    {
-      key: "name",
-      header: "Name",
     },
   ];
 
@@ -417,15 +359,22 @@ const BaseViewApprovedData: React.FC<IProps> = (
   );
 
   useEffect(() => {
-    if (status === "NOT_NEW") {
-      dispatch(
-        CustomerMasterActions.requestAccountHistoryByCustId(
-          customerId ? customerId : Number(id)
-        )
-      );
-    } else {
-      dispatch(CustomerMasterActions.requestAccountHistoryByGenId(Number(id)));
-    }
+    const fetchData = async () => {
+      if (status === "NOT_NEW") {
+        await dispatch(
+          CustomerMasterActions.requestAccountHistoryByCustId(
+            customerId ? customerId : Number(id),
+            false
+          )
+        );
+      } else {
+        await dispatch(
+          CustomerMasterActions.requestAccountHistoryByGenId(Number(id), false)
+        );
+      }
+    };
+
+    fetchData();
   }, [status, id]);
 
   const isRequesting: boolean = useSelector((state: IStore) =>
@@ -455,12 +404,12 @@ const BaseViewApprovedData: React.FC<IProps> = (
       </p>
 
       <Divider className="margin-0"></Divider>
-
       <LoadingIndicator isActive={isRequesting}>
         <div
           style={{
             backgroundColor: "#FFFB9A",
-            padding: "14px 0px",
+
+            padding: !isView && "14px 0px",
           }}
         >
           <FinalForm
@@ -494,23 +443,13 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     </GridColumn>
                   </Grid.Row>
                   <Grid.Row>
-                    <Grid.Column width={3} className="grid-padding-horizontal">
+                    <Grid.Column width={4} className="grid-padding-horizontal">
                       <label className="customer-data-label">Customer ID</label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.customerID}
-                      </p>
+                      <p className="grey p-pic-font">{customer.customerID}</p>
                     </Grid.Column>
                     <Grid.Column width={5} style={{ padding: "0" }}>
                       <label className="customer-data-label">Requestor</label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.requestor}
-                      </p>
+                      <p className="grey p-pic-font">{customer.requestor}</p>
                     </Grid.Column>
                     <Grid.Column
                       width={4}
@@ -518,12 +457,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       style={{ padding: "0" }}
                     >
                       <label className="customer-data-label">Create Date</label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.createDate}
-                      </p>
+                      <p className="grey p-pic-font">{customer.createDate}</p>
                     </Grid.Column>
                   </Grid.Row>
                   <Grid.Row>
@@ -546,10 +480,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           <label className="customer-data-label">
                             Customer Name
                           </label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
+                          <p className="grey p-pic-font">
                             {customer.customerName}
                           </p>
                         </>
@@ -559,10 +490,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label">
                         Customer Business Name
                       </label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
+                      <p className="grey p-pic-font">
                         {customer.customerBusinessName}
                       </p>
                     </Grid.Column>
@@ -576,10 +504,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label">
                         Holding Company Name
                       </label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
+                      <p className="grey p-pic-font">
                         {customer.holdingCompName}
                       </p>
                     </Grid.Column>{" "}
@@ -602,10 +527,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           <label className="customer-data-label">
                             Industry Classification
                           </label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
+                          <p className="grey p-pic-font">
                             {customer.industryClass}
                           </p>
                         </>
@@ -619,7 +541,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       </label>
                       <p
                         style={{ fontSize: "20px" }}
-                        className="grey"
+                        className="grey p-pic-font"
                         dangerouslySetInnerHTML={{
                           __html: customer.address || "-",
                         }}
@@ -634,7 +556,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label">Country</label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
-                        className="grey"
+                        className="grey p-pic-font"
                       >
                         {customer.country}
                       </p>
@@ -647,7 +569,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label ">City</label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
-                        className="grey"
+                        className="grey p-pic-font"
                       >
                         {customer.city}
                       </p>
@@ -660,7 +582,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label">ZIP Code</label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
-                        className="grey"
+                        className="grey p-pic-font"
                       >
                         {customer.zipCode}
                       </p>
@@ -675,7 +597,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       </label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
-                        className="grey"
+                        className="grey p-pic-font"
                       >
                         {customer.phoneNumber}
                       </p>
@@ -684,7 +606,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                       <label className="customer-data-label">Website</label>
                       <p
                         style={{ fontSize: "18px", fontWeight: "bold" }}
-                        className="grey"
+                        className="grey p-pic-font"
                       >
                         {customer.website}
                       </p>
@@ -710,10 +632,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           <label className="customer-data-label">
                             Corporate Email
                           </label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
+                          <p className="grey p-pic-font">
                             {customer.coorporateEmail}
                           </p>
                         </>
@@ -752,7 +671,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                                     fontSize: "20px",
                                     fontWeight: "bold",
                                   }}
-                                  className="grey"
+                                  className="grey p-pic-font"
                                 >
                                   {customer.npwpNumber}
                                 </p>
@@ -773,7 +692,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                                     component={TextInput}
                                     placeholder="Type NIB here..."
                                     labelName="NIB"
-                                    mandatory={false}
+                                    mandatory={true}
                                     defaultValue={customer.nib}
                                   />
                                 </div>
@@ -788,7 +707,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                                     fontSize: "20px",
                                     fontWeight: "bold",
                                   }}
-                                  className="grey"
+                                  className="grey p-pic-font"
                                 >
                                   {customer.nib}
                                 </p>
@@ -801,28 +720,10 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     <Grid.Column>
                       <div style={{ display: "flex", flexDirection: "column" }}>
                         <label className="customer-data-label">NPWP Card</label>
-                        <div
-                          style={{
-                            width: "15rem",
-                            height: "10rem",
-                            border: "#8D8C8C solid 2px",
-                            borderStyle: "dashed",
-                            borderRadius: "0.5rem",
-                            position: "relative",
-                          }}
-                        >
+                        <div className="npwp-card-approve">
                           {Object.keys(customer).length != 0 &&
                           Object.keys(customer.npwpCard).length == 0 ? (
-                            <div
-                              style={{
-                                position: "absolute",
-                                color: "#55637A",
-                                top: "50%",
-                                left: "50%",
-                                transform: "translate(-50%, -50%)",
-                                zIndex: 1,
-                              }}
-                            >
+                            <div className="position-transparan-npwp top-npwp">
                               <Icon
                                 name="picture"
                                 style={{ fontSize: "3rem" }}
@@ -832,18 +733,11 @@ const BaseViewApprovedData: React.FC<IProps> = (
                           ) : (
                             <>
                               <div
+                                className="open-view-npwp"
                                 style={{
-                                  position: "absolute",
-                                  backgroundColor: "#656DD1",
-                                  color: "white",
-                                  padding: "0.5rem 1.5rem",
-                                  borderRadius: "2rem",
-                                  boxShadow: "0px 0px 10px 0px #00000040",
                                   top: "50%",
                                   left: "50%",
                                   transform: "translate(-50%, -50%)",
-                                  zIndex: 1,
-                                  cursor: "pointer",
                                 }}
                                 onClick={() =>
                                   openViewNPWP(
@@ -855,13 +749,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                                 View
                               </div>
                               <img
-                                style={{
-                                  width: "100%",
-                                  height: "100%",
-                                  objectFit: "cover",
-                                  filter: "blur(3px)",
-                                  borderRadius: "0.5rem",
-                                }}
+                                className="npwp-img"
                                 src={
                                   Object.keys(customer).length != 0 &&
                                   `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
@@ -879,12 +767,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
           />
         </div>
 
-        <div
-          // ref={tableRef}
-          // className={!isView && `padding-horizontal`}
-          className="padding-horizontal"
-          style={{ margin: "2.5rem 0" }}
-        >
+        <div className="padding-horizontal" style={{ margin: "2.5rem 0" }}>
           <div className="grey get-data-container">
             <div className="accordion-container">
               <div style={{ display: "flex", flexDirection: "row" }}>
@@ -1057,61 +940,93 @@ const BaseViewApprovedData: React.FC<IProps> = (
         </div>
 
         <div className="padding-horizontal">
-          <div
-            className="grey account-activity-container"
-            style={{ paddingBottom: "1rem", marginBottom: "1rem" }}
-          >
-            <p className="bold margin-0" style={{ padding: "1rem" }}>
-              ACCOUNT ACTIVITY HISTORY
-            </p>
-            <Divider style={{ margin: 0 }}></Divider>
-
-            {accountActivityHistory.length > 0 &&
-              accountActivityHistory.map((data) => (
+          <div className="grey account-activity-container">
+            <div className="flex-between-center padd-flex-center">
+              <div className="flex-center">
                 <p
-                  style={{
-                    padding: "0 1rem",
-                    marginBottom: "0",
-                    marginTop: "14px",
-                  }}
+                  className="bold margin-0"
+                  style={{ padding: "1rem", margin: "0", textAlign: "center" }}
                 >
-                  {/* {data.description}{" "} */}
-                  {data.description.slice(
-                    0,
-                    data.description.indexOf("by") + 3
-                  )}
-                  <span style={{ fontWeight: "bold", color: "black" }}>
-                    {data.description.slice(
-                      data.description.indexOf("by") + 3,
-                      data.description.indexOf("on")
-                    )}
-                  </span>
-                  {data.description.slice(data.description.indexOf("on"))}
+                  ACCOUNT ACTIVITY HISTORY
                 </p>
-              ))}
-            {accountActivityHistory.length === 0 && (
-              <p
-                style={{ textAlign: "center", margin: "1rem", color: "black" }}
-              >
-                No activity history found.
-              </p>
-            )}
+              </div>
+              <div className="bold margin-0 padd-flex-center">
+                <label className="flex-center">
+                  <input
+                    name="showAllHistory"
+                    type="checkbox"
+                    checked={showAllHistory}
+                    style={{ marginRight: "0.5rem", transform: "scale(1)" }}
+                    onChange={async (event) => {
+                      const isChecked = event.target.checked;
+                      setShowAllHistory(isChecked);
+                      if (status === "NOT_NEW") {
+                        await dispatch(
+                          CustomerMasterActions.requestAccountHistoryByCustId(
+                            customerId ? customerId : Number(id),
+                            isChecked
+                          )
+                        );
+                      } else {
+                        await dispatch(
+                          CustomerMasterActions.requestAccountHistoryByGenId(
+                            Number(id),
+                            isChecked
+                          )
+                        );
+                      }
+                    }}
+                  />
+                  <span>Show All Log History</span>
+                </label>
+              </div>
+            </div>
+            <Divider style={{ margin: 0 }}></Divider>
+            <div className="container-overflow-y">
+              {accountActivityHistory.length > 0 &&
+                accountActivityHistory.map((data, index) => (
+                  <p
+                    key={index}
+                    style={{
+                      padding: "0 1rem",
+                      marginBottom: "0",
+                      marginTop: "14px",
+                      color: "#55637A",
+                    }}
+                  >
+                    {data.description.slice(
+                      0,
+                      data.description.indexOf("by") + 3
+                    )}
+                    <span style={{ fontWeight: "bold", color: "black" }}>
+                      {data.description.slice(
+                        data.description.indexOf("by") + 3,
+                        data.description.indexOf("on")
+                      )}
+                    </span>
+                    {data.description.slice(data.description.indexOf("on"))}
+                    {data.remark && (
+                      <span
+                        style={{
+                          fontStyle: "italic",
+                          fontWeight: 400,
+                          color: "#7b7f8b",
+                        }}
+                      >
+                        {" "}
+                        - {data.remark}
+                      </span>
+                    )}
+                  </p>
+                ))}
+
+              {accountActivityHistory.length === 0 && (
+                <p className="p-black-center">No activity history found.</p>
+              )}
+            </div>
           </div>
         </div>
       </LoadingIndicator>
-
-      {/* <Divider className="margin-0"></Divider>
-  
-          <div className="button-container">
-            <div className="button-inner-container">
-              <Button style={{ marginRight: "1rem" }} type="button">
-                Close
-              </Button>
-              <Button color="blue" type="button">
-                Save Change
-              </Button>
-            </div>
-          </div> */}
     </Fragment>
   );
 };

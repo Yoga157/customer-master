@@ -204,9 +204,10 @@ export const getIndustryClassification = async (): Promise<
 
 //Account History
 export const requestAccountHistoryByGenId = async (
-  genId: number
+  genId: number,
+  showAll: boolean
 ): Promise<ResultActions | HttpErrorResponseModel> => {
-  const controllerName = `AccountActivityHistory/GetAccountActivityHistoryByID?customerGenID=${genId}`;
+  const controllerName = `AccountActivityHistory/GetAccountActivityHistoryByID?customerGenID=${genId}&showAll=${showAll}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName
@@ -215,9 +216,10 @@ export const requestAccountHistoryByGenId = async (
 };
 
 export const requestAccountHistoryByCustId = async (
-  custId: number
+  custId: number,
+  showAll: boolean
 ): Promise<ResultActions | HttpErrorResponseModel> => {
-  const controllerName = `AccountActivityHistory/GetAccountActivityHistoryByID?customerId=${custId}`;
+  const controllerName = `AccountActivityHistory/GetAccountActivityHistoryByID?customerId=${custId}&showAll=${showAll}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName

@@ -110,7 +110,6 @@ const ModalAcceptRequestShareableAccount: React.FC<IProps> = (
       <Card.Header style={{ padding: "1.5rem 1rem 0" }}>
         <h4>APPROVE/REJECT JOIN REQUEST ACCOUNTS</h4>
       </Card.Header>
-      {/* <Divider className="divider0"></Divider> */}
 
       <div
         style={{

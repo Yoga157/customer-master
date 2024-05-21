@@ -37,6 +37,7 @@ const ClaimAccount: React.FC<IProps> = (
   const activePage = useSelector(
     (state: IStore) => state.customerSetting.activePage
   );
+  const [isRemark, setRemark] = useState(null);
 
   let userLogin = JSON.parse(localStorage.getItem("userLogin"));
 
@@ -68,6 +69,7 @@ const ClaimAccount: React.FC<IProps> = (
       NewClaimAccount.salesID = JSON.parse(userId)?.employeeID;
       NewClaimAccount.requestedBy = JSON.parse(userId)?.employeeID;
       NewClaimAccount.requestedDate = new Date();
+      NewClaimAccount.claimRemark = isRemark;
       NewClaimAccount.createDate = new Date();
       NewClaimAccount.createUserID = JSON.parse(userId)?.employeeID;
 
@@ -163,6 +165,26 @@ const ClaimAccount: React.FC<IProps> = (
                             </p>
                           )}
                         </div>
+                        {!data.industryClassBusiness.includes(
+                          employeeData.buToCompare
+                        ) && (
+                          <div
+                            style={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <div style={{ width: "100%", marginTop: "1rem" }}>
+                              <label style={{ color: "rgb(85 99 122 / 77%)" }}>
+                                Reason to claim cross BU{" "}
+                                <span style={{ color: "red" }}>*</span>
+                                <textarea
+                                  style={{ width: "100%" }}
+                                  rows={4}
+                                  value={isRemark}
+                                  onChange={(e) => setRemark(e.target.value)}
+                                />
+                              </label>
+                            </div>
+                          </div>
+                        )}
                       </Grid.Row>
 
                       <Divider style={{ padding: 0, margin: 0 }}></Divider>
@@ -179,7 +201,12 @@ const ClaimAccount: React.FC<IProps> = (
                 >
                   Cancel
                 </Button>
-                <Button className="btn-submit" type="submit" color="blue">
+                <Button
+                  className="btn-submit"
+                  type="submit"
+                  color="blue"
+                  disabled={isRemark == null}
+                >
                   Submit
                 </Button>
               </div>

@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-// import "./ViewCustomerSetting.scss";
 import { Dispatch } from "redux";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -226,12 +225,6 @@ const ViewApproval: React.FC = (props) => {
               }}
             >
               <p className="page-title grey">NEW CUSTOMER REQUEST</p>
-              {/* <div className="pmo-toggle">
-            <div className="business-card">
-              <Icon name="address card" />
-              <p>View Business Card</p>
-            </div>
-          </div> */}
             </div>
 
             <Divider style={{ marginTop: 0 }}></Divider>
@@ -245,33 +238,18 @@ const ViewApproval: React.FC = (props) => {
                         <label className="customer-data-label">
                           Customer ID
                         </label>
-                        <p
-                          style={{ fontSize: "20px", fontWeight: "bold" }}
-                          className="grey"
-                        >
-                          {customer.customerID}
-                        </p>
+                        <p className="grey p-pic-font">{customer.customerID}</p>
                       </div>
 
                       <div className="customer-data-container-left">
                         <label className="customer-data-label">Requestor</label>
-                        <p
-                          style={{ fontSize: "20px", fontWeight: "bold" }}
-                          className="grey"
-                        >
-                          {customer.requestor}
-                        </p>
+                        <p className="grey p-pic-font">{customer.requestor}</p>
                       </div>
                     </div>
 
                     <div className="customer-data-container-left">
                       <label className="customer-data-label">Create Date</label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.createDate}
-                      </p>
+                      <p className="grey p-pic-font">{customer.createDate}</p>
                     </div>
                   </div>
 
@@ -280,21 +258,13 @@ const ViewApproval: React.FC = (props) => {
                       <label className="customer-data-label">
                         Customer Name
                       </label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
-                        {customer.customerName}
-                      </p>
+                      <p className="grey p-pic-font">{customer.customerName}</p>
                     </div>
                     <div className="customer-data-container-left">
                       <label className="customer-data-label">
                         Customer Business Name
                       </label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
+                      <p className="grey p-pic-font">
                         {customer.customerBusinessName}
                       </p>
                     </div>
@@ -308,10 +278,7 @@ const ViewApproval: React.FC = (props) => {
                       <label className="customer-data-label">
                         Holding Company Name
                       </label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
+                      <p className="grey p-pic-font">
                         {customer.holdingCompName}
                       </p>
                     </div>
@@ -322,10 +289,7 @@ const ViewApproval: React.FC = (props) => {
                       <label className="customer-data-label">
                         Industry Classification
                       </label>
-                      <p
-                        style={{ fontSize: "20px", fontWeight: "bold" }}
-                        className="grey"
-                      >
+                      <p className="grey p-pic-font">
                         {customer.industryClass}
                       </p>
                     </div>
@@ -440,28 +404,10 @@ const ViewApproval: React.FC = (props) => {
 
                     <div style={{ display: "flex", flexDirection: "column" }}>
                       <label className="customer-data-label">NPWP Card</label>
-                      <div
-                        style={{
-                          width: "15rem",
-                          height: "10rem",
-                          border: "#8D8C8C solid 2px",
-                          borderStyle: "dashed",
-                          borderRadius: "0.5rem",
-                          position: "relative",
-                        }}
-                      >
+                      <div className="npwp-card-approve">
                         {Object.keys(customer).length != 0 &&
                         Object.keys(customer.npwpCard).length == 0 ? (
-                          <div
-                            style={{
-                              position: "absolute",
-                              color: "#55637A",
-                              top: "50%",
-                              left: "50%",
-                              transform: "translate(-50%, -50%)",
-                              zIndex: 1,
-                            }}
-                          >
+                          <div>
                             <Icon
                               name="picture"
                               style={{ fontSize: "3rem" }}
@@ -471,18 +417,11 @@ const ViewApproval: React.FC = (props) => {
                         ) : (
                           <>
                             <div
+                              className="open-view-npwp"
                               style={{
-                                position: "absolute",
-                                backgroundColor: "#656DD1",
-                                color: "white",
-                                padding: "0.5rem 1.5rem",
-                                borderRadius: "2rem",
-                                boxShadow: "0px 0px 10px 0px #00000040",
                                 top: "50%",
                                 left: "50%",
                                 transform: "translate(-50%, -50%)",
-                                zIndex: 1,
-                                cursor: "pointer",
                               }}
                               onClick={() =>
                                 openViewNPWP(
@@ -494,13 +433,7 @@ const ViewApproval: React.FC = (props) => {
                               View
                             </div>
                             <img
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                                filter: "blur(3px)",
-                                borderRadius: "0.5rem",
-                              }}
+                              className="npwp-img"
                               src={
                                 Object.keys(customer).length != 0 &&
                                 `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
@@ -519,41 +452,18 @@ const ViewApproval: React.FC = (props) => {
                   </div>
 
                   <div className="padding-horizontal">
-                    <div
-                      style={{
-                        borderRadius: "1rem",
-                        backgroundColor: "#E1E1E1",
-                        padding: "1rem",
-                        margin: "1rem 0",
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          marginRight: "4rem",
-                        }}
-                      >
+                    <div className="grey-container-pic">
+                      <div className="">
                         <div className="customer-data-container-left">
                           <label className="customer-data-label">
                             PIC Name
                           </label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
-                            {customer.picName}
-                          </p>
+                          <p className="grey p-pic-font">{customer.picName}</p>
                         </div>
 
                         <div className="customer-data-container-left">
                           <label className="customer-data-label">Email</label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
+                          <p className="grey p-pic-font">
                             {customer.picEmailAddr}
                           </p>
                         </div>
@@ -564,10 +474,7 @@ const ViewApproval: React.FC = (props) => {
                           <label className="customer-data-label">
                             PIC Mobile Phone
                           </label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
+                          <p className="grey p-pic-font">
                             {customer.picMobilePhone}
                           </p>
                         </div>
@@ -576,10 +483,7 @@ const ViewApproval: React.FC = (props) => {
                           <label className="customer-data-label">
                             Job Title
                           </label>
-                          <p
-                            style={{ fontSize: "20px", fontWeight: "bold" }}
-                            className="grey"
-                          >
+                          <p className="grey p-pic-font">
                             {customer.picJobTitle}
                           </p>
                         </div>
@@ -599,52 +503,14 @@ const ViewApproval: React.FC = (props) => {
 
                       <Divider className="margin-bottom-0"></Divider>
 
-                      <div
-                        className="padding-horizontal"
-                        style={{
-                          backgroundColor: "#FFFB9A",
-                          display: "flex",
-                          flexDirection: "column",
-                          padding: "1rem 0",
-                          width: "100%",
-                        }}
-                      >
+                      <div className="yellow-container padding-horizontal ">
                         <FinalForm
                           onSubmit={(values: any) => onSearch(values)}
-                          render={({
-                            handleSubmit,
-                            pristine,
-                            invalid,
-                            values,
-                          }) => (
+                          render={({ handleSubmit, values }) => (
                             <Form onSubmit={handleSubmit}>
-                              <div
-                                style={{
-                                  backgroundColor: "#FFFB9A",
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  padding: "1rem 0",
-                                  width: "100%",
-                                }}
-                              >
+                              <div className="yellow-container">
                                 <Grid>
                                   <Grid.Row>
-                                    {/* <Grid.Column
-                                    width={16}
-                                    mobile={16}
-                                    tablet={16}
-                                    computer={3}
-                                  >
-                                    <Field
-                                      name="titleCustomer"
-                                      component={TextInput}
-                                      placeholder="e.g.PT .."
-                                      labelName="Title Customer"
-                                      mandatory={false}
-                                      defaultValue={customer?.titleCustomer}
-                                    />
-                                  </Grid.Column> */}
-
                                     <Grid.Column
                                       width={16}
                                       mobile={16}
