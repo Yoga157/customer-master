@@ -67,6 +67,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
   const customer = useSelector((state: IStore) =>
     selectCustomerMoreDetails(state)
   );
+  console.log(customer);
 
   useEffect(() => {
     if (status == "NOT_NEW") {
@@ -218,7 +219,11 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+<<<<<<< HEAD
             showAllHistory={showAllHistory}
+=======
+            customerCAPFlag={customer.capFlag}
+>>>>>>> 46ca9c3b4fa19623762edded150855f7fd3dd5f6
           ></ModalNewPIC>,
           ModalSizeEnum.Small
         )
@@ -235,7 +240,11 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
+<<<<<<< HEAD
             showAllHistory={showAllHistory}
+=======
+            customerCAPFlag={false}
+>>>>>>> 46ca9c3b4fa19623762edded150855f7fd3dd5f6
           ></ModalNewPIC>,
           ModalSizeEnum.Small
         )
@@ -873,6 +882,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
                     }
                     isView={isView}
                     status={status}
+                    customerCAPFlag={customer.capFlag}
                   />
                 </div>
                 <Divider className="margin-0"></Divider>
