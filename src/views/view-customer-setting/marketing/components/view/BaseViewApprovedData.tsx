@@ -67,7 +67,6 @@ const BaseViewApprovedData: React.FC<IProps> = (
   const customer = useSelector((state: IStore) =>
     selectCustomerMoreDetails(state)
   );
-  console.log(customer);
 
   useEffect(() => {
     if (status == "NOT_NEW") {
@@ -219,11 +218,8 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
-<<<<<<< HEAD
             showAllHistory={showAllHistory}
-=======
             customerCAPFlag={customer.capFlag}
->>>>>>> 46ca9c3b4fa19623762edded150855f7fd3dd5f6
           ></ModalNewPIC>,
           ModalSizeEnum.Small
         )
@@ -240,11 +236,8 @@ const BaseViewApprovedData: React.FC<IProps> = (
                 : null
             }
             customerGenId={status != "NOT_NEW" ? Number(id) : null}
-<<<<<<< HEAD
             showAllHistory={showAllHistory}
-=======
             customerCAPFlag={false}
->>>>>>> 46ca9c3b4fa19623762edded150855f7fd3dd5f6
           ></ModalNewPIC>,
           ModalSizeEnum.Small
         )
@@ -389,6 +382,7 @@ const BaseViewApprovedData: React.FC<IProps> = (
       CustomerMasterActions.REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID,
       CustomerMasterActions.REQUEST_CUSTOMER_MORE_DETAILS_BY_CUST_ID,
       CustomerMasterActions.REQUEST_APPROVED_DATA_DETAIL_BY_GEN_ID,
+      CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_CUST_ID,
       CustomerMasterActions.REQUEST_ACCOUNT_HISTORY_BY_GEN_ID,
     ])
   );
