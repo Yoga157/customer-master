@@ -240,7 +240,9 @@ const NoNameAccountsPage: React.FC<IProps> = (
                   color="yellow"
                   icon="check circle"
                   disabled={
-                    rowData.length === 0 || role.toUpperCase() == "ADMIN"
+                    rowData.length === 0 ||
+                    role.toUpperCase() == "ADMIN" ||
+                    role.toUpperCase() == "MARKETING"
                   }
                   size="mini"
                   content="Claim Account"

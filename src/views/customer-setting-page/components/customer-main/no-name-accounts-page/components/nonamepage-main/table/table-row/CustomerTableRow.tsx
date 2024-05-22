@@ -113,6 +113,7 @@ const CustomerTableRow: React.FC<IProps> = (
                     }
                     disabled={
                       role === "Admin" ||
+                      role === "Marketing" ||
                       rowData.industryClass === null ||
                       rowData.salesHistory?.status === "PENDING_DIRECTORATE" ||
                       rowData.salesHistory?.status === "PENDING_ADMIN"
