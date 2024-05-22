@@ -37,9 +37,6 @@ const ClaimAccount: React.FC<IProps> = (
   const activePage = useSelector(
     (state: IStore) => state.customerSetting.activePage
   );
-  const [isRemark, setRemark] = useState("");
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const [showRemark, setShowRemark] = useState(false);
 
   let userLogin = JSON.parse(localStorage.getItem("userLogin"));
 
@@ -62,10 +59,20 @@ const ClaimAccount: React.FC<IProps> = (
     ])
   );
 
+  const [remarkId, setRemarkId] = useState(
+    rowData
+      .filter(
+        (data) => !data.industryClassBusiness.includes(employeeData.buToCompare)
+      )
+      .map((data) => ({ id: data.jdeCustomerID, remark: "" }))
+  );
+
   const addRemark = (remark: string, jdeCustomerID: number) => {
     let obj = rowData.find((item) => item.jdeCustomerID === jdeCustomerID);
     obj["remark"] = remark;
-    setRemark(remark);
+
+    let data = remarkId.filter((item) => item.id !== jdeCustomerID);
+    setRemarkId([...data, { id: obj.jdeCustomerID, remark: remark }]);
   };
 
   //kondisi button modal claim jika ada remark dan bu
@@ -73,15 +80,7 @@ const ClaimAccount: React.FC<IProps> = (
     const isCrossBUAccount = rowData.some(
       (data) => !data.industryClassBusiness.includes(employeeData.buToCompare)
     );
-
-    setShowRemark(isCrossBUAccount);
-
-    if (isCrossBUAccount && isRemark.trim() === "") {
-      setButtonDisabled(true);
-    } else {
-      setButtonDisabled(false);
-    }
-  }, [isRemark, rowData, employeeData]);
+  }, [rowData, employeeData]);
 
   const onSubmitHandler = async (e) => {
     for (let j = 0; j < rowData.length; j++) {
@@ -234,7 +233,7 @@ const ClaimAccount: React.FC<IProps> = (
                 <Button
                   type="submit"
                   color="blue"
-                  disabled={showRemark && isButtonDisabled}
+                  disabled={remarkId.find((item) => item.remark === "")}
                 >
                   Submit
                 </Button>
