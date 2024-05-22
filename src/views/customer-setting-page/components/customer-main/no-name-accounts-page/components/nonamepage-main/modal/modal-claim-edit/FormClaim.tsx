@@ -7,7 +7,6 @@ import "../Modal.scss";
 import { Form as FinalForm } from "react-final-form";
 import { Form, Grid, Divider, Card } from "semantic-ui-react";
 import * as ModalAction from "stores/modal/no-padding/ModalNoPaddingActions";
-import {} from "revalidate";
 import CustomerSettingPostModel from "stores/customer-setting/models/CustomerSettingPostModel";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
@@ -24,6 +23,7 @@ const ClaimAccountEdit: React.FC<IProps> = (
 ) => {
   const dispatch: Dispatch = useDispatch();
   const { rowData } = props;
+  const [isRemark, setRemark] = useState("");
 
   useEffect(() => {
     dispatch(EmployeeActions.requestEmployeeById(userLogin.employeeID));
@@ -35,11 +35,24 @@ const ClaimAccountEdit: React.FC<IProps> = (
     dispatch(ModalAction.CLOSE());
   };
 
-  const [isRemark, setRemark] = useState(null);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   const employeeData = useSelector((state: IStore) =>
     selectEmployeeDeptId(state)
   );
+
+  //kondisi button modal claim jika ada remark dan bu
+  useEffect(() => {
+    const isCrossBUAccount = rowData.some(
+      (data) => !data.industryClassBusiness.includes(employeeData.buToCompare)
+    );
+
+    if (isCrossBUAccount && isRemark.trim() === "") {
+      setButtonDisabled(true);
+    } else {
+      setButtonDisabled(false);
+    }
+  }, [isRemark, rowData, employeeData]);
 
   const isRequesting: boolean = useSelector((state: IStore) =>
     selectRequesting(state, [
@@ -165,7 +178,7 @@ const ClaimAccountEdit: React.FC<IProps> = (
                 <Button type="button" onClick={cancelClick}>
                   Cancel
                 </Button>
-                <Button type="submit" color="blue">
+                <Button type="submit" color="blue" disabled={isButtonDisabled}>
                   Yes, Claim it
                 </Button>
               </div>
