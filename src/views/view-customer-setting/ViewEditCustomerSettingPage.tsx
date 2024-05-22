@@ -13,6 +13,7 @@ import IStore from "models/IStore";
 
 import ViewEditCustomer from "./sales/components/base/ViewEditCustomer";
 import * as CustomerSetting from "stores/customer-setting/CustomerActivityActions";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import { selectCustomerDataById } from "selectors/customer-setting/CustomerSettingSelector";
 import ViewApproval from "./marketing/ViewApproval";
 import ViewEditMarketing from "./marketing/ViewEditMarketing";
@@ -46,6 +47,7 @@ interface ICustomerData {
     shareable: any;
     status: any;
   };
+  activeTab: number;
 }
 
 interface IProps {
@@ -70,6 +72,10 @@ const ViewEditCustomerSettingPage: React.FC<IProps> = (
   const role = userLogin.role;
   const customer = useSelector((state: IStore) =>
     selectCustomerDataById(state)
+  );
+
+  dispatch(
+    CustomerMasterActions.setActiveTabs(location?.state?.activeTab || 1)
   );
 
   useEffect(() => {
