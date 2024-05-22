@@ -35,7 +35,7 @@ const ViewEditMarketing: React.FC<IProps> = (
     selectNewCustomerDetailPending(state)
   );
 
-  dispatch(CustomerMasterActions.setActiveTabs(4));
+  // dispatch(CustomerMasterActions.setActiveTabs(4));
   useEffect(() => {
     if (status === "NOT_NEW") {
       dispatch(

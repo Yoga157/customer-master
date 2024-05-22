@@ -60,6 +60,8 @@ const ClaimAccount: React.FC<IProps> = (
       NewClaimAccount.requestedDate = new Date();
       NewClaimAccount.createDate = new Date();
       NewClaimAccount.createUserID = JSON.parse(userId)?.employeeID;
+      NewClaimAccount.modifyDate = new Date();
+      NewClaimAccount.modifyUserID = JSON.parse(userId)?.employeeID;
 
       await dispatch(CustomerSettingAct.postClaimAccount(NewClaimAccount));
     }

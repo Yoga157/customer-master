@@ -111,7 +111,7 @@ const CustomerTableRow: React.FC<IProps> = (
   const onEdit = (id: number) => {
     history.push({
       pathname: "customer-setting/" + id,
-      state: { rowData },
+      state: { rowData, activeTab: 3 },
     });
   };
 
@@ -169,7 +169,7 @@ const CustomerTableRow: React.FC<IProps> = (
                         onClick={onClaimAccount}
                         disabled={
                           rowData.salesName.includes(userLogin.fullName) ||
-                          rowData.salesHistory?.status.includes("PENDING")
+                          rowData.salesHistory?.status?.includes("PENDING")
                         }
                       />
                     }
