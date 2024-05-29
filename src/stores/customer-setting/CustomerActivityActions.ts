@@ -291,18 +291,21 @@ export const REQUEST_ALL_SEARCH_FINISHED: string =
 export const requestSearchAllAcc = (
   page: number,
   pageSize: number,
-  column: string,
-  search: string,
-  sorting?: string,
-  salesID?: string,
-  myAccount?: number,
-  pmo_customer?: boolean,
-  blacklist?: boolean,
-  holdshipment?: boolean,
-  showNoName?: boolean,
-  showNamed?: boolean,
-  showShareable?: boolean,
-  isNew?: boolean
+  column: string | null,
+  search: string | null,
+  sorting?: string | null,
+  salesID?: string | null,
+  myAccount?: number | null,
+  pmo_customer?: boolean | null,
+  blacklist?: boolean | null,
+  holdshipment?: boolean | null,
+  showNoName?: boolean | null,
+  showNamed?: boolean | null,
+  showShareable?: boolean | null,
+  isNew?: boolean | null,
+  showPending?: boolean | null,
+  showApprove?: boolean | null,
+  showReject?: boolean | null
 ): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<CustomerSettingModel>(
@@ -322,7 +325,10 @@ export const requestSearchAllAcc = (
       showNoName,
       showNamed,
       showShareable,
-      isNew
+      isNew,
+      showPending,
+      showApprove,
+      showReject
     );
   };
 };
