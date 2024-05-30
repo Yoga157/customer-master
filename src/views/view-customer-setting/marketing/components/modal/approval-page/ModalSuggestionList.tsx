@@ -202,7 +202,7 @@ const ModalSuggestionList: React.FC<IProps> = (
         </Table.Body>
       </Table>
 
-      <div className="button-container">
+      <div className="button-container-nospace">
         <div className="button-inner-container">
           <Button style={{ marginRight: "1rem" }} type="button">
             Close

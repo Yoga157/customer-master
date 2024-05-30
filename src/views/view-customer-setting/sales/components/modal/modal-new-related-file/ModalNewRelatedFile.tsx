@@ -118,7 +118,7 @@ const ModalNewRelatedFile: React.FC<IProps> = (
 
             <Divider></Divider>
 
-            <div className="button-container">
+            <div className="button-container-nospace">
               <Button
                 textAlign="center"
                 className="MarBot10"

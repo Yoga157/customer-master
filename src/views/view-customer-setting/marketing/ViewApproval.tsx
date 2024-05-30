@@ -721,7 +721,7 @@ const ViewApproval: React.FC = (props) => {
                       </div>
                       <Divider style={{ marginBottom: "0px" }}></Divider>
 
-                      <div className="button-container">
+                      <div className="button-container-nospace">
                         <div className="button-inner-container">
                           <Button style={{ marginRight: "1rem" }} type="button">
                             Close

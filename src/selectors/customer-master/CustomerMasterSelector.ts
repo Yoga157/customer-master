@@ -100,8 +100,8 @@ const _selectNewCustomerDetailPending = (models: ResultActions): any => {
       picEmailAddr: models.resultObj[0].picEmailAddr
         ? models.resultObj[0].picEmailAddr
         : "-",
-      createdDate: models.resultObj[0].createdDate
-        ? models.resultObj[0].createdDate
+      createDate: models.resultObj[0].createDate
+        ? models.resultObj[0].createDate
         : "-",
       isNew: models.resultObj[0].isNew ? models.resultObj[0].isNew : "-",
       approvalStatus: models.resultObj[0].approvalStatus

@@ -240,7 +240,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
             <div className="FullContainer">
               <FinalForm
                 onSubmit={(values: any) => onSubmitSearch(values)}
-                render={({ handleSubmit, pristine, invalid, values }) => (
+                render={({ handleSubmit, values }) => (
                   <Form onSubmit={handleSubmit}>
                     <Segment className="LightYellowContainer">
                       <Grid>
@@ -285,7 +285,8 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               type="submit"
                               color="blue"
                               disabled={
-                                pristine || invalid || !values.customerName
+                                !values.customerName ||
+                                !values.customerName.trim()
                               }
                               floated="right"
                               size="small"
@@ -320,8 +321,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                 <>
                   <LoadingIndicator>
                     <div className="container-recheck">
-                      {tableData.rows.length === 0 &&
-                      searchedCustomerName === "" ? (
+                      {tableData.rows.length === 0 && searchedCustomerName ? (
                         <div className="info-recheck">
                           <p className="p-recheck">no-data</p>
                         </div>
@@ -451,7 +451,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
               <>
                 <FinalForm
                   onSubmit={(values: any) => onSubmitHandler(values)}
-                  render={({ handleSubmit, pristine, invalid, values }) => (
+                  render={({ handleSubmit, values }) => (
                     <Form onSubmit={handleSubmit}>
                       <Divider className="margin-0"></Divider>
 
@@ -735,7 +735,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                       </div>
 
                       <Divider className="margin-0"></Divider>
-                      <div className="button-container">
+                      <div className="button-container-nospace">
                         <div className="button-inner-container">
                           <Button
                             style={{ marginRight: "1rem" }}
@@ -758,7 +758,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               !values.city ||
                               !values.zipCode ||
                               !values.officeNumber ||
-                              // !values.website ||
                               !values.coorporateEmail ||
                               !values.nib ||
                               (!values.Npwp &&
@@ -785,7 +784,7 @@ const AddNewCustomerSetting: React.FC<IProps> = (
               <>
                 <Divider className="margin-0"></Divider>
 
-                <div className="button-container">
+                <div className="button-container-nospace">
                   <div className="button-inner-container">
                     <Button onClick={() => cancelClick()}>Cancel</Button>
                     <Button
@@ -793,7 +792,6 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                       style={{ marginRight: "1rem" }}
                       type="submit"
                       disabled
-                      // onClick={() => onSubmitHandler(data)}
                     >
                       Submit
                     </Button>

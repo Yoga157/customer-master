@@ -141,7 +141,7 @@ const RelaseAccountMod: React.FC<IProps> = (
           )}
         />
 
-        <div className="release-button-container">
+        <div className="release-button-container-nospace">
           <Button type="button" onClick={cancelClick} className="cancel-button">
             Cancel
           </Button>

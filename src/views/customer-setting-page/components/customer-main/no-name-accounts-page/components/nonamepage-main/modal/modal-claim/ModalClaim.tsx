@@ -234,7 +234,7 @@ const ClaimAccount: React.FC<IProps> = (
                 <Button
                   type="submit"
                   color="blue"
-                  disabled={remarkId.find((item) => item.remark === "")}
+                  disabled={remarkId.some((item) => item.remark.trim() === "")}
                 >
                   Submit
                 </Button>

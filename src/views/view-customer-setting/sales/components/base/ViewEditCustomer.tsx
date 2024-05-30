@@ -1839,7 +1839,7 @@ const ViewEditCustomer: React.FC<IProps> = (
 
                       <Divider style={{ marginBottom: "0px" }}></Divider>
                       {role.toUpperCase() == "ADMIN" && (
-                        <div className="button-container">
+                        <div className="button-container-nospace">
                           <div className="button-inner-container">
                             <Button
                               style={{ marginRight: "1rem" }}
