@@ -220,7 +220,10 @@ export const requestSearchAllAcc = async (
   showNoName?: boolean | null,
   showNamed?: boolean | null,
   showShareable?: boolean | null,
-  isNew?: boolean | null
+  isNew?: boolean | null,
+  showPending?: boolean | null,
+  showApprove?: boolean | null,
+  showReject?: boolean | null
 ): Promise<CustomerSettingModel | HttpErrorResponseModel> => {
   const controllerName = `CustomerSetting/GetCustomerSettingAllAccount?page=${page}&pageSize=${pageSize}&column=${column}${
     search || search != null ? `&search=${search}` : ``
@@ -236,7 +239,11 @@ export const requestSearchAllAcc = async (
     showShareable || showShareable != null
       ? `&showShareable=${showShareable}`
       : ``
-  }${isNew || isNew != null ? `&isNew=${isNew}` : ``}`;
+  }${isNew || isNew != null ? `&isNew=${isNew}` : ``}${
+    showPending || showPending != null ? `&showPending=${showPending}` : ``
+  }${showApprove || showApprove != null ? `&showApprove=${showApprove}` : ``}${
+    showReject || showReject != null ? `&showReject=${showReject}` : ``
+  }`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName

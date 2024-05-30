@@ -35,17 +35,16 @@ const FilterCustomer: React.FC<{
     true
   );
   const [isNewYesChecked, setIsNewYesChecked] = useState(true);
-  const [isNewNoChecked, setIsNewNoChecked] = useState(true);
+  // const [isNewNoChecked, setIsNewNoChecked] = useState(true);
   const [pmo_customerYesChecked, setPmo_customerYesChecked] = useState(false);
   const [pmo_customerNoChecked, setPmo_customerNoChecked] = useState(false);
   const [holdshipmentYesChecked, setHoldshipmentYesChecked] = useState(false);
   const [holdshipmentNoChecked, setHoldshipmentNoChecked] = useState(false);
   const [blacklistYesChecked, setBlacklistYesChecked] = useState(false);
   const [blacklistNoChecked, setBlacklistNoChecked] = useState(false);
-  const [newAccountChecked, setNewAccountChecked] = useState(false);
-  const [newRequestChecked, setNewRequestChecked] = useState(false);
-  const [rejectChecked, setRejectChecked] = useState(false);
-  const [approveChecked, setApproveChecked] = useState(false);
+  const [newRequestChecked, setNewRequestChecked] = useState(true);
+  const [rejectChecked, setRejectChecked] = useState(true);
+  const [approveChecked, setApproveChecked] = useState(true);
 
   const dispatch: Dispatch = useDispatch();
 
@@ -99,14 +98,7 @@ const FilterCustomer: React.FC<{
         ? false
         : true;
 
-    const isNew =
-      isNewYesChecked && isNewNoChecked
-        ? true
-        : isNewYesChecked
-        ? true
-        : isNewNoChecked
-        ? false
-        : true;
+    const isNew = isNewYesChecked;
 
     const pmo_customer =
       pmo_customerYesChecked && pmo_customerNoChecked
@@ -138,16 +130,16 @@ const FilterCustomer: React.FC<{
         ? false
         : null;
 
-    console.log({
-      nonameAccount: nonameAccount,
-      namedAccount: namedAccount,
-      shareableAccount: shareableAccount,
-      isNew: isNew,
-      pmo_customer: pmo_customer,
-      newsalesAssign: newsalesAssign,
-      holdshipment: holdshipment,
-      blacklist: blacklist,
-    });
+    // console.log({
+    //   nonameAccount: nonameAccount,
+    //   namedAccount: namedAccount,
+    //   shareableAccount: shareableAccount,
+    //   isNew: isNew,
+    //   pmo_customer: pmo_customer,
+    //   newsalesAssign: newsalesAssign,
+    //   holdshipment: holdshipment,
+    //   blacklist: blacklist,
+    // });
 
     getFilterData({
       nonameAccount: nonameAccount,
@@ -158,6 +150,9 @@ const FilterCustomer: React.FC<{
       newsalesAssign: newsalesAssign,
       holdshipment: holdshipment,
       blacklist: blacklist,
+      showPending: newRequestChecked,
+      showApprove: approveChecked,
+      showReject: rejectChecked,
     });
 
     dispatch(
@@ -175,7 +170,10 @@ const FilterCustomer: React.FC<{
         nonameAccount,
         namedAccount,
         shareableAccount,
-        isNew
+        isNew,
+        newRequestChecked,
+        approveChecked,
+        rejectChecked
       )
     );
   };
@@ -203,7 +201,6 @@ const FilterCustomer: React.FC<{
     setShareableAccountYesChecked(true);
     setShareableAccountNoChecked(true);
     setIsNewYesChecked(true);
-    setIsNewNoChecked(true);
     setPmo_customerYesChecked(false);
     setPmo_customerNoChecked(false);
     setHoldshipmentYesChecked(false);
@@ -388,6 +385,7 @@ const FilterCustomer: React.FC<{
                               onChange={() =>
                                 setNewRequestChecked(!newRequestChecked)
                               }
+                              disabled={!isNewYesChecked}
                             ></input>
                             <span>New Request</span>
                           </label>
@@ -404,6 +402,7 @@ const FilterCustomer: React.FC<{
                               }}
                               checked={rejectChecked}
                               onChange={() => setRejectChecked(!rejectChecked)}
+                              disabled={!isNewYesChecked}
                             ></input>
                             <span>Reject</span>
                           </label>
@@ -422,6 +421,7 @@ const FilterCustomer: React.FC<{
                               onChange={() =>
                                 setApproveChecked(!approveChecked)
                               }
+                              disabled={!isNewYesChecked}
                             ></input>
                             <span>Approve</span>
                           </label>

@@ -37,6 +37,9 @@ interface FilterData {
   blacklist: any;
   shareableAccount: any;
   isNew: any;
+  showPending: any;
+  showApprove: any;
+  showReject: any;
 }
 
 const AllAccountsPage: React.FC<IProps> = (
@@ -97,6 +100,9 @@ const AllAccountsPage: React.FC<IProps> = (
           true,
           true,
           true,
+          true,
+          true,
+          true,
           true
         )
       );
@@ -135,6 +141,9 @@ const AllAccountsPage: React.FC<IProps> = (
           null,
           null,
           null,
+          true,
+          true,
+          true,
           true,
           true,
           true,
@@ -226,6 +235,9 @@ const AllAccountsPage: React.FC<IProps> = (
           true,
           true,
           true,
+          true,
+          true,
+          true,
           true
         )
       )
@@ -245,6 +257,9 @@ const AllAccountsPage: React.FC<IProps> = (
               null,
               null,
               null,
+              true,
+              true,
+              true,
               true,
               true,
               true,
@@ -296,6 +311,9 @@ const AllAccountsPage: React.FC<IProps> = (
         true,
         true,
         true,
+        true,
+        true,
+        true,
         true
       )
     );
@@ -325,7 +343,10 @@ const AllAccountsPage: React.FC<IProps> = (
           filterData.nonameAccount,
           filterData.namedAccount,
           filterData.shareableAccount,
-          filterData.isNew
+          filterData.isNew,
+          filterData.showPending,
+          filterData.showApprove,
+          filterData.showReject
         )
       );
     } else if (myAccount) {
@@ -377,6 +398,9 @@ const AllAccountsPage: React.FC<IProps> = (
           null,
           null,
           null,
+          true,
+          true,
+          true,
           true,
           true,
           true,
