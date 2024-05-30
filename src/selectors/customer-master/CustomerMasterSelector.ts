@@ -100,8 +100,8 @@ const _selectNewCustomerDetailPending = (models: ResultActions): any => {
       picEmailAddr: models.resultObj[0].picEmailAddr
         ? models.resultObj[0].picEmailAddr
         : "-",
-      createDate: models.resultObj[0].createDate
-        ? models.resultObj[0].createDate
+      createdDate: models.resultObj[0].createdDate
+        ? models.resultObj[0].createdDate
         : "-",
       isNew: models.resultObj[0].isNew ? models.resultObj[0].isNew : "-",
       approvalStatus: models.resultObj[0].approvalStatus
@@ -377,7 +377,7 @@ const _selectAccountHistory = (models: ResultActions): any => {
       customerID: item.customerID,
       customerGenID: item.customerGenID,
       description: item.description,
-      createDate: item.createDate,
+      createdDate: item.createdDate,
       remark: item.remark,
     }));
   } else {

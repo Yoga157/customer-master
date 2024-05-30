@@ -116,6 +116,7 @@ const ModalNewInvoicingCondition: React.FC<IProps> = (
                 className="MarBot10"
                 type="submit"
                 color="blue"
+                disabled={pristine || invalid}
               >
                 Submit
               </Button>

@@ -124,6 +124,7 @@ const ModalNewRelatedFile: React.FC<IProps> = (
                 className="MarBot10"
                 type="submit"
                 color="blue"
+                disabled={!documentType && !uploadFile}
               >
                 Submit
               </Button>

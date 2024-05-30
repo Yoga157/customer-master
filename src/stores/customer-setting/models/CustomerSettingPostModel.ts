@@ -8,6 +8,7 @@ export default class CustomerSettingPostModel extends BaseModel {
   customerSettingID?: number = 0;
   customerID: number = 0;
   salesID: number = 0;
+  // customerCategory: string = "";
   shareable?: boolean = false;
   named?: boolean = false;
   pmoCustomer?: boolean = false;
@@ -27,6 +28,7 @@ export default class CustomerSettingPostModel extends BaseModel {
     const conversionOptions: IConversionOption = {
       customerSettingID: ConversionTypeEnum.Number,
       customerID: ConversionTypeEnum.Number,
+      // customerCategory: ConversionTypeEnum.String,
       salesID: ConversionTypeEnum.Number,
       shareable: ConversionTypeEnum.Boolean,
       named: ConversionTypeEnum.Boolean,

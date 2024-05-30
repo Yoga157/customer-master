@@ -87,6 +87,7 @@ const ClaimAccount: React.FC<IProps> = (
       const NewClaimAccount = new CustomerSettingPostModel(e);
       NewClaimAccount.customerSettingID = 0;
       NewClaimAccount.customerID = rowData[j].customerID;
+      // NewClaimAccount.customerCategory = rowData
       NewClaimAccount.salesID = userLogin?.employeeID;
       NewClaimAccount.requestedBy = userLogin?.employeeID;
       NewClaimAccount.requestedDate = new Date();
