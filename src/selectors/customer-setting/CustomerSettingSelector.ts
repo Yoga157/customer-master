@@ -44,6 +44,13 @@ const _createTableRows = (models: any[]): any[] => {
 const _mappingObjectTableRow = (model: any): any => {
   return {
     customerID: model.customerID === null ? null : model.customerID,
+    jdeCustomerID: model.jdeCustomerID === null ? null : model.jdeCustomerID,
+    customerGenID: model.customerGenID === null ? null : model.customerGenID,
+    industryClass: model.industryClass === null ? null : model.industryClass,
+    industryClassID:
+      model.industryClassID === null ? null : model.industryClassID,
+    industryClassBusiness:
+      model.industryClassBusiness === null ? null : model.industryClassBusiness,
     customerCategory:
       model.customerCategory === "" ? "" : model.customerCategory,
     customerName: model.customerName === "" ? "" : model.customerName,
@@ -51,17 +58,21 @@ const _mappingObjectTableRow = (model: any): any => {
     lastProjectName: model.lastProjectName === "" ? "" : model.lastProjectName,
     salesName: model.salesName === "" ? "" : model.salesName,
     relatedCustomer: model.relatedCustomer === "" ? "" : model.relatedCustomer,
-    invoiceCondition:
-      model.invoiceCondition === "" ? "" : model.invoiceCondition,
-    shareable: model.shareable === null ? null : model.shareable,
     pmoCustomer: model.pmoCustomer === null ? null : model.pmoCustomer,
+    named: model.named === "" ? null : model.named,
+    salesShareableID: model.salesShareableID,
+    shareable: model.shareable === null ? null : model.shareable,
     blacklist: model.blacklist === null ? null : model.blacklist,
-    named: model.named === null ? null : model.named,
+    requestedBy: model.requestedBy === null ? "" : model.requestedBy,
     holdshipment: model.holdshipment === null ? null : model.holdshipment,
     createdBy: model.createdBy === "" ? "" : model.createdBy,
     createdDate: model.createdDate === "" ? null : model.createdDate,
     modifiedBy: model.modifiedBy === "" ? "" : model.modifiedBy,
     modifiedDate: model.modifiedDate === "" ? null : model.modifiedDate,
+    status: model.status === null ? null : model.status,
+    isNew: model.isNew === null ? null : model.isNew,
+    approvalStatus: model.approvalStatus === null ? null : model.approvalStatus,
+    salesHistory: model.salesHistory.length == 0 ? {} : model.salesHistory[0],
   };
 };
 
@@ -85,6 +96,13 @@ const _createTableNameRows = (models: any[]): any[] => {
 const _mappingObjectTableNameRow = (model: any): any => {
   return {
     customerID: model.customerID === null ? null : model.customerID,
+    jdeCustomerID: model.jdeCustomerID === null ? null : model.jdeCustomerID,
+    customerGenID: model.customerGenID === null ? null : model.customerGenID,
+    industryClass: model.industryClass === null ? null : model.industryClass,
+    industryClassID:
+      model.industryClassID === null ? null : model.industryClassID,
+    industryClassBusiness:
+      model.industryClassBusiness === null ? null : model.industryClassBusiness,
     customerCategory:
       model.customerCategory === "" ? "" : model.customerCategory,
     customerName: model.customerName === "" ? "" : model.customerName,
@@ -92,17 +110,21 @@ const _mappingObjectTableNameRow = (model: any): any => {
     lastProjectName: model.lastProjectName === "" ? "" : model.lastProjectName,
     salesName: model.salesName === "" ? "" : model.salesName,
     relatedCustomer: model.relatedCustomer === "" ? "" : model.relatedCustomer,
-    requestedBy: model.requestedBy === null ? "" : model.requestedBy,
     pmoCustomer: model.pmoCustomer === null ? null : model.pmoCustomer,
+    named: model.named === "" ? null : model.named,
     salesShareableID: model.salesShareableID,
+    shareable: model.shareable === null ? null : model.shareable,
     blacklist: model.blacklist === null ? null : model.blacklist,
+    requestedBy: model.requestedBy === null ? "" : model.requestedBy,
     holdshipment: model.holdshipment === null ? null : model.holdshipment,
     createdBy: model.createdBy === "" ? "" : model.createdBy,
     createdDate: model.createdDate === "" ? null : model.createdDate,
     modifiedBy: model.modifiedBy === "" ? "" : model.modifiedBy,
     modifiedDate: model.modifiedDate === "" ? null : model.modifiedDate,
-    approvalBy: model.approvalBy === 0 ? null : model.approvalBy,
     status: model.status === null ? null : model.status,
+    isNew: model.isNew === null ? null : model.isNew,
+    approvalStatus: model.approvalStatus === null ? null : model.approvalStatus,
+    salesHistory: model.salesHistory.length == 0 ? {} : model.salesHistory[0],
   };
 };
 
@@ -128,6 +150,13 @@ const _createTableShareableRows = (models: any[]): any[] => {
 const _mappingObjectTableShareableRow = (model: any): any => {
   return {
     customerID: model.customerID === null ? null : model.customerID,
+    jdeCustomerID: model.jdeCustomerID === null ? null : model.jdeCustomerID,
+    customerGenID: model.customerGenID === null ? null : model.customerGenID,
+    industryClass: model.industryClass === null ? null : model.industryClass,
+    industryClassID:
+      model.industryClassID === null ? null : model.industryClassID,
+    industryClassBusiness:
+      model.industryClassBusiness === null ? null : model.industryClassBusiness,
     customerCategory:
       model.customerCategory === "" ? "" : model.customerCategory,
     customerName: model.customerName === "" ? "" : model.customerName,
@@ -136,12 +165,20 @@ const _mappingObjectTableShareableRow = (model: any): any => {
     salesName: model.salesName === "" ? "" : model.salesName,
     relatedCustomer: model.relatedCustomer === "" ? "" : model.relatedCustomer,
     pmoCustomer: model.pmoCustomer === null ? null : model.pmoCustomer,
+    named: model.named === "" ? null : model.named,
+    salesShareableID: model.salesShareableID,
+    shareable: model.shareable === null ? null : model.shareable,
     blacklist: model.blacklist === null ? null : model.blacklist,
+    requestedBy: model.requestedBy === null ? "" : model.requestedBy,
     holdshipment: model.holdshipment === null ? null : model.holdshipment,
     createdBy: model.createdBy === "" ? "" : model.createdBy,
     createdDate: model.createdDate === "" ? null : model.createdDate,
     modifiedBy: model.modifiedBy === "" ? "" : model.modifiedBy,
     modifiedDate: model.modifiedDate === "" ? null : model.modifiedDate,
+    status: model.status === null ? null : model.status,
+    isNew: model.isNew === null ? null : model.isNew,
+    approvalStatus: model.approvalStatus === null ? null : model.approvalStatus,
+    salesHistory: model.salesHistory.length == 0 ? {} : model.salesHistory[0],
   };
 };
 
@@ -165,6 +202,13 @@ const _createTableAllRows = (models: any[]): any[] => {
 const _mappingObjectTableAllRow = (model: any): any => {
   return {
     customerID: model.customerID === null ? null : model.customerID,
+    jdeCustomerID: model.jdeCustomerID === null ? null : model.jdeCustomerID,
+    customerGenID: model.customerGenID === null ? null : model.customerGenID,
+    industryClass: model.industryClass === null ? null : model.industryClass,
+    industryClassID:
+      model.industryClassID === null ? null : model.industryClassID,
+    industryClassBusiness:
+      model.industryClassBusiness === null ? null : model.industryClassBusiness,
     customerCategory:
       model.customerCategory === "" ? "" : model.customerCategory,
     customerName: model.customerName === "" ? "" : model.customerName,
@@ -184,6 +228,9 @@ const _mappingObjectTableAllRow = (model: any): any => {
     modifiedBy: model.modifiedBy === "" ? "" : model.modifiedBy,
     modifiedDate: model.modifiedDate === "" ? null : model.modifiedDate,
     status: model.status === null ? null : model.status,
+    isNew: model.isNew === null ? null : model.isNew,
+    approvalStatus: model.approvalStatus === null ? null : model.approvalStatus,
+    salesHistory: model.salesHistory.length == 0 ? {} : model.salesHistory[0],
   };
 };
 
@@ -265,6 +312,11 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
     return {
       accountStatus: model.resultObj.accountStatus,
       customerID: model.resultObj.customerID,
+      jdeCustomerID: model.resultObj.jdeCustomerID,
+      customerGenID: model.resultObj.customerGenID,
+      industryClassID: model.resultObj.industryClassID,
+      industryClass: model.resultObj.industryClass,
+      industryClassBusiness: model.resultObj.industryClassBusiness,
       customerCategory: model.resultObj.customerCategory,
       customerName: model.resultObj.customerName,
       customerAddress: model.resultObj.customerAddress,
@@ -274,24 +326,43 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
       holdshipment: model.resultObj.holdshipment,
       avgAR: model.resultObj.avgAR,
       salesName: model.resultObj.salesName,
+      capFlag: model.resultObj.capFlag,
       shareableApprovalStatus:
         model.resultObj.shareableApprovalStatus.length != 0
           ? {
               status: model.resultObj.shareableApprovalStatus[lastIndex].status,
+              description:
+                model.resultObj.shareableApprovalStatus[lastIndex].description,
               requestedBy:
                 model.resultObj.shareableApprovalStatus[lastIndex].requestedBy,
               requestedUserID:
                 model.resultObj.shareableApprovalStatus[lastIndex]
                   .requestedUserID,
+              requestedUserKey:
+                model.resultObj.shareableApprovalStatus[lastIndex]
+                  .requestedUserKey,
+              requestedDirectorate:
+                model.resultObj.shareableApprovalStatus[lastIndex]
+                  .requestedDirectorate,
               requestedDate:
                 model.resultObj.shareableApprovalStatus[lastIndex]
                   .requestedDate,
-              approvalBy:
-                model.resultObj.shareableApprovalStatus[lastIndex].approvalBy,
-              approvalDate:
-                model.resultObj.shareableApprovalStatus[lastIndex].approvalDate,
-              description:
-                model.resultObj.shareableApprovalStatus[lastIndex].description,
+              approvedDirectorateBy:
+                model.resultObj.shareableApprovalStatus[lastIndex]
+                  .approvedDirectorateBy,
+              directorateApprovedDate:
+                model.resultObj.shareableApprovalStatus[lastIndex]
+                  .directorateApprovedDate,
+              approvedAdminBy:
+                model.resultObj.shareableApprovalStatus[lastIndex]
+                  .approvedAdminBy,
+              adminApprovedDate:
+                model.resultObj.shareableApprovalStatus[lastIndex]
+                  .adminApprovedDate,
+              rejectedDate:
+                model.resultObj.shareableApprovalStatus[lastIndex].rejectedDate,
+              rejectedBy:
+                model.resultObj.shareableApprovalStatus[lastIndex].rejectedBy,
             }
           : [],
     };

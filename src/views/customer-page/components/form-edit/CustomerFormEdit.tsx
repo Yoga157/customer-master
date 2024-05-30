@@ -1,40 +1,57 @@
-import React, { useEffect, Fragment, useState } from 'react';
-import { SelectInput, TextInput, Button, RichTextEditor, LabelName, CheckBox } from 'views/components/UI';
-import { Dispatch } from 'redux';
-import { useDispatch, useSelector } from 'react-redux';
-import IStore from 'models/IStore';
-import { Form as FinalForm, Field } from 'react-final-form';
-import { Form, Grid, Accordion, Icon, Label } from 'semantic-ui-react';
-import { selectIndustryOptions } from 'selectors/select-options';
-import * as IndustryClassActions from 'stores/industry-class/IndustryClassActions';
-import classes from './CustomerFormEdit.module.scss';
-import { combineValidators, isRequired, createValidator, composeValidators } from 'revalidate';
-import * as ModalAction from 'stores/modal/first-level/ModalFirstLevelActions';
-import CustomerModel from 'stores/customer/models/CustomerModel';
-import * as CustomerAction from 'stores/customer/CustomerActions';
-import * as FunnelActions from 'stores/funnel/FunnelActions';
-import CustomerFileModel from 'stores/customer/models/CustomerFileModel';
-import CustomerPICModel from 'stores/customer/models/CustomerPICModel';
-import { serialize } from 'object-to-formdata';
-import CustomersModel from 'stores/customer/models/CustomersModel';
-import IUserResult from 'selectors/user/models/IUserResult';
-import { selectUserResult } from 'selectors/user/UserSelector';
-import { selectViewFunnelCustomer, selectViewFunnelCustomerDetail } from 'selectors/funnel/FunnelSelector';
-import environment from 'environment';
-import axios from 'axios';
-import fileDownload from 'js-file-download';
-import { selectRequesting } from 'selectors/requesting/RequestingSelector';
+import React, { useEffect, Fragment, useState } from "react";
+import {
+  SelectInput,
+  TextInput,
+  Button,
+  RichTextEditor,
+  LabelName,
+  CheckBox,
+} from "views/components/UI";
+import { Dispatch } from "redux";
+import { useDispatch, useSelector } from "react-redux";
+import IStore from "models/IStore";
+import { Form as FinalForm, Field } from "react-final-form";
+import { Form, Grid, Accordion, Icon, Label } from "semantic-ui-react";
+import { selectIndustryOptions } from "selectors/select-options";
+import * as IndustryClassActions from "stores/industry-class/IndustryClassActions";
+import classes from "./CustomerFormEdit.module.scss";
+import {
+  combineValidators,
+  isRequired,
+  createValidator,
+  composeValidators,
+} from "revalidate";
+import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
+import CustomerModel from "stores/customer/models/CustomerModel";
+import * as CustomerAction from "stores/customer/CustomerActions";
+import * as FunnelActions from "stores/funnel/FunnelActions";
+import CustomerFileModel from "stores/customer/models/CustomerFileModel";
+import CustomerPICModel from "stores/customer/models/CustomerPICModel";
+import { serialize } from "object-to-formdata";
+import CustomersModel from "stores/customer/models/CustomersModel";
+import IUserResult from "selectors/user/models/IUserResult";
+import { selectUserResult } from "selectors/user/UserSelector";
+import {
+  selectViewFunnelCustomer,
+  selectViewFunnelCustomerDetail,
+} from "selectors/funnel/FunnelSelector";
+import environment from "environment";
+import axios from "axios";
+import fileDownload from "js-file-download";
+import { selectRequesting } from "selectors/requesting/RequestingSelector";
 
 interface IProps {
   funnelGenID: number;
 }
 
-const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProps>) => {
+const CustomerFormEdit: React.FC<IProps> = (
+  props: React.PropsWithChildren<IProps>
+) => {
   const dispatch: Dispatch = useDispatch();
 
   const [toSales, setToSales] = useState(0);
-  const [customerCard, setCustomerCard] = useState('');
-  const [fileNPWP, setFileNPWP] = useState('');
+  const [customerCard, setCustomerCard] = useState("");
+  const [fileNPWP, setFileNPWP] = useState("");
   const [custCard, setCustCard] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const { funnelGenID } = props;
@@ -53,8 +70,10 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
     const data = new FormData();
 
     newCustomer.customer.customerGenID = customerFunnelDataStore.customerGenID;
-    newCustomer.customerPIC.customerGenID = customerFunnelDataStore.customerGenID;
-    newCustomer.customerPIC.customerPICID = customerFunnelDataStore.customerPICID;
+    newCustomer.customerPIC.customerGenID =
+      customerFunnelDataStore.customerGenID;
+    newCustomer.customerPIC.customerPICID =
+      customerFunnelDataStore.customerPICID;
     newCustomer.customer.createUserID = currentUser.employeeID;
     newCustomer.customerPIC.salesID = currentUser.employeeID;
     newCustomer.customerPIC.createUserID = currentUser.employeeID;
@@ -109,8 +128,10 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
     newCustomer.customerPIC.createUserID = currentUser.employeeID;
     newCustomer.customerPIC.salesID = currentUser.employeeID;
     newCustomer.customer.customerGenID = customerFunnelDataStore.customerGenID;
-    newCustomer.customerPIC.customerGenID = customerFunnelDataStore.customerGenID;
-    newCustomer.customerPIC.customerPICID = customerFunnelDataStore.customerPICID;
+    newCustomer.customerPIC.customerGenID =
+      customerFunnelDataStore.customerGenID;
+    newCustomer.customerPIC.customerPICID =
+      customerFunnelDataStore.customerPICID;
     newCustomer.NPWP = fileNPWP;
 
     const data = new FormData();
@@ -154,9 +175,6 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
       data // optional
     );
 
-    /* console.log(data);
-        console.log(newCustomer); */
-
     dispatch(CustomerAction.putCustomer(data));
   };
 
@@ -169,7 +187,9 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
   };
 
   useEffect(() => {
-    dispatch(CustomerAction.requestCustomerExisting(viewFunnelCustomer.customerName));
+    dispatch(
+      CustomerAction.requestCustomerExisting(viewFunnelCustomer.customerName)
+    );
     dispatch(FunnelActions.requestViewFunnelCustomerDetailById(funnelGenID));
     dispatch(IndustryClassActions.requestIndustry());
     if (viewFunnelCustomer.customerCardID.length > 0) {
@@ -184,20 +204,20 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
         return message;
       }
     },
-    'Invalid email address'
+    "Invalid email address"
   );
 
   const validateMandatory = combineValidators({
-    picEmailAddr: composeValidators(isValidEmail, isRequired('Email'))(),
-    addr1: isRequired('Customer Address'),
-    phoneNumber: isRequired('Phone Number'),
-    industryClass: isRequired('Industry Class'),
-    picJobTitle: isRequired('Job Title'),
-    picMobilePhone: isRequired('PIC Phone Number'),
+    picEmailAddr: composeValidators(isValidEmail, isRequired("Email"))(),
+    addr1: isRequired("Customer Address"),
+    phoneNumber: isRequired("Phone Number"),
+    industryClass: isRequired("Industry Class"),
+    picJobTitle: isRequired("Job Title"),
+    picMobilePhone: isRequired("PIC Phone Number"),
   });
   const validateExisting = combineValidators({
-    customerName: isRequired('Customer Name'),
-    picName: isRequired('PIC Name'),
+    customerName: isRequired("Customer Name"),
+    picName: isRequired("PIC Name"),
   });
 
   const handleClick = (e: any, titleProps: any) => {
@@ -219,14 +239,24 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
     setFileNPWP(e.target.files[0]);
   };
 
-  const industryClassStore = useSelector((state: IStore) => selectIndustryOptions(state));
-  const currentUser: IUserResult = useSelector((state: IStore) => selectUserResult(state));
-  const bRefreshPage: boolean = useSelector((state: IStore) => state.customer.refreshPage);
-  const customerFunnelDataStore = useSelector((state: IStore) => selectViewFunnelCustomerDetail(state));
-  const viewFunnelCustomer = useSelector((state: IStore) => selectViewFunnelCustomer(state));
-  const viewExisting = useSelector((state: IStore) => state.customer.customerExisting);
-
-  console.log(viewExisting);
+  const industryClassStore = useSelector((state: IStore) =>
+    selectIndustryOptions(state)
+  );
+  const currentUser: IUserResult = useSelector((state: IStore) =>
+    selectUserResult(state)
+  );
+  const bRefreshPage: boolean = useSelector(
+    (state: IStore) => state.customer.refreshPage
+  );
+  const customerFunnelDataStore = useSelector((state: IStore) =>
+    selectViewFunnelCustomerDetail(state)
+  );
+  const viewFunnelCustomer = useSelector((state: IStore) =>
+    selectViewFunnelCustomer(state)
+  );
+  const viewExisting = useSelector(
+    (state: IStore) => state.customer.customerExisting
+  );
 
   if (bRefreshPage) {
     dispatch(CustomerAction.requestCustomerById(funnelGenID));
@@ -235,32 +265,45 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
 
   const onDownloadFile = () => {
     const controllerName = `FileFunnel/download-file-customer/${customerFunnelDataStore.customerCardID}`;
-    const endpoint: string = environment.api.funnel.replace(':controller', controllerName);
+    const endpoint: string = environment.api.funnel.replace(
+      ":controller",
+      controllerName
+    );
     handleDownload(endpoint, customerFunnelDataStore.fileDownload);
   };
 
   const handleDownload = (url: string, filename: string) => {
     axios
       .get(url, {
-        responseType: 'blob',
+        responseType: "blob",
       })
       .then((res) => {
         fileDownload(res.data, filename);
       });
   };
 
-  const isRequesting: boolean = useSelector((state: IStore) => selectRequesting(state, [FunnelActions.REQUEST_VIEW_FUNNEL_CUSTOMER_DETAIL]));
+  const isRequesting: boolean = useSelector((state: IStore) =>
+    selectRequesting(state, [FunnelActions.REQUEST_VIEW_FUNNEL_CUSTOMER_DETAIL])
+  );
 
   return (
     <Fragment>
       <FinalForm
-        validate={viewExisting.existing > 0 ? validateExisting : validateMandatory}
+        validate={
+          viewExisting.existing > 0 ? validateExisting : validateMandatory
+        }
         onSubmit={(values: any) => onSubmitHandler(values)}
         initialValues={customerFunnelDataStore}
         render={({ handleSubmit, pristine }) => (
           <Form onSubmit={handleSubmit} loading={isRequesting}>
             <Grid className={classes.WarningNotifBg} centered columns={1}>
-              <h3 className={classes.Label + '' + ' ui center aligned header mt-2r-767 '}>Do you have a customer business card ?</h3>
+              <h3
+                className={
+                  classes.Label + "" + " ui center aligned header mt-2r-767 "
+                }
+              >
+                Do you have a customer business card ?
+              </h3>
               <Grid.Row className={classes.NoPadTop}>
                 <Grid.Column className="HalfGrid767" width={3}>
                   <CheckBox
@@ -268,33 +311,58 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                     onChange={checkedClick}
                     defaultChecked={custCard}
                     checked={custCard}
-                    disabled={currentUser.role != 'Sales' ? true : false}
+                    disabled={currentUser.role != "Sales" ? true : false}
                   />
                 </Grid.Column>
                 <Grid.Column className={classes.MarTop20} width={16}>
-                  <input type="file" name="imageFile" onChange={fileChange} hidden={!custCard} />
-                  {custCard && customerFunnelDataStore.customerCardID.length > 0 && (
-                    <Label as="a" color="blue" pointing onClick={onDownloadFile}>
-                      <Icon name="download" />
-                      Business Card
-                    </Label>
-                  )}
+                  <input
+                    type="file"
+                    name="imageFile"
+                    onChange={fileChange}
+                    hidden={!custCard}
+                  />
+                  {custCard &&
+                    customerFunnelDataStore.customerCardID.length > 0 && (
+                      <Label
+                        as="a"
+                        color="blue"
+                        pointing
+                        onClick={onDownloadFile}
+                      >
+                        <Icon name="download" />
+                        Business Card
+                      </Label>
+                    )}
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
                 <Grid.Column width={16}>
-                  <Field name="customerName" component={LabelName} placeholder="Customer Name" labelName="Customer Name" />
+                  <Field
+                    name="customerName"
+                    component={LabelName}
+                    placeholder="Customer Name"
+                    labelName="Customer Name"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
                 <Grid.Column width={16}>
-                  <Field name="picName" component={LabelName} placeholder="PIC Name" labelName="PIC Name" />
+                  <Field
+                    name="picName"
+                    component={LabelName}
+                    placeholder="PIC Name"
+                    labelName="PIC Name"
+                  />
                 </Grid.Column>
               </Grid.Row>
-            </Grid>{' '}
+            </Grid>{" "}
             <br />
             <Accordion color="red" className="NoShadow" fluid styled>
-              <Accordion.Title active={activeIndex === 0} onClick={handleClick} index={0}>
+              <Accordion.Title
+                active={activeIndex === 0}
+                onClick={handleClick}
+                index={0}
+              >
                 <Icon name="dropdown" />
                 Customer Info
               </Accordion.Title>
@@ -307,7 +375,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={RichTextEditor}
                         placeholder="Customer Address"
                         labelName="Customer Address"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -318,7 +386,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="Phone Number"
                         labelName="Phone Number"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                     <Grid.Column className="FullGrid767">
@@ -328,7 +396,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         options={industryClassStore}
                         placeholder="Industry Classification"
                         labelName="Industry Classification"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -339,7 +407,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="Website"
                         labelName="Website"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                     <Grid.Column className="FullGrid767">
@@ -348,7 +416,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="Social Media"
                         labelName="Social Media"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -356,7 +424,11 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
               </Accordion.Content>
             </Accordion>
             <Accordion color="blue" className="NoShadow" fluid styled>
-              <Accordion.Title active={activeIndex === 1} onClick={handleClick} index={1}>
+              <Accordion.Title
+                active={activeIndex === 1}
+                onClick={handleClick}
+                index={1}
+              >
                 <Icon name="dropdown" />
                 NPWP Info
               </Accordion.Title>
@@ -364,7 +436,12 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                 <Grid>
                   <Grid.Row>
                     <Grid.Column className={classes.MarTop20} width={16}>
-                      <input type="file" name="npwp" onChange={fileNPWPChange} disabled={currentUser.role != 'Sales' ? true : false} />
+                      <input
+                        type="file"
+                        name="npwp"
+                        onChange={fileNPWPChange}
+                        disabled={currentUser.role != "Sales" ? true : false}
+                      />
                     </Grid.Column>
                   </Grid.Row>
                   <Grid.Row columns="equal">
@@ -374,7 +451,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="NPWP Number"
                         labelName="NPWP Number"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                     <Grid.Column className="FullGrid767">
@@ -383,7 +460,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="NPWP Name"
                         labelName="NPWP Name"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -394,7 +471,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={RichTextEditor}
                         placeholder="Address"
                         labelName="Address"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -402,7 +479,11 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
               </Accordion.Content>
             </Accordion>
             <Accordion color="green" className="NoShadow" fluid styled>
-              <Accordion.Title active={activeIndex === 2} onClick={handleClick} index={2}>
+              <Accordion.Title
+                active={activeIndex === 2}
+                onClick={handleClick}
+                index={2}
+              >
                 <Icon name="dropdown" />
                 PIC Info
               </Accordion.Title>
@@ -415,7 +496,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="PIC Mobile Phone"
                         labelName="PIC Mobile Phone"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                     <Grid.Column className="FullGrid767">
@@ -424,7 +505,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="Job Title"
                         labelName="Job Title"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -435,7 +516,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="Email"
                         labelName="Email"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -443,7 +524,11 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
               </Accordion.Content>
             </Accordion>
             <Accordion color="green" className="NoShadow" fluid styled>
-              <Accordion.Title active={activeIndex === 3} onClick={handleClick} index={3}>
+              <Accordion.Title
+                active={activeIndex === 3}
+                onClick={handleClick}
+                index={3}
+              >
                 <Icon name="dropdown" />
                 Additional Contact Info
               </Accordion.Title>
@@ -456,7 +541,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="e.g.Bunga.."
                         labelName="Finance Contact Person"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -467,7 +552,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="e.g.0865182..."
                         labelName="Mobile Phone"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                     <Grid.Column className="FullGrid767">
@@ -476,7 +561,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="e.g. bunga@company.co.id.."
                         labelName="Email"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -487,7 +572,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="e.g.Bambang.."
                         labelName="Name of Finance Director"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -498,7 +583,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="e.g.0862382..."
                         labelName="Mobile Phone"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                     <Grid.Column className="FullGrid767">
@@ -507,7 +592,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="e.g.Bambang@company.co.id.."
                         labelName="Email"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -518,7 +603,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="e.g.Jhon.."
                         labelName="Name of Executive Director"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -529,7 +614,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="e.g.0812382..."
                         labelName="Mobile Phone"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                     <Grid.Column className="FullGrid767">
@@ -538,7 +623,7 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
                         component={TextInput}
                         placeholder="e.g.Jhon@company.co.id.."
                         labelName="Email"
-                        disabled={currentUser.role != 'Sales' ? true : false}
+                        disabled={currentUser.role != "Sales" ? true : false}
                       />
                     </Grid.Column>
                   </Grid.Row>
@@ -546,7 +631,12 @@ const CustomerFormEdit: React.FC<IProps> = (props: React.PropsWithChildren<IProp
               </Accordion.Content>
             </Accordion>
             <br />
-            <Button className="MarBot20" color="blue" floated="right" disabled={pristine || (custCard && customerCard.length === 0)}>
+            <Button
+              className="MarBot20"
+              color="blue"
+              floated="right"
+              disabled={pristine || (custCard && customerCard.length === 0)}
+            >
               Submit
             </Button>
             <Button onClick={CloseModal} floated="right">

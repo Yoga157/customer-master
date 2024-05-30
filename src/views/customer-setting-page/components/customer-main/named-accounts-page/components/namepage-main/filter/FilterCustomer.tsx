@@ -53,7 +53,7 @@ const FilterCustomer: React.FC<{
           salesID: data.salesID,
         },
       ]);
-      console.log(data.salesID);
+
       setSalesFilter([...salesFilter, data.salesID.toString()]);
     }
   };

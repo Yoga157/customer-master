@@ -2,39 +2,50 @@ import React, {
   useEffect,
   Fragment,
   useState,
-  useCallback,
   useRef,
+  useCallback,
 } from "react";
 import * as data from "./data";
 import {
   Button,
   Pagination,
   RichTextEditor,
-  FileUpload,
   TextInput,
   SelectInput,
+  DropdownInput,
+  DropdownClearInput,
+  TextAreaInput,
 } from "views/components/UI";
+import environment from "environment";
+import axios from "axios";
 import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 import { Dispatch } from "redux";
+import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import ModalSizeEnum from "constants/ModalSizeEnum";
 import { useDispatch, useSelector } from "react-redux";
 import IStore from "models/IStore";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import TableRequestNewCustomer from "./components/table/table-request-new-customer/TableRequestNewCustomer";
 import { reqNewCustomerData } from "./data";
-import { Form, Grid, Divider, Segment } from "semantic-ui-react";
-import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
 import {
-  combineValidators,
-  isRequired,
-  composeValidators,
-  createValidator,
-} from "revalidate";
+  Form,
+  Grid,
+  Divider,
+  Segment,
+  Icon,
+  Dropdown,
+} from "semantic-ui-react";
+import { FileUpload } from "views/components/UI";
 import { selectReqCustomerNewAccount } from "selectors/customer-master/CustomerMasterSelector";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
-import { selectUserResult } from "selectors/user/UserSelector";
 import "./addNewCustomerSetting.scss";
+import CustomerMasterPostModel from "stores/customer-master/models/CustomerMasterPostModel";
+import RouteEnum from "constants/RouteEnum";
+import ModalEditViewNpwp from "./components/modal/viewedit-npwp/ModalViewEditNpwp";
+import { selectIndustry } from "selectors/customer-master/CustomerMasterSelector";
+import * as IndustryClassOptionsAction from "stores/customer-master/CustomerMasterActivityActions";
 
 interface IProps {
   history: any;
@@ -48,88 +59,198 @@ const AddNewCustomerSetting: React.FC<IProps> = (
   const tableData = useSelector((state: IStore) =>
     selectReqCustomerNewAccount(state)
   );
-  const [allCustomerData, setAllCustomerData] = useState(tableData.rows);
-  const [reqCustomerPageSize, setReqCustomerPageSize] = useState(10);
-  const [reqCustomerActivePage, setReqCustomerActivePage] = useState(1);
-  const [reqCustomerData, setReqCustomerData] = useState(
-    allCustomerData.slice(0, reqCustomerPageSize)
-  );
+
   const history = useHistory();
-  const [pageSize, setPage] = useState(10);
-  const activePage = useSelector(
-    (state: IStore) => state.customerSetting.activePage
-  );
-  const [titleCustomer, setTitleCustomer] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [picName, setPicName] = useState("");
-
-  // fungsi mengatur perubahan halaman Request New Customer
-  const reqCustomerChangePage = (e, page) => {
-    const startIndex = (page.activePage - 1) * reqCustomerPageSize;
-    const endIndex = startIndex + reqCustomerPageSize;
-    const paginatedData = allCustomerData.slice(startIndex, endIndex);
-
-    setReqCustomerData(paginatedData);
-    setReqCustomerActivePage(page.activePage);
-  };
-
+  const [searchedCustomerName, setSearchedCustomerName] = useState("");
+  const [searchedPicName, setSearcedhPicName] = useState("");
+  const [searchedTitleCust, setSearchedTitleCust] = useState("");
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+  const activePage = useSelector(
+    (state: IStore) => state.customerMaster.activePage
+  );
+  const userId: any = localStorage.getItem("userLogin");
 
-  const [address, setAddress] = useState({ address: "" });
-  const [uploadFile, setUploadFile] = useState("");
+  const [pageSize, setPage] = useState(10);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [openCustomerAvability, setOpenCustomerAvability] = useState(true);
+  const [openCustomerInfo, setOpenCustomerInfo] = useState(false);
+  const [canToggleCustomerInfo, setCanToggleCustomerInfo] = useState(false);
+  const [isChekedToggle, setIsCheckedToggle] = useState(false);
 
-  const onSubmitSearch = async (data) => {
+  const handlePaginationChange = (e: any, data: any) => {
+    dispatch(CustomerMasterActions.setActivePage(data.activePage));
+
+    // if (window.location.pathname === "/customer-setting/add") {
     dispatch(
       CustomerMasterActions.requestSearchCustomerMaster(
-        1,
-        10,
+        data.activePage,
+        pageSize,
         "CustomerID",
         "ascending",
-        data.titleCustomer,
-        data.customerName,
-        data.picName
+        searchedCustomerName,
+        searchedPicName
       )
     );
   };
 
-  const cancelClick = () => {
-    history.push("/customer-setting");
+  const isRequesting: boolean = useSelector((state: IStore) =>
+    selectRequesting(state, [CustomerMasterActions.CLEAR_RESULT_CM])
+  );
+
+  const onSubmitSearch = async (data) => {
+    dispatch(
+      CustomerMasterActions.requestSearchCustomerMaster(
+        activePage,
+        pageSize,
+        "CustomerID",
+        "ascending",
+        data.customerName,
+        data.picName
+      )
+    );
+    dispatch(CustomerMasterActions.setActivePage(1));
+    setSearchedCustomerName(data.customerName);
+    setSearcedhPicName(data.picName);
   };
+
+  const industryClassOptions = useSelector((state: IStore) =>
+    selectIndustry(state)
+  );
+
+  useEffect(() => {
+    dispatch(IndustryClassOptionsAction.getIndustryClassification());
+  }, []);
+
+  const onSubmitHandler = async (data: any) => {
+    const userId: any = localStorage.getItem("userLogin");
+
+    let formData = new FormData();
+    formData.append("CustomerName", data.customerLegalName);
+    formData.append("CustomerAddress", data.customerAddress);
+    formData.append("PhoneNumber", data.officeNumber);
+    formData.append("IndustryClass", data.industryClassification);
+    formData.append("Website", data.website);
+    formData.append("CustomerBusinessName", data.customerBusinessName);
+    formData.append("HoldingCompName", data.holdingCompanyName);
+    formData.append("City", data.city);
+    formData.append("Country", data.country);
+    formData.append("ZipCode", data.zipCode);
+    formData.append("CoorporateEmail", data.coorporateEmail);
+    formData.append("NIB", data.nib);
+    formData.append("NPWPNumber", data.Npwp);
+    formData.append("PICName", data.picName);
+    formData.append("PICMobilePhone", data.picMobilePhone);
+    formData.append("PICJobTitle", data.picJobTitle);
+    formData.append("PICEmailAddr", data.picEmail);
+    formData.append("CreatedUserID", JSON.parse(userId).employeeID);
+    formData.append("ModifyUserID", JSON.parse(userId).employeeID);
+    formData.append("File", uploadFile);
+    if (JSON.parse(userId).role === "Sales") {
+      formData.append("ApprovalStatus", "PENDING");
+    }
+    if (JSON.parse(userId).role === "Marketing") {
+      formData.append("ApprovalStatus", "APPROVE");
+    }
+
+    try {
+      const endpoint: string = environment.api.customer.replace(
+        ":controller",
+        "CustomerSetting/InsertRequestNewCustomer"
+      );
+
+      await axios.post(endpoint, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setUploadFile(null);
+      dispatch(CustomerMasterActions.setActiveTabs(4));
+      dispatch(CustomerMasterActions.setSuccessModal(true));
+      props.history.push({
+        pathname: RouteEnum.CustomerSetting,
+      });
+      dispatch(CustomerMasterActions.clearResult());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const cancelClick = () => {
+    setSearchedCustomerName("");
+    dispatch(CustomerMasterActions.setActiveTabs(4));
+    props.history.push({
+      pathname: RouteEnum.CustomerSetting,
+    });
+  };
+
+  const handleButtonClick = () => {
+    setIsButtonClicked(true);
+  };
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleUploadClick = () => {
+    if (!uploadFile && fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files && e.target.files[0];
+    if (selectedFile) {
+      setUploadFile(selectedFile);
+    }
+  };
+
+  const openEditViewNPWP = useCallback((): void => {
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ModalEditViewNpwp
+          uploadFile={uploadFile}
+          setUploadFile={setUploadFile}
+        />,
+        ModalSizeEnum.Mini
+      )
+    );
+  }, [dispatch, uploadFile]);
+
+  useEffect(() => {
+    dispatch(CustomerMasterActions.clearResult());
+  }, []);
+
+  useEffect(() => {
+    if (isButtonClicked) {
+      setCanToggleCustomerInfo(true);
+    }
+  }, [isButtonClicked]);
 
   return (
     <Fragment>
-      <div ref={linkRef}>
-        <Link to="/customer-setting" className="link">
-          {"< Back to Customer List"}
-        </Link>
+      <div>
+        <div onClick={cancelClick} style={{ cursor: "pointer" }}>
+          <p className="link">{"< Back to Customer List"}</p>
+        </div>
         <LoadingIndicator>
           <div className="form-container">
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <h1 className="page-title grey">REQUEST NEW CUSTOMER</h1>
-            </div>
+            <p className="page-title grey">REQUEST NEW CUSTOMER</p>
             <Divider></Divider>
 
             <div className="FullContainer">
               <FinalForm
                 onSubmit={(values: any) => onSubmitSearch(values)}
-                render={({ handleSubmit, pristine, invalid }) => (
+                render={({ handleSubmit, values }) => (
                   <Form onSubmit={handleSubmit}>
                     <Segment className="LightYellowContainer">
                       <Grid>
-                        <Grid.Row columns="equal">
+                        <Grid.Row>
                           <Grid.Column
-                            width={3}
-                            className="FullGrid767 LabelNameLabel"
+                            width={16}
+                            mobile={16}
+                            tablet={16}
+                            computer={10}
                           >
-                            <Field
-                              name="titleCustomer"
-                              component={TextInput}
-                              placeholder="e.g.PT .."
-                              labelName="Title Customer"
-                              mandatory={false}
-                            />
-                          </Grid.Column>
-                          <Grid.Column width={7} className="FullGrid767">
                             <Field
                               name="customerName"
                               component={TextInput}
@@ -138,7 +259,12 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                               mandatory={false}
                             />
                           </Grid.Column>
-                          <Grid.Column width={6} className="FullGrid767">
+                          <Grid.Column
+                            width={16}
+                            mobile={16}
+                            tablet={16}
+                            computer={6}
+                          >
                             <Field
                               name="picName"
                               component={TextInput}
@@ -149,14 +275,23 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                           </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns="equal">
-                          <Grid.Column>
+                          <Grid.Column
+                            width={16}
+                            mobile={16}
+                            tablet={16}
+                            computer={16}
+                          >
                             <Button
                               type="submit"
                               color="blue"
-                              disabled={false}
+                              disabled={
+                                !values.customerName ||
+                                !values.customerName.trim()
+                              }
                               floated="right"
                               size="small"
-                              content="Check Customer Avability"
+                              content="Check Customer Availability"
+                              onClick={handleButtonClick}
                             />
                           </Grid.Column>
                         </Grid.Row>
@@ -166,200 +301,441 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                 )}
               />
 
-              <div className="container-recheck">
-                {tableData.rows.length === 0 ? (
-                  <div className="info-recheck">
-                    <p className="p-recheck">No data</p>
-                  </div>
+              <div
+                className="accordion-container"
+                style={{ marginTop: "1rem" }}
+                onClick={() => setOpenCustomerAvability(!openCustomerAvability)}
+              >
+                <span className="page-title-customer-result">
+                  CHECK CUSTOMER AVAILABILITY RESULT
+                </span>
+                {openCustomerAvability ? (
+                  <Icon name="triangle down" />
                 ) : (
-                  <div className="info-recheck">
-                    <p className="p-recheck">
-                      There are{" "}
-                      <span style={{ fontWeight: "bold" }}>
-                        {tableData.rows.length}
-                      </span>{" "}
-                      result from the customer search{" "}
-                      <span style={{ fontWeight: "bold" }}>
-                        {tableData.rows.customerName}.{" "}
-                      </span>
-                      Please recheck again before you make new customers
-                      request.
-                    </p>
-                  </div>
+                  <Icon name="triangle right" />
                 )}
               </div>
-            </div>
+              <Divider className="margin-0"></Divider>
 
-            <div className="padding-horizontal">
-              <TableRequestNewCustomer
-                data={tableData.rows}
-                header={data.reqNewCustomerHeader}
-                sequenceNum={true}
-              />
-              <div style={{ marginTop: "1rem" }}>
-                <Pagination
-                  activePage={reqCustomerActivePage}
-                  onPageChange={(e, data) => reqCustomerChangePage(e, data)}
-                  totalPage={allCustomerData.length}
-                  pageSize={reqCustomerPageSize}
-                />
-              </div>
-            </div>
-            {tableData.rows.length === 0 ? (
-              <div className="recheck-submit-pad" style={{ opacity: 0.7 }}>
-                <div className="container-recheck-submit-disable">
-                  <input
-                    type="checkbox"
-                    disabled
-                    checked={showAdditionalInfo}
-                    onChange={() => setShowAdditionalInfo(!showAdditionalInfo)}
-                    style={{
-                      margin: "0 1rem",
-                      transform: "scale(1)",
-                    }}
-                  ></input>
-                  <p className="p-recheck" style={{ color: "red" }}>
-                    I HAVE CHECKED THE CUSTOMER LIST FROM THE SEARCH RESULTS.
-                    AND I DON'T FIND NAME OF THE CUSTOMER I WANT.
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="recheck-submit-pad" style={{ opacity: 1 }}>
-                <div className="container-recheck-submit">
-                  <input
-                    type="checkbox"
-                    checked={showAdditionalInfo}
-                    onChange={() => setShowAdditionalInfo(!showAdditionalInfo)}
-                    style={{
-                      margin: "0 1rem",
-                      transform: "scale(1)",
-                    }}
-                  ></input>
-                  <p className="p-recheck" style={{ color: "#F97452" }}>
-                    I HAVE CHECKED THE CUSTOMER LIST FROM THE SEARCH RESULTS.
-                    AND I DON'T FIND NAME OF THE CUSTOMER I WANT.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            <Divider></Divider>
-            {showAdditionalInfo && (
-              <FinalForm
-                onSubmit={(values: any) => onSubmitSearch(values)}
-                render={({ handleSubmit, pristine, invalid }) => (
-                  <Form onSubmit={handleSubmit}>
-                    <div>
-                      <h1 className="page-title-customer grey">
-                        CUSTOMER INFO
-                      </h1>
-                      <Divider></Divider>
-                      <div className="address-padd">
-                        <div className="container-flex-customer">
-                          <div className="container-address">
-                            <Field
-                              name="address"
-                              component={RichTextEditor}
-                              placeholder="2118 Thornridge Cir. Syracuse"
-                              labelName="Customer Address"
-                              // value={address}
-                              // defaultValue={address}
-                            />
-                          </div>
-                          <div className="container-upload">
-                            <Field
-                              name="uploadBusinessCard"
-                              component={FileUpload}
-                              labelName="Upload Business Card"
-                              placeholder="Pick your bussines card image.."
-                              onChanged={(e) =>
-                                setUploadFile(e.target.files[0])
-                              }
-                              // mandatory={true}
-                            />
-                          </div>
+              {openCustomerAvability && (
+                <>
+                  <LoadingIndicator>
+                    <div className="container-recheck">
+                      {tableData.rows.length === 0 && searchedCustomerName ? (
+                        <div className="info-recheck">
+                          <p className="p-recheck">no-data</p>
                         </div>
+                      ) : (
+                        <div className="info-recheck">
+                          <p className="p-recheck">
+                            There are{" "}
+                            <b style={{ color: "black" }}>
+                              {tableData.totalRows}
+                            </b>{" "}
+                            result from the customer search{" "}
+                            <b style={{ color: "black" }}>
+                              {searchedCustomerName
+                                ? searchedCustomerName.charAt(0).toUpperCase() +
+                                  searchedCustomerName.slice(1)
+                                : ""}
+                            </b>{" "}
+                            Please recheck again before you make new customers
+                            request.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </LoadingIndicator>
 
+                  <div className="padding-horizontal">
+                    <TableRequestNewCustomer
+                      data={tableData.rows}
+                      header={data.reqNewCustomerHeader}
+                      sequenceNum={true}
+                      customerName={searchedCustomerName}
+                      picName={searchedPicName}
+                      activePage={activePage}
+                      totalData={tableData.rows.length}
+                    />
+                    <div style={{ marginTop: "1rem" }}>
+                      <Pagination
+                        activePage={activePage}
+                        onPageChange={(e, data) =>
+                          handlePaginationChange(e, data)
+                        }
+                        totalPage={tableData.totalRows}
+                        pageSize={pageSize}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div
+              className="recheck-submit-pad"
+              style={{
+                opacity:
+                  tableData.rows.length === 0 && searchedCustomerName === ""
+                    ? 0.5
+                    : 1,
+              }}
+            >
+              <div className="container-recheck-submit">
+                <input
+                  type="checkbox"
+                  disabled={
+                    tableData.rows.length === 0 && searchedCustomerName === ""
+                      ? true
+                      : false
+                  }
+                  checked={openCustomerInfo}
+                  onChange={() => {
+                    setOpenCustomerInfo(!openCustomerInfo);
+
+                    if (
+                      tableData.rows.length === 0 &&
+                      searchedCustomerName === ""
+                    ) {
+                      setIsCheckedToggle(!isChekedToggle);
+                    }
+
+                    if (openCustomerInfo) {
+                      setIsCheckedToggle(false);
+                    } else if (!openCustomerInfo) {
+                      setIsCheckedToggle(true);
+                    }
+                  }}
+                  style={{
+                    margin: "0 1rem",
+                    transform: "scale(1)",
+                  }}
+                ></input>
+                <div
+                  className="p-recheck"
+                  style={{
+                    color: "red",
+                    display: "flex",
+                    flexDirection: "column",
+                    marginRight: "1rem",
+                  }}
+                >
+                  <span>
+                    I HAVE CHECKED THE CUSTOMER LIST FROM THE SEARCH RESULTS.
+                  </span>
+                  <span>AND I DON'T FIND NAME OF THE CUSTOMER I WANT.</span>
+                </div>
+              </div>
+            </div>
+
+            <Divider className="margin-0"></Divider>
+
+            <div
+              className="accordion-container"
+              onClick={() => {
+                if (openCustomerInfo) {
+                  setIsCheckedToggle(!isChekedToggle);
+                }
+              }}
+              style={{ opacity: openCustomerInfo ? 1 : 0.5 }}
+            >
+              <span className="page-title-customer-info">CUSTOMER INFO</span>
+              {isChekedToggle ? (
+                <Icon name="triangle down" />
+              ) : (
+                <Icon name="triangle right" />
+              )}
+            </div>
+
+            {isChekedToggle && (
+              <>
+                <FinalForm
+                  onSubmit={(values: any) => onSubmitHandler(values)}
+                  render={({ handleSubmit, values }) => (
+                    <Form onSubmit={handleSubmit}>
+                      <Divider className="margin-0"></Divider>
+
+                      <div className="address-padd">
                         <Grid style={{ margin: "0" }}>
                           <Grid.Row columns="equal">
-                            <Grid.Column
-                              width={3}
-                              className="FullGrid767 LabelNameLabel"
-                            >
+                            <Grid.Column width={8} className="FullGrid767">
                               <Field
-                                name="OfficeNumber"
+                                name="customerLegalName"
                                 component={TextInput}
-                                labelName="Office Number"
+                                labelName="Customer Legal Name"
+                                placeholder="Type customer legal name here..."
+                                mandatory={false}
+                              />
+                            </Grid.Column>
+                            <Grid.Column width={8} className="FullGrid767">
+                              <Field
+                                name="customerBusinessName"
+                                component={TextInput}
+                                labelName="Customer Business Name"
+                                placeholder="Type customer business name here..."
+                                mandatory={false}
+                              />
+                            </Grid.Column>
+                          </Grid.Row>
+
+                          <Grid.Row columns="equal">
+                            <Grid.Column width={6} className="FullGrid767">
+                              <Field
+                                name="holdingCompanyName"
+                                component={TextInput}
+                                labelName="Holding Company Name"
+                                placeholder="Type holding company name here..."
+                                mandatory={false}
                               />
                             </Grid.Column>
                             <Grid.Column width={4} className="FullGrid767">
                               <Field
                                 name="industryClassification"
-                                component={SelectInput}
-                                // onChanged={onChangeCustomerPIC}
-                                // placeholder="e.g.Jhon Doe.."
+                                component={DropdownClearInput}
                                 labelName="Industry Classification"
                                 allowAdditions={true}
-                                // onAddItems={onAddCustomerPIC}
-                                // mandatory={false}
-                                // options={customerPICStore}
-                                // values={customerPICID}
-                              />
-                            </Grid.Column>
-                            <Grid.Column width={5} className="FullGrid767">
-                              <Field
-                                name="website"
-                                component={TextInput}
-                                labelName="Website"
-                              />
-                            </Grid.Column>
-
-                            <Grid.Column width={4} className="FullGrid767">
-                              <Field
-                                name="sosialMedia"
-                                component={TextInput}
-                                // placeholder="e.g.Jhon Doe .."
-                                labelName="Social Media"
+                                placeholder="Pick one classification"
+                                options={industryClassOptions}
+                                mandatory={false}
                               />
                             </Grid.Column>
                           </Grid.Row>
                         </Grid>
-                      </div>
-                      <div className="grey-padding">
-                        <Segment className="LightGreyContainer">
-                          <Grid>
-                            <Grid.Row columns="equal">
-                              <Grid.Column
-                                width={4}
-                                className="FullGrid767 LabelNameLabel"
+
+                        <Grid>
+                          <Grid.Row columns={2}>
+                            <Grid.Column width={10}>
+                              <Field
+                                name="customerAddress"
+                                component={TextAreaInput}
+                                placeholder="Type customer address here..."
+                                labelName="Customer Address"
+                                mandatory={false}
+                                rows={7}
+                              />
+                            </Grid.Column>
+                            <Grid.Column width={6}>
+                              <Grid>
+                                <Grid.Row columns={2}>
+                                  <Grid.Column>
+                                    <Field
+                                      name="country"
+                                      component={TextInput}
+                                      labelName="Country"
+                                      placeholder="Type country name here..."
+                                      mandatory={false}
+                                    />
+                                  </Grid.Column>
+                                  <Grid.Column>
+                                    <Field
+                                      name="city"
+                                      component={TextInput}
+                                      labelName="City"
+                                      placeholder="Type city name here..."
+                                      mandatory={false}
+                                    />
+                                  </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row columns={2}>
+                                  <Grid.Column width={6}>
+                                    <Field
+                                      name="zipCode"
+                                      component={TextInput}
+                                      labelName="Zip Code"
+                                      placeholder="Type zip code here..."
+                                      mandatory={false}
+                                    />
+                                  </Grid.Column>
+                                  <Grid.Column width={10}>
+                                    <Field
+                                      name="officeNumber"
+                                      component={TextInput}
+                                      labelName="Office Number"
+                                      placeholder="Type office number here..."
+                                      mandatory={false}
+                                    />
+                                  </Grid.Column>
+                                </Grid.Row>
+                              </Grid>
+                            </Grid.Column>
+                          </Grid.Row>
+                        </Grid>
+
+                        <Grid style={{ margin: "0" }}>
+                          <Grid.Row columns="equal">
+                            <Grid.Column
+                              width={16}
+                              mobile={16}
+                              tablet={16}
+                              computer={6}
+                              className="FullGrid767"
+                            >
+                              <Field
+                                name="website"
+                                component={TextInput}
+                                labelName="Website"
+                                placeholder="Type website name here..."
+                                mandatory={true}
+                              />
+                            </Grid.Column>
+                            <Grid.Column
+                              width={16}
+                              mobile={16}
+                              tablet={16}
+                              computer={6}
+                              className="FullGrid767"
+                            >
+                              <Field
+                                name="coorporateEmail"
+                                component={TextInput}
+                                labelName="Coorporate Email"
+                                placeholder="Type coorporate email here..."
+                                mandatory={false}
+                              />
+                            </Grid.Column>
+
+                            <Grid.Column
+                              width={16}
+                              mobile={16}
+                              tablet={16}
+                              computer={4}
+                              className="FullGrid767"
+                            >
+                              <Field
+                                name="nib"
+                                component={TextInput}
+                                labelName="NIB"
+                                placeholder="Type NIB here..."
+                                mandatory={false}
+                              />
+                            </Grid.Column>
+                          </Grid.Row>
+                        </Grid>
+
+                        <Grid style={{ margin: "0" }}>
+                          <Grid.Row columns={3}>
+                            <Grid.Column width={4} className="FullGrid767">
+                              <Field
+                                name="Npwp"
+                                component={TextInput}
+                                labelName="NPWP (Tax ID Number)"
+                                placeholder="Type tax id number here..."
+                                mandatory={
+                                  JSON.parse(userId).role === "Sales"
+                                    ? false
+                                    : true
+                                }
+                              />
+                            </Grid.Column>
+                            <Grid.Column width={4} className="FullGrid767">
+                              <div
+                                className="container-npwp"
+                                onClick={handleUploadClick}
                               >
-                                <Field
-                                  name="picMobilePhone"
-                                  component={TextInput}
-                                  labelName="PIC Mobile Phone"
+                                <label style={{ color: "#A9A8C4" }}>
+                                  NPWP Card{" "}
+                                  {JSON.parse(userId).role === "Sales" && (
+                                    <span style={{ color: "red" }}>*</span>
+                                  )}
+                                </label>
+
+                                <div
+                                  className="card-npwp"
+                                  style={{
+                                    backgroundImage: uploadFile
+                                      ? `url(${URL.createObjectURL(
+                                          uploadFile
+                                        )})`
+                                      : "none",
+                                    backgroundSize: "cover",
+                                    backgroundRepeat: "no-repeat",
+                                    backgroundPosition: "center",
+                                  }}
+                                >
+                                  <div className="flex-column-center">
+                                    {uploadFile ? null : (
+                                      <Icon name="upload" size="big" />
+                                    )}{" "}
+                                    <span style={{ marginTop: "0.5rem" }}>
+                                      {uploadFile
+                                        ? ""
+                                        : "Upload NPWP photo images"}
+                                    </span>
+                                  </div>
+                                  {uploadFile && (
+                                    <div
+                                      className="container-reuploud"
+                                      onClick={openEditViewNPWP}
+                                    >
+                                      <span>View or Reupload</span>
+                                    </div>
+                                  )}
+                                </div>
+                                <input
+                                  ref={fileInputRef}
+                                  type="file"
+                                  style={{ display: "none" }}
+                                  onChange={handleFileChange}
                                 />
-                              </Grid.Column>
-                              <Grid.Column width={6} className="FullGrid767">
-                                <Field
-                                  name="jobTitle"
-                                  component={TextInput}
-                                  labelName="Job Title"
-                                />
-                              </Grid.Column>
-                              <Grid.Column width={6} className="FullGrid767">
-                                <Field
-                                  name="email"
-                                  component={TextInput}
-                                  labelName="Email"
-                                />
-                              </Grid.Column>
-                            </Grid.Row>
-                          </Grid>
-                        </Segment>
+                              </div>
+                            </Grid.Column>
+                            <Grid.Column width={8} className="FullGrid767">
+                              <label className="label-pic">PIC Details</label>
+                              <div className="grey-padding">
+                                <Segment className="LightGreyContainer">
+                                  <Grid.Column width={6}>
+                                    <Grid>
+                                      <Grid.Row columns={2}>
+                                        <Grid.Column width={10}>
+                                          <Field
+                                            name="picName"
+                                            component={TextInput}
+                                            labelName="PIC Name"
+                                            placeholder="Type PIC Name here..."
+                                            mandatory={false}
+                                          />
+                                        </Grid.Column>
+                                        <Grid.Column width={6}>
+                                          <Field
+                                            name="picMobilePhone"
+                                            component={TextInput}
+                                            labelName="PIC Mobile Phone"
+                                            placeholder="Type PIC Mobile phone here..."
+                                            mandatory={false}
+                                          />
+                                        </Grid.Column>
+                                      </Grid.Row>
+                                      <Grid.Row columns={2}>
+                                        <Grid.Column width={9}>
+                                          <Field
+                                            name="picEmail"
+                                            component={TextInput}
+                                            labelName="Email"
+                                            placeholder="Type PIC Email here..."
+                                            mandatory={false}
+                                          />
+                                        </Grid.Column>
+                                        <Grid.Column width={7}>
+                                          <Field
+                                            name="picJobTitle"
+                                            component={TextInput}
+                                            labelName="PIC Job Title"
+                                            placeholder="Type PIC Job title here..."
+                                            mandatory={false}
+                                          />
+                                        </Grid.Column>
+                                      </Grid.Row>
+                                    </Grid>
+                                  </Grid.Column>{" "}
+                                </Segment>
+                              </div>
+                            </Grid.Column>
+                          </Grid.Row>
+                        </Grid>
                       </div>
-                      <Divider></Divider>
-                      <div className="button-container">
+
+                      <Divider className="margin-0"></Divider>
+                      <div className="button-container-nospace">
                         <div className="button-inner-container">
                           <Button
                             style={{ marginRight: "1rem" }}
@@ -372,15 +748,56 @@ const AddNewCustomerSetting: React.FC<IProps> = (
                             color="blue"
                             style={{ marginRight: "1rem" }}
                             type="submit"
+                            disabled={
+                              !values.customerLegalName ||
+                              !values.customerBusinessName ||
+                              !values.holdingCompanyName ||
+                              !values.industryClassification ||
+                              !values.customerAddress ||
+                              !values.country ||
+                              !values.city ||
+                              !values.zipCode ||
+                              !values.officeNumber ||
+                              !values.coorporateEmail ||
+                              !values.nib ||
+                              (!values.Npwp &&
+                                JSON.parse(userId).role === "Sales") ||
+                              (!uploadFile &&
+                                JSON.parse(userId).role === "Sales") ||
+                              !values.picName ||
+                              !values.picMobilePhone ||
+                              !values.picEmail ||
+                              !values.picJobTitle
+                            }
                           >
                             Submit
                           </Button>
                         </div>
                       </div>
-                    </div>
-                  </Form>
-                )}
-              />
+                    </Form>
+                  )}
+                />
+              </>
+            )}
+
+            {!isChekedToggle && (
+              <>
+                <Divider className="margin-0"></Divider>
+
+                <div className="button-container-nospace">
+                  <div className="button-inner-container">
+                    <Button onClick={() => cancelClick()}>Cancel</Button>
+                    <Button
+                      color="blue"
+                      style={{ marginRight: "1rem" }}
+                      type="submit"
+                      disabled
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                </div>
+              </>
             )}
           </div>
         </LoadingIndicator>

@@ -34,12 +34,17 @@ const FilterCustomer: React.FC<{
   const [shareableAccountNoChecked, setShareableAccountNoChecked] = useState(
     true
   );
+  const [isNewYesChecked, setIsNewYesChecked] = useState(true);
+  // const [isNewNoChecked, setIsNewNoChecked] = useState(true);
   const [pmo_customerYesChecked, setPmo_customerYesChecked] = useState(false);
   const [pmo_customerNoChecked, setPmo_customerNoChecked] = useState(false);
   const [holdshipmentYesChecked, setHoldshipmentYesChecked] = useState(false);
   const [holdshipmentNoChecked, setHoldshipmentNoChecked] = useState(false);
   const [blacklistYesChecked, setBlacklistYesChecked] = useState(false);
   const [blacklistNoChecked, setBlacklistNoChecked] = useState(false);
+  const [newRequestChecked, setNewRequestChecked] = useState(true);
+  const [rejectChecked, setRejectChecked] = useState(true);
+  const [approveChecked, setApproveChecked] = useState(true);
 
   const dispatch: Dispatch = useDispatch();
 
@@ -60,7 +65,7 @@ const FilterCustomer: React.FC<{
           salesID: data.salesID,
         },
       ]);
-      console.log(data.salesID);
+
       setSalesFilter([...salesFilter, data.salesID.toString()]);
     }
   };
@@ -68,30 +73,32 @@ const FilterCustomer: React.FC<{
   const onSubmitHandler = async () => {
     const nonameAccount =
       noNameAccountYesChecked && noNameAccountNoChecked
-        ? null
+        ? true
         : noNameAccountYesChecked
         ? true
         : noNameAccountNoChecked
         ? false
-        : null;
+        : true;
 
     const namedAccount =
       namedAccountYesChecked && namedAccountNoChecked
-        ? null
+        ? true
         : namedAccountYesChecked
         ? true
         : namedAccountNoChecked
         ? false
-        : null;
+        : true;
 
     const shareableAccount =
       sharaebleAccountYesChecked && shareableAccountNoChecked
-        ? null
+        ? true
         : sharaebleAccountYesChecked
         ? true
         : shareableAccountNoChecked
         ? false
-        : null;
+        : true;
+
+    const isNew = isNewYesChecked;
 
     const pmo_customer =
       pmo_customerYesChecked && pmo_customerNoChecked
@@ -123,14 +130,29 @@ const FilterCustomer: React.FC<{
         ? false
         : null;
 
+    // console.log({
+    //   nonameAccount: nonameAccount,
+    //   namedAccount: namedAccount,
+    //   shareableAccount: shareableAccount,
+    //   isNew: isNew,
+    //   pmo_customer: pmo_customer,
+    //   newsalesAssign: newsalesAssign,
+    //   holdshipment: holdshipment,
+    //   blacklist: blacklist,
+    // });
+
     getFilterData({
       nonameAccount: nonameAccount,
       namedAccount: namedAccount,
       shareableAccount: shareableAccount,
+      isNew: isNew,
       pmo_customer: pmo_customer,
       newsalesAssign: newsalesAssign,
       holdshipment: holdshipment,
       blacklist: blacklist,
+      showPending: newRequestChecked,
+      showApprove: approveChecked,
+      showReject: rejectChecked,
     });
 
     dispatch(
@@ -147,7 +169,11 @@ const FilterCustomer: React.FC<{
         holdshipment,
         nonameAccount,
         namedAccount,
-        shareableAccount
+        shareableAccount,
+        isNew,
+        newRequestChecked,
+        approveChecked,
+        rejectChecked
       )
     );
   };
@@ -174,6 +200,7 @@ const FilterCustomer: React.FC<{
     setNamedAccountNoChecked(true);
     setShareableAccountYesChecked(true);
     setShareableAccountNoChecked(true);
+    setIsNewYesChecked(true);
     setPmo_customerYesChecked(false);
     setPmo_customerNoChecked(false);
     setHoldshipmentYesChecked(false);
@@ -316,8 +343,93 @@ const FilterCustomer: React.FC<{
                           <span style={{ color: "white" }}>Named Account</span>
                         </label>
                       </div>
+
+                      <div style={{ margin: "0.3rem" }}></div>
+
+                      <div className="checkbox-newaccount">
+                        <label className="flex-center">
+                          <input
+                            type="checkbox"
+                            style={{
+                              marginRight: "0.5rem",
+                              transform: "scale(1)",
+                              margin: "0.5rem",
+                            }}
+                            checked={isNewYesChecked}
+                            onChange={() =>
+                              setIsNewYesChecked(!isNewYesChecked)
+                            }
+                          ></input>
+                          <span>New Account</span>
+                        </label>
+                      </div>
                     </div>
                   </Grid.Row>
+
+                  <Divider></Divider>
+
+                  <Grid.Row>
+                    <p>New Account Type</p>
+                    <Grid.Row>
+                      <div className="checkbox-nonameaccount">
+                        <div className="flex-center">
+                          <label className="flex-center">
+                            <input
+                              name="newRequest"
+                              type="checkbox"
+                              checked={newRequestChecked}
+                              style={{
+                                marginRight: "0.5rem",
+                                transform: "scale(1)",
+                              }}
+                              onChange={() =>
+                                setNewRequestChecked(!newRequestChecked)
+                              }
+                              disabled={!isNewYesChecked}
+                            ></input>
+                            <span>New Request</span>
+                          </label>
+                        </div>
+
+                        <div style={{ margin: "0 1rem" }}></div>
+                        <div className="flex-center">
+                          <label className="flex-center">
+                            <input
+                              type="checkbox"
+                              style={{
+                                marginRight: "0.5rem",
+                                transform: "scale(1)",
+                              }}
+                              checked={rejectChecked}
+                              onChange={() => setRejectChecked(!rejectChecked)}
+                              disabled={!isNewYesChecked}
+                            ></input>
+                            <span>Reject</span>
+                          </label>
+                        </div>
+
+                        <div style={{ margin: "0 1rem" }}></div>
+                        <div className="flex-center">
+                          <label className="flex-center">
+                            <input
+                              type="checkbox"
+                              style={{
+                                marginRight: "0.5rem",
+                                transform: "scale(1)",
+                              }}
+                              checked={approveChecked}
+                              onChange={() =>
+                                setApproveChecked(!approveChecked)
+                              }
+                              disabled={!isNewYesChecked}
+                            ></input>
+                            <span>Approve</span>
+                          </label>
+                        </div>
+                      </div>
+                    </Grid.Row>
+                  </Grid.Row>
+
                   <Divider></Divider>
 
                   <Grid.Row>
@@ -367,9 +479,10 @@ const FilterCustomer: React.FC<{
 
                   <Grid.Row>
                     <Grid.Column>
-                      <p>Sales Assign</p>
+                      {/* <p>Sales Assign</p> */}
                       <Field
                         name="salesName"
+                        labelName="Sales Assign"
                         component={DropdownClearInput}
                         placeholder="-Choose Sales-"
                         values={salesName}

@@ -8,11 +8,13 @@ export default class CustomerSettingPostModel extends BaseModel {
   customerSettingID?: number = 0;
   customerID: number = 0;
   salesID: number = 0;
+  // customerCategory: string = "";
   shareable?: boolean = false;
   named?: boolean = false;
   pmoCustomer?: boolean = false;
   requestedBy?: number = 0;
   requestedDate?: Date = new Date();
+  claimRemark?: string = "";
   createDate?: Date = new Date();
   createUserID: number = 0;
   modifyDate?: Date | undefined = undefined;
@@ -26,12 +28,14 @@ export default class CustomerSettingPostModel extends BaseModel {
     const conversionOptions: IConversionOption = {
       customerSettingID: ConversionTypeEnum.Number,
       customerID: ConversionTypeEnum.Number,
+      // customerCategory: ConversionTypeEnum.String,
       salesID: ConversionTypeEnum.Number,
       shareable: ConversionTypeEnum.Boolean,
       named: ConversionTypeEnum.Boolean,
       pmoCustomer: ConversionTypeEnum.Boolean,
       requestedBy: ConversionTypeEnum.Number,
       requestedDate: ConversionTypeEnum.String,
+      claimRemark: ConversionTypeEnum.String,
       createUserID: ConversionTypeEnum.Number,
       createDate: ConversionTypeEnum.String,
       modifyUserID: ConversionTypeEnum.Number,

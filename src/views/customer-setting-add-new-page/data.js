@@ -17,6 +17,21 @@ export const reqNewCustomerHeader = [
     header: "Cust. ID",
     // textCenter: false,
   },
+  {
+    key: "blacklist",
+    header: "Blacklist",
+    textCenter: false,
+  },
+  {
+    key: "holdshipment",
+    header: "Holdshipment",
+    textCenter: true,
+  },
+  {
+    key: "similarity",
+    header: "Similarity",
+    textCenter: true,
+  },
 ];
 
 export const reqNewCustomerData = [
@@ -27,56 +42,6 @@ export const reqNewCustomerData = [
   },
   {
     customerName: "Patnership Biffco",
-    pic: "Savannah N",
-    custID: "92655",
-  },
-  {
-    customerName: "Bifcco Factory ltd.",
-    pic: "Savannah N",
-    custID: "92655",
-  },
-  {
-    customerName: "Patnership Biffco",
-    pic: "Savannah N",
-    custID: "92655",
-  },
-  {
-    customerName: "Bifcco Factory ltd.",
-    pic: "Savannah N",
-    custID: "92655",
-  },
-  {
-    customerName: "Bifcco Factory ltd.",
-    pic: "Savannah N",
-    custID: "92655",
-  },
-  {
-    customerName: "Bifcco Factory ltd.",
-    pic: "Savannah N",
-    custID: "92655",
-  },
-  {
-    customerName: "Bifcco Factory ltd.",
-    pic: "Savannah N",
-    custID: "92655",
-  },
-  {
-    customerName: "Bifcco Factory ltd.",
-    pic: "Savannah N",
-    custID: "92655",
-  },
-  {
-    customerName: "Bifcco Factory ltd.",
-    pic: "Savannah N",
-    custID: "92655",
-  },
-  {
-    customerName: "Bifcco Factory ltd.",
-    pic: "Savannah N",
-    custID: "92655",
-  },
-  {
-    customerName: "Bifcco Factory ltd.",
     pic: "Savannah N",
     custID: "92655",
   },

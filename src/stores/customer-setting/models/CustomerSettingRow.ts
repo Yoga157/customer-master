@@ -5,8 +5,13 @@ import {
 } from "sjs-base-model";
 
 export default class CustomerSettingRow extends BaseModel {
-  customerSettingID: number = 0;
+  customerSettingID?: number = 0;
   customerID: number = 0;
+  jdeCustomerID?: number = 0;
+  customerGenID?: number = 0;
+  industryClass?: string = "";
+  industryClassID?: string = "";
+  industryClassBusiness?: string = "";
   salesID: number = 0;
   customerCategory: string = "";
   customerName: string = "";
@@ -29,6 +34,9 @@ export default class CustomerSettingRow extends BaseModel {
   modifiedDate?: Date = undefined;
   approvalBy?: number = 0;
   status?: string = null;
+  isNew?: boolean = false;
+  approvalStatus?: string = "";
+  salesHistory?: any[] = [];
 
   constructor(data: Partial<CustomerSettingRow>) {
     super();
@@ -39,6 +47,9 @@ export default class CustomerSettingRow extends BaseModel {
     const conversionOptions: IConversionOption = {
       customerSettingID: ConversionTypeEnum.Number,
       customerID: ConversionTypeEnum.Number,
+      jdeCustomerID: ConversionTypeEnum.Number,
+      customerGenID: ConversionTypeEnum.Number,
+      industryClass: ConversionTypeEnum.String,
       salesID: ConversionTypeEnum.String,
       customerCategory: ConversionTypeEnum.String,
       customerName: ConversionTypeEnum.String,
@@ -58,7 +69,9 @@ export default class CustomerSettingRow extends BaseModel {
       createdBy: ConversionTypeEnum.String,
       modifiedBy: ConversionTypeEnum.String,
       approvalBy: ConversionTypeEnum.Number,
-      status: ConversionTypeEnum.String
+      status: ConversionTypeEnum.String,
+      isNew: ConversionTypeEnum.Boolean,
+      approvalStatus: ConversionTypeEnum.String,
     };
 
     super.update(data, conversionOptions);

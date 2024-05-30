@@ -291,17 +291,21 @@ export const REQUEST_ALL_SEARCH_FINISHED: string =
 export const requestSearchAllAcc = (
   page: number,
   pageSize: number,
-  column: string,
-  search: string,
-  sorting?: string,
-  salesID?: string,
-  myAccount?: number,
-  pmo_customer?: boolean,
-  blacklist?: boolean,
-  holdshipment?: boolean,
-  showNoName?: boolean,
-  showNamed?: boolean,
-  showShareable?: boolean
+  column: string | null,
+  search: string | null,
+  sorting?: string | null,
+  salesID?: string | null,
+  myAccount?: number | null,
+  pmo_customer?: boolean | null,
+  blacklist?: boolean | null,
+  holdshipment?: boolean | null,
+  showNoName?: boolean | null,
+  showNamed?: boolean | null,
+  showShareable?: boolean | null,
+  isNew?: boolean | null,
+  showPending?: boolean | null,
+  showApprove?: boolean | null,
+  showReject?: boolean | null
 ): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<CustomerSettingModel>(
@@ -320,7 +324,11 @@ export const requestSearchAllAcc = (
       holdshipment,
       showNoName,
       showNamed,
-      showShareable
+      showShareable,
+      isNew,
+      showPending,
+      showApprove,
+      showReject
     );
   };
 };
@@ -564,16 +572,26 @@ export const PUT_ACCEPT_REQUEST_SHAREABLE: string =
 export const PUT_ACCEPT_REQUEST_SHAREABLE_FINISHED =
   "CustomerActions.PUT_ACCEPT_REQUEST_SHAREABLE_FINISHED";
 
-export const acceptRequestShareableAccount = (customerID: number, salesID: number, isApprove: boolean, modifyUserID: number, description?: string): any => {
+export const approveRejectClaimAccount = (
+  customerID: number,
+  salesID: number,
+  isApprove: boolean,
+  modifyUserID: number,
+  directorateApprovedBy?: number,
+  adminApprovedBy?: number,
+  description?: string
+): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<ResultActions>(
       dispatch,
       PUT_ACCEPT_REQUEST_SHAREABLE,
-      CustomerEffect.acceptRequestShareableAccount,
+      CustomerEffect.approveRejectClaimAccount,
       customerID,
       salesID,
       isApprove,
       modifyUserID,
+      directorateApprovedBy,
+      adminApprovedBy,
       description
     );
   };
@@ -608,7 +626,7 @@ export const putCustomerSettingCategoryPmo = (
       PUT_CUSTOMER_SETTING_CATEGORY_PMO,
       CustomerEffect.putCustomerSettingCategoryPmo,
       data,
-      customerID,
+      customerID
     );
   };
 };

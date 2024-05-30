@@ -513,12 +513,12 @@ const App: React.FC<IProps> = (props: React.PropsWithChildren<IProps>) => (
                   component={AllFeaturesPage}
                 />
                 <PrivateRoute
-                  path="/customer-setting/:id(\d+)"
-                  component={ViewCustomerSetting}
-                />
-                <PrivateRoute
                   path={RouteEnum.AddNewCustomerSetting}
                   component={AddNewCustomerSetting}
+                />
+                <PrivateRoute
+                  path={RouteEnum.ViewCustomerSetting}
+                  component={ViewCustomerSetting}
                 />
                 <PrivateRoute
                   path={RouteEnum.CustomerSetting}
@@ -529,7 +529,7 @@ const App: React.FC<IProps> = (props: React.PropsWithChildren<IProps>) => (
                   component={CollabToolsPage}
                 />
                 {/*<Route component={NotFoundPage} />*/}
-                <Route component={NotAuthorizedPage} />
+                <Route path={"/not-authorized"} component={NotAuthorizedPage} />
               </Switch>
             </Container>
           </>

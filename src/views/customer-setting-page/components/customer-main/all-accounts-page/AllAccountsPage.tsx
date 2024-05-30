@@ -15,11 +15,13 @@ import LoadingIndicator from "views/components/loading-indicator/LoadingIndicato
 import { Pagination, Tooltips, Button } from "views/components/UI";
 import { selectUserResult } from "selectors/user/UserSelector";
 import IUserResult from "selectors/user/models/IUserResult";
+import ModCloseNewRequest from "./components/allaccountspage-main/form/form-closerequestnew/FormRequestNew";
 import TableToExcel from "@linways/table-to-excel";
 import { selectAllAccount } from "selectors/customer-setting/CustomerSettingSelector";
 import FilterCustomer from "./components/allaccountspage-main/filter/FilterCustomer";
 import { format } from "date-fns";
 import RouteEnum from "constants/RouteEnum";
+import * as CustomerMasterActions from "stores/customer-master/CustomerMasterActivityActions";
 
 interface IProps {
   history: any;
@@ -34,6 +36,10 @@ interface FilterData {
   holdshipment: any;
   blacklist: any;
   shareableAccount: any;
+  isNew: any;
+  showPending: any;
+  showApprove: any;
+  showReject: any;
 }
 
 const AllAccountsPage: React.FC<IProps> = (
@@ -80,11 +86,24 @@ const AllAccountsPage: React.FC<IProps> = (
       setMyAccount(false);
 
       dispatch(
-        CustomerActions.requestAllAcc(
+        CustomerActions.requestSearchAllAcc(
           activePage,
           pageSize,
           "CustomerID",
-          "ascending"
+          null,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         )
       );
     }
@@ -111,11 +130,24 @@ const AllAccountsPage: React.FC<IProps> = (
       setMyAccount(false);
 
       dispatch(
-        CustomerActions.requestAllAcc(
+        CustomerActions.requestSearchAllAcc(
           activePage,
           pageSize,
           "CustomerID",
-          "ascending"
+          null,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         )
       );
     }
@@ -189,11 +221,24 @@ const AllAccountsPage: React.FC<IProps> = (
         });
     } else {
       dispatch(
-        CustomerActions.requestAllAcc(
+        CustomerActions.requestSearchAllAcc(
           1,
           tableData.totalRow,
           "CustomerID",
-          "ascending"
+          null,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         )
       )
         .then(() => {
@@ -201,16 +246,47 @@ const AllAccountsPage: React.FC<IProps> = (
         })
         .then(() => {
           dispatch(
-            CustomerActions.requestAllAcc(
+            CustomerActions.requestSearchAllAcc(
               1,
               pageSize,
               "CustomerID",
-              "ascending"
+              null,
+              "ascending",
+              null,
+              null,
+              null,
+              null,
+              null,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
             )
           );
         });
     }
   };
+
+  const isSuccess = useSelector(
+    (state: IStore) => state.customerMaster.isSuccess
+  );
+  const openModal = useCallback(() => {
+    if (isSuccess) {
+      dispatch(
+        ModalFirstLevelActions.OPEN(<ModCloseNewRequest />, ModalSizeEnum.Tiny)
+      );
+    }
+  }, [dispatch, isSuccess]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      openModal();
+      dispatch(CustomerMasterActions.setSuccessModal(false));
+    }
+  }, [isSuccess]);
 
   const OnrequestNewCustomer = () => {
     history.push({
@@ -221,7 +297,25 @@ const AllAccountsPage: React.FC<IProps> = (
 
   useEffect(() => {
     dispatch(
-      CustomerActions.requestAllAcc(1, pageSize, "CustomerID", "ascending")
+      CustomerActions.requestSearchAllAcc(
+        activePage,
+        pageSize,
+        "CustomerID",
+        null,
+        "ascending",
+        null,
+        null,
+        null,
+        null,
+        null,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      )
     );
   }, [dispatch]);
 
@@ -242,12 +336,17 @@ const AllAccountsPage: React.FC<IProps> = (
           null,
           "ascending",
           filterData.newsalesAssign,
+          null,
           filterData.pmo_customer,
           filterData.blacklist,
           filterData.holdshipment,
           filterData.nonameAccount,
           filterData.namedAccount,
-          filterData.shareableAccount
+          filterData.shareableAccount,
+          filterData.isNew,
+          filterData.showPending,
+          filterData.showApprove,
+          filterData.showReject
         )
       );
     } else if (myAccount) {
@@ -288,11 +387,24 @@ const AllAccountsPage: React.FC<IProps> = (
       );
     } else {
       dispatch(
-        CustomerActions.requestAllAcc(
+        CustomerActions.requestSearchAllAcc(
           data.activePage,
           pageSize,
           "CustomerID",
-          "ascending"
+          null,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         )
       );
     }
@@ -407,53 +519,20 @@ const AllAccountsPage: React.FC<IProps> = (
         </Grid>
       </LoadingIndicator>
 
-      {role === "Sales" && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "0.5rem",
-            right: 0,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            padding: "1rem",
-            zIndex: 999,
-            width: "auto",
-          }}
-        >
+      {(role === "Marketing" || role === "Sales") && (
+        <div className="container-new-request-customer">
           <Button
             color="yellow"
             size="tiny"
-            style={{
-              width: "11.5rem",
-              height: "2rem",
-              fontSize: "0.7rem",
-              marginRight: "3.2rem",
-              position: "absolute",
-              zIndex: 1,
-            }}
+            className="btn-p-new-request"
             onClick={OnrequestNewCustomer}
           >
             REQUEST NEW CUSTOMER
           </Button>
-          <div
-            style={{
-              backgroundColor: "rgb(255, 214, 79)",
-              borderRadius: "50%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "3.3rem",
-              width: "3.3rem",
-              marginRight: "1rem",
-              position: "absolute",
-              zIndex: 1,
-            }}
-          >
+          <div className="btn-new-request" onClick={OnrequestNewCustomer}>
             <Icon
               name="user plus"
-              style={{ fontSize: "1.4rem" }}
+              style={{ fontSize: "1.4rem", margin: "0", padding: "0" }}
               circular
               inverted
               color="blue"

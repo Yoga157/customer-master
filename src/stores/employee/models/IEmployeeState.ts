@@ -1,6 +1,6 @@
-import EmployeeModel from './EmployeeModel';
-import EmployeeDqAllModel from './EmployeeDqAllModel';
-import SearchALLModel from './SearchALLModel';
+import EmployeeModel from "./EmployeeModel";
+import EmployeeDqAllModel from "./EmployeeDqAllModel";
+import SearchALLModel from "./SearchALLModel";
 
 export default interface IEmployeeState {
   readonly data: EmployeeModel[];
@@ -9,6 +9,7 @@ export default interface IEmployeeState {
   readonly dataFixAll: EmployeeModel[];
   readonly dataEmployeeAssign: EmployeeModel[];
   readonly dataSubordinate: EmployeeModel[];
-  readonly employeeSubDqAll: EmployeeDqAllModel[]
-  readonly searchALL: SearchALLModel[]
+  readonly employeeSubDqAll: EmployeeDqAllModel[];
+  readonly searchALL: SearchALLModel[];
+  readonly employeeById: EmployeeModel;
 }

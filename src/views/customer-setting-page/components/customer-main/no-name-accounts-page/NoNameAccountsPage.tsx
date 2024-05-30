@@ -5,6 +5,7 @@ import InputSearch from "./components/nonamepage-main/search/InputSearch";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalNoPaddingFirstLevelActions from "stores/modal/no-padding/ModalNoPaddingActions";
 import "./NoNameAccountsPage.scss";
 import { format } from "date-fns";
 import IStore from "models/IStore";
@@ -49,7 +50,7 @@ const NoNameAccountsPage: React.FC<IProps> = (
 
   const onClaimAccount = useCallback((): void => {
     dispatch(
-      ModalFirstLevelActions.OPEN(
+      ModalNoPaddingFirstLevelActions.OPEN(
         <ClaimForm
           rowData={rowData}
           getRowData={setRowData}
@@ -239,7 +240,9 @@ const NoNameAccountsPage: React.FC<IProps> = (
                   color="yellow"
                   icon="check circle"
                   disabled={
-                    rowData.length === 0 || role.toUpperCase() == "ADMIN"
+                    rowData.length === 0 ||
+                    role.toUpperCase() == "ADMIN" ||
+                    role.toUpperCase() == "MARKETING"
                   }
                   size="mini"
                   content="Claim Account"

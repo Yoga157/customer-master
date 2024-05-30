@@ -49,7 +49,11 @@ const CustomerTableRow: React.FC<IProps> = (
   const onApproveShareable = useCallback((): void => {
     dispatch(
       ModalFirstLevelActions.OPEN(
-        <ShareableReq rowData={[rowData]} />,
+        <ShareableReq
+          rowData={[rowData]}
+          isDirectorate={true}
+          isAdmin={false}
+        />,
         ModalSizeEnum.Tiny
       )
     );
@@ -57,7 +61,6 @@ const CustomerTableRow: React.FC<IProps> = (
   }, [dispatch, rowData]);
 
   const onReleaseAccount = useCallback((): void => {
-    // console.log(rowData);
     dispatch(
       ModalFirstLevelActions.OPEN(
         <ApproveReq
@@ -82,8 +85,8 @@ const CustomerTableRow: React.FC<IProps> = (
 
   const onEdit = (id: number) => {
     history.push({
-      pathname: "customer-setting/" + id,
-      state: { rowData },
+      pathname: `customer-setting/${id}`,
+      state: { rowData, activeTab: 4 },
     });
   };
 
@@ -93,13 +96,22 @@ const CustomerTableRow: React.FC<IProps> = (
         key={rowData.CustomerID}
         style={{
           backgroundColor:
-            rowData.requestedBy === userId.fullName &&
+            rowData.requestedBy === userId?.fullName &&
             rowData.status?.toUpperCase() === "REJECTED"
               ? "#ffe0d9"
-              : rowData.status?.toUpperCase() === "PENDING"
-              ? "#fffb9a"
-              : rowData.status?.toUpperCase() === "NEWACCOUNTS"
+              : rowData.status?.toUpperCase() === "APPROVE"
+              ? "#00FF7F"
+              : role === "Marketing" &&
+                rowData.approvalStatus?.toUpperCase() == "REJECT"
+              ? "#FFE0D9"
+              : role === "Marketing" &&
+                rowData.approvalStatus?.toUpperCase() == "PENDING"
               ? "#FFF7CB"
+              : role === "Marketing" &&
+                rowData.approvalStatus?.toUpperCase() == "APPROVE"
+              ? "#ECF9C6"
+              : role === "Sales" && rowData.isNew == true
+              ? "#fffb9a"
               : "",
         }}
       >
@@ -107,14 +119,27 @@ const CustomerTableRow: React.FC<IProps> = (
           <div className="table-row-container">
             <Dropdown pointing="left" icon="ellipsis vertical">
               <Dropdown.Menu>
-                <Dropdown.Item
-                  text="View/Edit"
-                  icon="edit outline"
-                  onClick={() => onEdit(rowData.customerID)}
-                />
+                {(rowData.isNew ||
+                  rowData?.salesName?.includes(userId.fullName) ||
+                  role === "Admin" ||
+                  role === "Marketing") && (
+                  <Dropdown.Item
+                    text="View/Edit"
+                    icon="edit outline"
+                    // disabled={rowData.approvalStatus?.toUpperCase() == "REJECT"}
+                    onClick={() =>
+                      onEdit(
+                        rowData.isNew
+                          ? rowData.customerGenID
+                          : rowData.customerID
+                      )
+                    }
+                  />
+                )}
 
                 {rowData.named === false &&
                   rowData.shareable === false &&
+                  rowData.isNew === false &&
                   role === "Sales" && (
                     <Dropdown.Item
                       text="Claim Account"
@@ -168,19 +193,21 @@ const CustomerTableRow: React.FC<IProps> = (
                   </>
                 )}
 
-                {rowData.status != "CANCEL" && rowData.customerID == "" && (
+                {/* {rowData.status != "CANCEL" && rowData.customerID == "" && (
                   <Dropdown.Item text="Cancel" icon="remove circle" />
-                )}
+                )} */}
               </Dropdown.Menu>
             </Dropdown>
           </div>
         </Table.Cell>
         <Table.Cell>
-          {rowData.named === false && rowData.shareable === false && (
-            <div className="no-name-label">
-              <p className="label-text">No Name Accounts</p>
-            </div>
-          )}
+          {rowData.named === false &&
+            rowData.shareable === false &&
+            rowData.isNew === false && (
+              <div className="no-name-label">
+                <p className="label-text">No Name Accounts</p>
+              </div>
+            )}
 
           {rowData.named === true && (
             <div className="named-label">
@@ -193,11 +220,25 @@ const CustomerTableRow: React.FC<IProps> = (
               <p className="label-text">Shareable Accounts</p>
             </div>
           )}
+
+          {rowData.isNew === true && (
+            <div className="new-account-label">
+              <p className="label-text">New Accounts</p>
+            </div>
+          )}
         </Table.Cell>
-        <Table.Cell textAlign="center">{rowData.JDECustId}</Table.Cell>
-        <Table.Cell textAlign="center">{rowData.customerID}</Table.Cell>
-        <Table.Cell textAlign="center">{rowData.IndustryClass}</Table.Cell>
-        <Table.Cell>{rowData.customerCategory}</Table.Cell>
+        <Table.Cell textAlign="center">
+          {rowData.JDECustId ? rowData.jdeCustomerID : "-"}
+        </Table.Cell>
+        <Table.Cell textAlign="center">
+          {rowData.customerID == 0 ? "-" : rowData.customerID}
+        </Table.Cell>
+        <Table.Cell textAlign="center">
+          {rowData.IndustryClass == null ? "-" : rowData.industryClass}
+        </Table.Cell>
+        <Table.Cell textAlign="center">
+          {rowData.customerCategory == null ? "-" : rowData.customerCategory}
+        </Table.Cell>
         <Table.Cell>
           <div className="name-container">
             <p className="head-text"> {rowData.customerName}</p>{" "}
@@ -206,22 +247,33 @@ const CustomerTableRow: React.FC<IProps> = (
         <Table.Cell>
           {" "}
           <div className="address-container">
-            <p style={{ fontSize: "1rem" }}> {rowData.customerAddress}</p>{" "}
+            <p
+              style={{ fontSize: "1rem" }}
+              dangerouslySetInnerHTML={{ __html: rowData.customerAddress }}
+            ></p>
           </div>
         </Table.Cell>
         <Table.Cell>
           <div className="project-container">
-            <p className="head-text"> {rowData.lastProjectName}</p>{" "}
+            <p className="head-text">
+              {" "}
+              {rowData.lastProjectName == null ? "-" : rowData.lastProjectName}
+            </p>{" "}
           </div>
         </Table.Cell>
         <Table.Cell>
           {" "}
           <div className="sales-container">
-            <p className="head-text"> {rowData.salesName} </p>{" "}
+            <p className="head-text">
+              {" "}
+              {rowData.salesName == null ? "-" : rowData.salesName}{" "}
+            </p>{" "}
           </div>
         </Table.Cell>
         <Table.Cell textAlign="center">
-          {rowData.pmoCustomer === true ? (
+          {rowData.isNew === true ? (
+            "-"
+          ) : rowData.pmoCustomer === true ? (
             <div style={{ textAlign: "center" }}>
               <span>Yes</span>
             </div>
@@ -234,7 +286,9 @@ const CustomerTableRow: React.FC<IProps> = (
         <Table.Cell>
           {" "}
           <div className="related-customer-container">
-            <p className="head-text"> {rowData.relatedCustomer}</p>{" "}
+            <p className="head-text">
+              {rowData.relatedCustomer == null ? "-" : rowData.relatedCustomer}
+            </p>
           </div>
         </Table.Cell>
         <Table.Cell textAlign="center" verticalAlign="middle">

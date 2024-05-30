@@ -3,9 +3,12 @@ import { Table, Dropdown, Icon } from "semantic-ui-react";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import * as ModalNoPaddingFirstLevelActions from "stores/modal/no-padding/ModalNoPaddingActions";
+import * as CustomerSettingAction from "stores/customer-setting/CustomerActivityActions";
 import ModalSizeEnum from "constants/ModalSizeEnum";
 import "./CustomerTableRowStyle.scss";
 import ClaimFormEdit from "../../modal/modal-claim-edit/FormClaim";
+import ApproveReq from "../../../../../named-accounts-page/components/namepage-main/modal/modal-approverequest/FormApproveShareable";
 import { useHistory } from "react-router-dom";
 
 interface IProps {
@@ -43,9 +46,9 @@ const CustomerTableRow: React.FC<IProps> = (
 
   const onClaimAccount = useCallback((): void => {
     dispatch(
-      ModalFirstLevelActions.OPEN(
+      ModalNoPaddingFirstLevelActions.OPEN(
         <ClaimFormEdit rowData={[rowData]} />,
-        ModalSizeEnum.Tiny
+        ModalSizeEnum.Small
       )
     );
     getRowData([]);
@@ -54,9 +57,43 @@ const CustomerTableRow: React.FC<IProps> = (
   const onEdit = (id: number) => {
     history.push({
       pathname: "customer-setting/" + id,
-      state: { rowData },
+      state: { rowData, activeTab: 1 },
     });
   };
+
+  // mengecek apakah sales yang melakukan request ada di hirarki
+  const isSubordinate = (employeeKey: any) => {
+    let userLogin = JSON.parse(localStorage.getItem("userLogin"));
+
+    if (employeeKey != undefined) {
+      let foundEmployee = userLogin.hirarki.find(
+        (obj) => obj.employeeID === employeeKey
+      );
+      return foundEmployee && userLogin.employeeKey != foundEmployee.employeeID
+        ? true
+        : false;
+    }
+
+    return false;
+  };
+
+  const onApproveRequestAccount = useCallback((): void => {
+    let isDirectorate =
+      isSubordinate(rowData.salesHistory?.salesKey) && role != "Admin";
+
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ApproveReq
+          rowData={[rowData]}
+          isDirectorate={isDirectorate}
+          isAdmin={!isDirectorate}
+          refreshFunc={CustomerSettingAction.requestNoNameAcc}
+        />,
+        ModalSizeEnum.Tiny
+      )
+    );
+    getRowData([]);
+  }, [dispatch, rowData]);
 
   return (
     <Fragment>
@@ -74,6 +111,13 @@ const CustomerTableRow: React.FC<IProps> = (
                         ? true
                         : false
                     }
+                    disabled={
+                      role === "Admin" ||
+                      role === "Marketing" ||
+                      rowData.industryClass === null ||
+                      rowData.salesHistory?.status === "PENDING_DIRECTORATE" ||
+                      rowData.salesHistory?.status === "PENDING_ADMIN"
+                    }
                   ></input>
                 </label>
               </div>
@@ -82,16 +126,32 @@ const CustomerTableRow: React.FC<IProps> = (
                   {role === "Sales" && (
                     <>
                       <Dropdown.Item
-                        text="View/Edit"
-                        icon="edit outline"
-                        onClick={() => onEdit(rowData.customerID)}
-                      />
-
-                      <Dropdown.Item
                         text="Claim Account"
                         icon="circle check"
                         onClick={onClaimAccount}
+                        disabled={
+                          rowData.industryClass === null ||
+                          rowData.salesHistory?.status ===
+                            "PENDING_DIRECTORATE" ||
+                          rowData.salesHistory?.status === "PENDING_ADMIN"
+                        }
                       />
+
+                      {rowData.salesHistory?.status == "PENDING_DIRECTORATE" &&
+                        isSubordinate(rowData.salesHistory?.salesKey) && (
+                          <>
+                            <Dropdown.Item
+                              text="View/Edit"
+                              icon="edit outline"
+                              onClick={() => onEdit(rowData.customerID)}
+                            />
+                            <Dropdown.Item
+                              text="Approve Claim Request"
+                              icon="circle check"
+                              onClick={onApproveRequestAccount}
+                            />
+                          </>
+                        )}
 
                       {rowData.status !== "CANCEL" &&
                         rowData.CustomerID === "" && (
@@ -101,6 +161,25 @@ const CustomerTableRow: React.FC<IProps> = (
                   )}
 
                   {role === "Admin" && (
+                    <>
+                      <Dropdown.Item
+                        text="View/Edit"
+                        icon="edit outline"
+                        onClick={() => onEdit(rowData.customerID)}
+                      />
+                      {rowData.salesHistory?.status == "PENDING_ADMIN" && (
+                        <>
+                          <Dropdown.Item
+                            text="Approve Claim Request"
+                            icon="circle check"
+                            onClick={onApproveRequestAccount}
+                          />
+                        </>
+                      )}
+                    </>
+                  )}
+
+                  {role === "Marketing" && (
                     <Dropdown.Item
                       text="View/Edit"
                       icon="edit outline"
@@ -119,9 +198,9 @@ const CustomerTableRow: React.FC<IProps> = (
               </p>{" "}
             </div>
           </Table.Cell>
-          <Table.Cell textAlign="center">{rowData.JDECustId}</Table.Cell>
-          <Table.Cell textAlign="center">{rowData.customerID}</Table.Cell>
-          <Table.Cell textAlign="center">{rowData.IndustryClass}</Table.Cell>
+          <Table.Cell textAlign="center">{rowData.jdeCustomerID}</Table.Cell>
+          <Table.Cell textAlign="center">{rowData.customerGenID}</Table.Cell>
+          <Table.Cell textAlign="center">{rowData.industryClass}</Table.Cell>
           <Table.Cell>
             <div className="row-customerName">
               <p style={{ fontSize: "1rem" }}> {rowData.customerName}</p>{" "}

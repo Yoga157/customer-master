@@ -1,0 +1,759 @@
+import React, {
+  Fragment,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
+import { Dispatch } from "redux";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Divider, Icon, Button, Table, Form, Grid } from "semantic-ui-react";
+import { Form as FinalForm, Field } from "react-final-form";
+import * as ModalFirstLevelActions from "stores/modal/first-level/ModalFirstLevelActions";
+import ModalSizeEnum from "constants/ModalSizeEnum";
+import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
+import ModalRejectApproval from "./components/modal/approval-page/ModalRejectApproval";
+import ModalSuggestionList from "./components/modal/approval-page/ModalSuggestionList";
+import { TextInput, Pagination } from "views/components/UI";
+
+import IStore from "models/IStore";
+import * as CustomerMaster from "stores/customer-master/CustomerMasterActivityActions";
+import {
+  selectNewCustomerDetailPending,
+  selectReqCustomerNewAccount,
+} from "selectors/customer-master/CustomerMasterSelector";
+import { selectRequesting } from "selectors/requesting/RequestingSelector";
+import { ApprovePopUp } from "./components/modal/approve";
+import BaseViewApprovedData from "./components/view/BaseViewApprovedData";
+import ModalViewNpwp from "./components/modal/view-npwp/ModalViewNpwp";
+
+interface routeParams {
+  id: string;
+}
+
+const ViewApproval: React.FC = (props) => {
+  const dispatch: Dispatch = useDispatch();
+  const { id } = useParams<routeParams>();
+
+  const customer = useSelector((state: IStore) =>
+    selectNewCustomerDetailPending(state)
+  );
+
+  let userLogin = JSON.parse(localStorage.getItem("userLogin"));
+
+  // search keyword
+  const [customerName, setCustomerName] = useState(null);
+  const [picName, setPicName] = useState(null);
+
+  const onSearch = async (data) => {
+    setCustomerName(data.customerName);
+    setPicName(data.picName);
+    dispatch(CustomerMaster.setActivePage(1));
+
+    dispatch(
+      CustomerMaster.requestSearchCustomerMaster(
+        1,
+        10,
+        "CustomerID",
+        "ascending",
+        data.customerName,
+        data.picName
+      )
+    );
+  };
+
+  // pagination
+  const activePage = useSelector(
+    (state: IStore) => state.customerMaster.activePage
+  );
+  const [pageSize, setPage] = useState(10);
+
+  const handlePaginationChange = (e: any, data: any) => {
+    dispatch(CustomerMaster.setActivePage(data.activePage));
+
+    dispatch(
+      CustomerMaster.requestSearchCustomerMaster(
+        data.activePage,
+        pageSize,
+        "CustomerID",
+        "ascending",
+        customerName,
+        picName
+      )
+    );
+  };
+
+  const suggestionList = useSelector((state: IStore) =>
+    selectReqCustomerNewAccount(state)
+  );
+
+  const getCustomerName = (input: string): string => {
+    const delimiter = ",";
+
+    return input.split(delimiter)[0];
+  };
+
+  const highlightWords = (input: string): string => {
+    const wordsArray = [];
+
+    if (customer.length != 0 && customer?.customerName) {
+      wordsArray.push(customer?.customerName.toLowerCase());
+    }
+
+    if (customer.length != 0 && customer?.picName) {
+      wordsArray.push(customer?.picName.toLowerCase());
+    }
+
+    const wordsToHighlight = wordsArray.join(" ");
+    const words = input.split(" ");
+
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i].toLowerCase();
+      if (wordsToHighlight.includes(word)) {
+        words[i] = `<b>${words[i]}</b>`;
+      }
+    }
+
+    return words.join(" ");
+  };
+
+  const openViewNPWP = useCallback(
+    (src: string): void => {
+      dispatch(
+        ModalFirstLevelActions.OPEN(
+          <ModalViewNpwp imageSrc={src} />,
+          ModalSizeEnum.Mini
+        )
+      );
+    },
+    [dispatch]
+  );
+
+  const openSuggestionList = useCallback((): void => {
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ModalSuggestionList
+          suggestionList={suggestionList}
+          customer={customer}
+        />,
+        ModalSizeEnum.Large
+      )
+    );
+  }, [dispatch]);
+
+  const rejectApproval = useCallback((): void => {
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ModalRejectApproval
+          customer={customer}
+          customerGenId={id}
+          jenis="reject"
+        />,
+        ModalSizeEnum.Small
+      )
+    );
+  }, [dispatch, customer]);
+
+  const openMatch = useCallback(
+    (matchCustomer): void => {
+      dispatch(
+        ModalFirstLevelActions.OPEN(
+          <ModalRejectApproval
+            customer={customer}
+            customerGenId={id}
+            matchCustomer={matchCustomer}
+            jenis="match"
+          />,
+          ModalSizeEnum.Small
+        )
+      );
+    },
+    [dispatch, customer]
+  );
+
+  const [isApprove, setIsApprove] = useState(false);
+
+  const onApprove = useCallback((): void => {
+    dispatch(
+      ModalFirstLevelActions.OPEN(
+        <ApprovePopUp customerGenID={id} setIsApprove={setIsApprove} />,
+        ModalSizeEnum.Small
+      )
+    );
+  }, [dispatch, customer]);
+
+  const isRequesting: boolean = useSelector((state: IStore) =>
+    selectRequesting(state, [
+      CustomerMaster.REQUEST_NEW_CUSTOMER_DETAIL_BY_GEN_ID,
+      CustomerMaster.REQUEST_CUSTOMERS_MASTER_SEARCH,
+    ])
+  );
+
+  useEffect(() => {
+    dispatch(CustomerMaster.requestNewCustomerDetailByGenId(Number(id)));
+  }, [id]);
+
+  useEffect(() => {
+    if (!Array.isArray(customer)) {
+      dispatch(
+        CustomerMaster.requestSearchCustomerMaster(
+          1,
+          5,
+          "CustomerID",
+          "ascending",
+          getCustomerName(customer.customerName),
+          customer.picName
+        )
+      );
+    }
+  }, [customer]);
+
+  return (
+    <Fragment>
+      <Link to="/customer-setting" className="link">
+        {"< Back to Customer Setting List"}
+      </Link>
+
+      <div className="form-container">
+        {!isApprove ? (
+          <>
+            <div
+              className="space-between-container"
+              style={{
+                alignItems: "center",
+              }}
+            >
+              <p className="page-title grey">NEW CUSTOMER REQUEST</p>
+            </div>
+
+            <Divider style={{ marginTop: 0 }}></Divider>
+
+            <LoadingIndicator isActive={isRequesting}>
+              {!Array.isArray(customer) && (
+                <>
+                  <div className="padding-horizontal space-between-container">
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <div className="customer-data-container-left">
+                        <label className="customer-data-label">
+                          Customer ID
+                        </label>
+                        <p className="grey p-pic-font">{customer.customerID}</p>
+                      </div>
+
+                      <div className="customer-data-container-left">
+                        <label className="customer-data-label">Requestor</label>
+                        <p className="grey p-pic-font">{customer.requestor}</p>
+                      </div>
+                    </div>
+
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">Create Date</label>
+                      <p className="grey p-pic-font">{customer.createDate}</p>
+                    </div>
+                  </div>
+
+                  <div className="padding-horizontal space-between-container">
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">
+                        Customer Name
+                      </label>
+                      <p className="grey p-pic-font">{customer.customerName}</p>
+                    </div>
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">
+                        Customer Business Name
+                      </label>
+                      <p className="grey p-pic-font">
+                        {customer.customerBusinessName}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    className="padding-horizontal"
+                    style={{ display: "flex", flexDirection: "row" }}
+                  >
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">
+                        Holding Company Name
+                      </label>
+                      <p className="grey p-pic-font">
+                        {customer.holdingCompName}
+                      </p>
+                    </div>
+                    <div
+                      className="customer-data-container-left"
+                      style={{ marginLeft: "2rem" }}
+                    >
+                      <label className="customer-data-label">
+                        Industry Classification
+                      </label>
+                      <p className="grey p-pic-font">
+                        {customer.industryClass}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="padding-horizontal customer-data-container-left">
+                    <label className="customer-data-label">
+                      Customer Address
+                    </label>
+                    <p
+                      style={{ fontSize: "20px" }}
+                      className="grey"
+                      dangerouslySetInnerHTML={{
+                        __html: customer.customerAddress,
+                      }}
+                    ></p>
+                  </div>
+
+                  <div className="padding-horizontal space-between-container">
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">Country</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.country}
+                      </p>
+                    </div>
+
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">City</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.city}
+                      </p>
+                    </div>
+
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">ZIP Code</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.zipCode}
+                      </p>
+                    </div>
+
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">
+                        Office Number
+                      </label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.phoneNumber}
+                      </p>
+                    </div>
+
+                    <div className="customer-data-container-left">
+                      <label className="customer-data-label">Website</label>
+                      <p
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                        className="grey"
+                      >
+                        {customer.website}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="padding-horizontal customer-data-container-left">
+                    <label className="customer-data-label">
+                      Coorporate Email
+                    </label>
+                    <p
+                      style={{ fontSize: "20px", fontWeight: "bold" }}
+                      className="grey"
+                    >
+                      {customer.coorporateEmail}
+                    </p>
+                  </div>
+
+                  <div
+                    className="padding-horizontal"
+                    style={{ display: "flex", flexDirection: "row" }}
+                  >
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <div className="customer-data-container-left">
+                        <label className="customer-data-label">
+                          NPWP (Tax ID Number)
+                        </label>
+                        <p
+                          style={{ fontSize: "20px", fontWeight: "bold" }}
+                          className="grey"
+                        >
+                          {customer.npwpNumber}
+                        </p>
+                      </div>
+
+                      <div className="customer-data-container-left">
+                        <label className="customer-data-label">NIB</label>
+                        <p
+                          style={{ fontSize: "20px", fontWeight: "bold" }}
+                          className="grey"
+                        >
+                          {customer.nib}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <label className="customer-data-label">NPWP Card</label>
+                      <div className="npwp-card-approve">
+                        {Object.keys(customer).length != 0 &&
+                        Object.keys(customer.npwpCard).length == 0 ? (
+                          <div>
+                            <Icon
+                              name="picture"
+                              style={{ fontSize: "3rem" }}
+                            ></Icon>
+                            <p style={{ margin: "auto" }}>No Data</p>
+                          </div>
+                        ) : (
+                          <>
+                            <div
+                              className="open-view-npwp"
+                              style={{
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                              }}
+                              onClick={() =>
+                                openViewNPWP(
+                                  Object.keys(customer).length != 0 &&
+                                    `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
+                                )
+                              }
+                            >
+                              View
+                            </div>
+                            <img
+                              className="npwp-img"
+                              src={
+                                Object.keys(customer).length != 0 &&
+                                `data:${customer.npwpCard?.extension};base64,${customer.npwpCard?.imageFile}`
+                              }
+                            ></img>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="padding-horizontal">
+                    <p className="grey margin-0 bold text-align-left">
+                      PIC Details
+                    </p>
+                  </div>
+
+                  <div className="padding-horizontal">
+                    <div className="grey-container-pic">
+                      <div className="">
+                        <div className="customer-data-container-left">
+                          <label className="customer-data-label">
+                            PIC Name
+                          </label>
+                          <p className="grey p-pic-font">{customer.picName}</p>
+                        </div>
+
+                        <div className="customer-data-container-left">
+                          <label className="customer-data-label">Email</label>
+                          <p className="grey p-pic-font">
+                            {customer.picEmailAddr}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <div className="customer-data-container-left">
+                          <label className="customer-data-label">
+                            PIC Mobile Phone
+                          </label>
+                          <p className="grey p-pic-font">
+                            {customer.picMobilePhone}
+                          </p>
+                        </div>
+
+                        <div className="customer-data-container-left">
+                          <label className="customer-data-label">
+                            Job Title
+                          </label>
+                          <p className="grey p-pic-font">
+                            {customer.picJobTitle}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {userLogin.role.toUpperCase() == "MARKETING" && (
+                    <>
+                      <Divider></Divider>
+
+                      <div className="padding-horizontal title-button-row">
+                        <p className="grey margin-0 bold text-align-left">
+                          SUGGESTION LIST
+                        </p>
+                      </div>
+
+                      <Divider className="margin-bottom-0"></Divider>
+
+                      <div className="yellow-container padding-horizontal ">
+                        <FinalForm
+                          onSubmit={(values: any) => onSearch(values)}
+                          render={({ handleSubmit, values }) => (
+                            <Form onSubmit={handleSubmit}>
+                              <div className="yellow-container">
+                                <Grid>
+                                  <Grid.Row>
+                                    <Grid.Column
+                                      width={16}
+                                      mobile={16}
+                                      tablet={16}
+                                      computer={8}
+                                    >
+                                      {" "}
+                                      <Field
+                                        name="customerName"
+                                        component={TextInput}
+                                        placeholder="e.g. Berca Hardaya .."
+                                        labelName="Customer Name"
+                                        mandatory={false}
+                                        defaultValue={customer?.customerName}
+                                      />
+                                    </Grid.Column>
+
+                                    <Grid.Column
+                                      width={16}
+                                      mobile={16}
+                                      tablet={16}
+                                      computer={8}
+                                    >
+                                      <Field
+                                        name="picName"
+                                        component={TextInput}
+                                        placeholder="e.g.Jhon Doe .."
+                                        labelName="PIC Name"
+                                        mandatory={false}
+                                        defaultValue={customer?.picName}
+                                      />
+                                    </Grid.Column>
+                                  </Grid.Row>
+                                  <Grid.Row columns="equal">
+                                    <Grid.Column
+                                      width={16}
+                                      mobile={16}
+                                      tablet={16}
+                                      computer={16}
+                                    >
+                                      <Button
+                                        type="submit"
+                                        color="blue"
+                                        disabled={!values.customerName}
+                                        floated="right"
+                                        size="small"
+                                        content="Search"
+                                      />
+                                    </Grid.Column>
+                                  </Grid.Row>
+                                </Grid>
+                              </div>
+                            </Form>
+                          )}
+                        />
+                      </div>
+
+                      <div
+                        className="padding-horizontal"
+                        style={{ margin: "14px 0" }}
+                      >
+                        <div>
+                          <p
+                            className="warning-text"
+                            style={{
+                              backgroundColor: customerName
+                                ? "#E2EFFF"
+                                : "#FFE0D9",
+                            }}
+                          >
+                            {customerName ? (
+                              <>
+                                There are <b>{suggestionList.rows.length}</b>{" "}
+                                results from the customer search{" "}
+                                <b>{customerName}</b>{" "}
+                                {picName ? (
+                                  <>
+                                    with <b>{picName}</b>.
+                                  </>
+                                ) : (
+                                  "."
+                                )}{" "}
+                                Please recheck again before you approve new
+                                customer request.
+                              </>
+                            ) : (
+                              <>
+                                Best five suggestion customer for the word{" "}
+                                <b>{customer.customerName}</b>. Please recheck
+                                again before you APPROVE or REJECT.
+                              </>
+                            )}
+                          </p>
+                        </div>
+
+                        <Table striped>
+                          <Table.Header>
+                            <Table.Row>
+                              <Table.HeaderCell>No</Table.HeaderCell>
+                              <Table.HeaderCell>Customer Name</Table.HeaderCell>
+                              <Table.HeaderCell>Cust. ID</Table.HeaderCell>
+                              <Table.HeaderCell>PIC Name</Table.HeaderCell>
+                              <Table.HeaderCell>Blacklist</Table.HeaderCell>
+                              <Table.HeaderCell>Holdshipment</Table.HeaderCell>
+                              <Table.HeaderCell textAlign="center">
+                                Action
+                              </Table.HeaderCell>
+                            </Table.Row>
+                          </Table.Header>
+
+                          <Table.Body>
+                            {suggestionList.rows.length == 0 ? (
+                              <Table.Row>
+                                <Table.Cell colSpan={16} textAlign="center">
+                                  No data
+                                </Table.Cell>
+                              </Table.Row>
+                            ) : (
+                              suggestionList.rows.map((data, index) => (
+                                <Table.Row key={index}>
+                                  <Table.Cell>
+                                    {(activePage - 1) * pageSize + index + 1}
+                                  </Table.Cell>
+                                  <Table.Cell>
+                                    <p
+                                      dangerouslySetInnerHTML={{
+                                        __html: highlightWords(
+                                          data.customerName
+                                        ),
+                                      }}
+                                    ></p>
+                                  </Table.Cell>
+                                  <Table.Cell>{data.customerID}</Table.Cell>
+                                  <Table.Cell>
+                                    <p
+                                      dangerouslySetInnerHTML={{
+                                        __html: highlightWords(data.picName),
+                                      }}
+                                    ></p>
+                                  </Table.Cell>
+                                  <Table.Cell textAlign="center">
+                                    {data.blacklist === true ? (
+                                      <div className="blacklist-yes-table">
+                                        <Icon
+                                          name="address book"
+                                          size="small"
+                                        />
+                                        <span>Yes</span>
+                                      </div>
+                                    ) : (
+                                      <div className="blacklist-no-table">
+                                        <Icon
+                                          name="address book"
+                                          size="small"
+                                        />
+                                        <span>No</span>
+                                      </div>
+                                    )}
+                                  </Table.Cell>
+                                  <Table.Cell
+                                    textAlign="center"
+                                    verticalAlign="middle"
+                                  >
+                                    {data.holdshipment === true ? (
+                                      <div className="holdshipment-yes-table">
+                                        <Icon name="truck" size="small" />
+                                        <span>Yes</span>
+                                      </div>
+                                    ) : (
+                                      <div className="holdshipment-no-table">
+                                        <Icon name="truck" size="small" />
+                                        <span>No</span>
+                                      </div>
+                                    )}
+                                  </Table.Cell>
+                                  <Table.Cell
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    <div
+                                      className="match-button"
+                                      onClick={() => openMatch(data)}
+                                    >
+                                      <Icon name="check" />
+                                      <p>Match</p>
+                                    </div>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))
+                            )}
+                          </Table.Body>
+                        </Table>
+
+                        {customerName && suggestionList.totalRows != 0 && (
+                          <div style={{ marginTop: "1rem" }}>
+                            <Pagination
+                              activePage={activePage}
+                              onPageChange={(e, data) =>
+                                handlePaginationChange(e, data)
+                              }
+                              totalPage={suggestionList.totalRows}
+                              pageSize={pageSize}
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <Divider style={{ marginBottom: "0px" }}></Divider>
+
+                      <div className="button-container-nospace">
+                        <div className="button-inner-container">
+                          <Button style={{ marginRight: "1rem" }} type="button">
+                            Close
+                          </Button>
+                          <Button
+                            color="blue"
+                            style={{ marginRight: "1rem" }}
+                            type="button"
+                            onClick={() => onApprove()}
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            color="yellow"
+                            onClick={() => rejectApproval()}
+                          >
+                            Reject
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+            </LoadingIndicator>
+          </>
+        ) : (
+          <BaseViewApprovedData isView={false} status="APPROVE" />
+        )}
+      </div>
+    </Fragment>
+  );
+};
+
+export default ViewApproval;
