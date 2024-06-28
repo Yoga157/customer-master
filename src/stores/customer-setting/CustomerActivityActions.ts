@@ -161,7 +161,8 @@ export const requestSearchCustomerSett = (
   shareable?: boolean,
   pmo_customer?: boolean,
   holdshipment?: boolean,
-  blacklist?: boolean
+  blacklist?: boolean,
+  isCap?: boolean
 ): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<CustomerSettingModel>(
@@ -177,7 +178,8 @@ export const requestSearchCustomerSett = (
       shareable,
       pmo_customer,
       holdshipment,
-      blacklist
+      blacklist,
+      isCap
     );
   };
 };
@@ -195,7 +197,8 @@ export const requestSearchNoNameAcc = (
   sorting?: string,
   pmo_customer?: boolean,
   holdshipment?: boolean,
-  blacklist?: boolean
+  blacklist?: boolean,
+  isCap?: boolean
 ): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<CustomerSettingModel>(
@@ -209,7 +212,8 @@ export const requestSearchNoNameAcc = (
       sorting,
       pmo_customer,
       holdshipment,
-      blacklist
+      blacklist,
+      isCap
     );
   };
 };
@@ -229,7 +233,8 @@ export const requestSearchNamedAcc = (
   myAccount?: number,
   pmo_customer?: boolean,
   holdshipment?: boolean,
-  blacklist?: boolean
+  blacklist?: boolean,
+  isCap?: boolean
 ): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<CustomerSettingModel>(
@@ -245,7 +250,8 @@ export const requestSearchNamedAcc = (
       myAccount,
       pmo_customer,
       holdshipment,
-      blacklist
+      blacklist,
+      isCap
     );
   };
 };
@@ -264,7 +270,8 @@ export const requestSearchShareabelAcc = (
   salesID?: string,
   pmo_customer?: boolean,
   blacklist?: boolean,
-  holdshipment?: boolean
+  holdshipment?: boolean,
+  isCap?: boolean
 ): any => {
   return async (dispatch: ReduxDispatch<ActionUnion>): Promise<void> => {
     await ActionUtility.createThunkEffect<CustomerSettingModel>(
@@ -279,7 +286,8 @@ export const requestSearchShareabelAcc = (
       salesID,
       pmo_customer,
       blacklist,
-      holdshipment
+      holdshipment,
+      isCap
     );
   };
 };
@@ -299,6 +307,7 @@ export const requestSearchAllAcc = (
   pmo_customer?: boolean | null,
   blacklist?: boolean | null,
   holdshipment?: boolean | null,
+  isCap?: boolean | null,
   showNoName?: boolean | null,
   showNamed?: boolean | null,
   showShareable?: boolean | null,
@@ -322,6 +331,7 @@ export const requestSearchAllAcc = (
       pmo_customer,
       blacklist,
       holdshipment,
+      isCap,
       showNoName,
       showNamed,
       showShareable,

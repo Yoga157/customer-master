@@ -94,6 +94,7 @@ interface IProps {
     industryClassID: number;
     industryClass: string;
     industryClassBusiness: string;
+    directorateName: string;
     shareable: boolean;
     named: boolean;
     pmoCustomer: boolean;
@@ -106,6 +107,7 @@ interface IProps {
     capFlag: any;
     avgAR: number;
     shareableApprovalStatus?: any;
+    waitingAdminApproveBy: any;
   };
   role: string;
 }
@@ -121,6 +123,10 @@ const ViewEditCustomer: React.FC<IProps> = (
   const { id } = useParams<routeParams>();
   const { customer, role } = props;
   const customerID = Number(id);
+
+  const [directorateName, setDirectorateName] = useState(
+    customer.directorateName
+  );
 
   /** Customer data */
   const accountStatus = customer.accountStatus;
@@ -746,6 +752,12 @@ const ViewEditCustomer: React.FC<IProps> = (
                 <span style={{ color: "grey" }}>
                   {shareableRequestStatus == "PENDING_DIRECTORATE" && (
                     <>
+                      <p
+                        className="margin-0"
+                        style={{ fontWeight: "bold", textAlign: "center" }}
+                      >
+                        {directorateName}
+                      </p>
                       <Icon
                         name="exclamation circle"
                         style={{ color: "#FFA800" }}
@@ -810,14 +822,33 @@ const ViewEditCustomer: React.FC<IProps> = (
                 )}
 
                 <span style={{ color: "grey" }}>
-                  {shareableRequestStatus?.includes("PENDING") && (
+                  {shareableRequestStatus == "PENDING_ADMIN" && (
                     <>
+                      <p
+                        className="margin-0"
+                        style={{ fontWeight: "bold", textAlign: "center" }}
+                      >
+                        {shareableApprovalStatus?.waitingAdminApproveBy}{" "}
+                      </p>
+                    </>
+                  )}
+
+                  {shareableRequestStatus?.includes("PENDING") && (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        textAlign: "center",
+                        color: "grey",
+                      }}
+                    >
                       <Icon
                         name="exclamation circle"
                         style={{ color: "#FFA800" }}
                       />{" "}
-                      Waiting Approval{" "}
-                    </>
+                      Waiting Approval
+                    </div>
                   )}
 
                   {shareableRequestStatus == "ASSIGN" && (

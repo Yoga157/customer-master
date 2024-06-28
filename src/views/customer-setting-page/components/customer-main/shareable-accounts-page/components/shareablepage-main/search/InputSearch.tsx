@@ -20,22 +20,26 @@ export const InputSearch: React.FC = () => {
   };
 
   const onSearch = () => {
-    if (location.pathname == "/customer-setting-page") {
-      if (btnCancel || searchText.length === 0) {
+    // if (location.pathname == "/customer-setting-page") {
+    if (btnCancel || searchText.length === 0) {
+      dispatch(
+        CustomerSetting.requestShareabledAcc(1, 10, "CustomerID", "ascending")
+      );
+      dispatch(CustomerSetting.setActivePage(1));
+      setSearchText("");
+      setBtnCancel(false);
+    } else {
+      if (searchText.length > 1) {
         dispatch(
-          CustomerSetting.requestShareabledAcc(1, 10, "CustomerID", "ascending")
+          CustomerSetting.requestSearchShareabelAcc(
+            1,
+            10,
+            "CustomerID",
+            searchText
+          )
         );
         dispatch(CustomerSetting.setActivePage(1));
-        setSearchText("");
-        setBtnCancel(false);
-      } else {
-        if (searchText.length > 1) {
-          dispatch(
-            CustomerSetting.requestSearchShareabelAcc(1, 10, null, searchText)
-          );
-          dispatch(CustomerSetting.setActivePage(1));
-          setBtnCancel(!btnCancel);
-        }
+        setBtnCancel(!btnCancel);
       }
     }
   };

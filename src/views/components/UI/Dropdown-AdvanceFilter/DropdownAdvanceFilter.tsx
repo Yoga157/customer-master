@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FieldRenderProps } from "react-final-form";
 import { FormFieldProps, Form, Label, Select } from "semantic-ui-react";
-interface IProps
-  extends FieldRenderProps<string, HTMLElement>,
-    FormFieldProps {}
+
+interface IProps extends FieldRenderProps<string, HTMLElement>, FormFieldProps {
+  resetSales: boolean;
+  onReset: () => void;
+}
 
 const DropdownClearInput: React.FC<IProps> = ({
   input,
@@ -15,8 +17,19 @@ const DropdownClearInput: React.FC<IProps> = ({
   meta: { touched, error },
   onChanged,
   values,
+  resetSales,
+  onReset,
   mandatory = true,
 }) => {
+  useEffect(() => {
+    if (resetSales) {
+      input.onChange("");
+      if (onReset) {
+        onReset();
+      }
+    }
+  }, [resetSales, input, onReset]);
+
   return (
     <Form.Field
       className="LabelNameLabel"
@@ -33,7 +46,7 @@ const DropdownClearInput: React.FC<IProps> = ({
         </label>
       </div>
       <Select
-        value={values || input.value}
+        value={values || input.value || ""}
         placeholder={placeholder}
         clearable
         options={options}

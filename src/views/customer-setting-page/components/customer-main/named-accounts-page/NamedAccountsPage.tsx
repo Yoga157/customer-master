@@ -29,6 +29,7 @@ interface FilterData {
   newsalesAssign: any;
   holdshipment: any;
   blacklist: any;
+  isCap: any;
 }
 
 const NamedAccountsPage: React.FC<IProps> = (
@@ -235,7 +236,8 @@ const NamedAccountsPage: React.FC<IProps> = (
           filterData.newsalesAssign,
           filterData.pmo_customer,
           filterData.holdshipment,
-          filterData.blacklist
+          filterData.blacklist,
+          filterData.isCap
         )
       );
     } else if (myAccount) {

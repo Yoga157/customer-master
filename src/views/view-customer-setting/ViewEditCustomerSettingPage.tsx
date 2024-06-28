@@ -31,6 +31,7 @@ interface ICustomerData {
     customerName: any;
     holdshipment: any;
     industryClass: any;
+    directorateName: any;
     isNew: any;
     jdeCustomerID: any;
     lastProjectName: any;
@@ -46,6 +47,7 @@ interface ICustomerData {
     salesShareableID: any;
     shareable: any;
     status: any;
+    waitingAdminApproveBy: any;
   };
   activeTab: number;
 }

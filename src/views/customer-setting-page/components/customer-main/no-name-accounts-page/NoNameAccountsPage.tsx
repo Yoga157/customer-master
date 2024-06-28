@@ -28,6 +28,7 @@ interface FilterData {
   pmo_customer: any;
   holdshipment: any;
   blacklist: any;
+  cap: any;
 }
 
 const NoNameAccountsPage: React.FC<IProps> = (
@@ -173,7 +174,8 @@ const NoNameAccountsPage: React.FC<IProps> = (
           "ascending",
           filterData.pmo_customer,
           filterData.holdshipment,
-          filterData.blacklist
+          filterData.blacklist,
+          filterData.cap
         )
       );
     } else if (search.value.length > 0) {

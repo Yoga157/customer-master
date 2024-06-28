@@ -126,7 +126,8 @@ export const requestSearchNoNameAcc = async (
   sorting?: string | null,
   pmo_customer?: boolean | null,
   holdshipment?: boolean | null,
-  blacklist?: boolean | null
+  blacklist?: boolean | null,
+  isCap?: boolean | null
 ): Promise<CustomerSettingModel | HttpErrorResponseModel> => {
   const controllerName = `CustomerSetting/GetCustomerSettingNoNamedAccount?page=${page}&pageSize=${pageSize}&column=${column}${
     search || search != null ? `&search=${search}` : ``
@@ -134,7 +135,9 @@ export const requestSearchNoNameAcc = async (
     pmo_customer || pmo_customer != null ? `&pmoCustomer=${pmo_customer}` : ``
   }${
     holdshipment || holdshipment != null ? `&holdshipment=${holdshipment}` : ``
-  }${blacklist || blacklist != null ? `&blacklist=${blacklist}` : ``}`;
+  }${blacklist || blacklist != null ? `&blacklist=${blacklist}` : ``}${
+    isCap || isCap != null ? `&isCap=${isCap}` : ``
+  }`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName
@@ -155,7 +158,8 @@ export const requestSearchNamedAcc = async (
   myAccount?: number | null,
   pmo_customer?: boolean | null,
   holdshipment?: boolean | null,
-  blacklist?: boolean | null
+  blacklist?: boolean | null,
+  isCap?: boolean | null
 ): Promise<CustomerSettingModel | HttpErrorResponseModel> => {
   const controllerName = `CustomerSetting/GetCustomerSettingNamedAccount?page=${page}&pageSize=${pageSize}&column=${column}${
     search || search != null ? `&search=${search}` : ``
@@ -165,7 +169,9 @@ export const requestSearchNamedAcc = async (
     pmo_customer || pmo_customer != null ? `&pmoCustomer=${pmo_customer}` : ``
   }${
     holdshipment || holdshipment != null ? `&holdshipment=${holdshipment}` : ``
-  }${blacklist || blacklist != null ? `&blacklist=${blacklist}` : ``}`;
+  }${blacklist || blacklist != null ? `&blacklist=${blacklist}` : ``}${
+    isCap || blacklist != null ? `&isCap=${isCap}` : ``
+  }`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName
@@ -185,7 +191,8 @@ export const requestSearchShareabelAcc = async (
   salesID?: string | null,
   pmo_customer?: boolean | null,
   blacklist?: boolean | null,
-  holdshipment?: boolean | null
+  holdshipment?: boolean | null,
+  isCap?: boolean | null
 ): Promise<CustomerSettingModel | HttpErrorResponseModel> => {
   const controllerName = `CustomerSetting/GetCustomerSettingShareableAccount?page=${page}&pageSize=${pageSize}&column=${column}${
     search || search != null ? `&search=${search}` : ``
@@ -195,7 +202,7 @@ export const requestSearchShareabelAcc = async (
     blacklist || blacklist != null ? `&blacklist=${blacklist}` : ``
   }${
     holdshipment || holdshipment != null ? `&holdshipment=${holdshipment}` : ``
-  }`;
+  }${isCap || isCap != null ? `&isCap=${isCap}` : ``}`;
   const endpoint: string = environment.api.customer.replace(
     ":controller",
     controllerName
@@ -217,6 +224,7 @@ export const requestSearchAllAcc = async (
   pmo_customer?: boolean | null,
   blacklist?: boolean | null,
   holdshipment?: boolean | null,
+  isCap?: boolean | null,
   showNoName?: boolean | null,
   showNamed?: boolean | null,
   showShareable?: boolean | null,
@@ -233,9 +241,9 @@ export const requestSearchAllAcc = async (
     myAccount || myAccount != null ? `&myAccount=${myAccount}` : ``
   }${blacklist || blacklist != null ? `&blacklist=${blacklist}` : ``}${
     holdshipment || holdshipment != null ? `&holdshipment=${holdshipment}` : ``
-  }${showNoName || showNoName != null ? `&showNoName=${showNoName}` : ``}${
-    showNamed || showNamed != null ? `&showNamed=${showNamed}` : ``
-  }${
+  }${isCap || isCap != null ? `&isCap=${isCap}` : ``}${
+    showNoName || showNoName != null ? `&showNoName=${showNoName}` : ``
+  }${showNamed || showNamed != null ? `&showNamed=${showNamed}` : ``}${
     showShareable || showShareable != null
       ? `&showShareable=${showShareable}`
       : ``

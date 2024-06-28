@@ -228,13 +228,13 @@ const CustomerTableRow: React.FC<IProps> = (
           )}
         </Table.Cell>
         <Table.Cell textAlign="center">
-          {rowData.JDECustId ? rowData.jdeCustomerID : "-"}
+          {rowData.jdeCustomerID ? rowData.jdeCustomerID : "-"}
         </Table.Cell>
         <Table.Cell textAlign="center">
-          {rowData.customerID == 0 ? "-" : rowData.customerID}
+          {rowData.customerGenID == 0 ? "-" : rowData.customerGenID}
         </Table.Cell>
         <Table.Cell textAlign="center">
-          {rowData.IndustryClass == null ? "-" : rowData.industryClass}
+          {rowData.industryClass == null ? "-" : rowData.industryClass}
         </Table.Cell>
         <Table.Cell textAlign="center">
           {rowData.customerCategory == null ? "-" : rowData.customerCategory}
@@ -271,14 +271,12 @@ const CustomerTableRow: React.FC<IProps> = (
           </div>
         </Table.Cell>
         <Table.Cell textAlign="center">
-          {rowData.isNew === true ? (
-            "-"
-          ) : rowData.pmoCustomer === true ? (
-            <div style={{ textAlign: "center" }}>
+          {rowData.pmoCustomer === true ? (
+            <div className="row-pmo-yes">
               <span>Yes</span>
             </div>
           ) : (
-            <div style={{ textAlign: "center" }}>
+            <div className="row-pmo-no">
               <span>No</span>
             </div>
           )}
@@ -317,6 +315,19 @@ const CustomerTableRow: React.FC<IProps> = (
             </div>
           )}
         </Table.Cell>
+
+        <Table.Cell textAlign="center">
+          {rowData.cap === true ? (
+            <div className="row-cap-yes">
+              <span>Yes</span>
+            </div>
+          ) : (
+            <div className="row-cap-no">
+              <span>No</span>
+            </div>
+          )}
+        </Table.Cell>
+
         <Table.Cell textAlign="center">
           <div className="created-container">
             <p className="head-text"> {rowData.createdBy}</p>{" "}

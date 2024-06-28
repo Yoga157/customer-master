@@ -32,6 +32,9 @@ const FilterCustomer: React.FC<{
   const [holdshipmentNoChecked, setHoldshipmentNoChecked] = useState(false);
   const [blacklistYesChecked, setBlacklistYesChecked] = useState(false);
   const [blacklistNoChecked, setBlacklistNoChecked] = useState(false);
+  const [capNoChecked, setCapNoChecked] = useState(false);
+  const [capYesChecked, setCapYesChecked] = useState(false);
+
   const dispatch: Dispatch = useDispatch();
 
   const isRequesting: boolean = useSelector((state: IStore) =>
@@ -66,10 +69,20 @@ const FilterCustomer: React.FC<{
         ? false
         : null;
 
+    const cap =
+      capYesChecked && capNoChecked
+        ? null
+        : capYesChecked
+        ? true
+        : capNoChecked
+        ? false
+        : null;
+
     getFilterData({
       pmo_customer: pmo_customer,
       holdshipment: holdshipment,
       blacklist: blacklist,
+      cap: cap,
     });
 
     dispatch(
@@ -81,7 +94,8 @@ const FilterCustomer: React.FC<{
         "ascending",
         pmo_customer,
         holdshipment,
-        blacklist
+        blacklist,
+        cap
       )
     );
   };
@@ -93,6 +107,8 @@ const FilterCustomer: React.FC<{
     setHoldshipmentNoChecked(false);
     setBlacklistYesChecked(false);
     setBlacklistNoChecked(false);
+    setCapYesChecked(false);
+    setCapNoChecked(false);
     getRowData([]);
 
     dispatch(
@@ -148,11 +164,13 @@ const FilterCustomer: React.FC<{
                                 marginRight: "0.5rem",
                                 transform: "scale(1)",
                               }}
-                              onChange={() =>
+                              onChange={() => {
                                 setPmo_customerYesChecked(
                                   !pmo_customerYesChecked
-                                )
-                              }
+                                );
+                                if (pmo_customerNoChecked)
+                                  setPmo_customerNoChecked(false);
+                              }}
                             ></input>
                             <span>Yes</span>
                           </label>
@@ -167,9 +185,13 @@ const FilterCustomer: React.FC<{
                                 transform: "scale(1)",
                               }}
                               checked={pmo_customerNoChecked}
-                              onChange={() =>
-                                setPmo_customerNoChecked(!pmo_customerNoChecked)
-                              }
+                              onChange={() => {
+                                setPmo_customerNoChecked(
+                                  !pmo_customerNoChecked
+                                );
+                                if (pmo_customerYesChecked)
+                                  setPmo_customerYesChecked(false);
+                              }}
                             ></input>
                             <span>No</span>
                           </label>
@@ -195,11 +217,13 @@ const FilterCustomer: React.FC<{
                                 marginRight: "0.5rem",
                                 transform: "scale(1)",
                               }}
-                              onChange={() =>
+                              onChange={() => {
                                 setHoldshipmentYesChecked(
                                   !holdshipmentYesChecked
-                                )
-                              }
+                                );
+                                if (holdshipmentNoChecked)
+                                  setHoldshipmentNoChecked(false);
+                              }}
                             ></input>
                             <span>Yes</span>
                           </label>
@@ -224,9 +248,13 @@ const FilterCustomer: React.FC<{
                                 transform: "scale(1)",
                               }}
                               checked={holdshipmentNoChecked}
-                              onChange={() =>
-                                setHoldshipmentNoChecked(!holdshipmentNoChecked)
-                              }
+                              onChange={() => {
+                                setHoldshipmentNoChecked(
+                                  !holdshipmentNoChecked
+                                );
+                                if (holdshipmentYesChecked)
+                                  setHoldshipmentYesChecked(false);
+                              }}
                             ></input>
                             <span>No</span>
                           </label>
@@ -237,7 +265,7 @@ const FilterCustomer: React.FC<{
                   <Divider></Divider>
 
                   <div>
-                    <p>Blacklist Customer</p>
+                    <p>BlackList</p>
                     <div>
                       <div className="checkbox-filter">
                         <div className="flex-center">
@@ -251,9 +279,11 @@ const FilterCustomer: React.FC<{
                                 transform: "scale(1)",
                               }}
                               checked={blacklistYesChecked}
-                              onChange={() =>
-                                setBlacklistYesChecked(!blacklistYesChecked)
-                              }
+                              onChange={() => {
+                                setBlacklistYesChecked(!blacklistYesChecked);
+                                if (blacklistNoChecked)
+                                  setBlacklistNoChecked(false);
+                              }}
                             ></input>
                             <span>Yes</span>
                           </label>
@@ -268,9 +298,11 @@ const FilterCustomer: React.FC<{
                                 transform: "scale(1)",
                               }}
                               checked={blacklistNoChecked}
-                              onChange={() =>
-                                setBlacklistNoChecked(!blacklistNoChecked)
-                              }
+                              onChange={() => {
+                                setBlacklistNoChecked(!blacklistNoChecked);
+                                if (blacklistYesChecked)
+                                  setBlacklistYesChecked(false);
+                              }}
                             ></input>
                             <span>No</span>
                           </label>
@@ -278,7 +310,52 @@ const FilterCustomer: React.FC<{
                       </div>
                     </div>
                   </div>
+                  <Divider></Divider>
 
+                  <div>
+                    <p>Cap</p>
+                    <div>
+                      <div className="checkbox-filter">
+                        <div className="flex-center">
+                          <label className="flex-center">
+                            <input
+                              type="checkbox"
+                              name="cap"
+                              value="yes"
+                              style={{
+                                marginRight: "0.5rem",
+                                transform: "scale(1)",
+                              }}
+                              checked={capYesChecked}
+                              onChange={() => {
+                                setCapYesChecked(!capYesChecked);
+                                if (capNoChecked) setCapNoChecked(false);
+                              }}
+                            ></input>
+                            <span>Yes</span>
+                          </label>
+                        </div>
+                        <div style={{ margin: "0 1rem" }}></div>
+                        <div className="flex-center">
+                          <label className="flex-center">
+                            <input
+                              type="checkbox"
+                              style={{
+                                marginRight: "0.5rem",
+                                transform: "scale(1)",
+                              }}
+                              checked={capNoChecked}
+                              onChange={() => {
+                                setCapNoChecked(!capNoChecked);
+                                if (capYesChecked) setCapYesChecked(false);
+                              }}
+                            ></input>
+                            <span>No</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <Divider></Divider>
                 </div>
 

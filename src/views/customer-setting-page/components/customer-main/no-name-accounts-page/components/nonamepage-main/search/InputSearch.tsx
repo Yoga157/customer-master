@@ -57,7 +57,6 @@ export const InputSearch: React.FC = () => {
       style={{
         display: "flex",
         flexDirection: "row",
-        // width: "fit-content",
         alignItems: "center",
       }}
     >

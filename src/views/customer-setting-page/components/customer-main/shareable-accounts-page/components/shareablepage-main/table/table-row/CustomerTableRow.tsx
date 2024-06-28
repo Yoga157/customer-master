@@ -261,11 +261,11 @@ const CustomerTableRow: React.FC<IProps> = (
         </Table.Cell>
         <Table.Cell textAlign="center">
           {rowData.pmoCustomer === true ? (
-            <div style={{ textAlign: "center" }}>
+            <div className="row-pmo-yes">
               <span>Yes</span>
             </div>
           ) : (
-            <div style={{ textAlign: "center" }}>
+            <div className="row-pmo-no">
               <span>No</span>
             </div>
           )}
@@ -302,6 +302,19 @@ const CustomerTableRow: React.FC<IProps> = (
             </div>
           )}
         </Table.Cell>
+
+        <Table.Cell textAlign="center">
+          {rowData.cap === true ? (
+            <div className="row-cap-yes">
+              <span>Yes</span>
+            </div>
+          ) : (
+            <div className="row-cap-no">
+              <span>No</span>
+            </div>
+          )}
+        </Table.Cell>
+
         <Table.Cell textAlign="center">
           <div className="rowdata-created">
             <p className="p-createBy "> {rowData.createdBy}</p>{" "}

@@ -151,6 +151,15 @@ const CustomerTable: React.FC<IProps> = (
           >
             Holdshipment
           </Table.HeaderCell>
+
+          <Table.HeaderCell
+            textAlign="center"
+            sorted={columns === "Cap" ? direction : null}
+            onClick={() => reloads("Cap")}
+          >
+            Cap
+          </Table.HeaderCell>
+
           <Table.HeaderCell
             textAlign="center"
             sorted={columns === "CreatedBy" ? direction : null}
@@ -158,6 +167,7 @@ const CustomerTable: React.FC<IProps> = (
           >
             Create By
           </Table.HeaderCell>
+
           <Table.HeaderCell
             sorted={columns === "CreatedDate" ? direction : null}
             onClick={() => reloads("CreatedDate")}

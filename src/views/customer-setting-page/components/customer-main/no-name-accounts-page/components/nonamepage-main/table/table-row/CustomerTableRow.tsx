@@ -25,8 +25,8 @@ const CustomerTableRow: React.FC<IProps> = (
   const history = useHistory();
   const dispatch: Dispatch = useDispatch();
   const { role } = props;
-  const [isChecked, setIsChecked] = useState(false);
   const { rowData, getRowData, data } = props;
+  const userID = JSON.parse(localStorage.getItem("userLogin"));
 
   const setRowData = (data) => {
     let checkData = props.data.find(
@@ -98,7 +98,17 @@ const CustomerTableRow: React.FC<IProps> = (
   return (
     <Fragment>
       {rowData && data && (
-        <Table.Row key={rowData.CustomerID}>
+        <Table.Row
+          key={rowData.CustomerID}
+          style={{
+            backgroundColor:
+              rowData.salesHistory?.status === "PENDING_DIRECTORATE"
+                ? "#FFF7CB"
+                : rowData.salesHistory?.status === "PENDING_ADMIN"
+                ? "#FFF7CB"
+                : "",
+          }}
+        >
           <Table.Cell width="1">
             <div className="container-center">
               <div>
@@ -138,7 +148,8 @@ const CustomerTableRow: React.FC<IProps> = (
                       />
 
                       {rowData.salesHistory?.status == "PENDING_DIRECTORATE" &&
-                        isSubordinate(rowData.salesHistory?.salesKey) && (
+                        // isSubordinate(rowData.salesHistory?.salesKey) &&
+                        rowData.directorateName === userID.fullName && (
                           <>
                             <Dropdown.Item
                               text="View/Edit"
@@ -213,6 +224,17 @@ const CustomerTableRow: React.FC<IProps> = (
             </div>
           </Table.Cell>
           <Table.Cell textAlign="center">
+            {rowData.pmoCustomer === true ? (
+              <div className="row-pmo-yes">
+                <span>Yes</span>
+              </div>
+            ) : (
+              <div className="row-pmo-no">
+                <span>No</span>
+              </div>
+            )}
+          </Table.Cell>
+          <Table.Cell textAlign="center">
             {rowData.blacklist === true ? (
               <div className="row-blacklist-yes">
                 <Icon name="address book" size="small" />
@@ -238,6 +260,50 @@ const CustomerTableRow: React.FC<IProps> = (
               </div>
             )}
           </Table.Cell>
+
+          <Table.Cell textAlign="center">
+            {rowData.cap === true ? (
+              <div className="row-cap-yes">
+                <span>Yes</span>
+              </div>
+            ) : (
+              <div className="row-cap-no">
+                <span>No</span>
+              </div>
+            )}
+          </Table.Cell>
+
+          <Table.Cell textAlign="center">
+            {rowData.salesHistory?.status === "PENDING_DIRECTORATE" ? (
+              <>
+                <div className="row-created">
+                  <p
+                    style={{
+                      fontSize: "1rem",
+                      color: "#46494c",
+                    }}
+                  >
+                    Waiting Approval by <b>{rowData.directorateName}</b>
+                  </p>
+                </div>
+              </>
+            ) : rowData.salesHistory?.status === "PENDING_ADMIN" ? (
+              <>
+                <div className="row-created">
+                  <p
+                    style={{
+                      fontSize: "1rem",
+                      color: "#46494c",
+                    }}
+                  >
+                    Waiting Approval by{" "}
+                    <b>{rowData.salesHistory?.waitingAdminApproveBy}</b>
+                  </p>
+                </div>
+              </>
+            ) : null}
+          </Table.Cell>
+
           <Table.Cell textAlign="center">
             <div className="row-created">
               <p

@@ -126,8 +126,10 @@ const CustomerTableRow: React.FC<IProps> = (
             rowData?.requestedBy === userId.fullName &&
             rowData.status?.toUpperCase() === "REJECTED"
               ? "#ffe0d9"
-              : rowData.status?.toUpperCase() === "PENDING"
-              ? "#fffb9a"
+              : rowData.salesHistory?.status === "PENDING_DIRECTORATE"
+              ? "#FFF7CB"
+              : rowData.salesHistory?.status === "PENDING_ADMIN"
+              ? "#FFF7CB"
               : "",
         }}
       >
@@ -201,7 +203,8 @@ const CustomerTableRow: React.FC<IProps> = (
 
                     {rowData.salesHistory?.status?.toUpperCase() ==
                       "PENDING_DIRECTORATE" &&
-                      isSubordinate(rowData.salesHistory?.salesKey) && (
+                      // isSubordinate(rowData.salesHistory?.salesKey) &&
+                      rowData.directorateName === userId.fullName && (
                         <Dropdown.Item
                           text="Approve Shareable Request"
                           icon="circle check"
@@ -354,11 +357,11 @@ const CustomerTableRow: React.FC<IProps> = (
         </Table.Cell>
         <Table.Cell textAlign="center">
           {rowData.pmoCustomer === true ? (
-            <div style={{ textAlign: "center" }}>
+            <div className="row-pmo-yes">
               <span>Yes</span>
             </div>
           ) : (
-            <div style={{ textAlign: "center" }}>
+            <div className="row-pmo-no">
               <span>No</span>
             </div>
           )}
@@ -444,6 +447,50 @@ const CustomerTableRow: React.FC<IProps> = (
             </div>
           )}
         </Table.Cell>
+
+        <Table.Cell textAlign="center">
+          {rowData.cap === true ? (
+            <div className="row-cap-yes">
+              <span>Yes</span>
+            </div>
+          ) : (
+            <div className="row-cap-no">
+              <span>No</span>
+            </div>
+          )}
+        </Table.Cell>
+
+        <Table.Cell textAlign="center">
+          {rowData.salesHistory?.status === "PENDING_DIRECTORATE" ? (
+            <>
+              <div className="row-created">
+                <p
+                  style={{
+                    fontSize: "1rem",
+                    color: "#46494c",
+                  }}
+                >
+                  Waiting Approval by <b>{rowData.directorateName}</b>
+                </p>
+              </div>
+            </>
+          ) : rowData.salesHistory?.status === "PENDING_ADMIN" ? (
+            <>
+              <div className="row-created">
+                <p
+                  style={{
+                    fontSize: "1rem",
+                    color: "#46494c",
+                  }}
+                >
+                  Waiting Approval by{" "}
+                  <b>{rowData.salesHistory?.waitingAdminApproveBy}</b>
+                </p>
+              </div>
+            </>
+          ) : null}
+        </Table.Cell>
+
         <Table.Cell textAlign="center">
           <div
             style={{

@@ -90,6 +90,14 @@ const CustomerTable: React.FC<IProps> = (
 
           <Table.HeaderCell
             textAlign="center"
+            sorted={columns === "PMOCustomer" ? direction : null}
+            onClick={() => reloads("PMOCustomer")}
+          >
+            PMO Cust.
+          </Table.HeaderCell>
+
+          <Table.HeaderCell
+            textAlign="center"
             sorted={columns === "Blacklist" ? direction : null}
             onClick={() => reloads("Blacklist")}
           >
@@ -102,6 +110,22 @@ const CustomerTable: React.FC<IProps> = (
             onClick={() => reloads("Holdshipment")}
           >
             Holdshipment
+          </Table.HeaderCell>
+
+          <Table.HeaderCell
+            textAlign="center"
+            sorted={columns === "Cap" ? direction : null}
+            onClick={() => reloads("Cap")}
+          >
+            Cap
+          </Table.HeaderCell>
+
+          <Table.HeaderCell
+            textAlign="center"
+            sorted={columns === "StatusApproval" ? direction : null}
+            onClick={() => reloads("StatusApproval")}
+          >
+            Status Aprroval
           </Table.HeaderCell>
 
           <Table.HeaderCell

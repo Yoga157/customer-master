@@ -12,6 +12,8 @@ export default class CustomerSettingRow extends BaseModel {
   industryClass?: string = "";
   industryClassID?: string = "";
   industryClassBusiness?: string = "";
+  directorateName?: string = "";
+  cap: boolean = false;
   salesID: number = 0;
   customerCategory: string = "";
   customerName: string = "";
@@ -50,6 +52,7 @@ export default class CustomerSettingRow extends BaseModel {
       jdeCustomerID: ConversionTypeEnum.Number,
       customerGenID: ConversionTypeEnum.Number,
       industryClass: ConversionTypeEnum.String,
+      directorateName: ConversionTypeEnum.String,
       salesID: ConversionTypeEnum.String,
       customerCategory: ConversionTypeEnum.String,
       customerName: ConversionTypeEnum.String,
@@ -66,6 +69,7 @@ export default class CustomerSettingRow extends BaseModel {
       blacklist: ConversionTypeEnum.Boolean,
       named: ConversionTypeEnum.Boolean,
       holdshipment: ConversionTypeEnum.Boolean,
+      cap: ConversionTypeEnum.Boolean,
       createdBy: ConversionTypeEnum.String,
       modifiedBy: ConversionTypeEnum.String,
       approvalBy: ConversionTypeEnum.Number,

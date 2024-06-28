@@ -24,14 +24,48 @@ export const InputSearch: React.FC = () => {
   const onSearch = () => {
     // if (location.pathname == "/data-quality/customer-setting") {
     if (btnCancel || searchText.length === 0) {
-      dispatch(CustomerSetting.requestAllAcc(1, 10, "CustomerID", "ascending"));
+      dispatch(
+        CustomerSetting.requestSearchAllAcc(
+          1,
+          10,
+          "CustomerID",
+          null,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        )
+      );
       dispatch(CustomerSetting.setActivePage(1));
       setSearchText("");
       setBtnCancel(false);
     } else {
       if (searchText.length > 1) {
         dispatch(
-          CustomerSetting.requestSearchAllAcc(1, 10, "CustomerID", searchText)
+          CustomerSetting.requestSearchAllAcc(
+            1,
+            10,
+            "CustomerID",
+            searchText,
+            "ascending",
+            null,
+            null,
+            null,
+            null,
+            null,
+            true,
+            true,
+            true
+          )
         );
         dispatch(CustomerSetting.setActivePage(1));
         setBtnCancel(!btnCancel);

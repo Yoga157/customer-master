@@ -51,6 +51,9 @@ const _mappingObjectTableRow = (model: any): any => {
       model.industryClassID === null ? null : model.industryClassID,
     industryClassBusiness:
       model.industryClassBusiness === null ? null : model.industryClassBusiness,
+    directorateName:
+      model.industryClassBusiness === null ? null : model.directorateName,
+    isCap: model.isCap === null ? null : model.isCap,
     customerCategory:
       model.customerCategory === "" ? "" : model.customerCategory,
     customerName: model.customerName === "" ? "" : model.customerName,
@@ -113,9 +116,11 @@ const _mappingObjectTableNameRow = (model: any): any => {
     pmoCustomer: model.pmoCustomer === null ? null : model.pmoCustomer,
     named: model.named === "" ? null : model.named,
     salesShareableID: model.salesShareableID,
+    directorateName: model.directorateName === "" ? "" : model.directorateName,
     shareable: model.shareable === null ? null : model.shareable,
     blacklist: model.blacklist === null ? null : model.blacklist,
     requestedBy: model.requestedBy === null ? "" : model.requestedBy,
+    isCap: model.isCap === null ? null : model.isCap,
     holdshipment: model.holdshipment === null ? null : model.holdshipment,
     createdBy: model.createdBy === "" ? "" : model.createdBy,
     createdDate: model.createdDate === "" ? null : model.createdDate,
@@ -164,7 +169,10 @@ const _mappingObjectTableShareableRow = (model: any): any => {
     lastProjectName: model.lastProjectName === "" ? "" : model.lastProjectName,
     salesName: model.salesName === "" ? "" : model.salesName,
     relatedCustomer: model.relatedCustomer === "" ? "" : model.relatedCustomer,
-    pmoCustomer: model.pmoCustomer === null ? null : model.pmoCustomer,
+    isCap: model.isCap === null ? null : model.isCap,
+    dirc: model.pmoCustomer === null ? null : model.pmoCustomer,
+    directorateName:
+      model.directorateName === null ? null : model.directorateName,
     named: model.named === "" ? null : model.named,
     salesShareableID: model.salesShareableID,
     shareable: model.shareable === null ? null : model.shareable,
@@ -317,6 +325,7 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
       industryClassID: model.resultObj.industryClassID,
       industryClass: model.resultObj.industryClass,
       industryClassBusiness: model.resultObj.industryClassBusiness,
+      directorateName: model.resultObj.directorateName,
       customerCategory: model.resultObj.customerCategory,
       customerName: model.resultObj.customerName,
       customerAddress: model.resultObj.customerAddress,
@@ -363,6 +372,9 @@ export const _selectCustomerDataById = (model: ResultActions): any => {
                 model.resultObj.shareableApprovalStatus[lastIndex].rejectedDate,
               rejectedBy:
                 model.resultObj.shareableApprovalStatus[lastIndex].rejectedBy,
+              waitingAdminApproveBy:
+                model.resultObj.shareableApprovalStatus[lastIndex]
+                  .waitingAdminApproveBy,
             }
           : [],
     };
