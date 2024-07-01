@@ -226,3 +226,15 @@ export const requestAccountHistoryByCustId = async (
   );
   return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
 };
+
+export const requestIndustryClassDropdown = async (): Promise<
+  ResultActions | HttpErrorResponseModel
+> => {
+  const controllerName = "CustomerSetting/GetIndustryClass";
+  const endpoint: string = environment.api.customer.replace(
+    ":controller",
+    controllerName
+  );
+
+  return EffectUtility.getToModel<ResultActions>(ResultActions, endpoint);
+};

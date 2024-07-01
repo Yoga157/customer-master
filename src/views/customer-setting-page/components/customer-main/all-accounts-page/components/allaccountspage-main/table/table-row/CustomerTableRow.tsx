@@ -145,6 +145,12 @@ const CustomerTableRow: React.FC<IProps> = (
                       text="Claim Account"
                       icon="circle check"
                       onClick={onClaimAccount}
+                      disabled={
+                        rowData.industryClass === null ||
+                        rowData.salesHistory?.status ===
+                          "PENDING_DIRECTORATE" ||
+                        rowData.salesHistory?.status === "PENDING_ADMIN"
+                      }
                     />
                   )}
 

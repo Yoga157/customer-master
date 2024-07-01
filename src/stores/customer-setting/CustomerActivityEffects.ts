@@ -124,6 +124,7 @@ export const requestSearchNoNameAcc = async (
   column: string | null,
   search: string | null,
   sorting?: string | null,
+  indClasses?: string | null,
   pmo_customer?: boolean | null,
   holdshipment?: boolean | null,
   blacklist?: boolean | null,
@@ -131,7 +132,9 @@ export const requestSearchNoNameAcc = async (
 ): Promise<CustomerSettingModel | HttpErrorResponseModel> => {
   const controllerName = `CustomerSetting/GetCustomerSettingNoNamedAccount?page=${page}&pageSize=${pageSize}&column=${column}${
     search || search != null ? `&search=${search}` : ``
-  }${sorting || sorting != null ? `&sorting=${sorting}` : ``}${
+  }${indClasses || indClasses != null ? `&indClasses=${indClasses}` : ``}${
+    sorting || sorting != null ? `&sorting=${sorting}` : ``
+  }${
     pmo_customer || pmo_customer != null ? `&pmoCustomer=${pmo_customer}` : ``
   }${
     holdshipment || holdshipment != null ? `&holdshipment=${holdshipment}` : ``
@@ -155,6 +158,7 @@ export const requestSearchNamedAcc = async (
   search: string | null,
   sorting?: string | null,
   salesID?: string | null,
+  indClasses?: string | null,
   myAccount?: number | null,
   pmo_customer?: boolean | null,
   holdshipment?: boolean | null,
@@ -165,7 +169,9 @@ export const requestSearchNamedAcc = async (
     search || search != null ? `&search=${search}` : ``
   }${sorting || sorting != null ? `&sorting=${sorting}` : ``}${
     salesID || salesID != null ? `&salesID=${salesID}` : ``
-  }${myAccount || myAccount != null ? `&myAccount=${myAccount}` : ``}${
+  }${indClasses || indClasses != null ? `&indClasses=${indClasses}` : ``}${
+    myAccount || myAccount != null ? `&myAccount=${myAccount}` : ``
+  }${
     pmo_customer || pmo_customer != null ? `&pmoCustomer=${pmo_customer}` : ``
   }${
     holdshipment || holdshipment != null ? `&holdshipment=${holdshipment}` : ``
@@ -189,6 +195,7 @@ export const requestSearchShareabelAcc = async (
   search: string | null,
   sorting?: string | null,
   salesID?: string | null,
+  indClasses?: string | null,
   pmo_customer?: boolean | null,
   blacklist?: boolean | null,
   holdshipment?: boolean | null,
@@ -199,8 +206,8 @@ export const requestSearchShareabelAcc = async (
   }${sorting || sorting != null ? `&sorting=${sorting}` : ``}${
     pmo_customer || pmo_customer != null ? `&pmoCustomer=${pmo_customer}` : ``
   }${salesID || salesID != null ? `&salesID=${salesID}` : ``}${
-    blacklist || blacklist != null ? `&blacklist=${blacklist}` : ``
-  }${
+    indClasses || indClasses != null ? `&indClasses=${indClasses}` : ``
+  }${blacklist || blacklist != null ? `&blacklist=${blacklist}` : ``}${
     holdshipment || holdshipment != null ? `&holdshipment=${holdshipment}` : ``
   }${isCap || isCap != null ? `&isCap=${isCap}` : ``}`;
   const endpoint: string = environment.api.customer.replace(
@@ -220,6 +227,7 @@ export const requestSearchAllAcc = async (
   search: string | null,
   sorting?: string | null,
   salesID?: string | null,
+  indClasses?: string | null,
   myAccount?: number | null,
   pmo_customer?: boolean | null,
   blacklist?: boolean | null,
@@ -238,8 +246,10 @@ export const requestSearchAllAcc = async (
   }${sorting || sorting != null ? `&sorting=${sorting}` : ``}${
     pmo_customer || pmo_customer != null ? `&pmoCustomer=${pmo_customer}` : ``
   }${salesID || salesID != null ? `&salesID=${salesID}` : ``}${
-    myAccount || myAccount != null ? `&myAccount=${myAccount}` : ``
-  }${blacklist || blacklist != null ? `&blacklist=${blacklist}` : ``}${
+    indClasses || indClasses != null ? `&indClasses=${indClasses}` : ``
+  }${myAccount || myAccount != null ? `&myAccount=${myAccount}` : ``}${
+    blacklist || blacklist != null ? `&blacklist=${blacklist}` : ``
+  }${
     holdshipment || holdshipment != null ? `&holdshipment=${holdshipment}` : ``
   }${isCap || isCap != null ? `&isCap=${isCap}` : ``}${
     showNoName || showNoName != null ? `&showNoName=${showNoName}` : ``

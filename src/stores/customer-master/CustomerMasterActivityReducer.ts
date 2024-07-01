@@ -231,6 +231,19 @@ const customerMasterReducer: Reducer = baseReducer(initialState, {
       accountHistoryDetails: action.payload!,
     };
   },
+
+  [CustomerMasterActions.REQUEST_INDUSTRY_LIST_FINISHED](
+    state: ICustomerMasterState,
+    action: IAction<ResultActions>
+  ): ICustomerMasterState {
+    console.log(action);
+    return {
+      ...state,
+      industryClassification: action.payload!,
+      error: false,
+      refreshPage: false,
+    };
+  },
 });
 
 export default customerMasterReducer;

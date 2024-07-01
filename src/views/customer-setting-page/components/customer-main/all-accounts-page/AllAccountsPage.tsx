@@ -33,6 +33,7 @@ interface FilterData {
   namedAccount: any;
   pmo_customer: any;
   newsalesAssign: any;
+  newIndustryClass: any;
   holdshipment: any;
   blacklist: any;
   shareableAccount: any;
@@ -40,6 +41,7 @@ interface FilterData {
   showPending: any;
   showApprove: any;
   showReject: any;
+  isCap: any;
 }
 
 const AllAccountsPage: React.FC<IProps> = (
@@ -68,7 +70,6 @@ const AllAccountsPage: React.FC<IProps> = (
 
   const handleMyAccount = () => {
     const userId: any = localStorage.getItem("userLogin");
-
     if (myAccount == false) {
       setMyAccount(true);
       const salesID = JSON.parse(userId)?.employeeID;
@@ -84,7 +85,6 @@ const AllAccountsPage: React.FC<IProps> = (
       );
     } else {
       setMyAccount(false);
-
       dispatch(
         CustomerActions.requestSearchAllAcc(
           activePage,
@@ -92,6 +92,8 @@ const AllAccountsPage: React.FC<IProps> = (
           "CustomerID",
           null,
           "ascending",
+          null,
+          null,
           null,
           null,
           null,
@@ -136,6 +138,8 @@ const AllAccountsPage: React.FC<IProps> = (
           "CustomerID",
           null,
           "ascending",
+          null,
+          null,
           null,
           null,
           null,
@@ -203,7 +207,22 @@ const AllAccountsPage: React.FC<IProps> = (
           1,
           tableData.totalRow,
           "CustomerID",
-          search.value
+          search.value,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         )
       )
         .then(() => {
@@ -211,11 +230,26 @@ const AllAccountsPage: React.FC<IProps> = (
         })
         .then(() => {
           dispatch(
-            CustomerActions.requestAllAcc(
+            CustomerActions.requestSearchAllAcc(
               1,
               pageSize,
               "CustomerID",
-              search.value
+              search.value,
+              "ascending",
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
             )
           );
         });
@@ -227,6 +261,8 @@ const AllAccountsPage: React.FC<IProps> = (
           "CustomerID",
           null,
           "ascending",
+          null,
+          null,
           null,
           null,
           null,
@@ -252,6 +288,8 @@ const AllAccountsPage: React.FC<IProps> = (
               "CustomerID",
               null,
               "ascending",
+              null,
+              null,
               null,
               null,
               null,
@@ -309,6 +347,7 @@ const AllAccountsPage: React.FC<IProps> = (
         null,
         null,
         null,
+        null,
         true,
         true,
         true,
@@ -337,6 +376,7 @@ const AllAccountsPage: React.FC<IProps> = (
           null,
           "ascending",
           filterData.newsalesAssign,
+          filterData.newIndustryClass,
           null,
           filterData.pmo_customer,
           filterData.blacklist,
@@ -347,7 +387,8 @@ const AllAccountsPage: React.FC<IProps> = (
           filterData.isNew,
           filterData.showPending,
           filterData.showApprove,
-          filterData.showReject
+          filterData.showReject,
+          filterData.isCap
         )
       );
     } else if (myAccount) {
@@ -372,8 +413,8 @@ const AllAccountsPage: React.FC<IProps> = (
             "CustomerID",
             null,
             "ascending",
-            null,
-            salesID
+            salesID,
+            null
           )
         );
       }
@@ -383,7 +424,22 @@ const AllAccountsPage: React.FC<IProps> = (
           data.activePage,
           pageSize,
           "CustomerID",
-          search.value
+          search.value,
+          "ascending",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
         )
       );
     } else {
@@ -394,6 +450,8 @@ const AllAccountsPage: React.FC<IProps> = (
           "CustomerID",
           null,
           "ascending",
+          null,
+          null,
           null,
           null,
           null,

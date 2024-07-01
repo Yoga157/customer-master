@@ -93,8 +93,7 @@ const CustomerTableRow: React.FC<IProps> = (
   }, [dispatch, rowData]);
 
   const onApproveShareable = useCallback((): void => {
-    let isDirectorate =
-      isSubordinate(rowData.salesHistory?.salesKey) && role != "Admin";
+    let isDirectorate = role != "Admin";
 
     dispatch(
       ModalFirstLevelActions.OPEN(

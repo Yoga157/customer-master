@@ -78,8 +78,7 @@ const CustomerTableRow: React.FC<IProps> = (
   };
 
   const onApproveRequestAccount = useCallback((): void => {
-    let isDirectorate =
-      isSubordinate(rowData.salesHistory?.salesKey) && role != "Admin";
+    let isDirectorate = role != "Admin";
 
     dispatch(
       ModalFirstLevelActions.OPEN(

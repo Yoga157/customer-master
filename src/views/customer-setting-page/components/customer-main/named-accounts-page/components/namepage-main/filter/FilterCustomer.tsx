@@ -9,8 +9,10 @@ import { Form as FinalForm, Field } from "react-final-form";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import { selectSalesOptions } from "selectors/select-options/SalesAssignSelector";
+import { selectIndustryDropdown } from "selectors/select-options/IndustryClassSelector";
 import * as CustomerSettingAct from "stores/customer-setting/CustomerActivityActions";
 import * as SalesAssign from "stores/customer-sales/SalesAssignActivityActions";
+import * as IndustryClass from "stores/industry-class/IndustryClassActions";
 
 interface IProps {
   rowData: any;
@@ -29,8 +31,12 @@ const FilterCustomer: React.FC<{
   getFilterData,
 }) => {
   const [salesName, setSalesName] = useState("");
+  const [industryClass, setIndustryClass] = useState("");
   const [salesAssignArray, setSalesAssignArray] = useState([]);
+  const [industryClassArray, setIndustryClassArray] = useState([]);
   const [salesFilter, setSalesFilter] = useState([]);
+  const [industryClassFilter, setIndustryClassFilter] = useState([]);
+  const [resetIndustryClass, setResetIndustryClass] = useState(false);
   const [resetSales, setResetSales] = useState(false);
   const [pmo_customerYesChecked, setPmo_customerYesChecked] = useState(false);
   const [pmo_customerNoChecked, setPmo_customerNoChecked] = useState(false);
@@ -61,6 +67,26 @@ const FilterCustomer: React.FC<{
     }
   };
 
+  const onResultSelectIndustryClass = (values: any): any => {
+    let checkIndustry = industryClassArray.find(
+      (obj) => obj.industryClassID === values.industryClassID
+    );
+    if (checkIndustry === undefined && values.industryClassID != undefined) {
+      setIndustryClassArray([
+        ...industryClassArray,
+        {
+          industryClass: values.industryClass,
+          industryClassID: values.industryClassID,
+        },
+      ]);
+
+      setIndustryClassFilter([
+        ...industryClassFilter,
+        values.industryClassID.toString(),
+      ]);
+    }
+  };
+
   const onSubmitHandler = async () => {
     const pmo_customer =
       pmo_customerYesChecked && pmo_customerNoChecked
@@ -73,6 +99,9 @@ const FilterCustomer: React.FC<{
 
     const newsalesAssign =
       salesFilter.length == 0 ? null : salesFilter.join(",");
+
+    const newIndustryClass =
+      industryClassFilter.length == 0 ? null : industryClassFilter.join(",");
 
     const holdshipment =
       holdshipmentYesChecked && holdshipmentNoChecked
@@ -92,7 +121,7 @@ const FilterCustomer: React.FC<{
         ? false
         : null;
 
-    const cap =
+    const isCap =
       capYesChecked && capNoChecked
         ? null
         : capYesChecked
@@ -106,7 +135,8 @@ const FilterCustomer: React.FC<{
       newsalesAssign: newsalesAssign,
       holdshipment: holdshipment,
       blacklist: blacklist,
-      cap,
+      isCap,
+      newIndustryClass: newIndustryClass,
     });
 
     dispatch(
@@ -117,11 +147,12 @@ const FilterCustomer: React.FC<{
         null,
         "ascending",
         newsalesAssign,
+        newIndustryClass,
         null,
         pmo_customer,
         holdshipment,
         blacklist,
-        cap
+        isCap
       )
     );
   };
@@ -134,11 +165,30 @@ const FilterCustomer: React.FC<{
     dispatch(SalesAssign.requestSalesDropdown());
   }, [dispatch]);
 
+  const industryClassStoreDropdown = useSelector((state: IStore) =>
+    selectIndustryDropdown(state)
+  );
+
+  useEffect(() => {
+    dispatch(IndustryClass.requestIndustryDropdown());
+  }, [dispatch]);
+
   const deleteClick = (salesID) => {
     let filteredArray = salesAssignArray.filter(
       (obj) => obj.salesID !== salesID
     );
     setSalesAssignArray(filteredArray);
+    setSalesFilter(salesFilter.filter((id) => id !== salesID.toString()));
+  };
+
+  const deleteClickIndustry = (industryClassID) => {
+    let filteredArray = industryClassArray.filter(
+      (obj) => obj.industryClassID !== industryClassID
+    );
+    setIndustryClassArray(filteredArray);
+    setIndustryClassFilter(
+      industryClassFilter.filter((id) => id !== industryClassID.toString())
+    );
   };
 
   const resetClick = () => {
@@ -154,6 +204,10 @@ const FilterCustomer: React.FC<{
     setSalesAssignArray([]);
     setSalesFilter([]);
     setResetSales(true);
+    setIndustryClass("");
+    setIndustryClassArray([]);
+    setIndustryClassFilter([]);
+    setResetIndustryClass(true);
     getRowData([]);
 
     dispatch(
@@ -263,9 +317,10 @@ const FilterCustomer: React.FC<{
                   <Divider></Divider>
                   <Grid.Row>
                     <Grid.Column>
-                      <p>Sales Assign</p>
+                      {/* <p>Sales Assign</p> */}
                       <Field
                         name="salesName"
+                        labelName="Industry Class"
                         component={DropdownAdvanceFilter}
                         placeholder="-Choose Sales-"
                         values={salesName}
@@ -404,7 +459,7 @@ const FilterCustomer: React.FC<{
                           <label className="flex-center">
                             <input
                               type="checkbox"
-                              name="cap"
+                              name="isCap"
                               value="yes"
                               style={{
                                 marginRight: "0.5rem",
@@ -439,6 +494,45 @@ const FilterCustomer: React.FC<{
                         </div>
                       </div>
                     </Grid.Row>
+                  </Grid.Row>
+
+                  <Divider></Divider>
+                  <Grid.Row>
+                    <Grid.Column>
+                      {/* <p>Industry Class</p> */}
+                      <Field
+                        name="industryClass"
+                        labelName="Industry Class"
+                        component={DropdownAdvanceFilter}
+                        placeholder="-Choose IndustryClass-"
+                        values={industryClass}
+                        options={industryClassStoreDropdown}
+                        onChanged={onResultSelectIndustryClass}
+                        resetSales={resetIndustryClass}
+                        onReset={() => setResetIndustryClass(false)}
+                      />
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column>
+                      {industryClassArray.map((values) => {
+                        return (
+                          <div
+                            style={{ marginTop: "0.5rem" }}
+                            className="ui label labelBorPad"
+                            key={values.industryClassID}
+                          >
+                            <span>{values.industryClass}</span>
+                            <i
+                              className="delete icon btnSales"
+                              onClick={() =>
+                                deleteClickIndustry(values.industryClassID)
+                              }
+                            ></i>
+                          </div>
+                        );
+                      })}
+                    </Grid.Column>
                   </Grid.Row>
                 </div>
 

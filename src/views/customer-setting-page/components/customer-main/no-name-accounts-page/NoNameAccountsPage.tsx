@@ -29,6 +29,7 @@ interface FilterData {
   holdshipment: any;
   blacklist: any;
   cap: any;
+  newIndustryClass: any;
 }
 
 const NoNameAccountsPage: React.FC<IProps> = (
@@ -172,6 +173,7 @@ const NoNameAccountsPage: React.FC<IProps> = (
           "CustomerID",
           null,
           "ascending",
+          filterData.newIndustryClass,
           filterData.pmo_customer,
           filterData.holdshipment,
           filterData.blacklist,

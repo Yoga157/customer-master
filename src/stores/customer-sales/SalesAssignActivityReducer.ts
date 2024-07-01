@@ -20,7 +20,7 @@ export const initialState: ISalesAssignState = {
   salesExstingModel: new SalesNameModel({}),
   SalesAssignPostModel: new SalesAssignPostModel({}),
   salesHistory: new ResultActions({}),
-  accountOwner: new ResultActions({})
+  accountOwner: new ResultActions({}),
 };
 
 const SalesAssignReducer: Reducer = baseReducer(initialState, {
@@ -52,7 +52,6 @@ const SalesAssignReducer: Reducer = baseReducer(initialState, {
     state: ISalesAssignState,
     action: IAction<ResultActions>
   ): ISalesAssignState {
-    console.log(action)
     return {
       ...state,
       sales: action.payload!,

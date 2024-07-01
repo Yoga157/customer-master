@@ -7,6 +7,7 @@ import CustomerMasterRow from "./models/CustomerMasterRow";
 import CustomerMasterPostModel from "./models/CustomerMasterPostModel";
 import ResultActions from "models/ResultActions";
 import IAction from "models/IAction";
+import IStore from "../../models/IStore";
 import PostStatusNewCustomerModel from "./models/PostStatusNewCustomerModel";
 import CustomerOfficeNumberModel from "./models/CustomerOficeNumberModel";
 import PostPeopleInChargerModel from "./models/PostPeopleInChargerModel";
@@ -326,6 +327,25 @@ export const requestAccountHistoryByCustId = (
       CustomerMasterEffect.requestAccountHistoryByCustId,
       custId,
       showAll
+    );
+  };
+};
+
+//Get List IndustryClass for DropDown
+export const REQUEST_INDUSTRY_LIST: string =
+  "CustomerMasterActions.REQUEST_INDUSTRY_LIST";
+export const REQUEST_INDUSTRY_LIST_FINISHED: string =
+  "CustomerMasterActions.REQUEST_INDUSTRY_LIST_FINISHED";
+
+export const requestIndustryClassDropdown = (): any => {
+  return async (
+    dispatch: ReduxDispatch<ActionUnion>,
+    getState: () => IStore
+  ): Promise<void> => {
+    await ActionUtility.createThunkEffect<ResultActions>(
+      dispatch,
+      REQUEST_INDUSTRY_LIST,
+      CustomerMasterEffect.requestIndustryClassDropdown
     );
   };
 };

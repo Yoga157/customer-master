@@ -28,6 +28,7 @@ interface FilterData {
   newsalesAssign: any;
   holdshipment: any;
   blacklist: any;
+  newIndustryClass: any;
 }
 
 const ShareableAccountsPage: React.FC<IProps> = (
@@ -206,6 +207,7 @@ const ShareableAccountsPage: React.FC<IProps> = (
           null,
           "ascending",
           filterData.newsalesAssign,
+          filterData.newIndustryClass,
           filterData.pmo_customer,
           filterData.blacklist,
           filterData.holdshipment

@@ -15,6 +15,7 @@ export default class CustomerSettingRow extends BaseModel {
   directorateName?: string = "";
   cap: boolean = false;
   salesID: number = 0;
+  indClasses: string = "";
   customerCategory: string = "";
   customerName: string = "";
   customerAddress: string = "";
@@ -54,6 +55,7 @@ export default class CustomerSettingRow extends BaseModel {
       industryClass: ConversionTypeEnum.String,
       directorateName: ConversionTypeEnum.String,
       salesID: ConversionTypeEnum.String,
+      indClasses: ConversionTypeEnum.String,
       customerCategory: ConversionTypeEnum.String,
       customerName: ConversionTypeEnum.String,
       myAccount: ConversionTypeEnum.Number,

@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import IStore from "models/IStore";
 import "./Filter.scss";
 import { Divider, Grid, Form } from "semantic-ui-react";
-import { Button } from "views/components/UI";
-import { Form as FinalForm } from "react-final-form";
+import { Form as FinalForm, Field } from "react-final-form";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import * as CustomerSettingAct from "stores/customer-setting/CustomerActivityActions";
+import * as IndustryClass from "stores/industry-class/IndustryClassActions";
+import { Button, DropdownAdvanceFilter } from "views/components/UI";
+import { selectIndustryDropdown } from "selectors/select-options/IndustryClassSelector";
 
 interface IProps {
   rowData: any;
@@ -35,13 +37,41 @@ const FilterCustomer: React.FC<{
   const [capNoChecked, setCapNoChecked] = useState(false);
   const [capYesChecked, setCapYesChecked] = useState(false);
 
+  const [industryClass, setIndustryClass] = useState("");
+  const [industryClassArray, setIndustryClassArray] = useState([]);
+  const [industryClassFilter, setIndustryClassFilter] = useState([]);
+  const [resetIndustryClass, setResetIndustryClass] = useState(false);
+  const [resetSales, setResetSales] = useState(false);
   const dispatch: Dispatch = useDispatch();
 
   const isRequesting: boolean = useSelector((state: IStore) =>
     selectRequesting(state, [])
   );
 
+  const onResultSelectIndustryClass = (values: any): any => {
+    let checkIndustry = industryClassArray.find(
+      (obj) => obj.industryClassID === values.industryClassID
+    );
+    if (checkIndustry === undefined && values.industryClassID != undefined) {
+      setIndustryClassArray([
+        ...industryClassArray,
+        {
+          industryClass: values.industryClass,
+          industryClassID: values.industryClassID,
+        },
+      ]);
+
+      setIndustryClassFilter([
+        ...industryClassFilter,
+        values.industryClassID.toString(),
+      ]);
+    }
+  };
+
   const onSubmitHandler = async () => {
+    const newIndustryClass =
+      industryClassFilter.length == 0 ? null : industryClassFilter.join(",");
+
     const pmo_customer =
       pmo_customerYesChecked && pmo_customerNoChecked
         ? null
@@ -79,6 +109,7 @@ const FilterCustomer: React.FC<{
         : null;
 
     getFilterData({
+      newIndustryClass: newIndustryClass,
       pmo_customer: pmo_customer,
       holdshipment: holdshipment,
       blacklist: blacklist,
@@ -92,11 +123,30 @@ const FilterCustomer: React.FC<{
         "CustomerID",
         null,
         "ascending",
+        newIndustryClass,
         pmo_customer,
         holdshipment,
         blacklist,
         cap
       )
+    );
+  };
+
+  const industryClassStoreDropdown = useSelector((state: IStore) =>
+    selectIndustryDropdown(state)
+  );
+
+  useEffect(() => {
+    dispatch(IndustryClass.requestIndustryDropdown());
+  }, [dispatch]);
+
+  const deleteClickIndustry = (industryClassID) => {
+    let filteredArray = industryClassArray.filter(
+      (obj) => obj.industryClassID !== industryClassID
+    );
+    setIndustryClassArray(filteredArray);
+    setIndustryClassFilter(
+      industryClassFilter.filter((id) => id !== industryClassID.toString())
     );
   };
 
@@ -109,6 +159,11 @@ const FilterCustomer: React.FC<{
     setBlacklistNoChecked(false);
     setCapYesChecked(false);
     setCapNoChecked(false);
+    setResetSales(true);
+    setIndustryClass("");
+    setIndustryClassArray([]);
+    setIndustryClassFilter([]);
+    setResetIndustryClass(true);
     getRowData([]);
 
     dispatch(
@@ -357,6 +412,43 @@ const FilterCustomer: React.FC<{
                     </div>
                   </div>
                   <Divider></Divider>
+                  <Grid.Row>
+                    <Grid.Column>
+                      {/* <p>Industry Class</p> */}
+                      <Field
+                        name="industryClass"
+                        labelName="Industry Class"
+                        component={DropdownAdvanceFilter}
+                        placeholder="-Choose IndustryClass-"
+                        values={industryClass}
+                        options={industryClassStoreDropdown}
+                        onChanged={onResultSelectIndustryClass}
+                        resetSales={resetIndustryClass}
+                        onReset={() => setResetIndustryClass(false)}
+                      />
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column>
+                      {industryClassArray.map((values) => {
+                        return (
+                          <div
+                            style={{ marginTop: "0.5rem" }}
+                            className="ui label labelBorPad"
+                            key={values.industryClassID}
+                          >
+                            <span>{values.industryClass}</span>
+                            <i
+                              className="delete icon btnSales"
+                              onClick={() =>
+                                deleteClickIndustry(values.industryClassID)
+                              }
+                            ></i>
+                          </div>
+                        );
+                      })}
+                    </Grid.Column>
+                  </Grid.Row>
                 </div>
 
                 <div className="cointainer-filter-btn">
