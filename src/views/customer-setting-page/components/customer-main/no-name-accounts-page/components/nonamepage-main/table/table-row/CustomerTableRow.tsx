@@ -101,7 +101,12 @@ const CustomerTableRow: React.FC<IProps> = (
           key={rowData.CustomerID}
           style={{
             backgroundColor:
-              rowData.salesHistory?.status === "PENDING_DIRECTORATE"
+              rowData?.requestedBy === userID.fullName &&
+              rowData.salesHistory?.status === "REJECTED_DIRECTORATE"
+                ? "#ffe0d9"
+                : rowData.salesHistory?.status === "REJECTED_ADMIN"
+                ? "#ffe0d9"
+                : rowData.salesHistory?.status === "PENDING_DIRECTORATE"
                 ? "#FFF7CB"
                 : rowData.salesHistory?.status === "PENDING_ADMIN"
                 ? "#FFF7CB"

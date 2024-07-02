@@ -116,7 +116,8 @@ const _mappingObjectTableNameRow = (model: any): any => {
     pmoCustomer: model.pmoCustomer === null ? null : model.pmoCustomer,
     named: model.named === "" ? null : model.named,
     salesShareableID: model.salesShareableID,
-    directorateName: model.directorateName === "" ? "" : model.directorateName,
+    directorateName:
+      model.directorateName === null ? null : model.directorateName,
     shareable: model.shareable === null ? null : model.shareable,
     blacklist: model.blacklist === null ? null : model.blacklist,
     requestedBy: model.requestedBy === null ? "" : model.requestedBy,
@@ -129,7 +130,7 @@ const _mappingObjectTableNameRow = (model: any): any => {
     status: model.status === null ? null : model.status,
     isNew: model.isNew === null ? null : model.isNew,
     approvalStatus: model.approvalStatus === null ? null : model.approvalStatus,
-    salesHistory: model.salesHistory.length == 0 ? {} : model.salesHistory[0],
+    salesHistory: model.salesHistory.length == 0 ? [] : model.salesHistory,
   };
 };
 

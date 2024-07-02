@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Button } from "views/components/UI";
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import * as ModalAction from "stores/modal/first-level/ModalFirstLevelActions";
 import LoadingIndicator from "views/components/loading-indicator/LoadingIndicator";
 import { selectRequesting } from "selectors/requesting/RequestingSelector";
 import * as CustomerSettingAct from "stores/customer-setting/CustomerActivityActions";
+import { salesHistoryData } from "views/view-customer-setting/sales/data";
 
 interface IProps {
   rowData: any;
@@ -33,13 +34,21 @@ const ApproveShareableReq: React.FC<IProps> = (
   );
 
   const onSubmitHandler = async (e) => {
+    // console.log(props.rowData);
     const userId: any = JSON.parse(localStorage.getItem("userLogin"));
 
     for (let j = 0; j < rowData.length; j++) {
+      let sales = Array.isArray(props.rowData[j].salesHistory)
+        ? props.rowData[j].salesHistory.find((item) =>
+            item.status.includes("PENDING")
+          )
+        : props.rowData[j].salesHistory;
+
+      console.log(sales);
       await dispatch(
         CustomerSettingAct.approveRejectClaimAccount(
           (rowData.customerID = props.rowData[j].customerID),
-          (rowData.salesID = props.rowData[j].salesHistory.salesID),
+          (rowData.salesID = sales.salesID),
           true,
           (rowData.modifyUserID = userId.employeeID),
           isDirectorate ? userId.employeeID : null,
@@ -98,7 +107,13 @@ const ApproveShareableReq: React.FC<IProps> = (
                   <span key={data.customerID}>
                     Request By{" "}
                     <span style={{ fontWeight: "bold" }}>
-                      {data.salesHistory.requestedBy}
+                      {Array.isArray(data?.salesHistory)
+                        ? data?.salesHistory?.find(
+                            (item) =>
+                              item.status == "PENDING_DIRECTORATE" ||
+                              item.status == "PENDING_ADMIN"
+                          ).requestedBy
+                        : data.salesHistory.requestedBy}
                     </span>
                   </span>
                 ))}

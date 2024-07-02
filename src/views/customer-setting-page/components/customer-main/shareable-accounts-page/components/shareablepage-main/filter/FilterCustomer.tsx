@@ -324,7 +324,7 @@ const FilterCustomer: React.FC<{
                       {/* <p>Sales Assign</p> */}
                       <Field
                         name="salesName"
-                        labelName="Industry Class"
+                        labelName="Sales Assign"
                         component={DropdownAdvanceFilter}
                         placeholder="-Choose Sales-"
                         values={salesName}

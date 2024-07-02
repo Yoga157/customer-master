@@ -45,7 +45,6 @@ const CustomerTableRow: React.FC<IProps> = (
     } else {
       getRowData([...props.data, data]);
     }
-    // setIsChecked((prevChecked) => !prevChecked);
   };
 
   // mengecek apakah sales yang melakukan request ada di hirarki
@@ -116,18 +115,25 @@ const CustomerTableRow: React.FC<IProps> = (
     });
   };
 
+  const statusApproval = (history, status) => {
+    let data = history.find((item) => item.status == status);
+    return data;
+  };
+
   return (
     <Fragment>
       <Table.Row
         key={rowData.CustomerID}
         style={{
           backgroundColor:
-            rowData?.requestedBy === userId.fullName &&
-            rowData.status?.toUpperCase() === "REJECTED"
+            rowData?.salesHistory.length > 0 &&
+            statusApproval(rowData.salesHistory, "REJECTED_DIRECTORATE")
               ? "#ffe0d9"
-              : rowData.salesHistory?.status === "PENDING_DIRECTORATE"
+              : statusApproval(rowData.salesHistory, "REJECTED_ADMIN")
+              ? "#ffe0d9"
+              : statusApproval(rowData.salesHistory, "PENDING_DIRECTORATE")
               ? "#FFF7CB"
-              : rowData.salesHistory?.status === "PENDING_ADMIN"
+              : statusApproval(rowData.salesHistory, "PENDING_ADMIN")
               ? "#FFF7CB"
               : "",
         }}
@@ -152,8 +158,11 @@ const CustomerTableRow: React.FC<IProps> = (
                   }
                   disabled={
                     !rowData.salesName.includes(userId.fullName) ||
-                    rowData.salesHistory?.status === "PENDING_DIRECTORATE" ||
-                    rowData.salesHistory?.status === "PENDING_ADMIN"
+                    (statusApproval(
+                      rowData.salesHistory,
+                      "PENDING_DIRECTORATE"
+                    ) &&
+                      statusApproval(rowData.salesHistory, "PENDING_ADMIN"))
                   }
                 ></input>
               </label>
@@ -170,14 +179,16 @@ const CustomerTableRow: React.FC<IProps> = (
                       />
                     )}
 
-                    {isSubordinate(rowData.salesHistory?.salesKey) &&
-                      rowData.salesHistory?.status == "PENDING_DIRECTORATE" && (
-                        <Dropdown.Item
-                          text="View/Edit"
-                          icon="edit outline"
-                          onClick={() => onEdit(rowData.customerID)}
-                        />
-                      )}
+                    {statusApproval(
+                      rowData.salesHistory,
+                      "PENDING_DIRECTORATE"
+                    ) && (
+                      <Dropdown.Item
+                        text="View/Edit"
+                        icon="edit outline"
+                        onClick={() => onEdit(rowData.customerID)}
+                      />
+                    )}
 
                     <Dropdown.Item
                       text="Request Share Account"
@@ -185,14 +196,23 @@ const CustomerTableRow: React.FC<IProps> = (
                       onClick={onRequestAccount}
                       disabled={
                         rowData.salesName.includes(userId.fullName) ||
-                        rowData.salesHistory?.status ===
-                          "PENDING_DIRECTORATE" ||
-                        rowData.salesHistory?.status === "PENDING_ADMIN"
+                        statusApproval(
+                          rowData.salesHistory,
+                          "PENDING_DIRECTORATE"
+                        ) ||
+                        statusApproval(rowData.salesHistory, "PENDING_ADMIN")
                       }
                     />
 
                     {rowData.salesName.includes(userId.fullName) &&
-                      !rowData.salesHistory?.status.includes("PENDING") && (
+                      !statusApproval(
+                        rowData.salesHistory,
+                        "PENDING_DIRECTORATE"
+                      ) &&
+                      !statusApproval(
+                        rowData.salesHistory,
+                        "PENDING_ADMIN"
+                      ) && (
                         <Dropdown.Item
                           text="Release Account"
                           icon="times circle"
@@ -200,9 +220,10 @@ const CustomerTableRow: React.FC<IProps> = (
                         />
                       )}
 
-                    {rowData.salesHistory?.status?.toUpperCase() ==
-                      "PENDING_DIRECTORATE" &&
-                      // isSubordinate(rowData.salesHistory?.salesKey) &&
+                    {statusApproval(
+                      rowData.salesHistory,
+                      "PENDING_DIRECTORATE"
+                    ) &&
                       rowData.directorateName === userId.fullName && (
                         <Dropdown.Item
                           text="Approve Shareable Request"
@@ -226,8 +247,7 @@ const CustomerTableRow: React.FC<IProps> = (
                       onClick={() => onEdit(rowData.customerID)}
                     />
 
-                    {rowData.salesHistory?.status?.toUpperCase() ==
-                      "PENDING_ADMIN" && (
+                    {statusApproval(rowData.salesHistory, "PENDING_ADMIN") && (
                       <Dropdown.Item
                         text="Approve Shareable Request"
                         icon="circle check"
@@ -460,7 +480,7 @@ const CustomerTableRow: React.FC<IProps> = (
         </Table.Cell>
 
         <Table.Cell textAlign="center">
-          {rowData.salesHistory?.status === "PENDING_DIRECTORATE" ? (
+          {statusApproval(rowData.salesHistory, "PENDING_DIRECTORATE") ? (
             <>
               <div className="row-created">
                 <p
@@ -473,7 +493,7 @@ const CustomerTableRow: React.FC<IProps> = (
                 </p>
               </div>
             </>
-          ) : rowData.salesHistory?.status === "PENDING_ADMIN" ? (
+          ) : statusApproval(rowData.salesHistory, "PENDING_ADMIN") ? (
             <>
               <div className="row-created">
                 <p
@@ -483,7 +503,12 @@ const CustomerTableRow: React.FC<IProps> = (
                   }}
                 >
                   Waiting Approval by{" "}
-                  <b>{rowData.salesHistory?.waitingAdminApproveBy}</b>
+                  <b>
+                    {
+                      statusApproval(rowData.salesHistory, "PENDING_ADMIN")
+                        .waitingAdminApproveBy
+                    }
+                  </b>
                 </p>
               </div>
             </>

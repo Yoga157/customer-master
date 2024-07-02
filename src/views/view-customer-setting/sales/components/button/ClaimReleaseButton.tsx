@@ -162,7 +162,7 @@ const ClaimReleaseButton: React.FC<IProps> = (
       {/* accept pending request by directorate */}
       {customer.shareableApprovalStatus.status?.toUpperCase() ==
         "PENDING_DIRECTORATE" &&
-        isSubordinate(customer.shareableApprovalStatus?.requestedUserKey) && (
+        customer.directorateName === userLogin.fullName && (
           <Button
             color="yellow"
             size="small"
@@ -173,7 +173,6 @@ const ClaimReleaseButton: React.FC<IProps> = (
             Approve/Reject Join Request
           </Button>
         )}
-
       {/* accept pending requets by admin */}
       {customer.shareableApprovalStatus.status?.toUpperCase() ==
         "PENDING_ADMIN" &&
